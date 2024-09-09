@@ -141,6 +141,61 @@ depmod
 
 ```
 
+# NETWORK conectivity 37:50
+## Net-tools
+```sh
+sudo apt install net-tools
+```
 
+## PING
+```sh
+ping google.com    # Internet conection test
+    connect: Network is unreachable
+ping 8.8.8.8        # Local  conection test
+    connect: Network is unreachable
+```
+## IFCONGIG
+## IP ADD  (address)
+```sh
+root@ubuntu:~# ip add
+1: lo: # LOCAL HOST
+    <LOOPBACK, UP, LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+        valid_lft forever preferred_lft forever
+    inet6:: 1/128 scope host
+        valid_lft forever preferred_lft forever
 
+2: eth0:    # ETHERNET
+    <BROADCAST, MULTICAST, UP, LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+    link/ether 00:15:50:01:80:00 brd ff:ff:ff:ff:ff:ff
+    inet 10.10.10.10/24 brd 10.10.10.255 scope global noprefixroute etho
+        valid_lft forever preferred lft forever
+    inet6 fe80::3cc8:9fab:b94c:2561/64 scope link noprefixroute
+```
+## IP ROUTE
+```sh
+root@ubuntu:~# ip route
+default via 10.10.10.1 dev eth0 proto static metric 100
+ 10. 10. 10.  0/24  dev eth0 proto kernel     scope link src 10.10.10.10 metric 100
+169.254.  0.  0/16  dev eth0                  scope link metric 1000
+```
+## PING
+```sh
+root@ubuntu:~# ping google.com
+PING google.com (172.217.12.46) 56(84) bytes of data.
+64 bytes from dfw28s04-in-f14.1e100.net (172.217.12.46): icmp_seq=1 ttl=54 time=6.98 ms
+```
+
+```sh
+
+```
+
+```sh
+
+```
+
+```sh
+
+```
 
