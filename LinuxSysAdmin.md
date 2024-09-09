@@ -1,5 +1,8 @@
 
 https://www.youtube.com/watch?v=WMy3OzvBWc0
+Linux Server Course - System Configuration and Operation
+freeCodeCamp.org
+
 
 # BIOS & UEFI 
 
@@ -186,16 +189,149 @@ root@ubuntu:~# ping google.com
 PING google.com (172.217.12.46) 56(84) bytes of data.
 64 bytes from dfw28s04-in-f14.1e100.net (172.217.12.46): icmp_seq=1 ttl=54 time=6.98 ms
 ```
+# DNS DOMAIN NAME SYS 42:51
+
+## DIG  
+dig @server(IP) host(Name ej:google)
+```sh
+root@ubuntu:~# dig google.com
+; <<<<>>> DiG 9.10.3-P4-Ubuntu <><><><><><> google.com
+;; global options: +cmd
+;; Got answer:
+;;->>HEADER<< opcode: QUERY, status: NOERROR, id: 960
+;; flags: qr rd ra; QUERY: 1, ANSWER: 6, AUTHORITY: 0, ADDITIONAL:1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 512
+;; QUESTION SECTION:
+;google.com.              IN    A
+;; ANSWER SECTION:
+google.com.        299    IN    A    64.233.177.102
+google.com.        299    IN    A    64.233.177.139
+google.com.        299    IN    A    64.233.177.113
+google.com.        299    IN    A    64.233.177.101
+google.com.        299    IN    A    64.233.177.138
+google.com.        299    IN    A    64.233.177.100
+;; Query time: 17 msec
+;; SERVER: 8.8.8.8#53    (8.8.8.8)
+;; WHEN: Tue Feb 12 06:50:58 PST 2019
+;; MSG SIZE rcvd: 135
+root@ubuntu:~#
+```
+
+## NSLOOKUP
+```sh
+root@ubuntu:~# nslookup google.com
+Server:     8.8.8.8
+Address:    8.8.8.8#53
+
+Non-authoritative answer:
+Name: google.com    Address: 64.233.177.139
+Name: google.com    Address: 64.233.177.100
+Name: google.com    Address: 64.233.177.113
+Name: google.com    Address: 64.233.177.138
+Name: google.com    Address: 64.233.177.101
+Name: google.com    Address: 64.233.177.102
+```
+## HOST
+
+/etc/hosts : default IP for DNS hosts
+    adding ip will overwtite the host 
+host command : see the changes
+```sh
+root@ubuntu:-# host google.com
+google.com has address 64.233.177.139
+google.com has address 64.233.177.100
+google.com has address 64.233.177.113
+google.com has address 64.233.177.138
+google.com has address 64.233.177.101
+google.com has address 64.233.177.102
+
+google.com has IPv6 address 2607:f8b0:4008:80d::200e
+google.com mail is handled by 30 alt2.aspmx.l.google.com. google.com mail is handled by 10 aspmx.l.google.com.
+google.com mail is handled by 40 alt3.aspmx.l.google.com. google.com mail is handled by 50 alt4.aspmx.l.google.com.
+google.com mail is handled by 20 alt1.aspmx.l.google.com.
+root@ubuntu:-#
+```
+# STANDARD  Network config files 48:30
+STANDARD (consistent across all Linux distributions)
+    /etc/hosts
+    /etc/resolv.conf
+    /etc/nsswitch.cong
+
+
 
 ```sh
+/etc/hosts :
+127.0.0.1    localhost
+127.0.1.1    ubuntu
 
+#127.0.0.1    google.com  TEST MAP GOOGLE TO LOCALHOST
+
+#The following lines are desirable for IPv6 capable hosts ::1
+ip6-localhost ip6-loopback
+
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
 ```
 
 ```sh
+/etc/resolv.conf:
+# Example configuration of GNU Name Service Switch functionality.
+# If you have the glibc-doc-reference' and 'info' packages installed, try:
+#`info libc "Name Service Switch" for information about this file.
 
+passwd:   compat systemd
+group:    compat systemd
+shadow:   compat
+gshadow:  files
+
+hosts:     files mdns4_minimal [NOTFOUND=return] dns myhostname
+networks:  files
+
+protocols:  db files
+services:   db files
+ethers:     db files
+грс:        db files
+netgroup:   nis
 ```
+
 
 ```sh
+This file is managed by man:systemd-resolved (8).
+# Do not edit. This is a dynamic resolv.conf file for connecting local clients to the
+# internal DNS stub resolver of systemd-resolved. This file lists all
+# configured search domains. Run "systemd-resolve-status" to see details about the uplink DNS servers #currently in use.
+# Third party programs must not access this file directly, but only through the
+# symlink at /etc/resolv.conf. To manage man:resolv.conf (5) in a different way,
+# replace this symlink by a static file or a different symlink.
+# #See man:systemd-resolved.service (8) for details about the supported modes of #operation for /etc/resolv.conf.
 
+nameserver 127.0.0.53     # System resolve -> Local cache dns server as entry point to internet
 ```
+# Devian Network Files (Ubuntu & mint) 53:00
 
+/etc/network/interfaces
+/etc/network/*
+network manager
+
+/etc/network/interfaces
+```
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces (5).
+
+source /etc/network/interfaces.d/*
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+#The primary network interface
+auto etho
+iface eth0 inet static
+address 172.20.0.1
+gateway 192.168.0.1 netmask 255.255.255.0
+dns-nameservers 172.20.0.1
+```
