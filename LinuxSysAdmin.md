@@ -398,4 +398,14 @@ link/ether 00:15:50:01:80:01 brd ffffffffff:ff
 3: bond0: <NO-CARRIER, BROADCAST, MULTICAST, MASTER, UP> mtu 1500 qdisc noqueue state D
 4:  .......
 ```
-# GPT & MBR  1:12:20
+# GPT & MBR  Partition Systems  1:12:20
+
+Master Boor Record : tiny reserved space at the bigining describing the disk partitions
+we can find the partitions in  Small Computer System Interface (SCSI) disk
+dev/sda(storage drive)    dev/sda1(partition1)  dev/sda2(partition2) ....  
+Limited to 2TB & 4 Partitions
+
+GPT : GUID Partition Table
+GUID : Global Unique Identifier
+Has multiple copies of the partition table for reliability
+Has no Memory & Partition limitations
