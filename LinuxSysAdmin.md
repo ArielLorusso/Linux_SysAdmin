@@ -335,3 +335,67 @@ address 172.20.0.1
 gateway 192.168.0.1 netmask 255.255.255.0
 dns-nameservers 172.20.0.1
 ```
+MODE    Description       Need Switch Support ? (Link Agregation)
+0        balance-rr        Sorta  RECOMMENDED (could use cable) alternates port per packet
+1        active backup     No     if port fails change it
+2        balance-xor       Yes    1 Hash x client determines port
+3        broadcast         Yes    all ports trasmit the data at once
+4        802.3ad           Yes    RECOMMENDED Link Agregation
+5        balance-lb        No     load balance : transmit based on the port use
+6        balance-alb       No     RECOMMENDED same as MODE 5 but constatly changes MAC for the ports
+
+
+etc/netplan/01-network-manager-all.yaml
+```yaml
+# Let NetworkManager manage all devices on this system
+network:
+    version: 2
+    renderer: netwerkd
+    ethernets:
+        eth0:
+            dhcp4: false
+bonds:
+    bond0:
+        dhcp4: false
+        interfaces:
+            - etho
+        addresses: [10.10.10.10/24]
+        gateway4: 10.10.10.1
+        parameters:
+            mode: active-backup
+        nameservers:
+                addresses: [8.8.8.8]
+```
+
+etc/netplan/ifconfig-eth0
+```
+DYPE=Ethernet
+BOOTPROTO=none
+DEFROUTE=yes
+NAME=etho
+DEVICE=etho
+ONBOOT=yes
+MASTER-bond0  # WE MADE THIS BOND
+SLAVE=yes
+```
+etc/netplan/ifconfig-bond0
+```
+DEVICE=bond0
+NAME=bond0
+BONDING_MASTER=yes
+IPADDR=10.10.10.15
+PREFIX=24
+ONBOOT=yes
+BOOTPROTO=none
+BONDING_OPTS="mode=6 miimon=100"
+```
+We can check our bond with ip command
+ip add
+```
+1:  .......
+2: et: <BROADCAST, MULTICAST, UP, LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+link/ether 00:15:50:01:80:01 brd ffffffffff:ff
+3: bond0: <NO-CARRIER, BROADCAST, MULTICAST, MASTER, UP> mtu 1500 qdisc noqueue state D
+4:  .......
+```
+# GPT & MBR  1:12:20
