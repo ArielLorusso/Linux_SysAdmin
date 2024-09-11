@@ -409,3 +409,122 @@ GPT : GUID Partition Table
 GUID : Global Unique Identifier
 Has multiple copies of the partition table for reliability
 Has no Memory & Partition limitations
+NEW & RECOMMENDED
+
+# File System Herarchy  1:18:00
+
+Real / Virtual
+Relative / Absolute
+Network Mounts
+
+dev/sda1 = rooth partition ( / path of our linux)
+dev/sda1 :                              
+virtual FileSystem :    /proc   /sys    Dinamicaly created FSys to interact with kernell
+remote NFS server :     /home           Might be a remote Sys but is Mounted inside our Fsys
+/media/USB1    /debv/sda2     and any other drive will be munted insife deb/sda1 (rooth) as media
+/debv/sda2     will appear in      dev/sda1/mnt/data
+
+Command tree lest us see the directories
+```  ┬ ├ └ │
+bob@ubuntu:~$ tree Pictures/
+Pictures/
+└-┬--> Cbtgold.jpg
+  └--> Trips
+         ├-> Grocery Store
+         │    ├-> eggs.jpg
+         │    └-> milk.jpg
+         ├-> Mexico
+         │    ├-> pic0002.jpg
+         │    ├-> pic0005.jpg
+         │    └-> pic0006.jpg
+         └-> Orlando
+              ├-> IMG_004.jpg
+              └-> IMG_005.jpg
+4 directories, 8 files
+```
+cd ~
+cd ../..  (rooth)
+tree -L 2 -d
+    -L 2        : just 2 nested directories
+    -l          :
+    -d          : list only directories
+    -P *.jpg    : list only   .jpg
+    -I */.txt   : exclude any .txt
+
+Mexico or any other folder can be a NFS share mounted in our FSys... we do not know
+```sh
+bob@ubuntu:-/Pictures/Trips$ ls -a
+.    ..    'Grocery Store'    Mexico    Orlando
+```
+.  = this directory
+.. = parent directory
+
+cd ~  = Change Directory   to     /home/user
+
+# Partitions 1:25:20
+ TOOLS :
+    parted / gparted
+    fdisk
+    info tools
+
+lsblk
+```
+[root@centos ~]# lsblk
+NAME             MAJ: MIN    RM    SIZE    RO    TYPE    MOUNTPOINT
+fdo              2:0         1     4K      0     disk
+sda              8:0         0     20G     0     disk
+├-sda1           8:1         0     1G      0     part    /boot
+├-sda2           8:2         0     19G     0     part
+   ├ centos-root 253:0       0     17G     0     lvm     /
+   ├ centos-swap 253:1       0     2G      0     lvm     [SWAP]
+sdb              8:16        0     10G     0     disk
+sdc              8:32        0     10G     0     disk
+sdd              8:48        0     10G     0     disk
+sde              8:64        0     10G     0     disk
+sro              11:0        1     1024M   0     rom
+```
+
+cat  /proc/partitions
+```
+major    minor    #blocks    name
+2        0        4          fde
+11       0        1048575    sre
+8        0        20971520   sda
+8        1        1048576    sda1
+8        2        19921920   sda2
+8        16       10485760   sdb
+8        32       10485760   sdc
+8        48       10485760   sdd
+8        64       10485760   sde
+253      0        17821696   dm-0
+253      1        2097152    dm-1
+```
+
+## make partition
+command gparted (GUI)   Desktop
+command parted  (CLI)   Server   ( may not come installed )  
+cammand fdisk   (CLI)   Server   ( allways installed )
+
+fdisk  /dev/sdb
+m = help
+g = GPT partition
+o = MBT partition
+p = print partition table
+n = add new partition
+w = Write & exit
+
+# Formatting various FileSystems  1:30:55
+
+Fsys : ext4   xfs   btrf   dos
+ext4   Most common, has suport journals (salvage Powerdown while writting)
+xfs    Old for big drives (CentOS & Redhat) its own set of tools diffetent from linux
+btxfs  New Xfs nwe features, abandoned
+dos    Windows (ntfs, vfat, fat32)
+
+Default ext4 -> more used = more docummentation & tutorials
+
+# Mounting partitions 1:36:04
+
+commands mount / unmount 
+/etc/fstab    (automatically on boot)
+blkid
