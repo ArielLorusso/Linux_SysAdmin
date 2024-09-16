@@ -528,3 +528,69 @@ Default ext4 -> more used = more docummentation & tutorials
 commands mount / unmount 
 /etc/fstab    (automatically on boot)
 blkid
+
+# Working with files 3:02:33
+
+## User & Profiles
+
+## Text  Editor
+ Nano : Easy & intuitive (use if aviable)
+ Vi : Hard & Old (Always available)
+ 
+### Vi Modes
+    Vi command mode -> press "i"  -> Vi insert mode
+    Vi insert mode  -> press Esc  -> Vi command mode
+### Vi commands
+    :wq <enter>  SAVE & QUIT
+    :q! <enter>  QUIT
+    :w  <enter>  SAVE
+### Nano  commands   
+    ^ == Ctrl
+    ^G Get Help   ^Q Write Out   ^W Where Is   ^K Cut Text    ^J Justify   ^C Cur Pos
+    ^X Exit       ^R Read File   ^\ Replace    ^U Uncut Text  ^T To Spell  ^  Go To Line
+
+ 
+## View text files
+
+cat file1 file2:
+    concatenates files and shows and prints the output
+head -n 5 file :
+    Shows firs 10 lines of the file, we changed it to 5 lines 
+tail -n 5 file :
+    shows last 10 lines of the file, we changed it to 5 lines
+more file :
+    shows entire file, with navigation (in a extrern window)
+less file : (better)
+    similar to more but has /word  ( find & hilight some word )
+    
+## serch for text 3:13:25
+
+grep -F word file :
+    shows lines containing word in file -F avoids regular expression
+    cat file | grep word  -> this is most common use ( filter a command with pipe)
+    grep word cat file    -> this is another     use ( filter a command inside grep)
+    combination :
+        grep word1 file | grep word2  | grep word3   ->  filters lines containing  word1  &  word2  &  word3 ...
+regex :
+    
+strigs :
+
+##  STDIN,  STDOUT,  STDERR  3:17:26
+
+STDIN : Input of a command 
+STDOUT : output of a command
+
+    text | command   -> | converts text as STDIN of command  -> command (text) 
+    command < file   -> > converts file as STDIN of command
+
+In General :
+
+    STDIN   | command  
+    command < STDIN. . . .
+    command   STDOUT  >   File_name
+    command   STDERR  2>  File_name
+
+
+
+
+# Managing services 3:51:30
