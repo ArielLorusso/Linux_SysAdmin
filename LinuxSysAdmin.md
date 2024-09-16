@@ -580,8 +580,8 @@ strigs :
 STDIN : Input of a command 
 STDOUT : output of a command
 
-    text | command   -> | converts text as STDIN of command  -> command (text) 
-    command < file   -> > converts file as STDIN of command
+    text | command   :  | converts text or STDOUT to STDIN of command  -> command (text) 
+    command < file   :  > converts file as STDIN of command
 
 In General :
 
@@ -591,6 +591,81 @@ In General :
     command   STDERR  2>  File_name
 
 
+# Input Output tips
 
+    /dev/null : an Trash can (instant delette) 
+    tee       : STDIN -> tee file -> STDOUT
+    xargs     : forces STDOUT as argument when | does not work
+    
+examples :
+
+    ls Documents ff > /dev/null  2>&1    
+        1) ls generated SRDERR : can not acces 'ff' no such file or directory
+        2) > errased STDOUT  by sending it to /dev/null
+        3) 2> sended STDERR  to STDOUT 
+        
+    cat file.txt | tee copy.txt : 
+        1 ) cat shows the file (STDOUT)
+        2 ) | converts cat STDOUT to tee's STDIN 
+        3 ) tee saves it's STDIN and passes it as STDOUT ro be seen
+
+    cat file.txt | xargs mkdir
+        1) cat recives file.txt and opens te text as STDOUT
+        2) | converts cat STDOUT to cxargs STDIN
+        3) xargs separates every line in the file and 
+        calls several times mkdir for each word in the file
+
+## Text manipulation 3:28:12
+
+cut paste sort wc :
+
+filel.txt
+
+    chicken
+    fish
+    turtle
+    monkey
+    
+file2.txt
+
+    lips
+    whiskers
+    feathers
+    flippers
+        
+sort file1.txt > sorted_file1.txt
+    
+    chicken
+    fish
+    monkey
+    turtle 
+    //sorts the text in alphabetical order
+
+
+wc file1.txt
+    
+    4 4 27 file.txt
+    //  4 words, 4 lines, 27 characters
+
+cut -c 3,4,5  file1.txt
+
+    ick     // chicken
+    sh      // fish
+    rtl     // turtle
+    nke     // monkey
+    // shows the letter 3,4,5 of each line in file.txt
+    
+paste file1.txt file2.txt
+
+    chicken lips
+    fish    whiskers
+    turtle  feathers
+    monkey  flippers
+
+## AWK & SED 3:33:00
+
+SED
+
+AWK
 
 # Managing services 3:51:30
