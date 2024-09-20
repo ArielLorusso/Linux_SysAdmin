@@ -846,28 +846,28 @@ we have 2 pc in the same netork Ubuntu & CentOS
 
 ### Host Name
 ariel  $ hostname
-ariel-All-Series
+    ariel-All-Series
 
 ariel  $ ping ariel-All-Series
-PING ariel-All-Series (127.0.1.1) 56(84) bytes of data.
-64 bytes from ariel-All-Series (127.0.1.1): icmp_seq=1 ttl=64 time=0.058 ms
-64 bytes from ariel-All-Series (127.0.1.1): icmp_seq=2 ttl=64 time=0.053 ms
+    PING ariel-All-Series (127.0.1.1) 56(84) bytes of data.
+    64 bytes from ariel-All-Series (127.0.1.1): icmp_seq=1 ttl=64 time=0.058 ms
+    64 bytes from ariel-All-Series (127.0.1.1): icmp_seq=2 ttl=64 time=0.053 ms
 
 
 ariel  $ sudo apt install openssh-server
-[sudo] password for ariel:     
-Reading package lists... Done
-Building dependency tree... Done
-Reading state information... Done
-The following packages were automatically installed....
-After this operation, 6.046 kB of additional disk space will be used.
-Do you want to continue? [Y/n] y
-Get:1 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 openssh-client amd64 1:8.9p1-3ubuntu0.10 [906 kB]
+    [sudo] password for ariel:     
+    Reading package lists... Done
+    Building dependency tree... Done
+    Reading state information... Done
+    The following packages were automatically installed....
+    After this operation, 6.046 kB of additional disk space will be used.
+    Do you want to continue? [Y/n] y
+    Get:1 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 openssh-client amd64 1:8.9p1-3ubuntu0.10 [906 kB]
 
 
 
 ariel  $ sudo systemctl status ssh
-● ssh.service - OpenBSD Secure Shell server
+    ● ssh.service - OpenBSD Secure Shell server
      Loaded: loaded (/lib/systemd/system/ssh.service; enabled; vendor preset: enabled)
      Active: active (running) since Fri 2024-09-20 08:33:15 -03; 3h 48min ago
        Docs: man:sshd(8)
@@ -880,10 +880,10 @@ ariel  $ sudo systemctl status ssh
      CGroup: /system.slice/ssh.service
              └─1349 "sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups"
 
-Sep 20 08:33:15 ariel-All-Series systemd[1]: Starting OpenBSD Secure Shell server...
-Sep 20 08:33:15 ariel-All-Series sshd[1349]: Server listening on 0.0.0.0 port 22.
-Sep 20 08:33:15 ariel-All-Series sshd[1349]: Server listening on :: port 22.
-Sep 20 08:33:15 ariel-All-Series systemd[1]: Started OpenBSD Secure Shell server.
+    Sep 20 08:33:15 ariel-All-Series systemd[1]: Starting OpenBSD Secure Shell server...
+    Sep 20 08:33:15 ariel-All-Series sshd[1349]: Server listening on 0.0.0.0 port 22.
+    Sep 20 08:33:15 ariel-All-Series sshd[1349]: Server listening on :: port 22.
+    Sep 20 08:33:15 ariel-All-Series systemd[1]: Started OpenBSD Secure Shell server.
 
 
 sudo systemctl start  ssh  // if status is down
@@ -891,30 +891,30 @@ sudo systemctl enable ssh  // automaticaly starts automatically on server boot:
 sudo ufw allow ssh         // allow shh trafic trouhg firewall 
 
 ariel  $ sudo ufw status verbose
-Status: active
-Logging: on (low)
-Default: deny (incoming), allow (outgoing), deny (routed)
-New profiles: skip
+    Status: active
+    Logging: on (low)
+    Default: deny (incoming), allow (outgoing), deny (routed)
+    New profiles: skip
 
 ariel  $ sudo lsof -i -P -n | grep LISTEN
-systemd-r  1033 systemd-resolve   14u  IPv4  25487      0t0  TCP 127.0.0.53:53 (LISTEN)
-cupsd      1314            root    6u  IPv6  27400      0t0  TCP [::1]:631 (LISTEN)
-cupsd      1314            root    7u  IPv4  27401      0t0  TCP 127.0.0.1:631 (LISTEN)
-sshd       1349            root    3u  IPv4  26117      0t0  TCP *:22 (LISTEN)
-sshd       1349            root    4u  IPv6  26119      0t0  TCP *:22 (LISTEN)
-code       6520           ariel   69u  IPv4  66186      0t0  TCP 127.0.0.1:12355 (LISTEN)
+    systemd-r  1033 systemd-resolve   14u  IPv4  25487      0t0  TCP 127.0.0.53:53 (LISTEN)
+    cupsd      1314            root    6u  IPv6  27400      0t0  TCP [::1]:631 (LISTEN)
+    cupsd      1314            root    7u  IPv4  27401      0t0  TCP 127.0.0.1:631 (LISTEN)
+    sshd       1349            root    3u  IPv4  26117      0t0  TCP *:22 (LISTEN)
+    sshd       1349            root    4u  IPv6  26119      0t0  TCP *:22 (LISTEN)
+    code       6520           ariel   69u  IPv4  66186      0t0  TCP 127.0.0.1:12355 (LISTEN)
 
 
 
 
 ssh -v ariel-All-Series
-OpenSSH_8.9p1 Ubuntu-3ubuntu0.6, OpenSSL 3.0.2 15 Mar 2022
-debug1: Reading configuration data /etc/ssh/ssh_config
-debug1: /etc/ssh/ssh_config line 19: include /etc/ssh/ssh_config.d/*.conf matched no files
-debug1: /etc/ssh/ssh_config line 21: Applying options for *
-debug1: Connecting to ariel-all-series [127.0.1.1] port 22.
-debug1: connect to address 127.0.1.1 port 22: Connection refused
-ssh: connect to host ariel-all-series port 22: Connection refused
+    OpenSSH_8.9p1 Ubuntu-3ubuntu0.6, OpenSSL 3.0.2 15 Mar 2022
+    debug1: Reading configuration data /etc/ssh/ssh_config
+    debug1: /etc/ssh/ssh_config line 19: include /etc/ssh/ssh_config.d/*.conf matched no files
+    debug1: /etc/ssh/ssh_config line 21: Applying options for *
+    debug1: Connecting to ariel-all-series [127.0.1.1] port 22.
+    debug1: connect to address 127.0.1.1 port 22: Connection refused
+    ssh: connect to host ariel-all-series port 22: Connection refused
 
 
 ### SCP Secure Copy
