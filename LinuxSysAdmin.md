@@ -846,15 +846,18 @@ we have 2 pc in the same netork Ubuntu & CentOS
 
 ### Host Name
 ariel  $ hostname
+
     ariel-All-Series
 
 ariel  $ ping ariel-All-Series
+
     PING ariel-All-Series (127.0.1.1) 56(84) bytes of data.
     64 bytes from ariel-All-Series (127.0.1.1): icmp_seq=1 ttl=64 time=0.058 ms
     64 bytes from ariel-All-Series (127.0.1.1): icmp_seq=2 ttl=64 time=0.053 ms
 
 
 ariel  $ sudo apt install openssh-server
+
     [sudo] password for ariel:     
     Reading package lists... Done
     Building dependency tree... Done
@@ -867,6 +870,7 @@ ariel  $ sudo apt install openssh-server
 
 
 ariel  $ sudo systemctl status ssh
+
     ● ssh.service - OpenBSD Secure Shell server
      Loaded: loaded (/lib/systemd/system/ssh.service; enabled; vendor preset: enabled)
      Active: active (running) since Fri 2024-09-20 08:33:15 -03; 3h 48min ago
@@ -891,12 +895,14 @@ sudo systemctl enable ssh  // automaticaly starts automatically on server boot:
 sudo ufw allow ssh         // allow shh trafic trouhg firewall 
 
 ariel  $ sudo ufw status verbose
+
     Status: active
     Logging: on (low)
     Default: deny (incoming), allow (outgoing), deny (routed)
     New profiles: skip
 
 ariel  $ sudo lsof -i -P -n | grep LISTEN
+
     systemd-r  1033 systemd-resolve   14u  IPv4  25487      0t0  TCP 127.0.0.53:53 (LISTEN)
     cupsd      1314            root    6u  IPv6  27400      0t0  TCP [::1]:631 (LISTEN)
     cupsd      1314            root    7u  IPv4  27401      0t0  TCP 127.0.0.1:631 (LISTEN)
@@ -908,6 +914,7 @@ ariel  $ sudo lsof -i -P -n | grep LISTEN
 
 
 ssh -v ariel-All-Series
+
     OpenSSH_8.9p1 Ubuntu-3ubuntu0.6, OpenSSL 3.0.2 15 Mar 2022
     debug1: Reading configuration data /etc/ssh/ssh_config
     debug1: /etc/ssh/ssh_config line 19: include /etc/ssh/ssh_config.d/*.conf matched no files
