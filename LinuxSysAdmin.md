@@ -426,7 +426,7 @@ remote NFS server :     /home           Might be a remote Sys but is Mounted ins
 
 Command tree lest us see the directories
 ```  ┬ ├ └ │
-bob@ubuntu:~$ tree Pictures/
+~$ tree Pictures/
 Pictures/
 └-┬--> Cbtgold.jpg
   └--> Trips
@@ -453,7 +453,7 @@ tree -L 2 -d
 
 Mexico or any other folder can be a NFS share mounted in our FSys... we do not know
 ```sh
-bob@ubuntu:-/Pictures/Trips$ ls -a
+-/Pictures/Trips$ ls -a
 .    ..    'Grocery Store'    Mexico    Orlando
 ```
 .  = this directory
@@ -655,7 +655,7 @@ cut -c 3,4,5  file1.txt
     nke     // monkey
     // shows the letter 3,4,5 of each line in file.txt
     
-paste file1.txt file2.txt
+paste file1.txt file2.txt > joined.txt
 
     chicken lips
     fish    whiskers
@@ -664,8 +664,288 @@ paste file1.txt file2.txt
 
 ## AWK & SED 3:33:00
 
-SED 
+SED = String Editor
+AWK = Aho Weinberg keoghan
 
-AWK
+    man sed  -> a/ Append text
+                i/ insert text
+                r/ read file & append
+                R/ read file line & append
+                d/ Delete pattern space.
+                y/source/dest/          Transliterate  the  characters in the pattern space
+                s/regexp/replacement/   Attempt to match regexp against the pattern space. 
+   
+    -$ cat filel.txt | sed s/monkey/dolphin/g
+    chicken
+    fish
+    turtle
+    dolphin         // Sutitution  monkey -> dolphin
+
+    ~$ cat joined.txt
+    chicken     lips
+    fish        whiskers
+    turtle      feathers
+    monkey      flippers
+
+    ~$ awk '{print $1}' joined.txt
+    chicken
+    fish
+    turtle
+    monkey
+
+
+    ~$ awk '{print $2 " " $1}' joined.txt
+    lips chicken
+    whiskers fish
+    feathers turtle
+    flippers monkey
+  
+## File Allocation Table
+
+An index table used to identify chains of data storage areas associated with a file
+The table is a linked list of entries for each cluster, a contiguous area of disk storage.
+Each entry contains either the number of the next cluster in the file, 
+or else a marker indicating the end of the file, unused disk space, 
+or special reserved areas of the disk
+
+
+
+## soft & Hard link
+
+
+LIST directory contents 
+    ~/Documents$ ls -l          
+    -rw-r--r-- 2 bob bob 102421 Apr 2 11:48 my_file.doc
+
+LINK  s=SOFT (small sizxe ) to my_file
+    ~/Documents$ ln -s my_file.doc my_linkedfile.doc  
+    ~/Documents$ ls -l          // LIST  (-l:list columns)
+    -rw-r--r-- 2 bob bob 102421 Apr 2 11:48 my_file.doc
+    lrwxrwxrwx 1 bob bob 11     Apr 2 12:31 my_linkedfile.doc -> my_file.doc    // LINK (blue font)
+
+RENAME file  (will break soft link) by changing name
+    ~/Documents$ mv my_file.doc my_newfile.doc        
+    ~/Documents$ ls -l
+    lrwxrwxrwx 1 bob bob 11     Apr 2 12:31 my_linkedfile.doc -> my_file.doc   // BROKEN LINK (blue font)
+    -rw-r--r-- 2 bob bob 102421 Apr 2 11:48 my_newfile.doc                     // new name
+
+LINK HARD by default ( Big sizxe ) to my_file
+    ~/Documents$ ln my_newfile.doc my_file.doc        
+    ~/Documents$ ls -l
+    -rw-r--r-- 3 bob bob 102421 Apr 2 11:48 my_file.doc                         // HARD LINK
+    lrwxrwxrwx 1 bob bob 11     Apr 2 12:31 my_linkedfile.doc -> my_file.doc    // FIXED (soft to hard link)
+    -rw-r--r-- 3 bob bob 102421 Apr 2 11:48 my_newfile.doc                     
+
+RENAME file  (wont break hard link) by changing name
+    ~/Documents$ mv my_newfile.doc my_coolfile.doc
+    ~/Documents$ ls -l       
+    -rw-r--r-- 3 bob bob 102421 Apr 2 11:48 my_coolfile.doc
+    -rw-r--r-- 3 bob bob 102421 Apr 2 11:48 my_file.doc 
+    lrwxrwxrwx 1 bob bob 11     Apr 2 12:31 my_linkedfile.doc -> my_file.doc
+
+LIST  (-i: index)
+    ~/Documents$ ls -li         
+    138116 -rw-r--r-- 3 bob bob 102421 Apr 2 11:48 my_file.doc
+    138116 -rw-r--r-- 3 beb bob 102421 Apr 2 11:48 my_coolfile.doc 
+    131595 lrwxrwxrwx 1 bob bob 11     Apr 2 12:31 my_linkedfile.doc -> my file.doc
+
+
+INDEX = 138116 on both file & Hard link point to same space on disk
+both having a zize of  102421 bytes  or 100 kB 
+soft link is indexed in diferent place but it size is 11  characters
+has a zize of  11 bytes  from the 11 characters in "my_file.doc" 
+wich is the relative position of the link in this directory
+
+
+Soft link is used to provide a flexible way to reference files, 
+especially when they are moved or renamed. 
+Unlike hard links, soft links can point to files in different directories.
+
+
+Hard links cannot be created for directories, while soft links can.
+If the target file of a hard link is deleted, the hard link will still be valid,
+until the operating system overwrites the data as it directly points to the data on disk. 
+However, if the target file of a soft link is deleted, the soft link will become invalid.
+Hard links can be useful for creating multiple alternative names for a file, 
+while soft links are often used to create shortcuts or symbolic references to files.
+
+## Find, Whereis, Locate 3:43:00
+
+Find    : Gives The full path for a file name
+Locate  : FAST Uses a DataBase located on the cash of System
+          it updates once a day but we can force it  (sudo updatedb)
+Whereis : simply returns the location of the executables, the man pages and the sources of a program
+
+https://askubuntu.com/questions/832562/difference-among-whereis-locate-and-findcommand
+
+
+$ sudo find / -name *city 
+```sh
+    /sys/fs/cgroup/misc.capacity
+    /sys/devices/virtual/net/docker0/bridge/hash_elasticity
+    /home/ariel/go/pkg/mod/github.com/go-delve/delve@v1.22.1/.teamcity
+    /home/ariel/.local/lib/python3.10/site-packages/tenacity
+    /home/ariel/.local/lib/python3.10/site-packages/nbclassic/static/components/codemirror/mode/velocity
+    /home/ariel/.config/metacity
+    /usr/bin/audacity
+    /usr/share/audacity
+    /usr/bin/metacity
+```
+
+locate city.jpg
+    /home/ariel/Desktop/city.jpg
+    /home/ariel/Desktop/Python/Django/Dave_Gray/myProject/media/city.jpg
+
+sudo find / -name *city.jpg
+    /home/ariel/Desktop/city.jpg
+    /home/ariel/Desktop/Python/Django/Dave_Gray/myProject/media/city.jpg
+
+
+whereis city.jpg
+    city.jpg:
+
+Whereis cant work on files
+Whereis is to find binary, source, manual   of  COMMANDS.
+
+whereis man
+    /usr/bin/man
+    /usr/local/man 
+    /usr/share/man 
+
+
+## Files over the Network
+
+SSH : Secure Shell a network protocol 
+      shares data over an unsecured network between computers using encription
+SCP : Secure Copy , uses SSH 
+RSYNC : Remote Synchronization
+
+### SSH
+
+we have 2 pc in the same netork Ubuntu & CentOS
+
+    bob@ubuntu:~$ ssh centos        // accesing CentOS pc
+    bob@centos's password:
+    Last login: Tue Apr 2 12:58:39 2019 from 10.10.10.10
+
+    [bob@centos ~]$ cd Desktop/     // Remotely working
+    [bob@centos Desktop]$ ls
+    awesome_stuff.doc
+    cool_picture.jpg
+    org.gnome.Terminal.desktop
+    cool pic2.jpg
+    firefox.desktop
+
+    [bob@centos Desktop]$ exit
+    Logout
+    Connection to centos closed.
+
+    bob@ubuntu:~$ ls Desktop/
+    bob@ubuntu:~$
+
+
+### Host Name
+ariel  $ hostname
+ariel-All-Series
+
+ariel  $ ping ariel-All-Series
+PING ariel-All-Series (127.0.1.1) 56(84) bytes of data.
+64 bytes from ariel-All-Series (127.0.1.1): icmp_seq=1 ttl=64 time=0.058 ms
+64 bytes from ariel-All-Series (127.0.1.1): icmp_seq=2 ttl=64 time=0.053 ms
+
+
+ariel  $ sudo apt install openssh-server
+[sudo] password for ariel:     
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following packages were automatically installed....
+After this operation, 6.046 kB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+Get:1 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 openssh-client amd64 1:8.9p1-3ubuntu0.10 [906 kB]
+
+
+
+ariel  $ sudo systemctl status ssh
+● ssh.service - OpenBSD Secure Shell server
+     Loaded: loaded (/lib/systemd/system/ssh.service; enabled; vendor preset: enabled)
+     Active: active (running) since Fri 2024-09-20 08:33:15 -03; 3h 48min ago
+       Docs: man:sshd(8)
+             man:sshd_config(5)
+    Process: 1317 ExecStartPre=/usr/sbin/sshd -t (code=exited, status=0/SUCCESS)
+   Main PID: 1349 (sshd)
+      Tasks: 1 (limit: 18829)
+     Memory: 3.4M
+        CPU: 17ms
+     CGroup: /system.slice/ssh.service
+             └─1349 "sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups"
+
+Sep 20 08:33:15 ariel-All-Series systemd[1]: Starting OpenBSD Secure Shell server...
+Sep 20 08:33:15 ariel-All-Series sshd[1349]: Server listening on 0.0.0.0 port 22.
+Sep 20 08:33:15 ariel-All-Series sshd[1349]: Server listening on :: port 22.
+Sep 20 08:33:15 ariel-All-Series systemd[1]: Started OpenBSD Secure Shell server.
+
+
+sudo systemctl start  ssh  // if status is down
+sudo systemctl enable ssh  // automaticaly starts automatically on server boot:
+sudo ufw allow ssh         // allow shh trafic trouhg firewall 
+
+ariel  $ sudo ufw status verbose
+Status: active
+Logging: on (low)
+Default: deny (incoming), allow (outgoing), deny (routed)
+New profiles: skip
+
+ariel  $ sudo lsof -i -P -n | grep LISTEN
+systemd-r  1033 systemd-resolve   14u  IPv4  25487      0t0  TCP 127.0.0.53:53 (LISTEN)
+cupsd      1314            root    6u  IPv6  27400      0t0  TCP [::1]:631 (LISTEN)
+cupsd      1314            root    7u  IPv4  27401      0t0  TCP 127.0.0.1:631 (LISTEN)
+sshd       1349            root    3u  IPv4  26117      0t0  TCP *:22 (LISTEN)
+sshd       1349            root    4u  IPv6  26119      0t0  TCP *:22 (LISTEN)
+code       6520           ariel   69u  IPv4  66186      0t0  TCP 127.0.0.1:12355 (LISTEN)
+
+
+
+
+ssh -v ariel-All-Series
+OpenSSH_8.9p1 Ubuntu-3ubuntu0.6, OpenSSL 3.0.2 15 Mar 2022
+debug1: Reading configuration data /etc/ssh/ssh_config
+debug1: /etc/ssh/ssh_config line 19: include /etc/ssh/ssh_config.d/*.conf matched no files
+debug1: /etc/ssh/ssh_config line 21: Applying options for *
+debug1: Connecting to ariel-all-series [127.0.1.1] port 22.
+debug1: connect to address 127.0.1.1 port 22: Connection refused
+ssh: connect to host ariel-all-series port 22: Connection refused
+
+
+### SCP Secure Copy
+
+bob@ubuntu:~/Desktop$ ls
+cool_picture.jpg
+RECIVE :
+
+    bob@ubuntu:~/Desktop$ scp   bob@centos:/home/bob/Desktop/cool_picture.jpg
+    bob@centos's password:
+    cool_picture.jpg                    100%    0   0.0KB/s     00:00
+
+SEND :
+
+    bob@ubuntu:~/Desktop$ scp   cool_picture.jpg   bob@centos:/home/bob/
+    bob@centos's password:
+    cool_picture.jpg                    100%    0   0.0KB/s     00:00
+    bob@ubuntu:~/Desktop$
+
+### R SYNC
+
+bob@ubuntu:~/Desktop$ rsync -av centos:/home/bob/Desktop
+bob@centos's password:
+receiving incremental file list
+Desktop/
+Desktop/awesome stuff.doc
+Desktop/cool_pic2.jpg
+Desktop/cool_picture.jpg
+Desktop/firefox.desktop
+Desktop/org.gnome.Terminal.desktop
+sent 123 bytes received 20,586 bytes 8,283.60 bytes/sec
+total size is 20,160 speedup is 0.97
 
 # Managing services 3:51:30
