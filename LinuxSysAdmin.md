@@ -956,3 +956,22 @@ sent 123 bytes received 20,586 bytes 8,283.60 bytes/sec
 total size is 20,160 speedup is 0.97
 
 # Managing services 3:51:30
+
+
+IP
+Gateaway : La IP Principal de la red (maneja los paquetes)
+Broadcast :
+
+Red :   octetos de red
+        host de la red
+
+192.168.0.  0 red
+192.168.0.  1 gateaway
+192.168.0.255 broadcast
+
+como configurar una red virtual en virtual box
+se puede usar   usuario@ip   en vez de usuario@host 
+salvo que tenga dns que nos permite usar host name
+templaza a ssh telnet
+ssh levanta una sesion, esta se pude ver y revisar desde otra
+configurar red virtual.
