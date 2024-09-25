@@ -235,7 +235,7 @@ RUN set -eux; \
     rm -rf /var/lib/apt/lists/*;
 ```
 
-FROM : Base Image to build on top of (ej  Linux Devian) 
+FROM : Base Image to build on top of (eg : Linux Devian) 
 ENV : Send ENVIRONMENT variableas as PATH, RUST_HOME, etc
 RUN : commands to execute during running
 
@@ -305,11 +305,11 @@ Benefits :
 
 1) Infrastructure as a Service IaaS :
         Virtual Machines, Containers , Serverless Computing
-        Ej: AWS GCS Asure
+        eg : AWS GCS Asure
 
 2) Platorm  as a Service PaaS :
         Platform gatearround (Franeworks for high lvl app deploy easy ) 
-        Ej : AWS Beanstalk , Google App banch
+        eg : AWS Beanstalk , Google App banch
 
 3) Software as a Service SaaS :
         Products like Gmail, GitHub, CircleCI
@@ -361,7 +361,7 @@ we created Rooth so we ise that one
 
 Enter Email & password to log in
 
-https://us-east-2.console.aws.amazon.com/console/home :
+https://console.aws.amazon.com/console/home :
 
     Services   Search [Alt+S]   CloudShell  Notifications   Settings
 
@@ -385,7 +385,7 @@ https://us-east-2.console.aws.amazon.com/console/home :
 
 
 we search EC2 :
-https://us-east-2.console.aws.amazon.com/ec2/home?region=us-east-2#Home:
+https://console.aws.amazon.com/ec2/home?region=us-east-2#Home:
 
 ### EC2 Dashboard :
 
@@ -426,7 +426,7 @@ Captures network traffic flowing to and from interfaces in your network
 
 ### The VCP Console
 
-https://us-east-2.console.aws.amazon.com/vpcconsole/home
+https://console.aws.amazon.com/vpcconsole/home
 
 -> Your VPCs
 
@@ -474,7 +474,7 @@ Terraform Documentation :
     https://www.geeksforgeeks.org/terraform-syntax-with-examples/
 
 Hands-on-Linux-for-DevOps-Cloud-Engineers/lab-terraform/vpc.tf :
-```tf
+```t
     resource "aws_vpc" "lab-vpc" {
         cidr_block           = "10.0.0.0/16"
         enable_dns_hostnames = "true"
@@ -498,7 +498,7 @@ nstance_tenancy = default = we are ok with shared hardware
 TAGS : good practice A name easy to find inside AWS 
 
 
-## 3.2 Overview of Subnets & Routing Tables
+## 3.3 Overview of Subnets & Routing Tables
 
 Subnet : Range of IP adresses we can use inside our VPC
     in our case CIDR was 16 wich allows 
@@ -521,7 +521,7 @@ Rout tables : contains rules to control where the network trafic goes
 
 ### AWS VPC Subnets 
 
-https://us-east-2.console.aws.amazon.com/vpcconsole/home?region=us-east-2#subnets
+https://console.aws.amazon.com/vpcconsole/home#subnets
 
     Subnets (1/3)
     Last updated   : about 2 hours ago
@@ -565,7 +565,7 @@ after serlecting a subnet a menu appears :
 Details     FlowLogs   RouteTable     Network-ACL   CIDR-reservations   Sharing     Tags
 
 RouteTable :
-https://us-east-2.console.aws.amazon.com/vpcconsole/home?region=us-east-2#RouteTables:
+https://console.aws.amazon.com/vpcconsole/home#RouteTables:
 
 Details :
 
@@ -599,7 +599,7 @@ rtb-####### :
 
 Hands-on-Linux-for-DevOps-Cloud-Engineers/lab-terraform/subnet.tf :
 
-```tf
+```t
     resource "aws_subnet" "lab-subnet-public-1" {
         vpc_id                  = aws_vpc.lab-vpc.id
         cidr_block              = "10.0.1.0/24" // 255 hosts
@@ -623,7 +623,7 @@ map_public_ip_on_launch : any EC2 instance asking for public IP will get one asi
 
 Hands-on-Linux-for-DevOps-Cloud-Engineers/lab-terraform/route.tf :
 
-```tf
+```t
 # create a custom REUT TABLE for public subnets
 resource "aws_route_table" "lab-public-crt" {
   vpc_id = aws_vpc.lab-vpc.id
@@ -646,11 +646,345 @@ resource "aws_route_table_association" "lab-crta-public-subnet-1" {
 ```
 
 
-## 3.3 Overview of Security Groups & Gateways
+## 3.4 Overview of Security Groups & Gateways
 
-## 3.4 EC2 Overview
+Security Groups : rules control in/outbound trafic   
+    eg: allow/denny SSH HTTP connections
+
+    statefull : allow trafic only from allredy established connections
+
+Intenet Gateways : Highly aviable AWS resource that enhables internet access for VPC
+    we only need 1 for each VPC 
+    it supports both TPv4 & IPv6
+
+Our Plan :
+1) Review Security Group   inside the AWS console
+2) Review Internet Gateway inside the AWS console
+3) Open the security_group.tf file that creates our Security Group
+4) Open the igw.tf file that creates our Internet Gateway
+
+### AWS VPS Security groups :
+
+https://console.aws.amazon.com/vpcconsole/home#SecurityGroups:
+
+
+    Actions :
+        View details
+        Edit Inbound rules
+        Edit outbound rules
+        Manage tags
+        Manage stale rules
+        Copy to new security group
+        Delete security groups
+
+after selecting a Security group we see a menu ...
+
+    sg-################# - default : 
+        Details     Inbound-rules   Outbound-rules   Tags
+
+
+Inbound rules (1) :                       Manage tags     Edit inbound rules
+
+    Name       Security-group-rule-ID      IP-version      Type            Protocol
+	–          sgr-#################       –               All-traffic     All
+    Port-range  Source                     Description   
+    All        gr-#################        -
+
+
+    Type -> All trafic  + Protocol -> All (TCP+UDP) + Port-range -> All
+    If source of packet comes from this Security group 
+    the conection can pass trafic freely back and forth
+
+
+### inbound security rules
+
+    Name    Security_group_rule_ID   IP_version  Type           Protocol    
+	–       sgr-#################    IPv4        All traffic    All
+    
+    Port_range      Source                  Description
+    All             sg-####### / default    –
+
+
+Edit inbound security rules:
+https://console.aws.amazon.com/vpcconsole/home#ModifyInboundSecurityGroupRules:securityGroupId=sg-#####
+
+    Security_group_rule_ID  Type    Protocol    Port-range    Source    Description...
+    
+    -> Add rule <-
+
+    Source :
+        Custom
+        Anywhere IPv4
+        Anywhere IPv6
+        My IP
+    Type :
+        TCP (SSH)       Port 22 
+        TCP (HTTP)      Port 80
+        TCP (HTTPS)     Port 443
+        TCP	(MS SQL)    Port 1433 
+        PosgreSQL
+        Custom ICMP     
+        TCP	Protocol 6	Port 53
+        UDP	Protocol 17	Port 53
+        SSH     SMHP        IMAP
+        POP3    LADAP       SMTPS
+        NFS     RDP         SMB
+        Redshift    SQSLH/Cassandra
+        INFO -> https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/security-group-rules-reference.html?icmpid=docs_ec2_console
+        
+
+### Outbound Security rules
+
+    Name    Security_group_rule_ID   IP_version  Type           Protocol    
+	–       sgr-#################    IPv4        All traffic    All
+    
+    Port_range      Destination      Description
+    All             0.0.0.0/0        –
+
+Edit Outbound rules :
+
+https://console.aws.amazon.com/vpcconsole/home#ModifyOutboundSecurityGroupRules:securityGroupId=sg-0b9b6ae0b56799608
+
+    Security_group_rule_ID  Type    Protocol    Port-range    Source    Description...
+    
+    -> Add rule <-      has same funtionality as imbound rules but this will aplly for internet
+
+    rule is same as inboud EXCEPT :
+        Destination : 0.0.0.0/0  (Any destination)
+        IP-version : IPv4        (Any destination must be IPv4 )
+        Type    : All trafic     (Any destination IPv4  is ALLOWED )
+
+if we did not have an outbound security rule trafic would not be allowed
+we couldnt update OS or packages couse VPS would have acces to internet
+
+### Imternet Gatewat
+
+https://console.aws.amazon.com/vpcconsole/home#igws:
+
+
+Internet gateways (1/1):                Actions         Create internet gateway
+
+Name    Internet gateway ID     State       VPC ID              Owner
+–       igw-################    Attached    vpc-0###########    ###############
+
+### Terraform Security groups 
+
+```t
+# security group
+resource "aws_security_group" "allow_SSH_HTTP" {
+  name        = "allow_SSH_HTTP"
+  description = "Allow SSH and HTTP inbound traffic"
+  vpc_id      = aws_vpc.lab-vpc.id
+
+  egress {                              // OUT-BOUND
+    from_port   = 0                         // Any PORT
+    to_port     = 0
+    protocol    = -1                        // Any Protocol
+    cidr_blocks = ["0.0.0.0/0"]             // Any IP
+  }
+
+  ingress {                             // IN-BOUND SSH
+    description = "SSH from VPC"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {                             // IN-BOUND 
+    description = "HTTP from VPC"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "ssh and HTTP allowed"
+  }
+}
+
+```
+### Terraform Internet Gateway
+
+```t
+# IGW (Internet Gateway)
+resource "aws_internet_gateway" "lab-igw" {
+  vpc_id = aws_vpc.lab-vpc.id
+
+  tags = {
+    Name = "lab-igw"
+  }
+}
+```
+
+
+## 3.5 EC2 Overview
+
+Elastic Cloud Computing = EC2
+
+Elastic Scalable virtual servers on demand
+Many different OSs to choose from Linux, Mac, Win..
+Can choose different CPU, Memory, and Storage configurations
+Offers Pay on Demand or Reserved pricing (significant descount)
+
+### EC2 in AWS console
+
+https://console.aws.amazon.com/ec2/home
+
+EC2 Dashboard:
+
+    Instances
+    Images
+    Elastic Block Store
+    Network & Security
+    Load Balancing
+    Auto Scaling
+
+
+    Resources :
+        Instances (running)     0
+        Instances               0
+        Security groups         1
+        Auto Scaling Groups     0
+        Capacity Reservations   0
+        Dedicated Hosts         0
+        Elastic IPs             0
+        Key pairs               0
+        Load balancers          0
+        Placement groups        0
+        Snapshots               0
+        Volumes                 0
+    EC2 Free Tier Info   ->   EC2 free tier offers in use   https://console.aws.amazon.com/billing/home#/freetier
+    Launch instance
+    Service health
+    Account attributes
+    Scheduled events
+    Migrate a server
+
+https://console.aws.amazon.com/ec2/home#Instances
+
+Connect         Instance state              Actions         Launch instances
+
+No instances: 
+        
+    Instance-ID     Instance-state      Instance-type       Status-check
+        
+    Alarm-status    Availability-Zone   Public-IPv4-DNS     Public-IPv4-address
+        
+    Elastic-IP      IPv6-IPs            Monitoring          Security-group-name
+        
+    Key-name        Launch-time         Platform            Name
+
+
+ -> Launch instances <-
+https://console.aws.amazon.com/ec2/home#LaunchInstances:
+
+Free tier: In your first year includes 
+    750 hours of t2.micro,
+    30 GiB of EBS storage,
+    2 million IOs, 
+    1 GB of snapshots
+    100 GB of bandwidth
+
+Name and tags :
+
+    Name
+    -
+
+Application and OS Images :
+
+    Search (1000+ OS Images)
+    Amazon Linux,   MacOS,  Ubuntu, Windows,    Red Hat, SUSE,  Debian
+
+    Architecture    Boot mode       AMI ID      Username
+    64-bit (x86)    uefi-preferred  ami-####    ec2-user
+
+Key pair (login):
+
+    You can use a key pair to securely connect to your instance. 
+    Ensure that you have access to the selected key pair before you launch.
+
+    Key pair name - required            Create new key pair
+
+Instance type :
+
+    t2.micro        Free tier eligible
+        1 vCPU      1 GiB Memory        Current generation: true
+        On-Demand Linux base pricing:   0.0116 USD per Hour
+
+Network settings:
+
+    Network         Subnet          Auto-assign public IP
+    vpc-####        No preference   Enable
+
+    Firewall                   Allow SSH traffic from   Allow HTTPS from the internet
+    Create security group      Anywhere 0.0.0.0/0       no
+
+            Network : vpc-#### (Has same value as our default VPC)
+            The default VPC is the only one yet, will add more later
+
+Configure storage:
+
+    1x  8GiB  gp3 SSD              Root volume (Not encrypted)
+    Add new volume
+
+Advanced details:
+
+    Domain directory    IAM instance profile    Hostname type
+    Select              Select                  IP name
+
+    Instance auto-recovery  Shutdown behavior   Elastic GPU     
+    Select                  Select              Stop
+
+
+ -> Cancel <-     Launch instance
 
 
 
 
+### EC2 terraform file
 
+Hands-on-Linux-for-DevOps-Cloud-Engineers/lab-terraform/ec2.tf :
+```t
+resource "aws_instance" "lab1" {
+  ami           = var.AMI
+  instance_type = "t2.micro"
+
+  # subnet
+  subnet_id = aws_subnet.lab-subnet-public-1.id
+
+  # Security Group
+  vpc_security_group_ids = ["${aws_security_group.allow_SSH_HTTP.id}"]
+
+  # the Public SSH key
+  key_name = aws_key_pair.lab-region-key-pair.id
+
+  # AZ us-west-2a
+  availability_zone = "${var.AZ}"
+
+  # We want a public IP
+  associate_public_ip_address = true
+
+  root_block_device {
+    delete_on_termination = true
+    volume_size           = 10
+    volume_type           = "gp2"
+  }
+
+  tags = {
+    Name        = "lab1"
+    Environment = "LAB"
+  }
+}
+
+resource "aws_key_pair" "lab-region-key-pair" {
+  key_name   = "lab-region-key-pair"
+  public_key = file(var.PUBLIC_KEY_PATH)
+}
+
+
+output "ec2-lab-instance" {
+  value = aws_instance.lab1.public_ip
+}
+```

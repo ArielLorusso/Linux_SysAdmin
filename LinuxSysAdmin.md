@@ -1,7 +1,19 @@
 
+freeCodeCamp.org - Linux Server Course - System Configuration and Operation
+
 https://www.youtube.com/watch?v=WMy3OzvBWc0
-Linux Server Course - System Configuration and Operation
-freeCodeCamp.org
+
+(0:00:00) Introduction
+(0:00:34) Explain Linux Kernel and Boot Concepts
+(0:37:20) Configure and Verify Network Connections
+(1:17:13) Manage Storage in a Linux Environment
+(2:12:18) Install, Update, and Configure Software
+(2:32:40) Manage Users and Groups
+(3:02:32) Create, Modify, and Redirect Files
+(3:51:20) Manage Local Services
+(4:16:40) Summarize and Explain Server Roles
+(4:49:50) Automate and Schedule Jobs
+(5:06:30) Explain and Use Linux Devices
 
 
 # BIOS & UEFI 
