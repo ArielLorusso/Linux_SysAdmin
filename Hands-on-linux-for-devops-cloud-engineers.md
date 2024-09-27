@@ -1120,3 +1120,42 @@ You can have a maximum of two access keys (active or inactive) at a time.
 
 Access key ID       Created on      Access key last used    Region last used    
 Service last used   Status
+
+
+
+https://console.aws.amazon.com/iam/home/security_credentials/access-key-wizard
+Retrieve access key             
+    Access key
+    If you lose or forget your secret access key, you cannot retrieve it. 
+    Instead, create a new access key and make the old key inactive.
+
+    Access key best practices
+    Never store your access key in plain text, in a code repository, or in code.
+    Disable or delete access key when no longer needed.
+    Rotate access keys regularly.
+
+    Download .csv file      Done
+
+Access keys (1)
+Access-key-ID   Created-on    Status   Access-key-last-used    Region last used
+#############   1 hour ago    Active   None                    N/A
+
+
+
+## INSTALL AWS CLI 
+
+https://docs.aws.amazon.com/es_es/cli/latest/userguide/getting-started-install.html
+
+
+```sh
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+sudo rm awscliv2.zip
+```
+
+```sh
+aws configure
+    AWS Access Key ID [None]: 
+``` 
+we put the rootkey.csv Key
