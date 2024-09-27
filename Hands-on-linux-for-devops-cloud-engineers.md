@@ -912,6 +912,23 @@ Instance type :
     t2.micro        Free tier eligible
         1 vCPU      1 GiB Memory        Current generation: true
         On-Demand Linux base pricing:   0.0116 USD per Hour
+        6 CPU Credits / hour = 6 min 100% (Burst) = 60 min 10% (regular)
+
+    https://aws.amazon.com/ec2/instance-types/
+    https://www.cloudzero.com/blog/aws-instance-types/
+
+        General Porpouse :
+            a1.medium, a1.large, a1.xlarge, a1.2xlarge, a1.4xlarge
+            T4g, T3, T3a, T2  (Burstable Performance Instances )
+            M7g, M6g, M6i, M6in, M6a, M5, M5n, M5zn, M5a, M4
+        Computational :
+            C7g, C7gn, C6i, C6in, C6a, C6g, C6gn, C5, C5n, C5a, C4
+        Memory Oprimized:
+            X1, X1e, X2gd, X2idn, X2iedn, X2iezn
+            R5, R5a, R5b, R5n, R6g, R6i, R6in, R6a, R7g, R7iz
+        Accelerated (GPU):
+            Vt1, F1,       G3, G4ad, G4dn, G5, G5g, 
+            Inf1, Inf2, Trn1, DL1,      P2, P3, P4
 
 Network settings:
 
@@ -948,43 +965,158 @@ Advanced details:
 Hands-on-Linux-for-DevOps-Cloud-Engineers/lab-terraform/ec2.tf :
 ```t
 resource "aws_instance" "lab1" {
-  ami           = var.AMI
+  ami           = var.AMI               
+                # AMI variable we made inside VAR file
   instance_type = "t2.micro"
-
+                # Free tier 
   # subnet
-  subnet_id = aws_subnet.lab-subnet-public-1.id
+  subnet_id = aws_subnet.lab-subnet-public-1.id     
+                # pulling id from name we gave the subnet
 
   # Security Group
   vpc_security_group_ids = ["${aws_security_group.allow_SSH_HTTP.id}"]
-
+                # an array of security groups with string interpolation
   # the Public SSH key
   key_name = aws_key_pair.lab-region-key-pair.id
-
+                # only uploads the public key, we keep the prvate
   # AZ us-west-2a
   availability_zone = "${var.AZ}"
-
+                # hardcoded AZ in the VAR file
   # We want a public IP
   associate_public_ip_address = true
+                # we want to have public IP
 
   root_block_device {
-    delete_on_termination = true
+    delete_on_termination = true    # EC2 deleted -> no root decvice left  ( Money & Security reasons)
+  #  iops                  = 100
     volume_size           = 10
     volume_type           = "gp2"
   }
-
   tags = {
-    Name        = "lab1"
-    Environment = "LAB"
+    Name        = "lab1"        # Name of EC2 instance
+    Environment = "LAB"         # Another tag for grouping pourposes
   }
 }
 
+#  KEY PAIR
 resource "aws_key_pair" "lab-region-key-pair" {
   key_name   = "lab-region-key-pair"
-  public_key = file(var.PUBLIC_KEY_PATH)
+  public_key = file(var.PUBLIC_KEY_PATH)    # harcoded in vars.tf
 }
 
-
+# 
 output "ec2-lab-instance" {
   value = aws_instance.lab1.public_ip
 }
 ```
+
+
+### VARS Terraform file
+
+Hands-on-Linux-for-DevOps-Cloud-Engineers/lab-terraform/vars.tf :
+
+```t
+# contains variables used in the other tf files.
+variable "AWS_REGION"       {  default = "us-west-2" }
+# AZ we will use for lab
+# variable "AZ"               {  default = "us-west-2a"}
+variable "AZ"               {  default = "us-east-2a"}
+# Use current directory for private key file
+variable "PRIVATE_KEY_PATH" {  default = "lab-key-pair"}
+# Use current directory for public key file
+variable "PUBLIC_KEY_PATH"  {  default = "lab-key-pair.pub"}
+# Default Linux base image we will use (Amazon Linux 2)
+variable "AMI"              {  default = "ami-094125af156557ca2"}
+```
+
+## 3.6 Create Your Lab
+
+### INSTALL Terraform
+
+https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
+
+Ensure that your system is up to date, nstalled the gnupg, software-properties-common, and curl
+```sh
+    $ sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
+```
+Install the HashiCorp GPG key.
+```sh
+    $ wget -O- https://apt.releases.hashicorp.com/gpg | \
+    gpg --dearmor | \
+    sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
+```
+
+Verify the key's fingerprint.
+```sh
+$ gpg --no-default-keyring \
+--keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg \
+--fingerprint
+```
+
+The gpg command will report the key fingerprint:
+```sh
+/usr/share/keyrings/hashicorp-archive-keyring.gpg
+-------------------------------------------------
+pub   rsa4096 XXXX-XX-XX [SC]
+AAAA AAAA AAAA AAAA
+uid           [ unknown] HashiCorp Security (HashiCorp Package Signing) <security+packaging@hashicorp.com>
+sub   rsa4096 XXXX-XX-XX [E]
+Tip
+
+gpg: /home/ariel/.gnupg/trustdb.gpg: trustdb created
+```
+
+Refer to the Official Packaging Guide for the latest public signing key. You can also verify the key on Security at HashiCorp under Linux Package Checksum Verification.
+Add the official HashiCorp repository to your system. The lsb_release -cs command finds the distribution release codename for your current system, such as buster, groovy, or sid.
+```sh
+$ echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
+https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
+sudo tee /etc/apt/sources.list.d/hashicorp.list
+```
+$(lsb_release -cs)  migth need a change if Os is not Ubuntu
+Download the package information from HashiCorp.
+
+```sh
+$ sudo apt update
+```
+Install Terraform from the new repository.
+```sh
+$ sudo apt-get install terraform
+```
+
+### Verify the installation
+```sh
+    $ terraform -help
+
+    Usage: terraform [-version] [-help] <command> [args]
+
+    The available commands for execution are listed below.
+    The most common, useful commands are shown first, followed by
+    less common or more advanced commands. If you're just getting
+    started with Terraform, stick with the common commands. For the
+    other commands, please read the help and docs before usage.
+    ##...
+```
+
+
+### INSTALL AWS CLI
+
+## AWS Security & Crededntials
+https://us-east-1.console.aws.amazon.com/iam/home?region=us-east-1#/security_credentials
+
+Identity and Access Management (IAM) :
+
+Account details :                        Edit account name, email, and password
+Account name        Email address       AWS account ID       Canonical user ID
+
+
+Multi-factor authentication (MFA) (0) :      Remove,  Resync, Assign MFA device
+Type        Identifier      Certifications      Created on
+
+
+Access keys (0) :                                            Create access key
+Use access keys to send programmatic calls from the AWS CLI,PowerShell, SDKs, API calls. 
+You can have a maximum of two access keys (active or inactive) at a time.
+
+Access key ID       Created on      Access key last used    Region last used    
+Service last used   Status

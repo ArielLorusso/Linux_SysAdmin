@@ -1,0 +1,32 @@
+pactl load-module module-loopback latency_msec=1
+pactl unload-module module-loopback
+
+
+redshift -l -34.6:-58.4 -t 5700:3600 -g 1:1:1
+
+
+neofetch
+ifconfig
+lshw -cpu
+
+
+ctrl+a+del = delete command
+
+Oh-My-Posh :
+
+    https://ohmyposh.dev/docs/installation/linux
+    
+    https://ohmyposh.dev/docs/segments/system/time
+    https://ohmyposh.dev/docs/segments/system/status
+    https://ohmyposh.dev/docs/segments/system/session
+
+    https://ohmyposh.dev/docs/segments/scm/git
+    https://ohmyposh.dev/docs/segments/cloud/aws
+
+    /home/ariel/.bashrc :
+        #eval "$(oh-my-posh init bash)"
+        eval "$(oh-my-posh --init --shell bash --config ~/.poshthemes/Ariel-Oh-My-Posh.omp.json)"
+
+    /home/ariel/.poshthemes/velvet.omp.json
+
+

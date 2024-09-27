@@ -6,7 +6,8 @@ variable "AWS_REGION" {
 
 # AZ we will use for lab
 variable "AZ" {
-  default = "us-west-2a"
+  # default = "us-west-2a"    // not in my subets
+  default = "us-east-2a"
 }
 
 # Use current directory for private key file
