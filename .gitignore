@@ -1,0 +1,7 @@
+rootkey.csv
+lab-key-pair
+*.pub
+.terraform
+.terraform.lock.hcl
+
+git rm --cached rootkey.csv  # remoove if not ignored

@@ -30,7 +30,7 @@ resource "aws_instance" "lab1" {
 }
 
 resource "aws_key_pair" "lab-region-key-pair" {
-  key_name   = "lab-region-key-pair"
+  key_name   = "lab-key-pair"
   public_key = file(var.PUBLIC_KEY_PATH)
 }
 

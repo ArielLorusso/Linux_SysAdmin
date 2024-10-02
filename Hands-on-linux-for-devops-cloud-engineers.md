@@ -1099,9 +1099,9 @@ $ sudo apt-get install terraform
 ```
 
 
-### INSTALL AWS CLI
+### AWS CREDENTIAL
 
-## AWS Security & Crededntials
+AWS Security & Crededntials:
 https://us-east-1.console.aws.amazon.com/iam/home?region=us-east-1#/security_credentials
 
 Identity and Access Management (IAM) :
@@ -1124,6 +1124,8 @@ Service last used   Status
 
 
 https://console.aws.amazon.com/iam/home/security_credentials/access-key-wizard
+https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html
+
 Retrieve access key             
     Access key
     If you lose or forget your secret access key, you cannot retrieve it. 
@@ -1142,7 +1144,7 @@ Access-key-ID   Created-on    Status   Access-key-last-used    Region last used
 
 
 
-## INSTALL AWS CLI 
+### INSTALL AWS CLI 
 
 https://docs.aws.amazon.com/es_es/cli/latest/userguide/getting-started-install.html
 
@@ -1159,3 +1161,967 @@ aws configure
     AWS Access Key ID [None]: 
 ``` 
 we put the rootkey.csv Key
+
+```sh
+aws configure
+    AWS Access Key ID     [None]: ####################
+    AWS Secret Access Key [None]: ########################################
+    Default region name   [None]: us-east-2
+    Default output format [None]: 
+
+```
+BEWARE :  put YOUR  region name !!
+
+```sh
+$ aws configure list
+      Name                    Value             Type        Location
+      ----                    -----             ----        --------
+   profile                <not set>             None        None
+access_key     ****************EKXN shared-credentials-file    
+secret_key     ****************Z6/q shared-credentials-file    
+    region                us-west-2      config-file        ~/.aws/config
+
+```
+
+## Create SSH KEY-PAIR (RSA key for EC2) :
+
+we create public /private ket pair
+
+```sh
+~/.../Linux_SysAdmin/Hands-on-Linux-for-DevOps-Cloud-Engineers
+cd lab-terraform
+~/.../Linux_SysAdmin/Hands-on-Linux-for-DevOps-Cloud-Engineers/lab-terraform
+./create_ssh_keys.sh
+```
+create_ssh_keys.sh:
+```sh
+ssh-keygen -f ./lab-key-pair -C "codered-demo"
+```
+
+### Terraform init 
+
+FAIL (wrong directory)
+ ~/Documents/Linux_SysAdmin/Hands-on-Linux-for-DevOps-Cloud-Engineers 
+
+```sh
+terraform init
+Terraform initialized in an empty directory!
+
+The directory has no Terraform configuration files. You may begin working
+with Terraform immediately by creating Terraform configuration files.
+```
+we need to do the init in a directory wich allredy contains terraform files
+
+```sh
+cd lab-terraform/
+
+terraform init
+Initializing the backend...
+Initializing provider plugins...
+- Finding latest version of hashicorp/aws...
+- Installing hashicorp/aws v5.69.0...
+- Installed hashicorp/aws v5.69.0 (signed by HashiCorp)
+Terraform has created a lock file .terraform.lock.hcl to record the provider
+selections it made above. Include this file in your version control repository
+so that Terraform can guarantee to make the same selections by default when
+you run "terraform init" in the future.
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+
+```
+
+
+
+terraform init 
+    makes      file :  .terraform.lock.hcl  
+    makes directory :  .terraform  
+    makes      file :  .terraform/terraform-provider-aws_v5.69.0_x5
+    makes      file :  .terraform/lisence
+
+
+
+### Terraform plan
+
+```sh
+terraform plan
+
+Terraform used the selected providers to generate the following execution plan.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_instance.lab1 will be created
+  + resource "aws_instance" "lab1" {
+      + ami                                  = "ami-################"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = true
+      + availability_zone                    = "us-east-2a"
+      + cpu_core_count                       = (known after apply)
+      + cpu_threads_per_core                 = (known after apply)
+      + disable_api_stop                     = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + host_resource_group_arn              = (known after apply)
+      + iam_instance_profile                 = (known after apply)
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_lifecycle                   = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t2.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = (known after apply)
+      + monitoring                           = (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + spot_instance_request_id             = (known after apply)
+      + subnet_id                            = (known after apply)
+      + tags                                 = {
+          + "Environment" = "LAB"
+          + "Name"        = "lab1"
+        }
+      + tags_all                             = {
+          + "Environment" = "LAB"
+          + "Name"        = "lab1"
+        }
+      + tenancy                              = (known after apply)
+      + user_data                            = (known after apply)
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = false
+      + vpc_security_group_ids               = (known after apply)
+
+      + capacity_reservation_specification (known after apply)
+
+      + cpu_options              (known after apply)
+      + ebs_block_device         (known after apply)
+      + enclave_options          (known after apply)
+      + ephemeral_block_device   (known after apply)
+      + instance_market_options  (known after apply)
+      + maintenance_options      (known after apply)
+      + metadata_options         (known after apply)
+      + network_interface        (known after apply)
+      + private_dns_name_options (known after apply)
+
+      + root_block_device {
+          + delete_on_termination = true
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + tags_all              = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = 10
+          + volume_type           = "gp2"
+        }
+    }
+
+  # aws_internet_gateway.lab-igw will be created
+  + resource "aws_internet_gateway" "lab-igw" {
+      + arn      = (known after apply)
+      + id       = (known after apply)
+      + owner_id = (known after apply)
+      + tags     = {
+          + "Name" = "lab-igw"
+        }
+      + tags_all = {
+          + "Name" = "lab-igw"
+        }
+      + vpc_id   = (known after apply)
+    }
+
+  # aws_key_pair.lab-region-key-pair will be created
+  + resource "aws_key_pair" "lab-region-key-pair" {
+      + arn             = (known after apply)
+      + fingerprint     = (known after apply)
+      + id              = (known after apply)
+      + key_name        = "lab-region-key-pair"
+      + key_name_prefix = (known after apply)
+      + key_pair_id     = (known after apply)
+      + key_type        = (known after apply)
+      + public_key      = "ssh-rsa #######( 3000 # )##### = codered-demo"
+      + tags_all        = (known after apply)
+    }
+
+  # aws_route_table.lab-public-crt will be created
+  + resource "aws_route_table" "lab-public-crt" {
+      + arn              = (known after apply)
+      + id               = (known after apply)
+      + owner_id         = (known after apply)
+      + propagating_vgws = (known after apply)
+      + route            = [
+          + {
+              + cidr_block                 = "0.0.0.0/0"
+              + gateway_id                 = (known after apply)
+                # (11 unchanged attributes hidden)
+            },
+        ]
+      + tags             = {
+          + "Name" = "lab-public-crt"
+        }
+      + tags_all         = {
+          + "Name" = "lab-public-crt"
+        }
+      + vpc_id           = (known after apply)
+    }
+
+  # aws_route_table_association.lab-crta-public-subnet-1 will be created
+  + resource "aws_route_table_association" "lab-crta-public-subnet-1" {
+      + id             = (known after apply)
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # aws_security_group.allow_SSH_HTTP will be created
+  + resource "aws_security_group" "allow_SSH_HTTP" {
+      + arn                    = (known after apply)
+      + description            = "Allow SSH and HTTP inbound traffic"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + from_port        = 0
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+                # (1 unchanged attribute hidden)
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "HTTP from VPC"
+              + from_port        = 80
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 80
+            },
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "SSH from VPC"
+              + from_port        = 22
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 22
+            },
+        ]
+      + name                   = "allow_SSH_HTTP"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Name" = "ssh and HTTP allowed"
+        }
+      + tags_all               = {
+          + "Name" = "ssh and HTTP allowed"
+        }
+      + vpc_id                 = (known after apply)
+    }
+
+  # aws_subnet.lab-subnet-public-1 will be created
+  + resource "aws_subnet" "lab-subnet-public-1" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "us-west-2a"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.0.1.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = true
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + tags                                           = {
+          + "Name" = "lab-subnet-public-1"
+        }
+      + tags_all                                       = {
+          + "Name" = "lab-subnet-public-1"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # aws_vpc.lab-vpc will be created
+  + resource "aws_vpc" "lab-vpc" {
+      + arn                                  = (known after apply)
+      + cidr_block                           = "10.0.0.0/16"
+      + default_network_acl_id               = (known after apply)
+      + default_route_table_id               = (known after apply)
+      + default_security_group_id            = (known after apply)
+      + dhcp_options_id                      = (known after apply)
+      + enable_dns_hostnames                 = true
+      + enable_dns_support                   = true
+      + enable_network_address_usage_metrics = (known after apply)
+      + id                                   = (known after apply)
+      + instance_tenancy                     = "default"
+      + ipv6_association_id                  = (known after apply)
+      + ipv6_cidr_block                      = (known after apply)
+      + ipv6_cidr_block_network_border_group = (known after apply)
+      + main_route_table_id                  = (known after apply)
+      + owner_id                             = (known after apply)
+      + tags                                 = {
+          + "Name" = "lab-vpc"
+        }
+      + tags_all                             = {
+          + "Name" = "lab-vpc"
+        }
+    }
+
+Plan: 8 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + ec2-lab-instance = (known after apply)
+
+──────────────────────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, 
+so Terraform can't guarantee to take exactly these actions 
+if you run "terraform apply" now.
+
+```
+
+at the end we see 
+    Plan: 8 to add, 0 to change, 0 to destroy.
+
+1) INSTANCE         aws_instance.lab1
+2) GATEWAY          aws_internet_gateway.lab-igw 
+3) KEY_PAIR         aws_key_pair.lab-region-key-pair 
+4) ROUTE TABLE      aws_route_table.lab-public-crt
+5) TABLE ASOCIATION aws_route_table_association.lab-crta-public-subnet-1
+6) SECURITY RULES   aws_security_group.allow_SSH_HTTP
+7) SUBNET           aws_subnet.lab-subnet-public-1
+8) VPS              aws_vpc.lab-vpc 
+
+things added     will be shown with a +
+things destroyed will be shown with a -
+
+Once we chack the plan we can apply it to AWS
+
+terraform plan 
+    makes      file :  terraform.tfstate
+
+
+```sh
+terraform apply
+
+Terraform used the selected providers to generate the following execution plan.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_instance.lab1 will be created
+  + resource "aws_instance" "lab1" {
+       ......
+        .....
+        .....
+          + "Name" = "lab-vpc"
+        }
+    }
+
+Plan: 8 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + ec2-lab-instance = (known after apply)
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: 
+```
+
+
+```sh
+ssh -i lab-key-pair ec2-user@44.243.225.56 
+
+The authenticity of host IP'###.###.###.### ' can't be established.
+ED25519 key fingerprint is SHA256:############################################.
+This key is not known by any other names
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '###.###.###.### ' (ED25519) to the list of known hosts.
+Enter passphrase for key 'lab-key-pair': 
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+54 package(s) needed for security, out of 92 available
+Run "sudo yum update" to apply all updates.
+```
+
+# 4 Understanding Linux FileSystem  
+
+Comand 
+Man = Manual pages
+hier = hierarchy
+```sh
+man hire        #   hier - description of the filesystem hierarchy
+    NAME   DESCRIPTION
+        
+    /       This is the |ROOT   directory where the whole tree starts.
+
+    /bin    Contains |binary |executable programs which are needed in single user mode
+            , and to bring the system up or repair it.
+
+    /sbin   Like /bin, this directory holds commands needed to boot the |system
+            , but which are usually |not |executed by normal |users.
+
+
+    /boot   Contains static files for the |boot |loader .  
+            , holds only the files which are needed during the  boot  process.   
+            , The  map  installer  and  configuration  files should go to 
+            , /sbin and /etc.  The operating system kernel (initrd for example) 
+            , must  be located in either / or /boot.
+
+    /dev    Special  or  device files , which refer to |physical-devices.  See  mknod(1).
+
+    /etc    Contains |configuration-files which are  local  to  the  machine.
+            , Some larger |software-packages, like |X11, can have their own subdirectories 
+            , below /etc.  Site-wide configuration  files may be placed here or in /usr/etc. 
+
+    /home   On  machines  with |home directories for |users, these are usually
+            , beneath this directory, directly or not.  The structure of  this
+            , directory depends on local administration decisions (optional).
+
+    /lib    Should hold those |shared-libraries that are necessary 
+            ,  to |boot the system and to run the commands in the root filesystem.
+
+    /media  Contains |mount |points for |removable-media such as |CD & DVD disks  or |USB sticks.
+            , On systems where more than one device exists for mounting a certain type of media, 
+            , mount directories  can be created by appending a digit to the name of those available above
+            , starting with '0', but the unqualified name must also exist.
+
+
+    /mnt   A |mount  point  for  a  temporarily  mounted filesystem. 
+            , In some distributions, /mnt contains subdirectories intended 
+            , to be  used  as  mount  points  for  several  temporary  filesystems.
+
+    /opt   Should  contain  add-on  packages  that contain  static files.
+
+    /proc  This is a |mount-point for the proc  filesystem,  which  provides
+           , information  about  running  processes  and  the  kernel.   This
+           , pseudo-filesystem is described in more detail in proc(5).
+
+    /root  Usually the |home directory for the  |root-user (optional).
+
+    /run   Contains |information which describes the system  since it was booted.
+           , Once this purpose was served by /var/run and programs may continue to use it.
+
+    /sys   This  is  a |mount point for the |sysfs filesystem, which provides
+           , information about the kernel like /proc, but better  structured,
+           , following the formalism of kobject infrastructure.
+
+    /tmp   This  directory  contains  |temporary  files which may be deleted
+           , with no notice, such as by a regular job or at system boot up.
+
+    /usr   Usually mounted from a |separate-partition.  
+           , It should  hold  only : shareable , |read-only data, 
+           , so that it can be mounted by various machines running Linux. 
+
+```
+
+```sh
+ariel @ ariel-All-Series $ ls /         # show the list of directories
+        bin    data  home   lib64       media  proc  sbin  swapfile  usr
+        boot   dev   lib    libx32      mnt    root  snap  sys       var
+        cdrom  etc   lib32  lost+found  opt    run   srv   tmp
+```
+```sh
+[ec2-user@ip-10-0-1-220 /]$ ls /
+    bin  boot  dev   etc  home  lib  lib64  local  media  mnt  
+    opt  proc  root  run  sbin  srv  sys    tmp    usr    var
+```
+
+we can see our EC2-Linux has less directories
+    data, cdrom, lib32, libx32, snap,  swapfile ... are not there
+
+The /proc directory is a virtual filesystem in Linux 
+it dynamically stores information about currently running processes.
+
+```sh
+ariel @ ariel-All-Series $  ls /proc      # show the list of process  some are numbers some are words
+1      152    18798  2338   28588  3363   49773  70     acpi                 
+10     15250  18813  2340   286    3391   5      70068  asound
+10278  15252  18986  2358   287    34     50     70069  bootconfig
+10282  15254  18995  2365   288    3409   50131  70231  buddyinfo
+1040   15256  18996  2375   289    3418   502    708    bus                  
+1099   15257  19     2383   290    3469   50591  72     cgroups              
+11     15264  190    2384   29620  347    51     73     cmdline              
+1100   15265  1901   2385   29622  352    51034  74     consoles             
+1106   154    1902   24     29637  358    51058  75     cpuinfo              
+1110   155    1909   2420   298    359    51150  76     crypto               
+1111   157    1910   2438   299    36     52     78     devices              
+1118   159    1911   2439   3      360    536    79     diskstats            
+1124   16     19125  2467   30     361    53657  8      dma         
+1133   160    1914   2481   300    362    54     80     driver         
+1134   16032  1918   2490   30920  36259  55     81     dynamic_debug         
+1147   161    19395  2495   31     36260  56     82     execdomains         
+1148   162    2      25     3102   363    57     84     fb         
+1150   163    20     2525   3106   364    58     85     filesystems         
+1157   16331  202    2529   3107   36561  58584  86     fs         
+1162   1656   207    2556   3108   36562  58952  87     interrupts         
+1164   1657   21     256    31082  37     6      89     iomem         
+1166   1662   2142   2568   3110   3701   60     90     ioports         
+1169   1665   2147   26     3112   3723   60435  91     irq         
+1187   1671   2154   2620   3118   38     60444  92     kallsyms         
+12     1674   2161   27     3119   3804   60448  93     kcore         
+12269  173    2169   2735   3123   3830   60487  94     keys         
+1292   175    2175   2744   31312  39     60492  946    key-users         
+13     176    2183   2748   3138   4      60493  947    kmsg         
+1304   177    2185   275    3142   40     60500  948    kpagecgroup         
+1306   17889  22     2756   3143   4021   61     949    kpagecount         
+1321   18     22248  2759   3153   4022   62     950    kpageflags         
+1322   18079  2231   276    3163   4051   623    951    loadavg         
+1339   18326  2266   27644  3165   4083   6239   952    locks         
+1365   18345  2271   27645  3171   4097   624    953    mdstat         
+1367   18523  2276   27653  3172   4174   629    954    meminfo         
+14     18528  2280   27657  3174   42     63     955    misc         
+141    18529  2283   27658  3189   43     630    956    modules         
+142    18531  2284   2768   32     4306   631    957    mounts         
+1428   18546  2285   277    32388  44     639    9932   mtrr2        
+143    18561  2286   2776   3252   449    64            net
+144    18568  2287   27779  3266   45     64027         pagetypeinfo
+145    18579  2288   278    3278   450    64868         partitions
+146    18582  22943  279    329    4526   66            pressure
+147    18589  2304   28     33     4563   66086         schedstat
+1476   18655  2305   280    331    4564   67            scsi
+148    18665  231    281    332    46     68            self
+149    18666  2321   282    333    4632   68640         slabinfo
+14909  187    2322   283    334    4666   68732         softirqs
+1495   18705  2331   284    3340   47978  69            spl
+15     18720  2332   285    335    48     69569         stat
+151    18797  2333   28570  336    49                   swaps
+```
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ ls /proc
+1     1685  2468  272   333   4354  8    964        driver         kmsg           net            sysvipc
+10    1686  2556  274   334   4381  826  968        dynamic_debug  kpagecgroup    pagetypeinfo   thread-self
+11    1687  2557  275   3352  6     856  acpi       execdomains    kpagecount     partitions     timer_list
+12    1688  2560  276   4     687   857  buddyinfo  filesystems    kpageflags     sched_debug    tty
+13    1689  2591  2849  4039  693   860  bus        fs             latency_stats  schedstat      uptime
+14    1690  2592  2898  4040  699   871  cgroups    interrupts     loadavg        scsi           version
+16    1749  2597  3     4047  702   872  cmdline    iomem          locks          self           vmallocinfo
+1648  1778  2612  3136  4099  707   9    consoles   ioports        mdstat         slabinfo       vmstat
+1661  1780  2624  3160  4107  7283  908  cpuinfo    irq            meminfo        softirqs       xen
+1662  18    2625  3179  4122  7329  911  crypto     kallsyms       misc           stat           zoneinfo
+1664  19    2627  3180  4211  7363  913  devices    kcore          modules        swaps
+1667  2     270   3266  4239  7364  943  diskstats  keys           mounts         sys
+1684  21    271   331   4352  7422  952  dma        key-users      mtrr           sysrq-trigger
+
+```
+ we can see thers less process runing 
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ cat /proc/cpuinfo 
+processor	: 0
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 79
+model name	: Intel(R) Xeon(R) CPU E5-2686 v4 @ 2.30GHz
+stepping	: 1
+microcode	: 0xd0003e8
+cpu MHz		: 2299.998
+cache size	: 46080 KB
+physical id	: 0
+siblings	: 1
+cpuid level	: 13
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+
+```
+
+```sh
+ariel @ ariel-All-Series $ cat /proc/cpuinfo 
+processor	    : 0
+vendor_id	    : AuthenticAMD
+cpu family      : 23
+model		    : 8
+model name      : AMD Ryzen 5 2600 Six-Core Processor
+stepping	    : 2
+microcode	    : 0x800820d
+cpu MHz	        : 1550.000
+cache size      : 512 KB
+physical id	    : 0
+siblings	    : 12
+cpuid level	    : 13
+TLB size	    : 2560 4K pages
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 43 bits physical, 48 bits virtual
+
+```
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ ls /var/log
+amazon    btmp            cloud-init-output.log  grubby_prune_debug  maillog   secure    wtmp
+audit     chrony          cron                   journal             messages  spooler   yum.log
+boot.log  cloud-init.log  dmesg                  lastlog             sa        tallylog
+[ec2-user@ip-10-0-1-220 ~]$ ls /lib/
+binfmt.d  firmware  kbd     modprobe.d      python2.7  sendmail          sysctl.d    udev
+debug     games     kernel  modules         python3.7  sendmail.postfix  systemd     yum-plugins
+dracut    grub      locale  modules-load.d  rpm        sse2              tmpfiles.d
+[ec2-user@ip-10-0-1-220 ~]$ ls /lib/python3.7/site-packages/
+aws_cfn_bootstrap-2.0-py3.7.egg-info  lockfile                        pystache
+cfnbootstrap                          lockfile-0.11.0-py3.7.egg-info  pystache-0.5.4-py3.7.egg-info
+daemon                                pip                             python_daemon-2.2.3-py3.7.egg-info
+docutils                              pip-20.2.2.dist-info            setuptools
+docutils-0.14-py3.7.egg-info          pkg_resources                   setuptools-49.1.3.dist-info
+easy_install.py                       __pycache__
+```
+
+## 4.1 Creating Files and Directories
+
+```sh
+touch   # MAKE   file
+mkdir   # MAKE   directory
+mv      # MOVE   file/dir (2 args exist)     or RENAME (2 arg !_exist is_new )
+rm      # REMOVE file/dir
+cp      # COPY   file/dir
+```
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ ls -la
+total 12
+PERMISIONS      USER     GROUP    SIZE      DATE             FILENAME
+drwx------ 3    ec2-user ec2-user   74      Oct   1 20:59   .
+drwxr-xr-x 3    root     root       22      Oct   1 19:49   ..
+-rw-r--r-- 1    ec2-user ec2-user   18      Jul  15  2020   .bash_logout
+-rw-r--r-- 1    ec2-user ec2-user  193      Jul  15  2020   .bash_profile
+-rw-r--r-- 1    ec2-user ec2-user  231      Jul  15  2020   .bashrc
+drwx------ 2    ec2-user ec2-user   29      Oct   1 19:49   .ssh
+UGOA= User Group Others All
+RWX = Read Write Execute
+```
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ mkdir engineering               #  make new directory
+[ec2-user@ip-10-0-1-220 ~]$ touch test                      #  make new file
+[ec2-user@ip-10-0-1-220 ~]$ ls -l
+drwxrwxr-x 2 ec2-user ec2-user 6 Oct  2 01:26 engineering
+-rw-rw-r-- 1 ec2-user ec2-user 0 Oct  2 01:28 test
+[ec2-user@ip-10-0-1-220 ~]$ mv test new_name                #  rename
+[ec2-user@ip-10-0-1-220 ~]$ ls -l
+drwxrwxr-x 2 ec2-user ec2-user 6 Oct  2 01:26 engineering
+-rw-rw-r-- 1 ec2-user ec2-user 0 Oct  2 01:28 new_name
+
+[ec2-user@ip-10-0-1-220 ~]$ touch config.yaml
+[ec2-user@ip-10-0-1-220 ~]$ ls
+config.yaml  engineering  new_name
+[ec2-user@ip-10-0-1-220 ~]$  cp config.yaml  engineering/   #  copy
+[ec2-user@ip-10-0-1-220 ~]$ ls engineering/
+config.yaml
+[ec2-user@ip-10-0-1-220 ~]$ ls
+config.yaml  engineering  new_name      # we made a copy (did not remove original)
+[ec2-user@ip-10-0-1-220 ~]$ rm engineering/config.yaml      # remove file
+[ec2-user@ip-10-0-1-220 ~]$ rm engineering # cant remove diretory                 
+rm: cannot remove ‘engineering’: Is a directory
+[ec2-user@ip-10-0-1-220 ~]$ rm -d engineering               # remove directory
+```
+
+
+## 4.2 User Management in Linux
+
+### 3 Types of Users
+Standard user : logued by default, has a home directory, shell log in
+Root     user : special superuser priviledges 
+Service  user : does not log in, run proces but has no home
+
+```sh
+su          # SWITCH  log to a diferent user
+adduser     # ADD     add new user
+passwd      # PASWORD change user password 
+usermod     # MODYFY  /ets/passwd file
+userdel     # DELETE  delete an user
+
+exit        # Log off
+sudo chmod  # change
+```
+
+we start our EC2 SSH loged in as the default "ec2-user" user
+it has priviledge to access sudo & run commands as  "root user" a.k.a. "superuser"
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ sudo adduser akira
+[ec2-user@ip-10-0-1-220 ~]$ ls -al /home
+drwxr-xr-x  4 root     root      35 Oct  2 11:50 .
+dr-xr-xr-x 18 root     root     257 Oct  1 19:49 ..
+drwx------  2 akira    akira     62 Oct  2 11:50 akira      # NEW USER
+drwx------  3 ec2-user ec2-user 130 Oct  2 03:55 ec2-user   # default user
+```
+
+cat /etc/passwd
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ cat /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+....
+shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+halt:x:7:0:halt:/sbin:/sbin/halt
+mail:x:8:12:mail:/var/spool/mail:/sbin/nologin
+...
+systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin
+....
+sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin
+....
+ec2-instance-connect:x:997:995::/home/ec2-instance-connect:/sbin/nologin
+....
+tcpdump:x:72:72::/:/sbin/nologin
+ec2-user:x:1000:1000:EC2 Default User:/home/ec2-user:/bin/bash
+akira:x:1001:1001::/home/akira:/bin/bash
+
+UserName Passwd UserID  GroupID Metadata    Home_directory  shell
+akira   : x    :1001   :1001    :           :/home/akira:   /bin/bash
+
+[ec2-user@ip-10-0-1-220 ~]$ sudo passwd akira
+Changing password for user akira.
+New password: ######
+BAD PASSWORD: The password is shorter than 8 characters
+Retype new password: ######                 
+passwd: all authentication tokens updated successfully.
+```
+man usermod 
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ man usermod
+
+SYNOPSIS       usermod [options] LOGIN
+
+DESCRIPTION     The usermod command modifies the system account files to reflect
+                , the changes that are specified on the command line.
+
+OPTIONS   The options which apply to the usermod command are:
+
+       -a, --append
+           Add the user to the supplementary group(s). Use only with the -Goption.
+
+       -b, --badnames
+           Allow names that do not conform to standards.
+
+       -c, --comment COMMENT
+           The new value of the user's password file comment field. '
+```
+man usermod 2
+```sh   
+[ec2-user@ip-10-0-1-220 ~]$ sudo usermod 
+
+Usage: usermod [options] LOGIN
+
+Options:
+  -b, --badnames                allow bad names
+  -c, --comment COMMENT         new value of the GECOS field
+  -d, --home HOME_DIR           new home directory for the user account
+  -e, --expiredate EXPIRE_DATE  set account expiration date to EXPIRE_DATE
+  -f, --inactive INACTIVE       set password inactive after expiration to INACTIVE
+  -g, --gid GROUP               force use GROUP as new primary group
+  -G, --groups GROUPS           new list of supplementary GROUPS
+  -a, --append                  append the user to the supplemental GROUPS
+                                ,mentioned by the -G option without removing
+                                , the user from other groups
+  -h, --help                    display this help message and exit
+  -l, --login NEW_LOGIN         new value of the login name
+  -L, --lock                    lock the user account
+  -m, --move-home               move contents of the home directory to 
+                                , the new location (use only with -d)
+  -o, --non-unique              allow using duplicate (non-unique) UID
+  -p, --password PASSWORD       use encrypted password for the new password
+        .......
+  -Z, --selinux-user SEUSER     new SELinux user mapping for the user account
+```
+/etc/pass
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ cat /etc/passwd
+.....   .....     .... ...
+akira   : x     : 1001 : 1001 : Akira Smith :   /home/akira :   /bin/bash
+                              # Akira Smith = Metadata  (new comment)
+
+[ec2-user@ip-10-0-1-220 ~]$ su akira        # fail atempt to switch user
+Password: 
+[akira@ip-10-0-1-220 ec2-user]$ ls   # ec2-user lacs permission to login as akira 
+ls: cannot open directory .: Permission denied
+[akira@ip-10-0-1-220 ec2-user]$ su - akira  # we log in the shell for akira
+Password: 
+Last login: Wed Oct  2 13:10:53 UTC 2024 on pts/0
+[akira@ip-10-0-1-220 ~]$ ls
+[akira@ip-10-0-1-220 ~]$                    # new user directory is empty
+[akira@ip-10-0-1-220 ~]$ exit
+logout
+[akira@ip-10-0-1-220 ec2-user]$ exit
+exit
+[ec2-user@ip-10-0-1-220 ~]$ ls
+config.yaml  new_name
+
+
+```
+
+
+## 4.3 Group Management in Linux
+
+```sh
+groupadd    # ADD
+groupdel    # DELETE
+groupmod    # MODIFY
+groupmems   # MEMBERSHIPS  Add/Remove/View users
+chgrp       # CHANGE GROUP of file or dir
+chown       # CHANGE OWNER of file or dir
+```
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ sudo groupadd engineering
+[ec2-user@ip-10-0-1-220 ~]$ cat /etc/group
+akira:x:1001:
+engineering:x:1002:
+                                        # ADD member to group
+[ec2-user@ip-10-0-1-220 ~]$ sudo groupmems -a akira -g engineering
+                                        # LIST memmbers of group
+[ec2-user@ip-10-0-1-220 ~]$ sudo groupmems -l -g engineering 
+akira 
+[ec2-user@ip-10-0-1-220 ~]$ cat /etc/group
+akira:x:1001:
+engineering:x:1002:akira
+
+[ec2-user@ip-10-0-1-220 ~]$ mkdir engeneering
+[ec2-user@ip-10-0-1-220 ~]$ ls
+engeneering
+[ec2-user@ip-10-0-1-220 ~]$ sudo mv engeneering /usr/local/
+[ec2-user@ip-10-0-1-220 ~]$ ls /usr/local/
+bin  engeneering  etc  games  include  lib  lib64  libexec  sbin  share  src
+[ec2-user@ip-10-0-1-220 ~]$ ls /usr/local/ -l
+drwxr-xr-x 2 root     root      6 Apr  9  2019 bin
+drwxrwxr-x 2 ec2-user ec2-user  6 Oct  2 18:09 engeneering   ......
+#            OWNER   GROUP
+                               # CHANGE GROUP  
+[ec2-user@ip-10-0-1-220 ~]$ sudo chgrp engineering /usr/local/engeneering/
+[ec2-user@ip-10-0-1-220 ~]$ ls /usr/local/ -l
+total 0
+drwxr-xr-x 2 root     root         6 Apr  9  2019 bin
+drwxrwxr-x 2 ec2-user engineering  6 Oct  2 18:09 engeneering
+                                # CHANGE OWNER:GROUP Recursive (all its content too)
+[ec2-user@ip-10-0-1-220 ~]$ sudo chown -R root:engineering /usr/local/engeneering/
+[ec2-user@ip-10-0-1-220 ~]$ ls /usr/local/ -l
+total 0
+drwxr-xr-x 2 root root         6 Apr  9  2019 bin
+drwxrwxr-x 2 root engineering  6 Oct  2 18:09 engeneering
+                          # must log in or use sudo
+[ec2-user@ip-10-0-1-220 ~]$ touch /usr/local/engeneering/ec2-user
+touch: cannot touch ‘/usr/local/engeneering/ec2-user’: Permission denied
+[ec2-user@ip-10-0-1-220 ~]$ su - akira
+Password: 
+Last login: Wed Oct  2 13:13:21 UTC 2024 on pts/0
+[akira@ip-10-0-1-220 ~]$ touch /usr/local/engeneering/akira
+[akira@ip-10-0-1-220 ~]$ ls -l /usr/local/engeneering/
+-rw-rw-r-- 1 akira akira 0 Oct  2 18:28 akira
+-rw-r--r-- 1 root  root  0 Oct  2 18:26 config.yaml
+-rw-r--r-- 1 root  root  0 Oct  2 18:26 contributors
+```
+
+## 4.4 Software Management in Linux
+
+RPM package
+Yum package manage
+```sh
+yum search 
+    info
+    install 
+    remove
+    update 
+```
+man yum
+
+```sh
+NAME       yum - Yellowdog Updater Modified
+
+SYNOPSIS   yum [options] [command] [package ...]
+
+DESCRIPTION
+       yum  is  an  interactive,  rpm  based, package manager. It can automatically perform system updates, including dependency analysis and obsolete processing based on
+       "repository" metadata. It can also perform installation of new packages, removal of old packages and perform queries on the  installed  and/or  available  packages
+       among many other commands/services (see below). yum is similar to other high level package managers like apt-get and smart.
+
+       While  there  are  some graphical interfaces directly to the yum code, more recent graphical interface development is happening with PackageKit and the gnome-pack‐
+       agekit application.
+
+       command is one of:
+        * install package1 [package2] [...]
+        * update [package1] [package2] [...]
+        * update-to [package1] [package2] [...]
+        * update-minimal [package1] [package2] [...]
+        * check-update
+        * upgrade [package1] [package2] [...]
+        * upgrade-to [package1] [package2] [...]
+        * distribution-synchronization [package1] [package2] [...]
+        * remove | erase package1 [package2] [...]
+        * autoremove [package1] [...]
+        * list [...]
+        * info [...]
+        * provides | whatprovides feature1 [feature2] [...]
+        * clean [ packages | metadata | expire-cache | rpmdb | plugins | all ]
+        .....
+        * search string1 [string2] [...]
+        ....        
+        * check
+        * help [command]
+```
+yum help
+```sh
+List of Commands:
+
+check          Check for problems in the rpmdb
+check-update   Check for available package updates
+clean          Remove cached data
+deplist        List a package's dependencies
+distribution-synchronization Synchronize installed packages to the latest available versions
+downgrade      downgrade a package
+erase          Remove a package or packages from your system
+.....
+```
+
+## 4.5 Monitoring a Linux Server
+
+## 4.6 Networking in Linux
+
+## 4.7 Managing Services in Linux with System
+
+## 4.8 Running MariaDB in a Container

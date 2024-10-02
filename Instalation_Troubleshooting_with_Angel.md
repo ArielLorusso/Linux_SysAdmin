@@ -95,3 +95,48 @@ deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6
 
 ```
 
+## GITHUB TOKEN
+```sh
+git push
+Username for 'https://github.com': ArielLorusso
+Password for 'https://ArielLorusso@github.com': 
+remote: Support for password authentication was removed on August 13, 2021.
+remote: Please see https://docs.github.com/get-started/getting-started-with-git/about-remote-repositories#cloning-with-https-urls for information on currently recommended modes of authentication.
+fatal: Authentication failed for 'https://github.com/ArielLorusso/Linux_SysAdmin.git/'
+```
+
+https://stackoverflow.com/questions/68775869/message-support-for-password-authentication-was-removed
+https://github.com/settings/tokens
+https://docs.github.com/en
+
+Make sure to copy your personal access token now. You won’t be able to see it again!
+
+GitHub Access Tokens  by  NeuralNine      https://www.youtube.com/watch?v=IuiH6cBtc58
+
+this is the ckikest way to work :
+
+git clone https://USER:TOKEN@github.com/USER/
+once downloaded there wont be need to enter token again
+
+
+```sh
+neuralnine@pop-os:~/Desktop$ git clone https://NeuralNine:github_pat_11ALZ6IVA05xhGCnK8pWxM_kwhZ7Ky6dXK4MJF9D5mdpss6YAb4Kz8ExdRrPiV9PWMNLTN
+62210283Xyh4@github.com/NeuralNine/secret-private-repo.git
+Cloning into 'secret-private-repo'...
+remote: Enumerating objects: 3, done.
+remote: Counting objects: 100% (3/3), done.
+remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+Receiving objects: 100% (3/3), done.
+
+neuralnine@pop-os:-/Desktop/secret-private-repo$ git add new_file.txt
+
+neuralnine@pop-os:-/Desktop/secret-private-repo$ git push
+Enumerating objects: 4, done.
+Counting objects: 100% (4/4), done.
+Delta compression using up to 16 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 298 bytes | 290.00 KiB/s, done. Total 3 (delta 0), reused 8 (delta 0), pack-reused 0
+To https://github.com/NeuralNine/secret-private-repo.git
+cfb155e..4b593a1 main -> main
+neuralnine@pop-os:~/Desktop/secret-private-repo$
+```
