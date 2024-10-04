@@ -2118,10 +2118,984 @@ erase          Remove a package or packages from your system
 .....
 ```
 
+### yum : repolist / search / install / remove / check
+
+```sh
+[akira@ip-10-0-1-220 ~]$ yum repolist
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+
+repo id                                    repo name                                                                             status
+!amzn2-core/2/x86_64                       Amazon Linux 2 core repository                                                        35,869
+!amzn2extra-docker/2/x86_64                Amazon Extras repo for docker                                                            118
+!amzn2extra-kernel-5.10/2/x86_64           Amazon Extras repo for kernel-5.10                                                       605
+repolist: 36,592
+
+[akira@ip-10-0-1-220 ~]$ yum search cowsay
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+=================================== N/S matched: cowsay ===================================
+cowsay.noarch : Configurable speaking/thinking cow
+
+  Name and summary matches only, use "search all" for everything.
+
+  Name and summary matches only, use "search all" for everything.
+[akira@ip-10-0-1-220 ~]$ yum info cowsay
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+Available Packages
+Name        : cowsay
+Arch        : noarch
+Version     : 3.04
+Release     : 6.amzn2
+Size        : 42 k
+Repo        : amzn2-core/2/x86_64
+Summary     : Configurable speaking/thinking cow
+URL         : https://github.com/tnalpgge/rank-amateur-cowsay
+License     : GPLv3+
+Description : cowsay is a configurable talking cow, written in Perl.  
+            : It operates much as the figlet program does, and it written 
+            : in the same spirit of silliness. It generates ASCII pictures of a cow 
+
+[ec2-user@ip-10-0-1-220 ~]$ sudo yum install cowsay
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+amzn2-core                                           | 3.6 kB  00:00:00     
+amzn2extra-docker                                    | 2.9 kB  00:00:00     
+amzn2extra-kernel-5.10                               | 3.0 kB  00:00:00     
+Resolving Dependencies
+--> Running transaction check
+---> Package cowsay.noarch 0:3.04-6.amzn2 will be installed
+--> Finished Dependency Resolution
+Dependencies Resolved
+
+======================================================================
+ Package           Arch       Version           Repository       Size
+======================================================================
+Installing:
+ cowsay            noarch     3.04-6.amzn2      amzn2-core       42 k
+
+Transaction Summary
+======================================================================
+Install  1 Package
+Total download size: 42 k
+Installed size: 77 k
+Is this ok [y/d/N]: y
+Downloading packages:
+cowsay-3.04-6.amzn2.noarch.rpm                   | 42 kB  00:00:00     
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : cowsay-3.04-6.amzn2.noarch          1/1 
+  Verifying  : cowsay-3.04-6.amzn2.noarch          1/1 
+
+Installed:   cowsay.noarch 0:3.04-6.amzn2          Complete!
+
+[ec2-user@ip-10-0-1-220 ~]$ sudo yum remove cowsay
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+Resolving Dependencies
+--> Running transaction check
+---> Package cowsay.noarch 0:3.04-6.amzn2 will be erased
+--> Finished Dependency Resolution
+amzn2-core/2/x86_64                             | 3.6 kB  00:00:00     
+
+Dependencies Resolved
+
+======================================================================
+ Package           Arch       Version           Repository       Size
+======================================================================
+Installing:
+ cowsay            noarch     3.04-6.amzn2      @amzn2-core       77 k
+
+Transaction Summary
+======================================================================
+Remove  1 Package
+
+Installed size: 77 k
+Is this ok [y/N]: y
+Downloading packages:
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Erasing    : cowsay-3.04-6.amzn2.noarch                  1/1 
+  Verifying  : cowsay-3.04-6.amzn2.noarch                  1/1 
+
+Removed:  cowsay.noarch 0:3.04-6.amzn2                Complete!
+
+[ec2-user@ip-10-0-1-220 ~]$ yum check-update 
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+amzn2-core                                           | 3.6 kB  00:00:00     
+
+PyYAML.x86_64                         3.10-11.amzn2.0.3         amzn2-core    
+amazon-linux-extras.noarch            2.0.3-1.amzn2             amzn2-core    
+amazon-linux-extras-yum-plugin.noarch 2.0.3-1.amzn2             amzn2-core    
+aws-cfn-bootstrap.noarch              2.0-30.amzn2              amzn2-core    
+awscli.noarch                         1.18.147-1.amzn2.0.2      amzn2-core    
+binutils.x86_64                       2.29.1-31.amzn2.0.1       amzn2-core    
+cloud-init.noarch                     19.3-46.amzn2.0.2         amzn2-core    
+cyrus-sasl-lib.x86_64                 2.1.26-24.amzn2.0.1       amzn2-core    
+cyrus-sasl-plain.x86_64               2.1.26-24.amzn2.0.1       amzn2-core    
+dbus.x86_64                           1:1.10.24-7.amzn2.0.4     amzn2-core    
+dbus-libs.x86_64                      1:1.10.24-7.amzn2.0.4     amzn2-core    
+dhclient.x86_64                       12:4.2.5-79.amzn2.1.5     amzn2-core    
+dhcp-common.x86_64                    12:4.2.5-79.amzn2.1.5     amzn2-core    
+dhcp-libs.x86_64                      12:4.2.5-79.amzn2.1.5     amzn2-core    
+dmidecode.x86_64                      1:3.2-5.amzn2.1.1         amzn2-core    
+e2fsprogs.x86_64                      1.42.9-19.amzn2.0.1       amzn2-core    
+e2fsprogs-libs.x86_64                 1.42.9-19.amzn2.0.1       amzn2-core  
+...
+Obsoleting Packages             # DEPENDENCIES = NEW PACKAGES
+python2-colorama.noarch               0.3.9-3.amzn2.0.1         amzn2-core    
+    python-colorama.noarch            0.3.2-3.amzn2             installed     
+python2-six.noarch                    1.11.0-8.amzn2.0.1        amzn2-core    
+    python-six.noarch                 1.9.0-2.amzn2             installed     
+
+[ec2-user@ip-10-0-1-220 ~]$ sudo yum update 
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+amzn2-core                                                                 | 3.6 kB  00:00:00     
+(1/2): amzn2-core/2/x86_64/updateinfo                                      | 981 kB  00:00:00     
+(2/2): amzn2-core/2/x86_64/primary_db                                      |  71 MB  00:00:00     
+Resolving Dependencies
+--> Running transaction check
+---> Package PyYAML.x86_64 0:3.10-11.amzn2.0.2 will be updated
+---> Package PyYAML.x86_64 0:3.10-11.amzn2.0.3 will be an update
+---> Package amazon-linux-extras.noarch 0:2.0.1-1.amzn2 will be updated
+---> Package amazon-linux-extras.noarch 0:2.0.3-1.amzn2 will be an update
+.............................................................................................
+==================================================================================================
+ Package                      Arch   Version                         Repository              Size
+==================================================================================================
+Installing:
+ kernel                       x86_64 5.10.225-213.878.amzn2          amzn2extra-kernel-5.10  34 M
+ python2-colorama             noarch 0.3.9-3.amzn2.0.1               amzn2-core              30 k
+.............................................................................................
+Transaction Summary
+==================================================================================================
+Install   4 Packages
+Upgrade  94 Packages
+
+Total download size: 133 M
+Is this ok [y/d/N]: y
+Downloading packages:
+Delta RPMs disabled because /usr/bin/applydeltarpm not installed.
+(1/98): amazon-linux-extras-2.0.3-1.amzn2.noarch.rpm                       |  39 kB  00:00:00     
+(2/98): PyYAML-3.10-11.amzn2.0.3.x86_64.rpm                                | 180 kB  00:00:00     
+(3/98): amazon-linux-extras-yum-plugin-2.0.3-1.amzn2.noarch.rpm            |  11 kB  00:00:00     
+(4/98): aws-cfn-bootstrap-2.0-30.amzn2.noarch.rpm                          | 751 kB  00:00:00     
+.............................................................................................
+(96/98): yajl-2.0.4-4.amzn2.0.3.x86_64.rpm                                 |  40 kB  00:00:00     
+(97/98): xfsprogs-5.0.0-10.amzn2.0.1.x86_64.rpm                            | 1.0 MB  00:00:00     
+(98/98): zlib-1.2.7-19.amzn2.0.3.x86_64.rpm                                |  90 kB  00:00:00     
+.............................................................................................
+Total                                                              53 MB/s | 133 MB  00:00:02     
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Updating   : zlib-1.2.7-19.amzn2.0.3.x86_64                                               1/195 
+  Updating   : libcom_err-1.42.9-19.amzn2.0.1.x86_64                                        2/195 
+  Updating   : libcap-2.54-1.amzn2.0.2.x86_64                                               3/195 
+...........................................................
+Verifying  : openssh-server-7.4p1-22.amzn2.0.7.x86_64                                   194/195 
+  Verifying  : python-jwcrypto-0.4.2-1.amzn2.noarch                                       195/195 
+...........................................................
+
+Installed:
+  kernel.x86_64 0:5.10.225-213.878.amzn2            python2-colorama.noarch 0:0.3.9-3.amzn2.0.1   
+  python2-setuptools.noarch 0:41.2.0-4.amzn2.0.5    python2-six.noarch 0:1.11.0-8.amzn2.0.1       
+
+Updated:
+  PyYAML.x86_64 0:3.10-11.amzn2.0.3                         
+Complete!
+[ec2-user@ip-10-0-1-220 ~]$ yum check-update 
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+amzn2-core                                                                 | 3.6 kB  00:00:00     
+[ec2-user@ip-10-0-1-220 ~]$ 
+
+
+```
+
+## RPM
+```sh
+# NO EXAMPLES    ->  ADD MY OWN
+```
+
 ## 4.5 Monitoring a Linux Server
+
+### 3 stages :GETHER/ REPORT /ALERTING
+
+GETHER : Record metrics & state of system
+REPORT : Review & display data
+ALERTING : When threashold is reach automaticaly solve or call someone
+
+##  TOP  &  VMSTAT
+
+ 
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ top
+
+top - 01:49:36 up 1 day,  6:00,  1 user,  load average: 0,00, 0,00, 0,00
+Tasks:  93 total,   1 running,  49 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0,0 us,  0,0 sy,  0,0 ni,100,0 id,  0,0 wa,  0,0 hi,  0,0 si,  0,0 st
+KiB Mem :   988916 total,   111984 free,    94756 used,   782176 buff/cache
+KiB Swap:        0 total,        0 free,        0 used.   743932 avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND                        
+    1 root      20   0   41732   5704   4056 S  0,0  0,6   0:02.20 systemd                        
+    2 root      20   0       0      0      0 S  0,0  0,0   0:00.00 kthreadd                       
+    3 root       0 -20       0      0      0 I  0,0  0,0   0:00.00 rcu_gp                         
+    4 root       0 -20       0      0      0 I  0,0  0,0   0:00.00 rcu_par_gp                     
+    6 root       0 -20       0      0      0 I  0,0  0,0   0:00.00 kworker/0:0H-ev                
+    8 root       0 -20       0      0      0 I  0,0  0,0   0:02.71 kworker/0:1H-ev                
+    9 root       0 -20       0      0      0 I  0,0  0,0   0:00.00 mm_percpu_wq                   
+   10 root      20   0       0      0      0 S  0,0  0,0   0:00.00 rcu_tasks_rude_                
+   11 root      20   0       0      0      0 S  0,0  0,0   0:00.00 rcu_tasks_trace                
+   12 root      20   0       0      0      0 S  0,0  0,0   0:00.49 ksoftirq
+```
+PID  = proces ID
+VIRT = virtual  memory
+RES  = Residing memory (physycal RAM)
+SHR  = Shared memory among process
+S    = State of process : running / sleeping / stopped
+load average:  0,00,  0,00,  0,00   
+     on last   1min   5min   15min
+
+Cpu(s): us : user   mode time
+        sy : System mode time.
+        ni : Nice   mode time. (low prioriti processes < 0 )
+        id : idle time
+        wa : wait time 
+        hi : Hardware interrupt time
+        si : Software interrupt time
+        st : Steal time (by VMs)
+
+processes Status:
+        S: Sleeping  (uninterruptible sleep)
+        R: Running   (runnable)
+        D: Disk sleep
+        Z: Zombie    (defunct)
+        T: Stopped   (traced or stopped by signal)
+        K: Killed    (process is killed but still in memory)
+        I: Idle      (not running)
+        L: Locked    (cannot be swapped out)
+        N: Nice      (low priority)
+        P: Paging    (process is being swapped out or in)
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ vmstat 1 5  # refresh every 1sec 5 times
+procs  | ---------memory---------- |--swap-- |----io---- |--system--| ------cpu-----
+ r  b  | swpd   free   buff  cache | si   so |  bi    bo |  in   cs | us sy  id wa st
+ 0  0  |    0 110952   1068 781868 |  0    0 |   9    46 |  29   62 |  0  0 100  0  0
+ 0  0  |    0 110944   1068 781868 |  0    0 |   0     0 |  30   52 |  0  0 100  0  0
+ 0  0  |    0 110944   1068 781868 |  0    0 |   0     0 |  27   51 |  0  0 100  0  0
+ 0  0  |    0 110944   1068 781868 |  0    0 |   0     0 |  27   51 |  0  0 100  0  0
+ 0  0  |    0 110944   1068 781868 |  0    0 |   0     0 |  30   51 |  0  0 100  0  0
+```
+procs   r: Running          b: Blocked
+
+swap    si: system  in      so: system  out
+
+io      bi: Block input     bo: Block output
+
+system  in: Interrupts      cs: Context switches
+
+
 
 ## 4.6 Networking in Linux
 
+```sh
+systemctl status network.service 
+cat /etc/rc.d/init.d/network
+ip addr list
+ip route list
+     ss -s
+sudo ss -tnp
+sudo ss -tnlp
+```
+
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ systemctl status network.service 
+● network.service - LSB: Bring up/down networking
+   Loaded: loaded (/etc/rc.d/init.d/network; bad; vendor preset: disabled)
+   Active: active (running) since Tue 2024-10-01 19:49:14 UTC; 1 day 22h ago
+     Docs: man:systemd-sysv-generator(8)
+   CGroup: /system.slice/network.service
+           ├─2849 /sbin/dhclient -q -lf /var/lib/dhclient/dhclient--eth0.lease -pf /var/run/dhclient-eth0.pid eth0
+           └─2898 /sbin/dhclient -6 -nw -lf /var/lib/dhclient/dhclient6--eth0.lease -pf /var/run/dhclient6-eth0.pid eth0
+
+Oct 03 17:37:33 ip-10-0-1-220.us-west-2.compute.internal dhclient[2898]: XMT: Solicit on eth0, interval 114170ms.
+Oct 03 17:39:28 ip-10-0-1-220.us-west-2.compute.internal dhclient[2898]: XMT: Solicit on eth0, interval 121840ms.
+Oct 03 17:41:29 ip-10-0-1-220.us-west-2.compute.internal dhclient[2898]: XMT: Solicit on eth0, interval 122640ms.
+Oct 03 17:43:32 ip-10-0-1-220.us-west-2.compute.internal dhclient[2898]: XMT: Solicit on eth0, interval 118100ms.
+Oct 03 17:45:30 ip-10-0-1-220.us-west-2.compute.internal dhclient[2898]: XMT: Solicit on eth0, interval 118910ms.
+Oct 03 17:47:29 ip-10-0-1-220.us-west-2.compute.internal dhclient[2898]: XMT: Solicit on eth0, interval 119540ms.
+Oct 03 17:49:29 ip-10-0-1-220.us-west-2.compute.internal dhclient[2898]: XMT: Solicit on eth0, interval 127170ms.
+Oct 03 17:51:36 ip-10-0-1-220.us-west-2.compute.internal dhclient[2898]: XMT: Solicit on eth0, interval 118610ms.
+Oct 03 17:53:35 ip-10-0-1-220.us-west-2.compute.internal dhclient[2898]: XMT: Solicit on eth0, interval 128250ms.
+Oct 03 17:55:43 ip-10-0-1-220.us-west-2.compute.internal dhclient[2898]: XMT: Solicit on eth0, interval 120710ms.
+```
+
+ Active: active (running) since Sat 2023-02 18 18:39:57 UTC; 24h ago
+   Docs:  man:systemd-sysv-generator(8)
+Process: 2672 ExecStart=/etc/rc.d/init.d/network start (code=exited, status=0/SUCCESS)
+ CGroup: /system.slice/network.service
+```sh
+etc/rc.d/init.d/network start   # command: network     Arg: start
+```
+dhclient : gets anIP for our subnet
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ cat /etc/rc.d/init.d/network
+#! /bin/bash
+#
+# network       Bring up/down networking
+#
+# chkconfig: 2345 10 90
+# description: Activates/Deactivates all network interfaces configured to \
+#              start at boot time.
+#
+### BEGIN INIT INFO
+# Provides: $network
+# Should-Start: iptables ip6tables NetworkManager-wait-online NetworkManager $network-pre
+# Short-Description: Bring up/down networking
+# Description: Bring up/down networking
+### END INIT INFO
+
+# Source function library.
+. /etc/init.d/functions
+
+if [ ! -f /etc/sysconfig/network ]; then
+ .......
+    echo $"Currently active devices:"
+    echo $(/sbin/ip -o link show up | awk -F ": " '{ print $2 }')
+    ;;
+restart|force-reload)
+    cd "$CWD"
+    $0 stop
+    $0 start
+    rc=$?
+    ;;
+*)
+    echo $"Usage: $0 {start|stop|status|restart|force-reload}"
+    exit 2
+esac
+
+exit $rc
+```
+this '/sysconfig/network' file searche all interface and conects them
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ ip addr list
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9001 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 02:42:a6:29:4b:6b brd ff:ff:ff:ff:ff:ff
+    inet 10.0.1.220/24 brd 10.0.1.255 scope global dynamic eth0
+       valid_lft 3251sec preferred_lft 3251sec
+    inet6 fe80::42:a6ff:fe29:4b6b/64 scope link 
+       valid_lft forever preferred_lft forever
+```
+lo   OOPBACK:   internal interface , self connection to the local host
+eth0 BROADCAST: ethernet interface ip addr 10.0.1.220  with /24 CIDR range 
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ ip addr show dev eth0
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9001 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 02:42:a6:29:4b:6b brd ff:ff:ff:ff:ff:ff
+    inet 10.0.1.220/24 brd 10.0.1.255 scope global dynamic eth0
+       valid_lft 2898sec preferred_lft 2898sec
+    inet6 fe80::42:a6ff:fe29:4b6b/64 scope link 
+       valid_lft forever preferred_lft forever
+
+```
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ ip route list
+default via 10.0.1.1 dev eth0 
+10.0.1.0/24 dev eth0 proto kernel scope link src 10.0.1.220 
+169.254.169.254 dev eth0 
+[ec2-user@ip-10-0-1-220 ~]$ 
+```
+default via 10.0.1.1 dev eth0 
+  by default send all packets our AWS gateaway iP (only rout to outside our host)
+
+10.0.1.0/24 dev eth0 proto kernel scope link src 10.0.1.220 
+  any packet bount to IP in rage 10.0.1.0/24 use eth0 device
+
+169.254.169.254 dev eth0 
+  this rout is use for 0 configuration and dont leave the host
+
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ ss -s
+
+Total: 171    TCP:   6 (estab 1, closed 0, orphaned 0, timewait 0)
+
+Transport   Total     IP(v4)    IPv6
+RAW	        0         0         0        
+UDP	        8         4         4        
+TCP	        6         4         2        
+INET	      14        8         6        
+FRAG	      0         0         0        
+```
+SS socket Statistics : sumary on host network activity (port/conections)
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ sudo ss -tnp
+State    Recv-Q       Send-Q          Local Address:Port      Peer Address:Port    
+ESTAB     0           36              10.0.1.220:22           1##.###.###.###:#####   
+Process          
+users:(("sshd",pid=23274,fd=3),("sshd",pid=23240,fd=3))
+```
+
+t : TCP co
+n : don't do (port connections / host name lookups DNS
+p :
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ sudo ss -tnlp
+State       Recv-Q      Send-Q      Local Address:Port    Peer Address:Port    Process                                        
+LISTEN      0           128               0.0.0.0:111          0.0.0.0:*        users:(("rpcbind",pid=2625, fd=8))             
+LISTEN      0           128               0.0.0.0:22           0.0.0.0:*        users:(("sshd",   pid=13025,fd=3))               
+LISTEN      0           100             127.0.0.1:25           0.0.0.0:*        users:(("master", pid=4352, fd=13))             
+LISTEN      0           128                  [::]:111             [::]:*        users:(("rpcbind",pid=2625, fd=11))            
+LISTEN      0           128                  [::]:22              [::]:*        users:(("sshd",   pid=13025,fd=4)) 
+```
+
 ## 4.7 Managing Services in Linux with System
 
+```sh
+ls /etc/systemd/system/multi-user.target.wants
+systemctl list-unit-files 
+sudo systemctl status    <process>
+sudo systemctl start     <process>
+sudo systemctl stop      <process>
+sudo systemctl restart   <process>
+```
+
+
+system D : Linux process manager (first Process loaded after booting)
+syseD uses unit files
+unit file : config file to handle process sockets etc...
+
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ cat /etc/systemd/system/multi-user.target.wants/postfix.service 
+[Unit]
+Description=Postfix Mail Transport Agent
+After=syslog.target network.target
+Conflicts=sendmail.service exim.service
+
+[Service]
+Type=forking
+PIDFile=/var/spool/postfix/pid/master.pid
+EnvironmentFile=-/etc/sysconfig/network
+ExecStartPre=-/usr/libexec/postfix/aliasesdb
+ExecStartPre=-/usr/libexec/postfix/chroot-update
+
+ExecStart=/usr/sbin/postfix  start
+ExecReload=/usr/sbin/postfix reload
+ExecStop=/usr/sbin/postfix   stop
+
+[Install]
+WantedBy=multi-user.target
+```
+
+[Unit]  defines metadata & configures relationship of unit to other units
+      Description = metadata
+      After       = service will run after (network)
+      Conflicts   = will not run to avoid coflict with ()
+[Install] Defines the configuration of the process
+      Type         = forking (proces will create child) if parent killed child survives
+      ExecStartPre = run before    process
+      ExecStart    = how to start  process
+      ExecReload   = how to Reload process
+      ExecStop     = how to Stop   process
+[Service] behaviour when its enabled
+       WantedBy    = put unit file iside "wanted by"s terget
+
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ systemctl list-unit-files 
+UNIT FILE                                     STATE   
+proc-sys-fs-binfmt_misc.automount             static  
+dev-hugepages.mount                           static  
+dev-mqueue.mount                              static  
+proc-fs-nfsd.mount                            static  
+proc-sys-fs-binfmt_misc.mount                 static  
+sys-fs-fuse-connections.mount                 static  
+sys-kernel-config.mount                       static  
+sys-kernel-debug.mount                        static  
+tmp.mount                                     disabled
+var-lib-nfs-rpc_pipefs.mount                  static  
+brandbot.path                                 enabled 
+systemd-ask-password-console.path             static  
+systemd-ask-password-plymouth.path            static  
+systemd-ask-password-wall.path                static  
+session-328.scope                             static  
+acpid.service                                 enabled 
+amazon-ssm-agent.service                      enabled 
+amzn2-early-relabel-modules.service           enabled 
+arp-ethers.service                            disabled
+atd.service                                   enabled 
+auditd.service                                enabled 
+auth-rpcgss-module.service                    static  
+lines 1-23
+......
+.....
+umount.target                                 static  
+fstrim.timer                                  disabled
+mdadm-last-resort@.timer                      static  
+systemd-readahead-done.timer                  indirect
+systemd-tmpfiles-clean.timer                  static  
+
+277 unit files listed.
+lines 258-280/280 (END)
+```
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ systemctl status postfix.service 
+● postfix.service - Postfix Mail Transport Agent
+   Loaded: loaded (/usr/lib/systemd/system/postfix.service; enabled; vendor preset: disabled)
+   Active: active (running) since Tue 2024-10-01 19:49:49 UTC; 2 days ago
+ Main PID: 4352 (master)
+   CGroup: /system.slice/postfix.service
+           ├─ 4352 /usr/libexec/postfix/master -w
+           ├─ 4354 qmgr -l -t unix -u
+           └─23740 pickup -l -t unix -u
+
+LOGS :
+Oct 02 20:17:07 ip-10-0-1-220.us-west-2.compute.internal 
+postfix/pickup[12026]:  6396578F17: uid=0 from=<root>
+postfix/cleanup[12223]: 6396578F17: message-id=<20241002201707.6396578F17@ip-10-0-1-220.us-west-2.compute.internal>
+postfix/qmgr[4354]:     6396578F17: from=<root@ip-10-0-1-220.us-west-2.compute.internal>, size=660, nrcpt=1 (queue active)
+postfix/local[12225]:   6396578F17: to=<root@ip-10-0-1-220.us-west-2.compute.internal>, orig_to=<root>, relay=local, dela...mailbox)
+postfix/qmgr[4354]:     6396578F17: removed
+postfix/pickup[12026]:  448BF78F17: uid=0 from=<root>
+postfix/cleanup[12223]: 448BF78F17: message-id=<20241002201726.448BF78F17@ip-10-0-1-220.us-west-2.compute.internal>
+postfix/qmgr[4354]:     448BF78F17: from=<root@ip-10-0-1-220.us-west-2.compute.internal>, size=660, nrcpt=1 (queue active)
+postfix/local[12225]:   448BF78F17: to=<root@ip-10-0-1-220.us-west-2.compute.internal>, orig_to=<root>, relay=local, dela...mailbox)
+postfix/qmgr[4354]:     448BF78F17: removed
+Hint: Some lines were ellipsized, use -l to show in full.
+```
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ sudo systemctl stop postfix.service 
+[ec2-user@ip-10-0-1-220 ~]$ systemctl status postfix.service 
+● postfix.service - Postfix Mail Transport Agent
+   Loaded: loaded (/usr/lib/systemd/system/postfix.service; enabled; vendor preset: disabled)
+   Active: inactive (dead) since Thu 2024-10-03 20:52:01 UTC; 3s ago
+  Process: 23948 ExecStop=/usr/sbin/postfix stop (code=exited, status=0/SUCCESS)
+ Main PID: 4352 (code=killed, signal=TERM)
+
+LOGS
+Oct 02 20:17:07 ip-10-0-1-220.us-west-2.compute.internal 
+  postfix/local[12225]:   6396578F17: to=<root@ip-10-0-1-220.us-west-2.compute.internal>, orig_to=<root>, relay=local, dela...mailbox)
+  postfix/qmgr[4354]:     6396578F17: removed
+  postfix/pickup[12026]:  448BF78F17: uid=0 from=<root>
+  postfix/cleanup[12223]: 448BF78F17: message-id=<20241002201726.448BF78F17@ip-10-0-1-220.us-west-2.compute.internal>
+  postfix/qmgr[4354]:     448BF78F17: from=<root@ip-10-0-1-220.us-west-2.compute.internal>, size=660, nrcpt=1 (queue active)
+  postfix/local[12225]:   448BF78F17: to=<root@ip-10-0-1-220.us-west-2.compute.internal>, orig_to=<root>, relay=local, dela...mailbox)
+  postfix/qmgr[4354]:     448BF78F17: removed 
+  systemd[1]: Stopping Postfix Mail Transport Agent...
+  postfix/postfix-script[23954]: stopping the Postfix mail system  
+  systemd[1]: Stopped Postfix Mail Transport Agent.
+Hint: Some lines were ellipsized, use -l to show in full.
+
+```
+
 ## 4.8 Running MariaDB in a Container
+
+### Install docker
+
+```sh
+[ec2-user@ip-10-0-1-9 ~]$ sudo yum install docker
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+amzn2-core
+Resolving Dependencies
+--> Running transaction check
+---> Package docker.x86_64 0:20.10.17-1.amzn2.0.2 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+============================================================================
+Package       Arch      Version               Repository          Size
+Installing:
+docker        x86_64    20.10.17-1.amzn2.0.2  amzn2extra-docker   39 M
+Transaction Summary
+=============================================================================
+Install 1 Package
+Total download size: 39 M
+Installed size: 152 M
+Is this ok [y/d/N]: y
+Downloading packages:
+docker-20.10.17-1.amzn2.0.2.x86_64.rpm                  13.7 kB 00:00:00
+1 39 MB 00:00:00
+Running transaction check
+Running transaction test Transaction test succeeded
+Running transaction
+  Installing : docker-20.10.17-1.amzn2.0.2.x86_64           1/1
+  Verifying  : docker-20.10.17-1.amzn2.0.2.x86_64           1/1
+Installed:
+  docker.x86_64 0:20.10.17-1.amzn2.0.2
+Complete!
+```
+i have allredy installed it so i see this
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ sudo yum install docker
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+amzn2-core                                                                                | 3.6 kB  00:00:00     
+amzn2extra-docker                                                                         | 2.9 kB  00:00:00     
+amzn2extra-kernel-5.10                                                                    | 3.0 kB  00:00:00     
+(1/4): amzn2extra-docker/2/x86_64/updateinfo                                              |  19 kB  00:00:00     
+(2/4): amzn2extra-docker/2/x86_64/primary_db                                              | 113 kB  00:00:00     
+(3/4): amzn2extra-kernel-5.10/2/x86_64/updateinfo                                         |  91 kB  00:00:00     
+(4/4): amzn2extra-kernel-5.10/2/x86_64/primary_db                                         |  31 MB  00:00:00     
+Package docker-25.0.6-1.amzn2.0.2.x86_64 already installed and latest version           Nothing to do
+```
+### Add ec2-user to the Docker group
+
+shis is to avoid needing "sudo" before any docker command
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ sudo usermod -a -G docker ec2-user
+[ec2-user@ip-10-0-1-220 ~]$ id ec2-user
+uid=1000(ec2-user)  gid=1000(ec2-user)  groups=1000(ec2-user),
+4(adm),    10(wheel),    190(systemd-journal),    992(docker)
+```
+
+### new group command (update group)
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ newgrp docker
+[ec2-user@ip-10-0-1-220 ~]$ docker ps
+Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
+[ec2-user@ip-10-0-1-220 ~]$ systemctl start docker.service 
+Failed to start docker.service: The name org.freedesktop.PolicyKit1 was not provided by any .service files
+See system logs and 'systemctl status docker.service' for details.
+
+```
+
+    newgrp : command used to change the current group ID during a login session.
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ systemctl start docker.service 
+Failed to start docker.service: The name org.freedesktop.PolicyKit1 was not provided by any .service files
+See system logs and 'systemctl status docker.service' for details.
+
+[ec2-user@ip-10-0-1-220 ~]$ sudo yum install policykit-1
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+amzn2-core                                                                                | 3.6 kB  00:00:00     
+No package policykit-1 available.
+Error: Nothing to do
+[ec2-user@ip-10-0-1-220 ~]$ sudo systemctl start docker.service 
+```
+
+  newgrp does not apply till we restart the SSH connection to the VPS
+  "sudo systemctl start docker.service " worked fine in this case
+  adfter reset no sudo is needed
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ systemctl status docker.service  -l
+● docker.service - Docker Application Container Engine
+   Loaded: loaded (/usr/lib/systemd/system/docker.service; disabled; vendor preset: disabled)
+   Active: active (running) since Fri 2024-10-04 17:06:22 UTC; 4h 23min ago
+     Docs: https://docs.docker.com
+  Process: 28016 ExecStartPre=/usr/libexec/docker/docker-setup-runtimes.sh (code=exited, status=0/SUCCESS)
+  Process: 28015 ExecStartPre=/bin/mkdir -p /run/docker (code=exited, status=0/SUCCESS)
+ Main PID: 28020 (dockerd)
+    Tasks: 9
+   Memory: 236.8M
+   CGroup: /system.slice/docker.service
+           └─28020 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock 
+                                             --default-ulimit nofile=32768:65536
+LOGS:
+Oct 04 17:06:21 ip-10-0-1-220.us-west-2.compute.internal 
+  systemd[1]: Starting Docker Application Container Engine...
+  time= "2024-10-04 :
+    T "17:06:22.143107241Z" level=info    msg="Starting up"
+    T "17:06:22.316614158Z" level=info    msg="Loading containers: start."
+    T "17:06:22.514831737Z" level=info    msg="Loading containers: done."
+    T "17:06:22.536388524Z" level=warning msg="WARNING: bridge-nf-call-iptables is disabled"
+    T "17:06:22.536745665Z" level=warning msg="WARNING: bridge-nf-call-ip6tables is disabled"
+    T "17:06:22.536999208Z" level=info    msg="Docker daemon" commit=b08a51f containerd-snapshotter=false storage-driver=overlay2 version=25.0.6
+    T "17:06:22.538302702Z" level=info    msg="Daemon has completed initialization"
+    T "17:06:22.584866238Z" level=info    msg="API listen on /run/docker.sock"
+Oct 04 17:06:22 ip-10-0-1-220.us-west-2.compute.internal 
+  systemd[1]: Started Docker Application Container Engine.
+```
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
+```
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ docker pull mariadb:lastest   # TYPO ERROR
+Error response from daemon: manifest for mariadb:lastest not found: manifest unknown: manifest unknown
+[ec2-user@ip-10-0-1-220 ~]$ docker pull mariadb:latest    # FIRST PULL  (INSTALL)
+latest: Pulling from library/mariadb
+eda6120e237e: Pull complete 
+3bea7484bf1d: Pull complete 
+97768484d3db: Pull complete 
+f7c4ca00d7c4: Pull complete 
+200feec9a56a: Pull complete 
+4c3b42e2cd08: Pull complete 
+e287e4cde285: Pull complete 
+c19c18c0f9a2: Pull complete 
+Digest: sha256:9e7695800ab8fa72d75053fe536b090d0c9373465b32a073c73bc7940a2e8dbe
+Status: Downloaded newer image for mariadb:latest
+docker.io/library/mariadb:latest
+[ec2-user@ip-10-0-1-220 ~]$ docker pull mariadb:latest  # SECOND PULL  (UPDATE-CHECK)
+latest: Pulling from library/mariadb
+Digest: sha256:9e7695800ab8fa72d75053fe536b090d0c9373465b32a073c73bc7940a2e8dbe
+Status: Image is up to date for mariadb:latest
+docker.io/library/mariadb:latest
+```
+
+
+
+```sh
+docker run --detach-name mariadb -env MARIADB_USER=lab-user --env MARIADB_PASSWORD=lab-secret-password --env MARIADB_ROOT_PASSWORD=lab-root-password -p 3306:3306 mariadb: latest
+```
+Docker run :
+            detach : run in the background  (wont takeover this shell, we can still use it)
+            container_name   = mariadb
+            -p port =  3306  = mariadb's default
+            container_ image =  mariadb: latest
+            envirovment_variables :
+                      root password = lab-root-password
+                      DataBase User = lab-user
+                      DB password   = lab-secret-password
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ docker run --detach --name mariadb --env MARIADB_USER=lab-user --env MARIADB_PASSWORD=lab-secret-password --env MARIADB_ROOT_PASSWORD=lab-root-password -p 3306:3306 mariadb:latest
+3cac1b4ffb27851d4119841bf57dd9e1410d94f375cf32b6c62d6c28699e35a3
+
+[ec2-user@ip-10-0-1-220 ~]$ docker ps
+CONTAINER ID   IMAGE            COMMAND                  CREATED          STATUS          
+3cac1b4ffb27   mariadb:latest   "docker-entrypoint.s…"   38 seconds ago   Up 37 seconds   
+PORTS                                       NAMES
+0.0.0.0:3306->3306/tcp, ::: 3306->3306/tcp   mariadb
+```
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ docker logs mariadb
+2024-10-04 22:41:15+00:00 [Note] [Entrypoint]: Entrypoint script for MariaDB Server 1:11.5.2+maria~ubu2404 started.
+2024-10-04 22:41:15+00:00 [Warn] [Entrypoint]: /sys/fs/cgroup/memory:/docker/3cac1b4ffb27851d4119841bf57dd9e1410d94f375cf32b6c62d6c28699e35a3
+10: perf_event:/docker/3cac1b4ffb27851d4119841bf57dd9e1410d94f375cf32b6c62d6c28699e35a3
+9:  freezer:/docker/3cac1b4ffb27851d4119841bf57dd9e1410d94f375cf32b6c62d6c28699e35a3
+8:  cpuset:/docker/3cac1b4ffb27851d4119841bf57dd9e1410d94f375cf32b6c62d6c28699e35a3
+7:  cpu,cpuacct:/docker/3cac1b4ffb27851d4119841bf57dd9e1410d94f375cf32b6c62d6c28699e35a3
+6:  pids:/docker/3cac1b4ffb27851d4119841bf57dd9e1410d94f375cf32b6c62d6c28699e35a3
+5:  hugetlb:/docker/3cac1b4ffb27851d4119841bf57dd9e1410d94f375cf32b6c62d6c28699e35a3
+4:  blkio:/docker/3cac1b4ffb27851d4119841bf57dd9e1410d94f375cf32b6c62d6c28699e35a3
+3:  devices:/docker/3cac1b4ffb27851d4119841bf57dd9e1410d94f375cf32b6c62d6c28699e35a3
+2:  net_cls,net_prio:/docker/3cac1b4ffb27851d4119841bf57dd9e1410d94f375cf32b6c62d6c28699e35a3
+1:  name=systemd:/docker/3cac1b4ffb27851d4119841bf57dd9e1410d94f375cf32b6c62d6c28699e35a3/memory.pressure not writable, functionality unavailable to MariaDB
+2024-10-04 22:41:15+00:00
+[Note] [Entrypoint]: Switching to dedicated user 'mysql'
+[Note] [Entrypoint]: Entrypoint script for MariaDB Server 1:11.5.2+maria~ubu2404 started.
+[Note] [Entrypoint]: Initializing database files
+[Warning] mariadbd: io_uring_queue_init() failed with errno 95
+[Warning] InnoDB  : liburing disabled: falling back to innodb_use_native_aio=OFF
+[Note] [Entrypoint]: Database files initialized
+[Note] [Entrypoint]: Starting temporary server
+[Note] [Entrypoint]: Waiting for server startup
+[Note]  Starting MariaDB 11.5.2-MariaDB-ubu2404 source revision ea75a0b6009b0251e83193cd38c3974e36b65e06 server_uid KjyTHYnzkWxRQBEIh5uvt04ggeY= as process 86
+[Note]    InnoDB: Compressed tables use zlib 1.3
+[Note]    InnoDB: Number of transaction pools: 1
+[Note]    InnoDB: Using crc32 + pclmulqdq instructions
+[Note]    mariadbd: O_TMPFILE is not supported on /tmp (disabling future attempts)
+[Warning] mariadbd: io_uring_queue_init() failed with errno 95
+[Warning] InnoDB: liburing disabled: falling back to innodb_use_native_aio=OFF
+[Note]    InnoDB: Initializing buffer pool, total size = 128.000MiB, chunk size = 2.000MiB
+[Note]    InnoDB: Completed initialization of buffer pool
+[Note]    InnoDB: File system buffers for log disabled (block size=512 bytes)
+[Note]    InnoDB: End of log at LSN=47763
+[Note]    InnoDB: Opened 3 undo tablespaces
+[Note]    InnoDB: 128 rollback segments in 3 undo tablespaces are active.
+[Note]    InnoDB: Setting file './ibtmp1' size to 12.000MiB. Physically writing the file full; Please wait ...
+[Note]    InnoDB: File './ibtmp1' size is now 12.000MiB.
+[Note]    InnoDB: log sequence number 47763; transaction id 14
+[Note] Plugin 'FEEDBACK' is disabled.
+[Note] Plugin 'wsrep-provider' is disabled.
+[Note] mariadbd: Event Scheduler: Loaded 0 events
+[Note] mariadbd: ready for connections.
+Version: '11.5.2-MariaDB-ubu2404'  socket: '/run/mysqld/mysqld.sock'  port: 0  mariadb.org binary distribution
+[Note] [Entrypoint]: Temporary server started.
+[Note] [Entrypoint]: Creating user lab-user
+[Note] [Entrypoint]: Securing system users (equivalent to running mysql
+[Note] [Entrypoint]: Stoppin
+[Note] mariadbd (initiated by: unknown
+[Note] InnoDB: FTS optimi
+[Note] InnoDB: St
+[Note] InnoDB: Dumping buffer pool(s) to /var/lib/my
+[Note] InnoDB: Buffer pool(s) dump completed 
+[Note] InnoDB: Removed temporary tablespace dat
+[Note] InnoDB: Shutdown completed; log sequence number 47763;
+[Note] mariadbd: Shutdown complete
+
+2024-10-04 22:41:21+00:00 
+[Note] [Entrypoint]: Temporary server stopped
+[Note] [Entrypoint]: MariaDB init process done. Ready for start up.
+
+2024-10-04 22:41:22 
+[Note] Starting MariaDB 11.5.2-MariaDB-ubu2404 source revision ea75a0b6009b0251e83193cd38c3974e36b65e06 server_uid KjyTHYnzkWxRQBEIh5uvt04ggeY= as process 1
+[Note] InnoDB: Compressed tables use zlib 1.3
+[Note] InnoDB: Number of transaction pools: 1
+[Note] InnoDB: Using crc32 + pclmulqdq instructions
+[Note] mariadbd: O_TMPFILE is not supported on /tmp (disabling future attempts)
+[Warning] mariadbd: io_uring_queue_init() failed with errno 95
+[Warning] InnoDB: liburing disabled: falling back to innodb_use_native_aio=OFF
+[Note] InnoDB: Initializing buffer pool, total size = 128.000MiB, chunk size = 2.000MiB
+[Note] InnoDB: Completed initialization of buffer pool
+[Note] InnoDB: File system buffers for log disabled (block size=512 bytes)
+[Note] InnoDB: End of log at LSN=47763
+[Note] InnoDB: Opened 3 undo tablespaces
+[Note] InnoDB: 128 rollback segments in 3 undo tablespaces are active.
+[Note] InnoDB: Setting file './ibtmp1' size to 12.000MiB. Physically writing the file full; Please wait ...
+[Note] InnoDB: File './ibtmp1' size is now 12.000MiB.
+[Note] InnoDB: log sequence number 47763; transaction id 14
+[Note] Plugin 'FEEDBACK' is disabled.
+[Note] Plugin 'wsrep-provider' is disabled.
+[Note] InnoDB: Loading buffer pool(s) from /var/lib/mysql/ib_buffer_pool
+[Note] InnoDB: Buffer pool(s) load completed at 241004 22:41:22
+2024-10-04 22:41:26 
+[Note] Server socket created on IP: '0.0.0.0'.
+[Note] Server socket created on IP: '::'.
+[Note] mariadbd: Event Scheduler: Loaded 0 events
+[Note] mariadbd: ready for connections.
+Version: '11.5.2-MariaDB-ubu2404'  socket: '/run/mysqld/mysqld.sock'  port: 3306  mariadb.org binary distribution
+
+```
+
+### INSTALL MariaDB
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ sudo yum install mariadb
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+amzn2-core                                                                                                                                                     | 3.6 kB  00:00:00     
+amzn2extra-docker                                                                                                                                              | 2.9 kB  00:00:00     
+amzn2extra-kernel-5.10                                                                                                                                         | 3.0 kB  00:00:00     
+Resolving Dependencies
+--> Running transaction check
+---> Package mariadb.x86_64 1:5.5.68-1.amzn2.0.1 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+==========================================================================
+ Package     Arch       Version                   Repository         Size
+==========================================================================
+Installing:
+ mariadb     x86_64     1:5.5.68-1.amzn2.0.1      amzn2-core        8.8 M
+                                                                                                                                                                               
+Transaction Summary
+==========================================================================
+Install  1 Package
+
+Total download size: 8.8 M
+Installed size:       49 M
+Is this ok [y/d/N]: y  
+Downloading packages:
+mariadb-5.5.68-1.amzn2.0.1.x86_64.rpm  
+                                                                                                                 | 8.8 MB  00:00:00     
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : 1:mariadb-5.5.68-1.amzn2.0.1.x86_64                                                                                                                                1/1 
+  Verifying  : 1:mariadb-5.5.68-1.amzn2.0.1.x86_64                                                                                                                                1/1 
+
+Installed:
+  mariadb.x86_64 1:5.5.68-1.amzn2.0.1                                                                                                                                                 
+
+Complete!
+```
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ mysql --host 127.0.0.1 --port 3306 --user lab-user --password
+Enter password: #  lab-secret-password
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 3
+Server version: 11.5.2-MariaDB-ubu2404 mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
++--------------------+
+1 row in set (0.00 sec)
+
+MariaDB [(none)]> quit
+Bye
+
+[ec2-user@ip-10-0-1-220 ~]$ docker stop mariadb
+mariadb
+
+[ec2-user@ip-10-0-1-220 ~]$ docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
+[ec2-user@ip-10-0-1-220 ~]$ docker ps -a
+CONTAINER ID   IMAGE            COMMAND                  CREATED          STATUS                      PORTS     NAMES
+3cac1b4ffb27   mariadb:latest   "docker-entrypoint.s…"   21 minutes ago   Exited (0) 27 seconds ago             mariadb
+
+[ec2-user@ip-10-0-1-220 ~]$ docker ps
+CONTAINER ID   IMAGE            COMMAND                  CREATED          STATUS         PORTS                                       NAMES
+3cac1b4ffb27   mariadb:latest   "docker-entrypoint.s…"   22 minutes ago   Up 3 seconds   0.0.0.0:3306->3306/tcp, :::3306->3306/tcp   mariadb
+
+```
+
+# 5 BASIC  BASH  SCRIPTING
+
+## 5.1
+## 5.2
+## 5.3
+## 5.4
+## 5.5
+## 5.6
+## 5.7
+
+# 6 LINUX SECURITY
+
+## 6.1
+## 6.2
+## 6.3
+## 6.4
+## 6.5
+## 6.6
+## 6.7
+
+# 7 LINUX COMMANDS & DUNCTIONALITIES
+
+## 7.1
+## 7.2
+## 7.3
+## 7.4
+## 7.5
+## 7.6
+## 7.7
+
+# 8 CONCLUSION
+
+## 8.1
+## 8.2
+## 8.3
+## 8.4
+## 8.5
+## 8.6
+## 8.7
+
+
+

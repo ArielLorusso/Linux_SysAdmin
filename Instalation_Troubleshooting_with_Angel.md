@@ -140,3 +140,29 @@ To https://github.com/NeuralNine/secret-private-repo.git
 cfb155e..4b593a1 main -> main
 neuralnine@pop-os:~/Desktop/secret-private-repo$
 ```
+
+# 2do dia
+
+CD: Continous Delivery  (or Deploy)
+Develop -> Integrate -> Artifact -> Trigger+Test -> deploy
+
+Pipelines Azure Jenkims Gitlab
+
+VM Terraform : definir infraestructura como codigo
+                ejecuta CLI AWS en mi nombre con la config de archivos.tf
+
+         estado  atial -> deseado  machea con comandos AWS eliminando y Agregando cosas
+
+        como es codigo se puede geardar en repositorios
+
+
+AWS visivilidad X ZONA !!!  
+    OREGON (ec-west-2a) PARA ESTE CURSO
+
+
+Azure x ejemplo trabaja con visibilidad por Subscripciones
+    Resource Gropu & Tags  &  Subscription
+    son modos de separar las areas de teabajo
+
+
+# 3er dia ?
