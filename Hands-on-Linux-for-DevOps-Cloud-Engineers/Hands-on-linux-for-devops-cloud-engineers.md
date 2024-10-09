@@ -1,6 +1,22 @@
 codered.eccouncil.org/courseVideo/hands-on-linux-for-devops-cloud-engineers
 https://github.com/ec-council-learning/Hands-on-Linux-for-DevOps-Cloud-Engineers/tree/main
 
+# 0 just commands 
+
+```sh
+man ls | grep -n -e '-h' -A 2
+mkdir -p ./home{a,b}/{a,y,z}
+cd    # home
+cd -  # back last position
+cd .. # parent dir
+touch file{1..10}.txt # make 10 files
+tail error.log
+tail -f error.log   # follow changes ( auto update ) 
+history 5           # last 5 commands
+grep -A 2 -B 2 -m hola # 2 lines After & Before matching hola
+```
+
+
 # Chapter 1  Introduction to Linux
 
 ## 1.1 What is Linux
@@ -3004,16 +3020,16 @@ Installed size:       49 M
 Is this ok [y/d/N]: y  
 Downloading packages:
 mariadb-5.5.68-1.amzn2.0.1.x86_64.rpm  
-                                                                                                                 | 8.8 MB  00:00:00     
+                                                                 | 8.8 MB  00:00:00     
 Running transaction check
 Running transaction test
 Transaction test succeeded
 Running transaction
-  Installing : 1:mariadb-5.5.68-1.amzn2.0.1.x86_64                                                                                                                                1/1 
-  Verifying  : 1:mariadb-5.5.68-1.amzn2.0.1.x86_64                                                                                                                                1/1 
+  Installing : 1:mariadb-5.5.68-1.amzn2.0.1.x86_64               1/1 
+  Verifying  : 1:mariadb-5.5.68-1.amzn2.0.1.x86_64               1/1 
 
 Installed:
-  mariadb.x86_64 1:5.5.68-1.amzn2.0.1                                                                                                                                                 
+  mariadb.x86_64 1:5.5.68-1.amzn2.0.1 
 
 Complete!
 ```
@@ -3059,43 +3075,1458 @@ CONTAINER ID   IMAGE            COMMAND                  CREATED          STATUS
 
 # 5 BASIC  BASH  SCRIPTING
 
-## 5.1
-## 5.2
-## 5.3
-## 5.4
-## 5.5
-## 5.6
-## 5.7
+## 5.1 bash fundamentals 
+
+### install git 
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ sudo yum install git
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+amzn2-core                                                                                                                                                      | 3.6 kB  00:00:00     
+amzn2extra-docker                                                                                                                                               | 2.9 kB  00:00:00     
+amzn2extra-kernel-5.10                                                                                                                                          | 3.0 kB  00:00:00     
+Resolving Dependencies
+--> Running transaction check
+---> Package git.x86_64 0:2.40.1-1.amzn2.0.3 will be installed
+--> Processing Dependency: git-core = 2.40.1-1.amzn2.0.3 for package: git-2.40.1-1.amzn2.0.3.x86_64
+--> Processing Dependency: git-core-doc = 2.40.1-1.amzn2.0.3 for package: git-2.40.1-1.amzn2.0.3.x86_64
+--> Processing Dependency: perl-Git = 2.40.1-1.amzn2.0.3 for package: git-2.40.1-1.amzn2.0.3.x86_64
+--> Processing Dependency: perl(Git) for package: git-2.40.1-1.amzn2.0.3.x86_64
+--> Processing Dependency: perl(Term::ReadKey) for package: git-2.40.1-1.amzn2.0.3.x86_64
+--> Running transaction check
+---> Package git-core.x86_64 0:2.40.1-1.amzn2.0.3 will be installed
+---> Package git-core-doc.noarch 0:2.40.1-1.amzn2.0.3 will be installed
+---> Package perl-Git.noarch 0:2.40.1-1.amzn2.0.3 will be installed
+--> Processing Dependency: perl(Error) for package: perl-Git-2.40.1-1.amzn2.0.3.noarch
+---> Package perl-TermReadKey.x86_64 0:2.30-20.amzn2.0.2 will be installed
+--> Running transaction check
+---> Package perl-Error.noarch 1:0.17020-2.amzn2 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+=======================================================================================================================================================================================
+ Package                                        Arch                                 Version                                            Repository                                Size
+=======================================================================================================================================================================================
+Installing:
+ git                                            x86_64                               2.40.1-1.amzn2.0.3                                 amzn2-core                                54 k
+Installing for dependencies:
+ git-core                                       x86_64                               2.40.1-1.amzn2.0.3                                 amzn2-core                                10 M
+ git-core-doc                                   noarch                               2.40.1-1.amzn2.0.3                                 amzn2-core                               3.0 M
+ perl-Error                                     noarch                               1:0.17020-2.amzn2                                  amzn2-core                                32 k
+ perl-Git                                       noarch                               2.40.1-1.amzn2.0.3                                 amzn2-core                                42 k
+ perl-TermReadKey                               x86_64                               2.30-20.amzn2.0.2                                  amzn2-core                                31 k
+
+Transaction Summary
+=======================================================================================================================================================================================
+Install  1 Package (+5 Dependent packages)
+
+Total download size: 13 M
+Installed size: 44 M
+Is this ok [y/d/N]: y
+Downloading packages:
+(1/6): git-2.40.1-1.amzn2.0.3.x86_64.rpm                                                                                                                        |  54 kB  00:00:00     
+(2/6): git-core-doc-2.40.1-1.amzn2.0.3.noarch.rpm                                                                                                               | 3.0 MB  00:00:00     
+(3/6): perl-Error-0.17020-2.amzn2.noarch.rpm                                                                                                                    |  32 kB  00:00:00     
+(4/6): perl-Git-2.40.1-1.amzn2.0.3.noarch.rpm                                                                                                                   |  42 kB  00:00:00     
+(5/6): git-core-2.40.1-1.amzn2.0.3.x86_64.rpm                                                                                                                   |  10 MB  00:00:00     
+(6/6): perl-TermReadKey-2.30-20.amzn2.0.2.x86_64.rpm                                                                                                            |  31 kB  00:00:00     
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                                                                                   46 MB/s |  13 MB  00:00:00     
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : git-core-2.40.1-1.amzn2.0.3.x86_64                                                                                                                                  1/6 
+  Installing : git-core-doc-2.40.1-1.amzn2.0.3.noarch                                                                                                                              2/6 
+  Installing : 1:perl-Error-0.17020-2.amzn2.noarch                                                                                                                                 3/6 
+  Installing : perl-TermReadKey-2.30-20.amzn2.0.2.x86_64                                                                                                                           4/6 
+  Installing : perl-Git-2.40.1-1.amzn2.0.3.noarch                                                                                                                                  5/6 
+  Installing : git-2.40.1-1.amzn2.0.3.x86_64                                                                                                                                       6/6 
+  Verifying  : perl-TermReadKey-2.30-20.amzn2.0.2.x86_64                                                                                                                           1/6 
+  Verifying  : git-2.40.1-1.amzn2.0.3.x86_64                                                                                                                                       2/6 
+  Verifying  : 1:perl-Error-0.17020-2.amzn2.noarch                                                                                                                                 3/6 
+  Verifying  : git-core-2.40.1-1.amzn2.0.3.x86_64                                                                                                                                  4/6 
+  Verifying  : git-core-doc-2.40.1-1.amzn2.0.3.noarch                                                                                                                              5/6 
+  Verifying  : perl-Git-2.40.1-1.amzn2.0.3.noarch                                                                                                                                  6/6 
+
+Installed:
+  git.x86_64 0:2.40.1-1.amzn2.0.3                                                                                                                                                      
+
+Dependency Installed:
+  git-core.x86_64 0:2.40.1-1.amzn2.0.3              git-core-doc.noarch 0:2.40.1-1.amzn2.0.3       perl-Error.noarch 1:0.17020-2.amzn2       perl-Git.noarch 0:2.40.1-1.amzn2.0.3      
+  perl-TermReadKey.x86_64 0:2.30-20.amzn2.0.2      
+
+Complete!
+[ec2-user@ip-10-0-1-220 ~]$ 
+
+```
+
+### test git help
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ git
+usage: git [-v | --version] [-h | --help] [-C <path>] [-c <name>=<value>]
+           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]
+           [-p | --paginate | -P | --no-pager] [--no-replace-objects] [--bare]
+           [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]
+           [--config-env=<name>=<envvar>] <command> [<args>]
+
+These are common Git commands used in various situations:
+
+start a working area (see also: git help tutorial)
+   clone     Clone a repository into a new directory
+   init      Create an empty Git repository or reinitialize an existing one
+
+work on the current change (see also: git help everyday)
+   add       Add file contents to the index
+   mv        Move or rename a file, a directory, or a symlink
+   restore   Restore working tree files
+   rm        Remove files from the working tree and from the index
+
+examine the history and state (see also: git help revisions)
+   bisect    Use binary search to find the commit that introduced a bug
+   diff      Show changes between commits, commit and working tree, etc
+   grep      Print lines matching a pattern
+   log       Show commit logs
+   show      Show various types of objects
+   status    Show the working tree status
+
+grow, mark and tweak your common history
+   branch    List, create, or delete branches
+   commit    Record changes to the repository
+   merge     Join two or more development histories together
+   rebase    Reapply commits on top of another base tip
+   reset     Reset current HEAD to the specified state
+   switch    Switch branches
+   tag       Create, list, delete or verify a tag object signed with GPG
+
+```
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ git clone https://github.com/codered-by-ec-council/Hands-on-Linux-for-DevOps-Cloud-Engineers.git
+Cloning into 'Hands-on-Linux-for-DevOps-Cloud-Engineers'...
+remote: Enumerating objects: 83, done.
+remote: Counting objects: 100% (83/83), done.
+remote: Compressing objects: 100% (66/66), done.
+remote: Total 83 (delta 22), reused 70 (delta 14), pack-reused 0 (from 0)
+Receiving objects: 100% (83/83), 196.79 KiB | 7.57 MiB/s, done.
+Resolving deltas: 100% (22/22), done.
+```
+
+```sh
+#!/bin/bash   // this is a shebang & tells the OS how to interpret this file
+#
+# This is a comment ignored by bash
+#
+echo "Hello everyone" # print in screen
+
+exit 1 # returns out and alerts,  0=ok 1=error
+
+echo "This will not be printed" # wont execute cause exit
+~                                                                                                                                                                                      
+~                                                                                                                                                                                      
+ctrl^C -> :q! to exit whitout saving               
+```
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ chmod +x Hands-on-Linux-for-DevOps-Cloud-Engineers/section5/dummy.sh 
+[ec2-user@ip-10-0-1-220 ~]$ Hands-on-Linux-for-DevOps-Cloud-Engineers/section5/dummy.sh 
+Hello everyone
+```
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ echo $? # the $? (dummy) lets us see last exit code
+1    # is 0 by default but we changed it with dummy.sh
+```
+### VARIABLES
+
+set up   with :   label= value
+use them with : ${label}
+
+labels should be lowecase to avoid confusion with envirovment variables
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ vim Hands-on-Linux-for-DevOps-Cloud-Engineers/section5/variables.sh 
+#!/bin/bash
+#
+cpus=1
+memory=1024
+username="ec2-user"
+
+echo "This host has ${cpus} CPU and ${memory} KB of memory"
+echo "The active user is ${username}"
+~
+~ 
+~
+~
+```
+### 2 ARRAYS types
+
+bash has 2 types od arrays dimentional_index  and asociative
+dimentional_index : uses a index to select a value from the array
+asociative : uses a key and value pair to store information
+
+```sh
+#!/bin/bash
+#
+declare -a distros          # declaration -a array
+distros[0]="Amazon Linux"   # set
+distros[1]="Ubuntu" 
+distros[2]="RedHat"
+distros[3]="Debian"
+distros[5]="Arch"
+
+echo "${distros[@]}"    # @ = use all the array elements separaed by ' '
+unset distros[3]        # errase elenet
+echo "----------------"
+echo "${distros[@]}"
+
+
+declare -A commands       # declaration   -A   Asociative array
+commands["ls"]="/bin"     #  "ls" as key       "/bin" as value
+commands["cat"]="/bin"    #  "cat" as key      "/bin" as value
+
+echo "The cat command is locaed in the ${commands[cat]} directory"
+~ 
+~                                                                                                                                        
+"Hands-on-Linux-for-DevOps-Cloud-Engineers/section5/arrays.sh" 20L, 359B     
+```
+
+### IF & ELSE statements
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ vim Hands-on-Linux-for-DevOps-Cloud-Engineers/section5/if.sh 
+#!/bin/bash
+#
+cpu=6
+
+# single branch
+if [ $cpu -gt 4 ]     # []=test   -gt = greather than  -lt -et = equel to -get -let
+then
+        echo "Suitable for virtualization"
+fi                    # end if
+
+echo
+# else
+if [ $cpu -gt 4 ]
+then
+        echo "Suitable for virtualization"
+else                  # if cpu -let 4 
+        echo "Your milage may vary when using virtual machines"
+fi                    # end if
+
+# built in test if file exists
+if [ -f /usr/local/engineering/akira ]
+then
+        echo "file exists"
+else
+        echo "the file does not exist"
+fi
+~                                                                                                                                                                                      
+~                                                                                                                                                                                      
+~                                                                                                                                                                                      
+~
+[ec2-user@ip-10-0-1-220 ~]$ ./Hands-on-Linux-for-DevOps-Cloud-Engineers/section5/if.sh 
+Suitable for virtualization
+
+Suitable for virtualization
+the file does not exist
+
+```
+### WHILE loop
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ cat ./Hands-on-Linux-for-DevOps-Cloud-Engineers/section5/loops.sh 
+#!/bin/bash
+#
+declare -a distros
+distros[0]="Amazon Linux"
+distros[1]="Ubuntu"
+distros[2]="RedHat"
+distros[3]="Debian"
+distros[5]="Arch"
+
+
+# print out each distro
+for distro in "${distros[@]}"   # for elements in array
+do
+	echo $distro
+done                      # end for
+
+echo "----------------"
+
+# print out each distro until you hit RedHat then stop
+for distro in "${distros[@]}"
+do
+	if [ "$distro" = "RedHat" ]
+	then
+		break                       # break to exit loop
+	fi                            # end if
+	echo $distro
+done                      # end loop
+
+# while loop
+echo "Count up"
+count=0
+while [ $count -lt 10 ]   
+do
+	echo "$count"
+	((count++))         # post increment
+done
+
+echo "Count down"
+# count backwards
+count=10
+while [ $count -gt 0 ]
+do
+	echo "$count"
+	((count--))
+	sleep 0.2
+done
+
+echo "blast off!"
+```
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ ./Hands-on-Linux-for-DevOps-Cloud-Engineers/section5/loops.sh 
+Amazon Linux  Ubuntu  RedHat  Debian  Arch
+----------------
+Amazon Linux
+Ubuntu
+Count up
+0  1  2  3  4  5  6  7  8  9
+Count down
+10  9  8  7  6  5  4  3  2  1
+blast off!
+```
+
+### SWITCH CASE
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ cat ./Hands-on-Linux-for-DevOps-Cloud-Engineers/section5/switch.sh 
+#!/bin/bash
+#
+echo "Enter a persons name?"
+read user
+
+case $user in       # switch for user
+	akira)                  # case akira
+		echo "I do not know them well"
+		;;
+	leilani)          # case leilani
+		echo "We go way back"
+		;;
+	*)                # case default   * = any
+		echo "I have no idea who ${user} is"
+		;;
+esac
+[ec2-user@ip-10-0-1-220 ~]$ ./Hands-on-Linux-for-DevOps-Cloud-Engineers/section5/switch.sh 
+Enter a persons name?
+ariel
+I have no idea who ariel is
+[ec2-user@ip-10-0-1-220 ~]$ ./Hands-on-Linux-for-DevOps-Cloud-Engineers/section5/switch.sh 
+Enter a persons name?
+akira
+I do not know them well
+[ec2-user@ip-10-0-1-220 ~]$ ./Hands-on-Linux-for-DevOps-Cloud-Engineers/section5/switch.sh 
+Enter a persons name?
+leilani
+We go way back
+```
+
+### FUNCTIONS
+
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ cat ./Hands-on-Linux-for-DevOps-Cloud-Engineers/section5/functions.sh 
+#!/bin/bash
+#
+
+
+get_hostname() {
+	echo $HOSTNAME        # prints ENVIRONMENT VARIUABLE  = ip-10-0-1-220.us-west-2.compute.internal
+}
+
+get_home() {
+	echo $HOME           #  prints ENVIRONMENT VARIUABLE = /home/ec2-user
+}
+
+# we call the functions with $() and variables with ${}
+echo "I live in the $(get_home) directory."
+
+echo
+
+list_files() {
+        echo "There are $# arguments"   #  '$#' : number of arguments 
+	echo "Argument 1 is $1"
+	ls -al $1
+}
+
+list_files $(get_home)  hola          #  get_home = function as argument of funtion
+
+# function1 $(function2) :
+#           $(function2) = output_of_function2
+# function1 "$output_of_function2"
+
+[ec2-user@ip-10-0-1-220 ~]$ ./Hands-on-Linux-for-DevOps-Cloud-Engineers/section5/functions.sh 
+Hello, I am ip-10-0-1-220.us-west-2.compute.internal. 
+I live in the /home/ec2-user directory.
+
+There are 1 arguments
+Argument 1 is /home/ec2-user
+total 44
+drwx------  4 ec2-user ec2-user   221 Oct  5 22:30 .
+drwxr-xr-x  4 root     root        35 Oct  2 11:50 ..
+-rw-------  1 ec2-user ec2-user  4240 Oct  5 00:15 .bash_history
+-rw-r--r--  1 ec2-user ec2-user    18 Jul 15  2020 .bash_logout
+-rw-r--r--  1 ec2-user ec2-user   193 Jul 15  2020 .bash_profile
+-rw-r--r--  1 ec2-user ec2-user   231 Jul 15  2020 .bashrc
+-rw-rw-r--  1 ec2-user ec2-user     0 Oct  2 18:24 config.yaml
+-rw-r--r--  1 root     root         0 Oct  2 18:24 contributors
+drwxrwxr-x 12 ec2-user ec2-user   253 Oct  5 19:27 Hands-on-Linux-for-DevOps-Cloud-Engineers
+-rw-------  1 ec2-user ec2-user    16 Oct  4 23:01 .mysql_history
+drwx------  2 ec2-user ec2-user    29 Oct  1 19:49 .ssh
+-rw-------  1 ec2-user ec2-user 17800 Oct  5 22:30 .viminfo
+```
+### More on functions
+
+  I modified the funtions to further understand :
+  Declaration, Arguments, Calling, retuning
+
+```sh
+#!/bin/bash
+#
+
+get_home() {
+	echo $HOME
+	echo "hola"
+}
+
+echo "I live in the $(get_home) directory."
+
+echo
+
+list_files() {
+        echo "There are $# arguments"   # $# = 3     (can be inside or utside text)
+	echo "Argument 2 is" $2 "como esta"   # $2 = hola  (can be inside or utside text)
+	ls $3
+}
+
+list_files $(get_home) '/'
+#          $1 = $HOME
+#          $2 = "hola"
+#          $3 = '/'
+
+ariel @ ariel-All-Series  $ /bin/bash "..../Hands-on-Linux-for-DevOps-Cloud-Engineers/section5/functions.sh"
+I live in the /home/ariel
+hola directory.
+
+There are 3 arguments
+Argument 1 is /home/ariel
+bin   cdrom  dev  home  lib32  libx32      media  opt   root  sbin  srv       sys  usr
+boot  data   etc  lib   lib64  lost+found  mnt    proc  run   snap  swapfile  tmp  var
+```
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ vim gg.sh
+#! /bin/bash
+#
+number=$(( $RANDOM % 10 +1 ))
+
+echo "Gess num between 1 & 10"
+
+guess=0
+
+while [ "$guess" -ne $number ]
+do
+        read guess
+        if [ "$guess" -lt $number ]
+        then
+                echo "Too low"
+        fi      
+        if [ "$guess" -gt $number]
+        then    
+                echo "Too high"
+        fi      
+done    
+echo "you have won!"
+exit 0
+~                                                                                                                                                                                                                                 
+~                                                                                                                                                                                                                                 
+~                                                                                                                                                                                                                                 
+~                                                                                                                                                                                                                                 
+~                                                                                                                                                                                                                                 
+~                                                                                                                                                                                                                                 
+~           
+CTRL^C :X  "quit & save"             
+
+[ec2-user@ip-10-0-1-220 ~]$ ./gg.sh
+-bash: ./gg.sh: Permission denied
+[ec2-user@ip-10-0-1-220 ~]$ ls -l gg.sh
+-rw-rw-r-- 1 ec2-user ec2-user 279 Oct  6 20:04 gg.sh
+[ec2-user@ip-10-0-1-220 ~]$ ./gg.sh
+Gess numberfrom 1 to 10
+5
+Too high
+4
+Too high
+3
+Too high
+2
+you have won!
+[ec2-user@ip-10-0-1-220 ~]$ ./gg.sh
+Gess numberfrom 1 to 10
+4
+you have won!
+[ec2-user@ip-10-0-1-220 ~]$ ./gg.sh
+Gess numberfrom 1 to 10
+2
+Too low
+e       
+./gg.sh: line 12: [: e: integer expression expected
+./gg.sh: line 16: [: e: integer expression expected
+./gg.sh: line 9:  [: e: integer expression expected
+you have won!
+
+```
+
+
+## 5.2 automate backup
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ vim Hands-on-Linux-for-DevOps-Cloud-Engineers/section5/backup.sh 
+
+
+#!/bin/bash
+
+# Check for the directory argument passed in
+backup_dir=""   # Declare Variable for Backup directory
+if [ -z $1 ]  
+    # -z is argument $1 empry ?      $1 == ''  ?
+then    # if nothing was passed in as arg to the script
+        backup_dir="/usr/local/engineering"
+            # set directory to engineering 
+else    # if script has arguments
+        backup_dir=$1   
+            # backup dir = first argument of script
+fi
+
+# check the directory passed in exists
+if [ ! -d $backup_dir ]
+then
+        echo "The $backup_dir directory does not exist. Backup halted"
+        exit 1  # EXIT if we do not have a directory
+fi
+
+# archive name creatioon
+backup_file_name=/tmp/engineering_$(date +%Y-%m-%d_%H%M%S).tar.gz
+
+# get a count of the files in the directory to be backedup
+function files_to_be_backed_up {
+        find $backup_dir -type f | wc -l
+        # find only file type files
+        # | pipe pass to wc
+        # wc : word count command  -list (names od the files)
+}
+
+
+# create the backup archive
+echo "Backing up $(files_to_be_backed_up) files"
+# send any errors to the backup.log file
+tar -czf $backup_file_name $backup_dir 2> /tmp/backup.log
+    # -c create
+    # -z zip compress
+    # -f  file ??
+
+    # 2> : STD_ERR
+
+# check for backup archive
+if [ -f $backup_file_name ]
+then
+        echo "Backup succeeded!"
+else
+        echo "Backup failed!"
+fi
+
+```
+
+```sh
+
+[ec2-user@ip-10-0-1-220 ~]$ ./Hands-on-Linux-for-DevOps-Cloud-Engineers/section5/backup.sh  
+Backing up 0 files
+Backup succeeded!
+[ec2-user@ip-10-0-1-220 ~]$ pwd | Hands-on-Linux-for-DevOps-Cloud-Engineers/section5/backup.sh
+Backing up 0 files
+Backup succeeded!
+[ec2-user@ip-10-0-1-220 ~]$ Hands-on-Linux-for-DevOps-Cloud-Engineers/section5/backup.sh  /home/ec2-user/
+Backing up 76 files
+Backup succeeded!
+[ec2-user@ip-10-0-1-220 ~]$ ls /tmp | grep eng
+engineering_2024-10-06_20:55:01.tar.gz
+engineering_2024-10-06_21:03:39.tar.gz
+engineering_2024-10-06_21:05:01.tar.gz
+```
+
+
+
+### My TESTS & View with tree
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ ./Hands-on-Linux-for-DevOps-Cloud-Engineers/section5/backup.sh  
+The /usr/local/engineering directory does not exist. Backup halted
+[ec2-user@ip-10-0-1-220 ~]$ ls
+config.yaml  contributors  gg.sh  Hands-on-Linux-for-DevOps-Cloud-Engineers
+[ec2-user@ip-10-0-1-220 ~]$ cd ..
+[ec2-user@ip-10-0-1-220 home]$ ls
+akira  ec2-user
+[ec2-user@ip-10-0-1-220 home]$ tree -l2
+-bash: tree: command not found
+[ec2-user@ip-10-0-1-220 home]$ yum install tree
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+You need to be root to perform this command.
+[ec2-user@ip-10-0-1-220 home]$ sudo yum install tree
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+
+---> Package tree.x86_64 0:1.6.0-10.amzn2.0.1 will be installed
+
+==============================================================================
+ Package            Arch       Version               Repository          Size
+ tree               x86_64     1.6.0-10.amzn2.0.1    amzn2-core          47 k
+==============================================================================
+
+Total download  size: 47 k
+Installed       size: 83 k
+Is this ok [y/d/N]: y
+Downloading packages:
+tree-1.6.0-10.amzn2.0.1.x86_64.rpm
+
+                                                                                                                                                          |  47 kB  00:00:00     
+[ec2-user@ip-10-0-1-220 home]$ tree -l2
+tree: Invalid argument -'2'.
+usage: tree [-L level]
+
+[ec2-user@ip-10-0-1-220 home]$ tree -L 2
+.
+├── akira [error opening dir]
+└── ec2-user
+    ├── config.yaml
+    ├── contributors
+    ├── gg.sh
+    └── Hands-on-Linux-for-DevOps-Cloud-Engineers
+[ec2-user@ip-10-0-1-220 home]$ sudo tree -L 2
+.
+├── akira
+└── ec2-user
+    ├── config.yaml
+    ├── contributors
+    ├── gg.sh
+    └── Hands-on-Linux-for-DevOps-Cloud-Engineers
+
+[ec2-user@ip-10-0-1-220 ~]$ sudo mkdir /usr/local/engineering
+[ec2-user@ip-10-0-1-220 ~]$ sudo ls /usr/local
+bin  engeneering  engineering  etc  games  include  lib  lib64	libexec  sbin  share  src
+[ec2-user@ip-10-0-1-220 ~]$ ./Hands-on-Linux-for-DevOps-Cloud-Engineers/section5/backup.sh  
+Backing up 0 files
+Backup succeeded!
+
+```
+
+### Automate backup With Cron
+
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ crontab -l
+no crontab for ec2-user
+[ec2-user@ip-10-0-1-220 ~]$ crontab -e
+no crontab for ec2-user - using an empty one
+
+  @daily /home/ec2-user/Hands-on-Linux-for-DevOps-Cloud-Engineers/section5/backup.sh
+  ~                                                                                                                                                                                                                                 
+  CTRL^C :x to save from vim  
+
+crontab: installing new crontab
+[ec2-user@ip-10-0-1-220 ~]$ crontab -l
+@daily /home/ec2-user/Hands-on-Linux-for-DevOps-Cloud-Engineers/section5/backup.sh
+[ec2-user@ip-10-0-1-220 ~]$ 
+
+
+```
+
+
+```sh
+
+```
+
+
+## 5.3 display System info 
+
+1) Script Print Host Info
+2) EC2 instance metadata service IMDs & BASH
+3) Test & copy script ti Shared location in filesys
+
+```sh
+##  TYPO ERROR
+[ec2-user@ip-10-0-1-220 ~]$ curl -s http://169.254.169.254/lastest/meta-data
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+ <head>
+  <title>404 - Not Found</title>
+....
+##  TYPO ERROR
+[ec2-user@ip-10-0-1-220 ~]$ curl -s http://169.254.169.254/latest/meta-data
+ami-id            # list of options of metadata
+ami-launch-index
+ami-manifest-path
+block-device-mapping/
+events/
+hibernation/
+hostname
+identity-credentials/
+instance-action
+instance-id
+instance-life-cycle
+instance-type
+local-hostname
+local-ipv4
+mac
+metrics/
+network/
+placement/
+profile
+public-hostname
+public-ipv4
+public-keys/
+reservation-id
+security-groups
+services/
+```
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ cat Hands-on-Linux-for-DevOps-Cloud-Engineers/section5/system_info.sh 
+#!/bin/bash
+
+# host
+user=$(whoami)
+active_user_count=$(users | wc -w)
+hostname=$(uname -n)
+disk_used=$(df -Ph | grep xvda1 | awk '{print $4}' | tr -d '\n')
+release=$(cat /etc/system-release)
+
+# AWS IMDSv1
+instance_id=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
+ami_id=$(curl -s http://169.254.169.254/latest/meta-data/ami-id)
+
+# system metrics
+memory1=$(cat /proc/meminfo | grep MemAvailable | awk '{print $2}')
+memory2=$(cat /proc/meminfo | grep MemTotal | awk '{print $2}')
+swap_in_use=$(free | tail -n 1 | awk '{print $3}')
+all_processes=$(ps -Afl | wc -l)
+
+# time of day
+hour=$(date +"%H")
+if [ $hour -lt 12  -a $hour -ge 0 ]
+then
+	time="morning"
+elif [ $hour -lt 17 -a $hour -ge 12 ]
+then
+	time="afternoon"
+else
+	time="evening"
+fi
+
+#System uptime
+uptime=$(cat /proc/uptime | cut -f1 -d.)
+up_days=$((uptime/60/60/24))
+up_hours=$((uptime/60/60%24))
+up_mins=$((uptime/60%60))
+up_secs=$((uptime%60))
+
+#System load
+load1=$(cat /proc/loadavg | awk {'print $1'})
+load5=$(cat /proc/loadavg | awk {'print $2'})
+load15=$(cat /proc/loadavg | awk {'print $3'})
+
+echo "
+
+░█▀█░█░░░█░█▀▀░░░█░░░█▀█░█▀▄░
+░█▀█░█▄█▄█░▀▀█░░░█░░░█▀█░█▀▄░
+░▀░▀░▀░░░▀░▀▀▀░░░▀▀▀░▀░▀░▀▀░░
+
+Good $time $user"
+
+echo "
+===========================================================================
+- Hostname............: ${hostname}
+- Instance ID.........: ${instance_id}
+- AMI ID..............: ${ami_id}
+- Release.............: ${release}
+- Users...............: Currently ${active_user_count} User(s) logged on
+===========================================================================
+- Current user........: ${user}
+- Load................: ${load1}, ${load5}, ${load15} (1, 5, 15 min)
+- Memory used.........: ${memory1} KB / ${memory2} KB
+- Swap in use.........: ${swap_in_use} KB
+- Processes...........: ${all_processes} running
+- System uptime.......: ${up_days} days ${up_hours} hours ${up_mins} minutes ${up_secs} seconds
+- Disk space /........: ${disk_used} remaining
+==========================================================================="
+
+[ec2-user@ip-10-0-1-220 ~]$ Hands-on-Linux-for-DevOps-Cloud-Engineers/section5/system_info.sh 
+
+
+░█▀█░█░░░█░█▀▀░░░█░░░█▀█░█▀▄░
+░█▀█░█▄█▄█░▀▀█░░░█░░░█▀█░█▀▄░
+░▀░▀░▀░░░▀░▀▀▀░░░▀▀▀░▀░▀░▀▀░░
+
+Good morning ec2-user
+
+===========================================================================
+- Hostname............: ip-10-0-1-220.us-west-2.compute.internal
+- Instance ID.........: i-0################
+- AMI ID..............: ami-0################
+- Release.............: Amazon Linux release 2 (Karoo)
+- Users...............: Currently 1 User(s) logged on
+===========================================================================
+- Current user........: ec2-user
+- Load................: 0.00, 0.00, 0.00 (1, 5, 15 min)
+- Memory used.........: 587836 KB / 988916 KB
+- Swap in use.........: 0 KB
+- Processes...........: 100 running
+- System uptime.......: 5 days 8 hours 10 minutes 58 seconds
+- Disk space /........: 6,0G remaining
+===========================================================================
+
+```
+
+
 
 # 6 LINUX SECURITY
 
-## 6.1
-## 6.2
-## 6.3
-## 6.4
-## 6.5
-## 6.6
-## 6.7
+
+## 6.1 Linux Autentification
+
+### 4 PAM Plugin Autentication Modules
+
+Auth:     Is the user autentic to this account ?
+Account:  Does account has access ?
+Password: For changing passwords
+Session:  Managing user sessions
+
+
+### PAM control flags :
+
+  Required
+    Module must success to continue, if fail start allover.
+
+  Requisite
+    like required but will notify the user immediately upon failure
+
+  Sufficient
+    Module can fail, and output is ignored
+
+  Optional
+    Module result is ignored
+
+  Include
+    Collects parameters that match for module arguments
+
+### PAM config files:
+
+  module_interface
+  control_flag
+  module_name module_arguments
+
+Eg: auth required pam_unix.so
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ sudo cat /etc/pam.d/sshd 
+#%PAM-1.0
+# MODULE_intrfac    CTRL_FLAG   MODULE_NAME
+auth	            required	   pam_sepermit.so
+auth              substack     password-auth
+auth              include      postlogin
+# Used with polkit to reauthorize users in remote sessions
+-auth             optional     pam_reauthorize.so prepare
+account           required     pam_nologin.so
+account           include      password-auth
+password          include      password-auth
+# pam_selinux.so close should be the first session rule
+session           required     pam_selinux.so close
+session           required     pam_loginuid.so
+# pam_selinux.so open should only be followed by sessions to be executed in the user context
+session           required     pam_selinux.so open env_params
+session           required     pam_namespace.so
+session           optional     pam_keyinit.so force revoke
+session           include      password-auth
+session           include      postlogin
+# Used with polkit to reauthorize users in remote sessions
+-session          optional     pam_reauthorize.so prepare
+[ec2-user@ip-10-0-1-220 ~]$ 
+```
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ man pam_sepermit  
+
+NAME       pam_sepermit module allows/deny login depending on SELinux enforcement state
+
+SYNOPSIS   pam_sepermit.so [debug] [conf=/path/to/config/file]
+
+DESCRIPTION
+       pam_sepermit module allows/denies login depending on SELinux enforcement state.
+
+       When the user which is logging in matches an entry in the config file 
+       he is allowed access only when the SELinux is in enforcing mode. 
+       Otherwise he is denied access. 
+       For users not matching any entry in the config file the pam_sepermit module returns PAM_IGNORE.
+
+       The config file contains a list of user names one per line with optional arguments.
+       If the name is prefixed with @ character it means that all users in the group name match.
+       If it is prefixed with a % character the SELinux user 
+       is used to match against the name instead of the account name.
+
+FILES
+       /etc/security/sepermit.conf
+           Default configuration file
+
+EXAMPLES
+           auth     [success=done ignore=ignore default=bad] pam_sepermit.so
+           auth     required  pam_unix.so
+           account  required  pam_unix.so
+           session  required  pam_permit.so
+```
+vim /etc/pam.d/sshd 
+
+AFTER :
+    session   include     postlogin
+WE ADD :
+    session   optional    pam_exec.so debug /usr/local/bin/test_pam.sh
+
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ sudo cp Hands-on-Linux-for-DevOps-Cloud-Engineers/section6/test_pam.sh \
+ /usr/local/bin
+[ec2-user@ip-10-0-1-220 ~]$ sudo cat /usr/local/bin/test_pam.sh 
+#!/bin/bash
+
+
+echo "Testing PAM EXEC: PAM_RHOST=$PAM_RHOST, PAM_RUSER=$PAM_RUSER, PAM_SERVICE=$PAM_SERVICE,
+       PAM_TTY=$PAM_TTY, PAM_USER=$PAM_USER,   PAM_TYPE=$PAM_TYPE" >> /tmp/pam_test.log
+```
+
+```sh
+ec2-user@ip-10-0-1-220 ~]$ exit
+logout
+Connection to :###.###.###.### closed.
+33m 44.355s  ◣   errno 127 : NOTFOUND   
+
+Mon  7 Oct 2024 14:26:59  ◣ ~/Desktop/Hands-on-Linux-for-DevOps-Cloud-Engineers ◣   main 
+ariel @ ariel-All-Series  $ ssh -i lab-key-pair ec2-user@##.###.###.###
+
+
+Enter passphrase for key 'lab-key-pair': 
+Last login: Mon Oct  7 16:53:20 2024 from :###.###.###.###
+   ,     \_
+   ~\_  \###_        Amazon Linux 2
+  ~~  \_#####\
+  ~~     \###|       AL2 End of Life is 2025-06-30.
+  ~~       \#/ ___
+   ~~       V~' '->
+    ~~~         /    A newer version of Amazon Linux is available!
+      ~~._.   _/
+         _/ _/       Amazon Linux 2023, GA and supported until 2028-03-15.
+       _/m/'           https://aws.amazon.com/linux/amazon-linux-2023/
+
+
+Testing PAM EXEC:   PAM_RHOST=###.###.###.###,   PAM_RUSER=, PAM_SERVICE=sshd,   PAM_TTY=ssh,  PAM_USER=ec2-user,   PAM_TYPE=open_session
+
+```
+
+```sh
+```
+
+
+
+
+
+
+
+## 6.2 linux firewall
+
+IP Tables And EC2 Linux Firewall
+
+AHGST-based firewall 
+
+monitors traffic going in an out of a single host.
+this is the opposite of a firewall device which monitors traffic for many host.
+
+Iptables is the command line interface to the Linux kernel packet filtering framework.
+Iptables, together with netfilter, connection tracking and NAT make up this framework.
+
+# 4 default IP Tables types
+
+1) Filter   <- most common, we choose this
+2) Nat
+3) Mangolin
+4) Raw
+
+### 3 Rule Chains Types INPUT OUTPUT FORWARD
+
+Filter has 3 default chains  (chain : string of rules)
+3 chains INPUT OUTPUT FORWARD to control the flow of packets trough our host
+
+we will work on INPUT   : 
+* open ports for SHH & HTTP
+* drop anything else
+
+drop : when a rule is match use target to tell what to do (accept, drop, etc...)
+
+### 3 Policys  ACCETP DROP REJECT
+
+  ACCEPT : Packet will reach destination
+  DROP   : Packet wont reach destination
+  REJECT : Packet wont reach destination, Client will be notified
+
+
+### what to do if lost SSH to VPS
+
+  AWS console -> EC2 -> lab instance -> actions reboot
+  this will delete the IP Tables and we should be able to connect
+
+### iptables command
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ sudo iptables -L -n --line-numbers 
+
+# OUTPUT  epty = default = accept
+Chain INPUT (policy ACCEPT)
+num  target     prot opt source               destination         
+
+# DOCKER  lets ignore this by the moment
+Chain FORWARD (policy DROP)
+num  target     prot opt source               destination         
+1    DOCKER-USER  all  --  0.0.0.0/0            0.0.0.0/0           
+2    DOCKER-ISOLATION-STAGE-1  all  --  0.0.0.0/0            0.0.0.0/0           
+3    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0            ctstate RELATED,ESTABLISHED
+4    DOCKER     all  --  0.0.0.0/0            0.0.0.0/0           
+5    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           
+6    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           
+
+# OUTPUT epty = default = accept
+Chain OUTPUT (policy ACCEPT)
+num  target     prot opt source               destination         
+
+# DOCKER  lets ignore this by the moment
+Chain DOCKER (1 references)
+num  target     prot opt source               destination         
+1    ACCEPT     tcp  --  0.0.0.0/0            172.17.0.2           tcp dpt:3306
+
+Chain DOCKER-ISOLATION-STAGE-1 (1 references)
+num  target     prot opt source               destination         
+1    DOCKER-ISOLATION-STAGE-2  all  --  0.0.0.0/0            0.0.0.0/0           
+2    RETURN     all  --  0.0.0.0/0            0.0.0.0/0           
+
+Chain DOCKER-ISOLATION-STAGE-2 (1 references)
+num  target     prot opt source               destination         
+1    DROP       all  --  0.0.0.0/0            0.0.0.0/0           
+2    RETURN     all  --  0.0.0.0/0            0.0.0.0/0           
+
+Chain DOCKER-USER (1 references)
+num  target     prot opt source               destination         
+1    RETURN     all  --  0.0.0.0/0            0.0.0.0/0 
+```
+### Our own firewall script
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ echo Hands-on-Linux-for-DevOps-Cloud-Engineers/section6/enable_firewall.sh 
+Hands-on-Linux-for-DevOps-Cloud-Engineers/section6/enable_firewall.sh
+[ec2-user@ip-10-0-1-220 ~]$ cat Hands-on-Linux-for-DevOps-Cloud-Engineers/section6/enable_firewall.sh 
+#!/bin/bash
+# simple host-based firewall that only allows SSH and HTTP in
+# and DROPS the rest
+
+sudo iptables -P INPUT DROP   
+            # -P:policy ... set INPUT chain of default policy to DROP
+sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT 
+            # -A:append .-m:module  (track connections & keep states
+                                  # --ctstate: Connection state
+                                  # -j:jump-to-target (ACCEPT / DROP / REJECT) default ones
+sudo iptables -A INPUT -i lo -j ACCEPT 
+                     # -i:interface  lo:loopback
+
+sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+                    # -p:protocol   --dport: destination port
+sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+
+sudo iptables -A INPUT -j DROP
+      # LAST RULE = DEFAULT BEHAVIOUR = DROP   : client wont know
+      #                               = REJECT : client will be notified it wasn't allowed
+```
+### Undo firewall settings
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ cat Hands-on-Linux-for-DevOps-Cloud-Engineers/section6/disable_firewall.sh 
+#!/bin/bash
+# This disables the firewall and resets the chain policies
+
+sudo iptables -P INPUT   ACCEPT 
+sudo iptables -P OUTPUT  ACCEPT
+sudo iptables -P FORWARD DROP
+sudo iptables -F
+
+```
+
+### Activate & see changes
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ Hands-on-Linux-for-DevOps-Cloud-Engineers/section6/enable_firewall.sh 
+[ec2-user@ip-10-0-1-220 ~]$ sudo iptables -L -n --line-numbers 
+Chain INPUT (policy DROP)
+num  target     prot opt source               destination         
+1    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0            ctstate RELATED,ESTABLISHED # NEW
+2    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           
+3    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:22  # NEW
+4    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:80  # NEW
+5    DROP       all  --  0.0.0.0/0            0.0.0.0/0                        # NEW  
+
+Chain FORWARD (policy DROP)
+num  target     prot opt source               destination         
+1    DOCKER-USER  all  --  0.0.0.0/0            0.0.0.0/0           
+2    DOCKER-ISOLATION-STAGE-1  all  --  0.0.0.0/0            0.0.0.0/0           
+3    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0            ctstate RELATED,ESTABLISHED
+4    DOCKER     all  --  0.0.0.0/0            0.0.0.0/0           
+5    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           
+6    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           
+
+Chain OUTPUT (policy ACCEPT)
+num  target     prot opt source               destination         
+
+Chain DOCKER (1 references)
+num  target     prot opt source               destination         
+1    ACCEPT     tcp  --  0.0.0.0/0            172.17.0.2           tcp dpt:3306
+
+Chain DOCKER-ISOLATION-STAGE-1 (1 references)
+num  target     prot opt source               destination         
+1    DOCKER-ISOLATION-STAGE-2  all  --  0.0.0.0/0            0.0.0.0/0           
+2    RETURN     all  --  0.0.0.0/0            0.0.0.0/0           
+
+Chain DOCKER-ISOLATION-STAGE-2 (1 references)
+num  target     prot opt source               destination         
+1    DROP       all  --  0.0.0.0/0            0.0.0.0/0           
+2    RETURN     all  --  0.0.0.0/0            0.0.0.0/0           
+
+Chain DOCKER-USER (1 references)
+num  target     prot opt source               destination         
+1    RETURN     all  --  0.0.0.0/0            0.0.0.0/0   
+```
+
+## 6.3 Logging and audit
+## 6.4 Hardening ssh server
 
 # 7 LINUX COMMANDS & DUNCTIONALITIES
 
-## 7.1
-## 7.2
-## 7.3
-## 7.4
-## 7.5
-## 7.6
-## 7.7
+## 7.1 10 common Linux commands
+
+```sh
+man       # MANUAL
+ls        # LIST : view files & DIR
+cp        # COPY 
+mv        # MOVE / RENAME
+CTRL^r    # REVERSE MATCH HISTORY  
+rm        # REMOVE 
+find      # FIND
+grep      # FILTER
+cat       # SHOW FILE
+tail      # SHOW end of LOGs
+less      # INTERACTIVE VIEW 
+```
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ ls
+config.yaml  contributors  gg.sh  Hands-on-Linux-for-DevOps-Cloud-Engineers
+[ec2-user@ip-10-0-1-220 ~]$ ls --ignore=*.sh
+config.yaml  contributors  Hands-on-Linux-for-DevOps-Cloud-Engineers
+[ec2-user@ip-10-0-1-220 ~]$ ls -l -h -s
+total 4,0K
+   0 -rw-rw-r--  1 ec2-user ec2-user   0 Oct  2 18:24 config.yaml
+   0 -rw-r--r--  1 root     root       0 Oct  2 18:24 contributors
+4,0K -rwxrwxr-x  1 ec2-user ec2-user 280 Oct  6 20:09 gg.sh
+   0 drwxrwxr-x 12 ec2-user ec2-user 253 Oct  5 19:27 Hands-on-Linux-for-DevOps-Cloud-Engineers
+[ec2-user@ip-10-0-1-220 ~]$ man ls | grep  -n   -A 2   -e '-h'
+78:       -h, --human-readable
+79-              with -l and -s, print sizes like 1K 234M 2G etc.
+[ec2-user@ip-10-0-1-220 ~]$ man ls | grep  -n   -A 2   -e '-d'
+44:       -d, --directory
+45-              list directories themselves, not their contents
+
+
+```
+### CP
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ cp -rvp Hands-on-Linux-for-DevOps-Cloud-Engineers Hands-on-Linux-for-DevOps-Cloud-Engineers-backup
+‘Hands-on-Linux-for-DevOps-Cloud-Engineers’ -> ‘Hands-on-Linux-for-DevOps-Cloud-Engineers-backup’
+‘Hands-on-Linux-for-DevOps-Cloud-Engineers/.git’ -> ‘Hands-on-Linux-for-DevOps-Cloud-Engineers-backup/.git’
+‘Hands-on-Linux-for-DevOps-Cloud-Engineers/.git/branches’ -> ‘Hands-on-Linux-for-DevOps-Cloud-Engineers-backup/.git/branches’
+‘Hands-on-Linux-for-DevOps-Cloud-Engineers/.git/description’ -> ‘Hands-on-Linux-for-DevOps-Cloud-Engineers-backup/.git/description’
+‘Hands-on-Linux-for-DevOps-Cloud-Engineers/.git/hooks’ -> ‘Hands-on-Linux-for-DevOps-Cloud-Engineers-backup/.git/hooks’
+‘Hands-on-Linux-for-DevOps-Cloud-Engineers/.git/hooks/applypatch-msg.sample’ -> ‘Hands-on-Linux-for-DevOps-Cloud-Engineers-backup/.git/hooks/applypatch-msg.sample’
+‘Hands-on-Linux-for-DevOps-Cloud-Engineers/.git/hooks/commit-msg.sample’ -> ‘Hands-on-Linux-for-DevOps-Cloud-Engineers-backup/.git/hooks/commit-msg.sample’
+......
+‘Hands-on-Linux-for-DevOps-Cloud-Engineers/section6’ -> ‘Hands-on-Linux-for-DevOps-Cloud-Engineers-backup/section6’
+‘Hands-on-Linux-for-DevOps-Cloud-Engineers/section6/.gitkeep’ -> ‘Hands-on-Linux-for-DevOps-Cloud-Engineers-backup/section6/.gitkeep’
+‘Hands-on-Linux-for-DevOps-Cloud-Engineers/section6/disable_firewall.sh’ -> ‘Hands-on-Linux-for-DevOps-Cloud-Engineers-backup/section6/disable_firewall.sh’
+....
+‘Hands-on-Linux-for-DevOps-Cloud-Engineers/section8’ -> ‘Hands-on-Linux-for-DevOps-Cloud-Engineers-backup/section8’
+‘Hands-on-Linux-for-DevOps-Cloud-Engineers/section8/.gitkeep’ -> ‘Hands-on-Linux-for-DevOps-Cloud-Engineers-backup/section8/.gitkeep’
+
+
+ariel @ ariel-All-Series $ man cp |grep - e"-r" -e"-v"  -e"-p"
+56:       -p      --preserve=mode,ownership,timestamps
+69:       -R, -r, --recursive
+97:       -v,     --verbose
+
+[ec2-user@ip-10-0-1-220 ~]$ cat -n gg.sh
+     1	#! /bin/bash
+     2	#
+     3	number=$(( $RANDOM % 10 +1 ))
+     4	
+     5	echo "Gess numberfrom 1 to 10"
+     6	
+     7	guess=0
+     8	
+     9	while [ "$guess" -ne $number ]
+    10	do
+    11		read guess
+    12		if [ "$guess" -lt $number ]
+    13		then
+    14			echo "Too low"
+    15		fi
+    16		if [ "$guess" -gt $number ] 
+    17		then
+    18			echo "Too high"
+    19		fi
+    20	done
+    21	echo "you have won!"
+    22	exit 0
+```
+
+
+## backups
+
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ echo "new" > test
+[ec2-user@ip-10-0-1-220 ~]$ cat test
+new
+[ec2-user@ip-10-0-1-220 ~]$ echo "backup" > testbk
+[ec2-user@ip-10-0-1-220 ~]$ cat testbk 
+backup
+[ec2-user@ip-10-0-1-220 ~]$ mv -b test testbk
+[ec2-user@ip-10-0-1-220 ~]$ ls -p | grep -v /       # print just files 
+config.yaml   contributors  gg.sh   testbk    testbk~
+[ec2-user@ip-10-0-1-220 ~]$ man ls | grep -n -e'-p'
+114:       -p, --indicator-style=slash '/' for directories
+[ec2-user@ip-10-0-1-220 ~]$ man grep | grep -n -e'-v'
+49:        -v, --invert-match       select non-matching lines.  ( Suppress ) 
+[ec2-user@ip-10-0-1-220 ~]$ cat testbk testbk~
+new
+backup
+```
+
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ CTRL^r
+(reverse-i-search)`ls -': ls --ignore=*.sh'`
+
+[ec2-user@ip-10-0-1-220 ~]$ rm -rf Hands-on-Linux-for-DevOps-Cloud-Engineers-backup/
+       -f, --force
+       -i     prompt before every removal
+       -d, --dir     remove empty directories
+       -r, -R, --recursive       remove directories and their contents recursively
+       -v, --verbose
+
+
+find . -type f -name gg.sh
+[ec2-user@ip-10-0-1-220 ~]$ find . -type f -name gg.sh
+./gg.sh
+[ec2-user@ip-10-0-1-220 ~]$ find . -type d -name gg.sh
+[ec2-user@ip-10-0-1-220 ~]$ find / -type d -name etc
+/etc
+find: ‘/etc/pki/CA/private’: Permission denied
+find: ‘/etc/pki/rsyslog’: Permission denied
+find: ‘/etc/dhcp’: Permission denied
+find: ‘/etc/lvm/archive’: Permission denied
+find: ‘/etc/lvm/backup’: Permission denied
+find: ‘/etc/lvm/cache’: Permission denied
+[ec2-user@ip-10-0-1-220 ~]$ sudo find /var/log -type f -size +10M
+/var/log/journal/66e404ab40a54dbe8f1a857b9cfcb85e/system.journal
+
+[ec2-user@ip-10-0-1-220 ~]$ ls -lasih /var/log/secure
+13061397 324K -rw------- 1 root root 324K Oct  8 16:22 /var/log/secure
+
+[ec2-user@ip-10-0-1-220 ~]$ sudo grep -n "session opened" /var/log/secure
+11:   Oct  6 14:09:51 ip-10-0-1-220 sshd[6587]: pam_unix(sshd:session): session opened for user ec2-user by (uid=0)
+1629: Oct  6 20:43:02 ip-10-0-1-220 sudo: pam_unix(sudo:session): session opened for user root by ec2-user(uid=0)
+2084: Oct  7 16:53:20 ip-10-0-1-220 sshd[13640]: pam_unix(sshd:session): session opened for user ec2-user by (uid=0)
+2089: Oct  7 16:54:37 ip-10-0-1-220 sudo: pam_unix(sudo:session): session opened for user root by ec2-user(uid=0)
+.....
+```
+### recursive search string in files
+```sh
+[ec2-user@ip-10-0-1-220 ~]$ sudo grep -ri -n "test_pam" /etc/pam.d
+/etc/pam.d/sshd:19: session    optional     pam_exec.so debug /usr/local/bin/test_pam.sh
+
+[ec2-user@ip-10-0-1-220 ~]$ sudo  tail -f /var/log/secure
+Oct  8 16:22:43 ip-10-0-1-220 sudo: pam_unix(sudo:session): session closed for user root
+Oct  8 16:27:07 ip-10-0-1-220 sshd[19581]: Invalid user ubnt from 117.176.204.214 port 49620
+Oct  8 16:27:07 ip-10-0-1-220 sshd[19581]: input_userauth_request: invalid user ubnt [preauth]
+Oct  8 16:27:08 ip-10-0-1-220 sshd[19581]: Connection closed by 117.176.204.214 port 49620 [preauth]
+Oct  8 16:28:34 ip-10-0-1-220 sudo: ec2-user : TTY=pts/0 ; PWD=/home/ec2-user ; USER=root ; COMMAND=/bin/grep#040-ri#040-n#040test_pam#040/etc/pam.d
+Oct  8 16:28:34 ip-10-0-1-220 sudo: pam_unix(sudo:session): session opened for user root by ec2-user(uid=0)
+Oct  8 16:28:34 ip-10-0-1-220 sudo: pam_unix(sudo:session): session closed for user root
+Oct  8 16:29:36 ip-10-0-1-220 sshd[19706]: Invalid user ubnt from 41.216.84.18 port 49525
+Oct  8 16:29:36 ip-10-0-1-220 sshd[19706]: input_userauth_request: invalid user ubnt [preauth]
+Oct  8 16:29:36 ip-10-0-1-220 sshd[19706]: Connection closed by 41.216.84.18 port 49525 [preauth]
+Oct  8 16:35:24 ip-10-0-1-220 sudo: ec2-user : TTY=pts/0 ; PWD=/home/ec2-user ; USER=root ; COMMAND=/bin/tail#040-f#040/var/log/secure
+Oct  8 16:35:24 ip-10-0-1-220 sudo: pam_unix(sudo:session): session opened for user root by ec2-user(uid=0)
+^C
+[ec2-user@ip-10-0-1-220 ~]$ sudo tail -n 1 /var/log/secure
+Oct  8 16:39:55 ip-10-0-1-220 sudo: pam_unix(sudo:session): session opened for user root by ec2-user(uid=0)
+
+
+[ec2-user@ip-10-0-1-220 ~]$ less Hands-on-Linux-for-De vOps-Cloud-Engineers/lab-terraform/README.md 
+        create_ssh_keys.sh
+        > Creates a key pair for use with the Linux instance
+
+        ## Getting Started
+
+        To get started you must first make sure you have downloaded `Terraform` for your specific [OS](https://).
+
+        After it is installed, you must first initialize terraform by typing the following in your terminal:
+
+These files will create the following in AWS:
+:/key   (search backwards for 'key')
+:?AWS   (serarch forwards for 'AWS')
+:n5     ( find the 5th match for last search)
+:N
+:q      (quit)
+>       (end of file)
+<       (start of file)
+
+                  then
+                          echo "Too high"
+                  fi
+          done
+          echo "you have won!"
+          exit 0
+          ~
+(END) - Next: Hands-on-Linux-for-DevOps-Cloud-Engineers/lab-terraform/README.md
+:n      (next file)
+:p      (previous dile)
+
+```
+
+
+## 7.2 AWS CLI commands
+
+aws ec2 describe-instances
+aws ec2 run-instances
+aws describe-vpcs
+aws describe-security-groups
+aws iam list-users
+aws iam create-user
+aws iam delete-user
+aws s3api Is
+aws s3api create-bucket
+aws s3api put-object
+aws s3api delete bucket
+
+```sh
+ariel @ ariel-All-Series  $ aws ec2 --output table describe-vpcs
+
+  An error occurred (AuthFailure) when calling the DescribeVpcs operation: Credential must have exactly 5 slash-delimited elements, e.g. keyid/date/region/service/term, got 'Access'
+
+ariel @ ariel-All-Series  $ aws configure
+  AWS Access Key ID [****************EKXN]: ****************EKXN
+  AWS Secret Access Key [****************Z6/q]: ****************Z6/q
+  Default region name [us-east-2]: us-west-2      # change to my VPS's AZ
+  Default output format [None]: 
+
+ariel @ ariel-All-Series  $ aws ec2 --output table describe-vpcs
+
+ariel @ ariel-All-Series  $ aws ec2 --output table describe-vpcs --filters Name=tag:Name,Values=lab-vpc
+
+  -------------------------------------------------------------------------------------------------------------------------------------
+  |                                                           DescribeVpcs                                                            |
+  +-----------------------------------------------------------------------------------------------------------------------------------+
+  ||                                                              Vpcs                                                               ||
+  |+-------------+--------------------------+-------------------+------------+----------------+------------+-------------------------+|
+  ||  CidrBlock  |      DhcpOptionsId       |  InstanceTenancy  | IsDefault  |    OwnerId     |   State    |          VpcId          ||
+  |+-------------+--------------------------+-------------------+------------+----------------+------------+-------------------------+|
+  ||  10.0.0.0/16|  dopt-013a10fba01983138  |  default          |  False     |  ************  |  available |  vpc-****************d  ||
+  |+-------------+--------------------------+-------------------+------------+----------------+------------+-------------------------+|
+  |||                                                    CidrBlockAssociationSet                                                    |||
+  ||+-----------------------------------------------------------------------------------------+-------------------------------------+||
+  |||                                      AssociationId                                      |              CidrBlock              |||
+  ||+-----------------------------------------------------------------------------------------+-------------------------------------+||
+  |||  vpc-cidr-assoc-0****************                                                       |  10.0.0.0/16                        |||
+  ||+-----------------------------------------------------------------------------------------+-------------------------------------+||
+
+ariel @ ariel-All-Series  $ aws ec2 --output table describe-subnets
+---------------------------------------------------------------------------------------------------------
+|                                            DescribeSubnets                                            |
++-------------------------------------------------------------------------------------------------------+
+||                                               Subnets                                               ||
+|+------------------------------+----------------------------------------------------------------------+|
+||  AssignIpv6AddressOnCreation |  False                                                               ||
+||  AvailabilityZone            |  us-west-2a                                                          ||
+||  AvailabilityZoneId          |  usw2-az1                                                            ||
+||  AvailableIpAddressCount     |  4091                                                                ||
+||  CidrBlock                   |  ***.***.***.***/20                                                  ||
+
+ariel @ ariel-All-Series  $ aws ec2 --output table describe-security-groups
+-----------------------------------------------------------------------------------------------------------------------------
+|                                                  DescribeSecurityGroups                                                   |
++---------------------------------------------------------------------------------------------------------------------------+
+||                                                     SecurityGroups                                                      ||
+|+-------------------------------------+-----------------------+-----------------+---------------+-------------------------+|
+||             Description             |        GroupId        |    GroupName    |    OwnerId    |          VpcId          ||
+
+ariel @ ariel-All-Series  $ aws ec2 --output table describe-key-pairs
++----------------------------------------------------------------------------------------------------------------------------------------------------+
+||                                                                     KeyPairs                                                                     ||
+|+------------------------------------+-----------------------------------------------------+----------------+--------------------------+-----------+|
+||             CreateTime             |                   KeyFingerprint                    |    KeyName     |        KeyPairId         |  KeyType  ||
+ariel @ ariel-All-Series  $ aws ec2 --output table describe-instances
+
++-------------------------------------------------------------------------------------+
+||  ReservationId                   |  r-*****************                           ||
+|+----------------------------------+------------------------------------------------+|
+|||                                    Instances                                    |||
+||+---------------------------+-----------------------------------------------------+||
+|||  InstanceID               |  i-*************                                    |||
+|||  InstanceType             |  t2.micro                                           |||
+
+ariel @ ariel-All-Series  $ aws ec2 --output table describe-instances help
+
+NAME       describe-instances -
+
+DESCRIPTION   Describes the specified instances or all instances.
+
+       If  you  specify instance IDs, the output includes information for only
+       the specified instances. If you specify filters,  the  output  includes
+       information  for only those instances that meet the filter criteria.
+
+ariel @ ariel-All-Series  $ aws ec2 --output table describe-instances --instance-ids i-*************   
+
+ariel @ ariel-All-Series  $ aws ec2 help
+ariel @ ariel-All-Series  $ aws ec2 run-instances help
+```
 
 # 8 CONCLUSION
 
-## 8.1
-## 8.2
-## 8.3
-## 8.4
-## 8.5
-## 8.6
-## 8.7
+## 8.1 Popular Linux Cloud distros 
+## 8.2 Good Practice Linux Cloud
+## 8.3 Linux commands cheat sheet
+## 8.4 Devops Security Certification
+
 
 
 
