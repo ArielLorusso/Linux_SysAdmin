@@ -1,5 +1,5 @@
 
-# Clase 1
+# Clase 1 - Temario + Linux
 
 ### Carga Oraria y organisacion
 
@@ -135,21 +135,27 @@ A mayores recursos y conectiviad mas vulnerable el servidor
 Configurar red    desde CLI o Hypervisor  ( Virtual box )
 
 ### PACKETES
-RedHat -> .RPM  yum hnf  
-Devian -> .DEV  apt  
-windows -> chocolatey
 
+APT vs Snap                     https://www.youtube.com/watch?v=1f-dzz5l1Fg
+Flatpak vs Snaps vs DEB & RPM   https://www.youtube.com/watch?v=1lLZ-59xH3Y
+```sh
+# DISTRO   INSTALLER    Packet Managers
+RedHat   -> .RPM        yum  hnf  
+Devian   -> .DEV        apt  dpkg   snap  
+windows  -> .MSI        chocolatey
+```
 Manejador de paquetes :
 
     yum
     apt-get
     Brew / Home-brew
+   
 
 Proceso de Instalacon:
 1.  Agregar Repositorios
 2.  Agregar Keys
-2.  Acttualizar lista de paquetes
-3.  instalar
+3.  Acttualizar lista de paquetes
+4.  instalar
 
 
 ## Comandos
@@ -193,7 +199,7 @@ a menor valor de nice, mayor prioridad y viceversa.
 
 # FASE 1
 
-## Clase 2
+## Clase 2 - VM + commandos
 
 https://www.cocalc.com/features/terminal
 
@@ -233,6 +239,8 @@ Estos patrones pueden ser de dos tipos:
 script : conjunto de instrucciones interpretadas por algun programa
 
 ### GREP - filtrar
+
+GREP : global regular expression print 
 
 ```
 grep [opciones] patron archivo
@@ -380,10 +388,21 @@ https://www.osboxes.org/virtualbox-images/
 1:36:45 
 
 
-### SED - editar tabas
+### SED - editar strings
 
+stream editor
+```sh
+    # s = sustitution
+    sed 's/unix/linux/' geekfile.txt
+```
+### AWK - editar tabas
 
+    Aho, Weinberger & Kernighan
 
+```sh
+    # $1 = first column 
+    hostname -I | awk '{print $1}'
+```
 ### VM Virtual machine
 
 
@@ -430,7 +449,7 @@ VMware Compatibility: Version 10+
 
 
 
-## Clase 3
+## Clase 3  - Processos + SSH
 
 
 ### PS Process
@@ -577,7 +596,7 @@ ext2, ext3, ext4, fat16, fat32, hfs, hfs+, jfs, linux-swap, ntfs, reiserfs, reis
 
 
 
-### DD   Formatear y particionar  desde BASH: 
+### DD - Formatear y particionar  desde BASH: 
 
 ```sh
 > man dd
@@ -610,7 +629,7 @@ En este caso, el origen es el dispositivo zero
 of significo output file, o sea, el dispositivo o archivo destino
 donde se van a copiar los datos. El ejemplo se refiere al disco rigido.
 
-### FDISK
+### FDISK - Tablas de particiones
 
 ```sh
 > man fdisk
@@ -884,9 +903,9 @@ SOLUCION SSH VM
 
 
 
-## Clase 4
+## Clase 4 - FyleSystem
 
-### DESAFIO
+### DESAFIO 1
 
 https://www.commonmark.org/help/tutorial/04-headings.html
 
@@ -1176,7 +1195,7 @@ Descripción:
 
     sudo apt install forensics-full (DISK FORENSICS)
 
-### Resumen mkfs
+### mkfs - make FyleSystem
     Una vez creada la partición, el sistema de archivos debe ser añadido 
     para que Linux pueda hacer uso de este espacio. 
     mkfs se usa para crear sistemas de archivos en particiones vacías. 
@@ -1194,7 +1213,7 @@ Descripción:
                         Ésto es realmente sólo útil para comprobaciones.
     ```
 
-### Creando Swap
+### Crear Swap
 
     ```sh
     # Muestra el uso de las particiones swap:
@@ -1226,31 +1245,196 @@ Descripción:
     De acuerdo a la FHS el punto de montaje para dispositivos removibles es /media. 
     No obstante podría ser utilizado cualquier directorio, siempre que este tenga sentido.
 
-Términos y herramientas
 
-• /etc/fstab
-• /media/
-• mount
-• umount
-• Isblk
-• blkid
 
-Terminos y herramientas
-• du
-• df
-• fsck
-• e2fsck
-• mke2fs
-• tune2fs
-• xfs_repair
-• xfs_fsr
-• xfs_db
+### mount
+```sh
+    # Montaje y desmontaje de sistemas de archivos
+    > mount [opciones] [dispositivo directorio]
+```
+    El comando mount admite dos tipos de opciones:
+    • unos para el propio comando,
+    • y otros para especificar opciones del sistema de ficheros
 
+    ```
+    Opciones    Descripción
+    -a          Monta todos los filesystems especificados en 
+                /etc/fstab, menos los que tengan la opción "noauto".
+    -h          Ayuda del comando mount.
+    -O          Especifica las opciones del mount en la línea de comandos.
+    -r          Monta filesystems en modo de solo lectura.
+    -t fstype   Especifica un tipo de filesystem.
+    -V          Salida interactiva.
+    -W          Monta el sistema de archivos de lectura/escritura.
+    ```
+
+
+```sh
+#  El comando mount, por si solo, muestra lo que está montado en el equipo
+> mount
+sysfs   on   /sys type sysfs (rw,nosuid, nodev, noexec, relatime)
+proc    on  /proc type proc (rw,nosuid, nodev, noexec, relatime)
+udev    on  /dev type devtmpfs (rw,nosuid, relatime, size=498632k, nr_inodes=124658, mode=755)
+devpts  on  /dev/pts type devpts (rw, nosuid, noexec, relatime, gid=5,mode=620, ptmxmode=000)
+tmpfs   on  /run type tmpfs (rw, nosuid, noexec, relatime, size=102040k,mode=755) /dev/sda1 on type ext4 (rw,relatime, errors remount-ro, data=ordered)
+securityfs on /sys/kernel/security type securityfs (rw, nosuid, nodev, noexec, relatime)
+tmpfs   on  /dev/shm type tmpfs (rw,nosuid, nodev)
+tmpfs   on  /run/lock type tmpfs (rw, nosuid, nodev, noexec, relatime, size=5120k)
+tmpfs   on  /sys/fs/cgroup type tmpfs (ro, nosuid, nodev, noexec, mode=755)
+cgroup  on  /sys/fs/cgroup/systemd type cgroup (rw,nosuid, nodev, noexec, relatime, xattr, release_agent=/lib/systemd/systemd-cgroups-agent, name=systemd)
+pstore  on  /sys/fs/pstore type pstore (rw,nosuid, nodev, noexec, relatime)
+cgroup  on  /sys/fs/cgroup/devices type cgroup (rw, nosuid, nodev, noexec, relatime, devices)
+cgroup  on  /sys/fs/cgroup/perf_event type cgroup (rw, nosuid, nodev, noexec, relatime, perf_event)
+cgroup  on  /sys/fs/cgroup/memory type cgroup (rw,nosuid, nodev, noexec, relatime, memory) cgroup on /sys/fs/cgroup/freezer type cgroup (rw, nosuid, nodev, noexec, relatime, freezer)
+```
+
+```sh
+# El archivo /etc/mtab   
+#    (es un enlace simbólico a     /proc/self/mounts) 
+#    tiene un contenido similar al comando mount
+> cat /etc/mtab
+sysfs       /sys sysfs rw, nosuid, nodev, noexec, relatime 00
+proc/proc   proc rw,nosuid, nodev, noexec, relatime 00
+udev/dev    devtmpfs rw, nosuid, relatime, size=498632k, nr_inodes=124658, mode=755 00
+devpts/dev/pts devpts rw,nosuid, noexec, relatime, gid=5,mode=620, ptmxmode=00000
+tmpfs       /run tmpfs rw,nosuid, noexec, relatime, size=102040k,mode=755 00 /dev/sda1/ext4 rw,relatime, errors remount-ro, data=ordered 00
+securityfs  /sys/kernel/security securityfs rw, nosuid, nodev, noexec, relatime 00
+tmpfs       /dev/shm tmpfs rw, nosuid, nodev 00
+tmpfs/run/lock tmpfs rw, nosuid, nodev, noexec, relatime, size=5120k 00
+tmpfs       /sys/fs/cgroup tmpfs ro, nosuid, nodev, noexec, mode=755 00
+cgroup/sys/fs/cgroup/systemd cgroup
+rw,         nosuid, nodev, noexec, relatime, xattr, release_agent=/lib/systemd/systemd-cgroups-agent, name systemd 00
+pstore/sys/fs/pstore pstore rw, nosuid, nodev, noexec, relatime 00
+cgroup/sys/fs/cgroup/devices cgroup rw, nosuid, nodev, noexec, relatime, devices 00
+cgroup/sys/fs/cgroup/perf_event cgroup rw, nosuid, nodev, noexec, relatime, perf_event 00
+cgroup/sys/fs/cgroup/memory cgroup rw, nosuid, nodev, noexec, relatime, memory 00
+cgroup/sys/fs/cgroup/freezer cgroup rw, nosuid, nodev, noexec, relatime, freezer 00
+```
+
+```sh
+# Para montar una partición en un directorio:
+>mount -t ext4 /dev/sdb6/mnt
+
+# Verificamos que se monto
+>mount | grep mnt
+/dev/sdb6 on /mnt type ext4 (rw,relatime)
+
+#Otro ejemplo, montar el CD-rom:
+>1s -1/dev/cdrom
+lrwxrwxrwx 1 root root 3 nov 25 00:47/dev/cdrom -> sro
+> mount -t iso9660 /dev/cdrom/media
+mount: dispositivo de bloques /dev/sro está protegido contra escritura; se monta como sólo lectura
+> mount grep -i media
+/dev/sro on /media type iso9660 (ro, relatime)
+
+# montar como : lectura / escritura
+> mount -t     ext4 /dev/sdb3 /home/osboxes series
+> mount -w  -t ext4 /dev/sdb3 /home/osboxes series
+# montar como : solo lectura
+> mount -r  -t ext4 /dev/sdb3 /home/osboxes series
+```
+
+### umount
+
+    Los sistemas de ficheros pueden ser desmontados usando el comando umount.
+    Cuando un sistema de ficheros es desmontado, los contenidos del árbol principal se actualizan,
+    no pudiéndose usar el umount si el sistema de ficheros que se quiere desmontar está en uso.
+
+    Si el sistema de ficheros está en uso, el comando umount dará un error.
+    Esto puede ocurrir, cuando tenemos abierto un fichero de un DVD o un proceso está usandolo.
+    Incluso estar dentro del directorio del sistema a desmontar.
+    Otros errores pueden surgir si quitamos dispositivos removibles sin antes desmontarlos.
+
+
+    ```sh
+    # Para desmontar:
+    > umount /mnt
+    
+    # Para ver opciones y usos
+    umount --help
+    ```
+    umount [opciones] [dispositivo directorio]
+    
+    Opciones    Descripción
+    -a          Desmonta todos los filesystems descritos en/etc/mtab. 
+                    Este fichero está mantenido por los comando mount y umount en tiempo real, 
+                    se usa normalmente cuando se apaga/reinicia el PC.
+    -t fstype   Desmonta sólo los filesystems del tipo especificado.
+
+
+
+### etiquetas y UUID 
+
+    para identificar sistemas de archivos
+    En ocasiones es más sencillo y descriptivo referirse a una partición 
+    por su etiqueta (LABEL). Tanto ext4, xfs como btrfs tienen herramientas
+    para cambiar y/o asignar una etiqueta.
+
+    Además, puede resultar ventajoso usar el UUID (identificador único universal), 
+    cuando vamos a utilizar discos que estaban en una máquina en otra, 
+    ya que podemos abstraernos del archivo del nodo al dispositivo.
+```sh
+# Para ver las etiquetas podemos usar el comando 1sblk:
+> lsblk -o NAME, LABEL, UUID
+NAME          LABEL               UUID
+sda
+├-sda1        SYSTEM              B4A4-9276
+├-sda2
+├-sda3        OS                  8E70AA5670AA44B5
+├-sda4        RECOVERY            08BE6391BE63765A
+├-sda5                                    63d75b5c-c4fd-41d8-bcc1-5e9c4e1f7758
+├--sda6                                   FqDBQB-XKxV-pqJ0-1fBK-HIAJ-kiuI-43RХиб 01f4c47c-9b24-45c6-93bc-cdd58df078f0
+   ├--fedora-root root                    50800e72-5e3d-4b58-898b-96bf07ff50af
+   ├--fedora-swap swap                    8b328fbd-d712-4c5a-80e4-23e8108e1e2a
+   ├--fedora-home      
+   ├--fedora-vsr      Fedora-KDE-Live-27-1-6 2017-11-05-07-36-22-00
+```
+
+### blkid
+```sh
+> blkid
+/dev/sda1: LABEL="SYSTEM"   UUID="B4A4-9276"        TYPE="vfat" PARTLABEL="EFI System Partition"
+PARTUUID="5bcc6561-aa2f-4347-aed3-d99aedd43346"
+/dev/sda3: LABEL="OS"       UUID="8E70AA5670AA4485" TYPE="ntfs" PARTLABEL="Basic data partition"
+PARTUUID="ebaeb087-7d25-4da6-819c-fe4ebd83d519"
+/dev/sda4: LABEL="RECOVERY" UUID="08BE6391BE63765A" TYPE="ntfs" PARTLABEL="Basic data partition"
+PARTUUID="d101b023-4afe-48ab-af5b-702d6909a3f4"
+/dev/sda5:                  UUID="63d75b5c-c4fd-41d8-bcc1-5e9c4e1f7758"     TYPE="ext4"
+PARTUUID="33b8e2a9-339d-47b6-a1a2-83bcde06cf4d"
+/dev/sda6:                  UUID="FqDBQB-XKxV-pqJ0-1fBK-HIAJ-kiuI-43RXu6"   TYPE="LVM2_member"
+PARTUUID="b5a3fb45-d7f7-42aa-aa68-ac6e0b506e72"
+/dev/mapper/fedora-root: LABEL="root" UUID="01f4c47c-9b24-45c6-93bc-cdd58df078f0"    TYPE="ext4"
+/dev/mapper/fedora-swap: LABEL="swap" UUID="50800e72-5e3d-4b58-898b-96bf07ff50af"    TYPE="swap" /dev/mapper/fedora-home: UUID="8b328fbd-d712-4c5a-80e4-23e8108e1e2a" TYPE="ext4"
+/dev/mapper/fedora-vsr: UUID="2017-11-05-07-36-22-00" LABEL="Fedora-KDE-Live-27-1-6" TYPE="iso9660"
+PTUUID="58e4232c" PTTYPE="dos"
+
+```
+
+### Repaso de herramientas
+
+    • /etc/fstab
+    • /media/
+    • mount
+    • umount
+    • Isblk
+    • blkid
+
+    • du
+    • df        
+    • fsck      
+    • e2fsck
+    • mke2fs    
+    • tune2fs   
+    • xfs_repair
+    • xfs_fsr
+    • xfs_db
 
 Áreas claves de conocimiento
 
-• Proporcionar los comandos comunes para el cargador de arranque y las opciones al kernel en el momento del arranque.
-• Demostrar conocimiento de la secuencia del arranque desde BIOS/UEFI hasta la culminación del arranque.
+• Proporcionar los comandos comunes para el cargador de arranque y las opciones 
+    al kernel en el momento del arranque.
+• Demostrar conocimiento de la secuencia del arranque desde BIOS/UEFI 
+    hasta la culminación del arranque.
 • Entendimiento de SysVinit y systemd.
 • Conocimiento básico de upstart
 • Verificar los eventos del arranque en los archivos de log
@@ -1265,5 +1449,408 @@ Términos y herramientas
 • initramfs
 • init
 • SysVinit
-⚫ systemd
+• Systemd
+
+## clase 5 - Disk use + Links + BIOS /GRUB
+
+
+luego veremos como configurar desde el CLI la IP estatica 
+
+Extension para sudo SSH desde VS_Code
+
+    Save as Root in Remote - SSH
+    https://www.marketplace.visualstudio.com/items?itemName=yy0931.save-as-root
+
+    ctrl + shift + p  > save as root
+
+    o usar "sudo vim" "sudo nano" como alternativa 
+
+
+
+### Espacio e los inodos libres de particiones
+
+Un sistema de lectura/escritura no sirve de mucho 
+si crece hasta el punto en que no pueda admitir nuevos ficheros.
+Esto puede ocurrir si nuestro sistema de ficheros se llena o si se queda sin inodos libres. 
+
+Los inodos son las estructuras de datos  dentro del sistema de archivos 
+que describen los archivos en el disco. 
+Cada sistema de archivos contiene un número finito de inodos que se establecen
+en el momento de creación del sistema de archivos.
+
+Este número es, tabien el máximo número de archivos que un sistema de archivos puede acomodar.
+Como se crean con un número de inodos enorme, rara vez crearemos tantos archivos como para agotar los inodos. 
+No obstante, es posible quedarse sin inodos libres en particiones que contengan muchos ficheros pequeños.
+
+
+### df - Disc Fylesystem usage
+
+Es muy importante prevenir la escasez de inodos libres en las particiones del sistema. 
+El comando df brinda información necesaria, tanto sobre el uso del espacio en disco, 
+como de los inodos libres. Además, nos muestra información general sobre el uso del disco 
+en los sistemas de ficheros montados en directorios.
+
+Normalmente, en los directorios, indicamos ficheros de dispositivos de particiones, 
+por ejemplo, /dev/hda1, pero si indicamos otro tipo de nombre de fichero o directorio, 
+obtendremos información sobre la partición donde está ubicado dicho fichero o directorio.
+
+Si omitimos directorios, se mostrará la información relativa a los sistemas de ficheros
+montados en los dispositivos incluidos en /etc/fstab. 
+
+La forma correcta de utilizar el comando df es la siguiente:
+    
+    #df [opciones]/ dev/sd[a|b|c|d] [1,2,3,4]
+```sh
+    > df --help 
+        Usage: df [OPTION]... [FILE]...
+        Show information about the file system on which each FILE resides, or all file systems by default.
+
+        -a, --all             include pseudo, duplicate, inaccessible file systems
+        -B, --block-size=SIZE  scale sizes by SIZE before printing them; e.g.,
+                                '-BM' prints sizes in units of 1,048,576 bytes;
+                                see SIZE format below
+        -h, --human-readable  print sizes in powers of 1024 (e.g., 1023M)
+        -H, --si              print sizes in powers of 1000 (e.g., 1.1G)
+        -i, --inodes          list inode information instead of block usage
+        -k                    like --block-size=1K
+        -l, --local           limit listing to local file systems
+            --no-sync         do not invoke sync before getting usage info (default)
+            --output[=FIELD_LIST]  use the output format defined by FIELD_LIST,
+                                    or print all fields if FIELD_LIST is omitted.
+        -P, --portability     use the POSIX output format
+            --sync            invoke sync before getting usage info
+            --total           elide all entries insignificant to available space,
+                                and produce a grand total
+        -t, --type=TYPE       limit listing to file systems of type TYPE
+        -T, --print-type      print file system type
+        -x, --exclude-type=TYPE   limit listing to file systems not of type TYPE
+
+    # VER USO ESPACIO
+    > df 
+        Filesystem     1K-blocks      Used Available Use% Mounted on
+        tmpfs            1629056      1840   1627216   1% /run
+        /dev/sda6      166243912 156056984   1669348  99% /
+        tmpfs            8145264    304556   7840708   4% /dev/shm
+    
+    # VER USO INODOS
+    > df -i
+        Filesystem       Inodes   IUsed   IFree IUse% Mounted on
+        tmpfs           2036316    1215 2035101    1% /run
+        /dev/sda6      10633216 1586980 9046236   15% /
+        tmpfs           2036316     567 2035749    1% /dev/shm
+```
+
+### du - disk usage
+
+Espacio ocupado por archivos y directorios
+El comando du nos puede ayudar, al mostrar directorio por directorio,  el uso del espacio en disco. 
+Así mismo, examina los directorios recursivamente y muestra información detallada o resumida sobre 
+el espacio en disco consumido. La forma correcta de utilizar el comando du es la siguiente:
+
+```sh
+    du [opciones] [directorio]
+    Opciones    Descripción
+    -a          Muestra todos los ficheros, no solo los directorios.
+    -c          Genera un gran total de todos los elementos listados.
+    -h          Muestra los resultados en un formato legible para las personas, 
+                  incluyendo sufijos como M (megabytes) y G (gigabytes).
+    -S          Visualiza un sumario para cada uno de los directorios especificados, 
+                  en lugar de los totales encontrados recursivamente en cada subdirectorio.
+    -5          Excluye los subdirectorios de las sumas y los totales, 
+                  limitándose a totalizar los directorios.
+```
+
+```sh
+    #Espacio total ocupado por /etc:
+    >du-sch /etc
+        18M /etc
+        18M total
+
+    # ver los diez archivos más grandes en el directorio actual, usamos:
+    > du -s * | sort -nr | head
+        41963556	Videos
+        5010840	    Desktop
+        3684856	    cuda_11.4.0_470.42.01_linux.run
+        3054216	    VirtualBox VMs
+        1185372	    Documents
+        757396	    build
+        651364	    snap
+        647772	    Downloads
+        277100	    go
+        249084	    opencv-4.x
+
+    > du -sh * | sort -nr | grep -e'[0-9]G'|head
+        41G	    Videos
+        4,8G	Desktop
+        3,6G	cuda_11.4.0_470.42.01_linux.run
+        3,0G	VirtualBox VMs
+        1,2G	Documents
+
+
+    # I Espacio total ocupado por distintos directorios:
+    > du -sch /*
+        7.4M /bin
+        42M /boot
+        56K /debian
+        (... salida cortada...)
+```
+### tune2fs en sistemas extendidos
+
+El comando tune2fs, permite configurar algunas características del comportamiento de 
+nuestro sistemas de archivos.
+
+    Opciones        Descripción
+    -c [número]     Define el número máximo de montajes antes de verificarlo.
+    -C [número]     Define el número de veces que se montó.
+    -f              Fuerza la operación.
+    -j              Agrega journaling (convierte de ext2 a ext3).
+    -m [número]     Cambia el porcentaje de bloques reservados.
+
+ ### xfs_metadump
+
+Solo debería ser usado para copiar sistemas de archivos desmontados, 
+de solo lectura o congelados (xfs_freeze). 
+
+```sh
+# Podemos copiar los metadatos hacia un archivo:
+> xfs_metadump-g/dev/sdb6 prueba.img
+    Copied 347520 of 1141120 inodes (1 of 4 AGs)
+> 1s-1h prueba.img
+    -rw-r--r-- 1 root root 123M nov 24 23:22 prueba.img
+
+# Uso el comando file para que reconozca el tipo de archivo:
+> file prueba.img
+    rino: XFS filesystem metadump image
+```
+
+
+### Enlaces duros
+
+Estos enlaces comparten el inodo del fichero original. 
+un hard link es indistinguible del original, 
+por eso, los cambios en el link afectan al fichero original, excepto en el borrado. 
+
+Borrar el link no elimina al original ni a la inversa.
+Este tipo de enlace conserva los permisos del original y marcas de tiempo.
+
+Por contra, no se pueden usar para hacer enlaces a directorios,
+ ni pueden extenderse a otros sistemas de ficheros.
+
+```sh
+# ln = link   ( hard link por defecto)
+  ln  /ruta/completa/fichero  nombre_enlace
+# -s  = sofr lnk
+  ln  -s  /ruta/completa/fichero  nombre_enlace
+```
+
+son implementados en los sistemas de archivos estilo
+como diferentes entradas en bloques de directorio que apuntan al mismo inodo. 
+
+Cambiando de nombre o borrando una de esas entradas no borramos los datos, 
+solamente disminuye la cuenta de enlaces.
+
+Todos los metadatos del archivo son los mismos, excluyendo el nombre.
+Los enlaces duros no pueden atravesar particiones.
+
+diferencia de los soft (simbólicos), los enlaces duros nunca se pueden
+romper moviendo uno de los archivos (entradas de directorio) a otra ubicación.
+
+Normalmente, los archivos tienen un único enlace. 
+Los directorios tienen tantos enlaces como subdirectorios
+
+### Enlaces simbólicos
+
+enlaces pueden extenderse a otros sistemas de ficheros. 
+También pueden hacer referencia a directorios,
+
+La lectura y escritura, así como la copia del enlace,
+afectan al archivo al que apuntan, mientras
+que el borrado afecta al propio enlace.
+
+un archivo separado conteniendo una referencia en el
+archivo al archivo original.
+
+un enlace simbólico puede apuntar a cualquier directorio o archivo.
+
+Un programa llamado symlinks se escribió para
+hacer el proceso de ubicar y limpiar los enlaces simbólicos rotos.
+
+
+HARD vs SOFT :
+https://www.linkedin.com/pulse/hard-link-soft-link-ana-maria-roman-valencia/
+
+
+
+```sh
+#      -s  = sofr lnk
+>  ln  -s  /ruta/completa/fichero  nombre_enlace
+```
+
+
+```sh
+# creamos un archivo en  /home/ariel/public
+>touch ejemplo
+# vemos los archivos 
+> ls -lasih
+total 8,0K
+#Ionode disk_size  type/permision  links  owner group  file_s last_edition   name                     
+8918149 4,0 K       drwxr-xr-x       2    ariel ariel  4,0K   Oct 13 18:41   .
+8917727 4,0 K       drwxr-x---       74   ariel ariel  4,0K   Oct 13 18:39   ..
+8971836   0         -rw-rw-r--       1    ariel ariel    0    Oct 13 18:37   ejemplo
+# podemos obserbar que hay 2  referencias al directorio actual '.'
+# podemos obserbar que hay 74 referencias al directorio padre '..' = home/ariel
+# 4,0 K where alocated for the file 
+
+# creamos soft y hard link
+> ln ./ejemplo ./ejemplo_hard
+> ln -s ./ejemplo ./ejemplo_soft
+
+# vemos los  archivos 
+> ls -lasihp | grep -v /
+
+8971836    0 -rw-rw-r--  2 ariel ariel    0 Oct 13 18:37 ejemplo
+8971836    0 -rw-rw-r--  2 ariel ariel    0 Oct 13 18:37 ejemplo_hard
+8972948    0 lrwxrwxrwx  1 ariel ariel    9 Oct 13 18:41 ejemplo_soft -> ./ejemplo
+    # tanto el original como el hard link tienen 2  referencias la propia y la de soft link
+    # todos los archivos siguen estando vacions por lo que pesan 0
+
+
+# editamos el ejemplo
+> nano ejemplo
+> cat  ejemplo
+este texto lo escribimos dentro de el archivo ejemplo usando nano
+
+# vemos los cambios en archivos ( el original y el hard link)
+> ls -lasihp | grep -v /
+8971836 4,0K -rw-rw-r--  2 ariel ariel   66 Oct 13 18:58 ejemplo
+8971836 4,0K -rw-rw-r--  2 ariel ariel   66 Oct 13 18:58 ejemplo_hard
+8972948    0 lrwxrwxrwx  1 ariel ariel    9 Oct 13 18:41 ejemplo_soft -> ./ejemplo
+    # el espacio en disco de los hard link es 4 Kb  pero contiene 66 bytes o caracteres
+    # el espacio en disco de los soft link es 0 Kb
+
+    # 9 son los caacteres de  './ejemplo'
+    # 66 son los caacteres de 'este texto lo escribimos ....  usando nano'
+
+# al mover el soft link la direccion deja de ser valida
+> mv ./ejemplo_soft  ~/Desktop/
+> cd ~/Desktop/
+> cat ejemplo_soft
+cat: ejemplo_soft: No such file or directory  # soft link ROTO
+
+# movemos el soft link y vuelve a funcionar
+> mv ./ejemplo_soft  ~/Public/
+> cd -
+> cat ejemplo_soft 
+este texto lo escribimos dentro de el archivo ejemplo usando nano
+
+> du -abc -l
+# size  Name 
+66	    ./ejemplo       #  66 characters
+9	    ./ejemplo_soft  #  9 bytes
+66	    ./ejemplo_hard  #  0 bytes 
+4237	.               #  directory metadata & overhead = 4 Kb
+4237	total
+
+> du /home/ariel/Desktop/ -ab --max-depth=2
+5	    /home/ariel/Desktop/GO/.gitignore
+1777760	/home/ariel/Desktop/GO/test
+5580021	/home/ariel/Desktop/GO
+8370	/home/ariel/Desktop/city.jpg
+
+
+```
+
+
+### BIOS UEFI y arranque
+
+**BIOS**    :    ( Basic  Input  Output  System )
+es firmware embebido en la placa madre encargado el hardware 
+cuando se enciende la computadora y un proceso de diagnóstico
+llamado **POST** : ( Power  On  Self  Test ).
+
+**UEFI**    :    ( Unified  Extended  Firmware  Interface )
+PCs nuevas usan UEFI, un firmware que reemplaza al sistema BIOS.
+
+ Las principales diferencias son:
+
+● UEFI proporciona  estándares técnicos para una interfaz, 
+en lugar de aplicarse a una única implementación de un firmware.
+
+● UEFI entiende los conceptos de 
+ cargador de arranque, particiones y sistemas operativos.
+
+● UEFI es capaz de saltear GRUB y lanzar el kernel directamente 
+(aunque este modo deuso no es habitual)
+
+### Secuencia de arranque
+
+es el conjunto de operaciones, desde que iniciamos el equipo,
+hasta que inicia el primer proceso del sistema.
+
+Cuando iniciamos el equipo, se ejecuta el BIOS o UEFI. 
+Dentro de las opciones de configuración de la BIOS/UEFI, 
+podemos definir los dispositivos físicos de arranque del sistema 
+(disco rígido, USB, CD-ROM, etc).
+
+El dispositivo utilizado para el arranque debe tener instalado 
+en el **primer sector**, conocido como **MBR** ( Master Boot Record ), 
+el código de arranque, la definición de la tabla de particiones
+y el código de comprobación.
+
+El código de arranque inicia el bootloader o cargador de arranque (GRUB en Linux), 
+donde podemos elegir a través de un menú, el Sistema Operativo a iniciar.
+
+El sistema UEFI mantiene por compatibilidad el inicio de MBR. 
+En caso de no utilizar el modo de compatibilidad intentará usar 
+una partición **GPT** ( Guid  Partition  Table ) para cargar los archivos
+de inicio de los distintos sistemas operativos.
+Estos archivos tienen extensión **.EFI**.
+
+UEFI puede arrancar directamente su propio bootloader o bien usar GRUB. 
+Este cargará el kernel. Luego montará (si es que existe) el **initramfs**.
+Continuará el inicio para detectar el tipo de CPU, el manejo de memoria, 
+planificador de tareas, entradas y salidas, comunicación interprocesos, y demás sistemas
+
+Una vez que el sistema de archivos raíces está localizado y montado 
+el **initramfs** le cede el control al gestor del sistema de la máquina.
+Llegado este punto se ejecuta el **primer proceso** llamado **init** o **systemd**
+que es el encargado deiniciar los distintos servicios del sistema.
+
+## clase 6
+
+### DESAFIO 2
+
+El objetivo de este desafío será administrar un número disco en nuestra máquina virtual. 
+Para esto tendremos que agregar un nuevo disco, particionario, formateario,
+montar los Filesystems y realizar algunas configuraciones de archivos/directorios
+
+1) Agregar un nuevo disco a nuestra máquina virtual (al menos 2gb)
+2) Crear 4 particiones primarias, 1 de tipo swap y 3 de tipo Linux (default)
+3) Formatear la partición de tipo swap como swap
+4) Formatear 1 de las otras particiones como ext3
+5) Formatear otra de las particiones como ext4
+6) Formatear la última partición disponible como xfs
+*   a) En caso de no contar con este tipo de formato disponible en nuestro sistema, 
+       realizar de la instalación
+1) Montar los Filesystems de forma automática en nuestro sistema (/etc/fstab). 
+   Para el montaje tendremos que montar/habilitar el swap y además las otras 3 particiones 
+   se deberán montar de la siguiente forma (crear los directorios en caso de necesitario). 
+   Montar los Filesystems sin ningún atributo extra, 
+   con la configuración default y sin verificación de errores.
+*   a) ext3=/data/manuales ext4 /data/laboratorios
+        xfs=/data/exámenes
+*   b) Para montarlos inicialmente pueden reiniciar la máquina virtual o forzar el montado
+*   c) Guardar en un archivo llamado "salida-fstab.txt" 
+        el contenido del archivo /etc/fstab luego de haber agregado nuestros nuevos FS.
+1) Ya montados los Filesystems, crear los siguientes link simbólicos 
+   (softlinks o hard links dependiendo el caso)
+*   a) softlink entre /data/manuales y /home/fase1/modulo2/manuales
+*   b) softlink entre /data/laboratorios y /home/fase1/laboratorios
+*   c) hardlink entre /data/exámenes y /home/fase 1/exámenes
+1) ¿Funcionaron todos los enlaces simbólicos? 
+   En caso de que alguno no lo haya hecho, documentar los errores. 
+   Crear un hard link entre el directorio /data/exámenes/fase1 y/data/exámenes/devops
+2)    Documentar la siguiente información
+*   a) Listado de particiones del nuevo disco junto al directorio donde se montaron
+*   
 
