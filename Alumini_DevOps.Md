@@ -78,14 +78,59 @@ Pair Programing: utilizando metodologia Agile con un companiero
 
 Mentoring: apollo constante del tutor
 
-## Certificaciones Linux
+## LPI - Certificaciones Linux - MODULO 1
+
+**Certificaciones de Linux**
 
 LPI  : Lunux Profesional Institute Certifications
 CNCF : Cloud Native Computing Foundation
-    LFCS : Linux Foundations Certified Sys Admins
+LFCS : Linux Foundations Certified Sys Admins
 
-Lpi.org/our-certifications/exams-101-objectives
+https://www.lpi.org/our-certifications/summary-of-lpi-certifications/
+https://learning.lpi.org/en/learning-materials/all-materials/)
 
+Fase 1 - SysAdmin   Módulo 1 
+
+**103.7 Buscar en texto usando expresiones regulares**
+
+Peso: 3 (importancia del 1 al 6)
+
+Los alumnos deberán ser capaces de :
+    ● `editar` archivos de texto usando `Vi`.
+    ●  editar  archivos de texto usando `expresiones regulares`.
+    ● `buscar` filtrando con expresiones regulares.
+
+Términos y herramientas
+    ● grep
+    ● fgrep
+    ● egrep
+    ● sed
+    ● regex(7)
+
+**102.1: Arranque del sistema**
+
+Peso: 2 (importancia del 1 al 6)
+
+
+Los alumnos deberán ser capaces :
+    Diseñar un esquema de `particionado` para un sistema Linux.
+
+Áreas claves de conocimiento:
+    ● Asignar `sistema de archivos` y espacio de intercambio para separar `particiones` o discos.
+    ● Adaptar el diseño para el uso propuesto del sistema.
+    ● Asegurarse de que la partición `/boot` está en conformidad 
+    con los requisitos de la arquitectura del hardware `para arrancar`.
+    ● Conocimiento de las características básicas de `LVM (Logical Volume Manager)` .
+
+Términos y herramientas :
+    ● El sistema de archivos `/ (raíz)`
+    ● El sistema de archivos `/var`
+    ● El sistema de archivos `/home`
+    ● El sistema de archivos `/boot`
+    ● Partición del sistema `EFI` (ESP)
+    ● Espacio de intercambio
+    ● Puntos de `montaje`
+    ● `Particiones`
 
 ## Distribuciones Linux:
 
@@ -1026,24 +1071,53 @@ siguiendo el formato, además de documentar los pasos para llegar a eso en el in
     Syncing disks.
     ```
 
-###  LPI Certification
+###  LPI  Certification - Módulo 2
 
-104.2: Mantener la integridad de los sistemas de archivos
+Fase 1 - SysAdmin   Módulo 2
 
-Peso: 2
-    El peso = importancia que tiene este tópico en la certificación. 
-    ( peso puede ir de 1 a 6 )
+**104.2: Mantener la integridad de los sistemas de archivos**
+
+Peso: 2  ( mportancia del 1 al 6 )
 
 Descripción:
 
-    Los alumnos deberán ser capaces de mantener un sistema de archivos estándar, 
-    así comotambién los datos extra asociados con un sistema de archivos con journaling.
+mantener un `sistema de archivos` estándar y los datos extra 
+asociados con un sistema de archivos con `journaling`.
 
 Áreas claves de conocimiento
+    ● Verificar la integridad de sistemas de archivos.
+    ● Monitorear el espacio y los `inodos` libres.
+    ● Reparar problemas sencillos del sistema de archivos.
 
-    • Verificar la integridad de sistemas de archivos.
-    • Monitorear el espacio y los inodos libres.
-    • Reparar problemas sencillos del sistema de archivos.
+Términos y herramientas
+    ● du
+    ● df
+    ● fsck
+    ● e2fsck
+    ● mke2fs
+    ● tune2fs
+    ● xfs_repair
+    ● xfs_fsr
+    ● xfs_db
+
+**104.3: Controlar el montaje y desmontaje de sistemas de archivos**
+
+Peso: 3  (importancia de 1 al 6 )
+
+Áreas claves de conocimiento:
+    ● `Montar` y `desmontar` sistemas de archivos.
+    ● Configurar el montaje del sistema de archivos en el `arranque`.
+    ● Configurar sistemas de archivos removibles montables por el usuario.
+    ● Uso de `etiquetas y UUID` para identificar y montar sistemas de archivos.
+    ● Noción de unidades de montaje de `systemd`.
+
+Términos y herramientas
+    ● /etc/fstab
+    ● /media/
+    ● mount
+    ● umount
+    ● lsblk
+    ● blkid
 
 ### Sistema de Archivos
 
@@ -1410,46 +1484,6 @@ PTUUID="58e4232c" PTTYPE="dos"
 
 ```
 
-### Repaso de herramientas
-
-    • /etc/fstab
-    • /media/
-    • mount
-    • umount
-    • Isblk
-    • blkid
-
-    • du
-    • df        
-    • fsck      
-    • e2fsck
-    • mke2fs    
-    • tune2fs   
-    • xfs_repair
-    • xfs_fsr
-    • xfs_db
-
-Áreas claves de conocimiento
-
-• Proporcionar los comandos comunes para el cargador de arranque y las opciones 
-    al kernel en el momento del arranque.
-• Demostrar conocimiento de la secuencia del arranque desde BIOS/UEFI 
-    hasta la culminación del arranque.
-• Entendimiento de SysVinit y systemd.
-• Conocimiento básico de upstart
-• Verificar los eventos del arranque en los archivos de log
-
-Términos y herramientas
-• dmesg
-• journalctl
-• BIOS
-• UEFI
-• bootloader (cargador de arranque)
-• kernel
-• initramfs
-• init
-• SysVinit
-• Systemd
 
 ## clase 5 - Disk use + Links + BIOS /GRUB
 
@@ -1818,7 +1852,16 @@ que es el encargado deiniciar los distintos servicios del sistema.
 
 ## clase 6
 
+METODOS ALERNATIVOS DE COMUNICARSE CON VM
+
+    Portapapeles bi-direccional
+        settings -> General -> Advanced -> shared clipboard
+    SCP (secure copy)    https://www.warp.dev/terminus/scp-from-remote-to-loca
+    winscp
+
+
 ### DESAFIO 2
+
 
 El objetivo de este desafío será administrar un número disco en nuestra máquina virtual. 
 Para esto tendremos que agregar un nuevo disco, particionario, formateario,
@@ -1826,19 +1869,18 @@ montar los Filesystems y realizar algunas configuraciones de archivos/directorio
 
 1) Agregar un nuevo disco a nuestra máquina virtual (al menos 2gb)
 2) Crear 4 particiones primarias, 1 de tipo swap y 3 de tipo Linux (default)
-3) Formatear la partición de tipo swap como swap
+3) Formatear la partición de  tipo swap como swap
 4) Formatear 1 de las otras particiones como ext3
-5) Formatear otra de las particiones como ext4
-6) Formatear la última partición disponible como xfs
+5) Formatear otra    de las particiones como ext4
+6) Formatear última  de las particiones como xfs
 *   a) En caso de no contar con este tipo de formato disponible en nuestro sistema, 
        realizar de la instalación
-1) Montar los Filesystems de forma automática en nuestro sistema (/etc/fstab). 
+1) Montar los Filesystems de forma automática en nuestro sistema (/etc/fstab).  "mount -a"
    Para el montaje tendremos que montar/habilitar el swap y además las otras 3 particiones 
    se deberán montar de la siguiente forma (crear los directorios en caso de necesitario). 
    Montar los Filesystems sin ningún atributo extra, 
    con la configuración default y sin verificación de errores.
-*   a) ext3=/data/manuales ext4 /data/laboratorios
-        xfs=/data/exámenes
+*   a) ext3=/data/manuales   ext4=/data/laboratorios   xfs=/data/exámenes
 *   b) Para montarlos inicialmente pueden reiniciar la máquina virtual o forzar el montado
 *   c) Guardar en un archivo llamado "salida-fstab.txt" 
         el contenido del archivo /etc/fstab luego de haber agregado nuestros nuevos FS.
@@ -1847,10 +1889,88 @@ montar los Filesystems y realizar algunas configuraciones de archivos/directorio
 *   a) softlink entre /data/manuales y /home/fase1/modulo2/manuales
 *   b) softlink entre /data/laboratorios y /home/fase1/laboratorios
 *   c) hardlink entre /data/exámenes y /home/fase 1/exámenes
-1) ¿Funcionaron todos los enlaces simbólicos? 
-   En caso de que alguno no lo haya hecho, documentar los errores. 
-   Crear un hard link entre el directorio /data/exámenes/fase1 y/data/exámenes/devops
-2)    Documentar la siguiente información
-*   a) Listado de particiones del nuevo disco junto al directorio donde se montaron
-*   
+1) ¿ Funcionaron todos los enlaces simbólicos ? 
+    En caso de que alguno no lo haya hecho, documentar los errores. 
+    Crear un hard link entre el directorio /data/exámenes/fase1 y/data/exámenes/devops
+2)   Documentar la siguiente información:
+*   a) Listado de particiones del nuevo disco junto al directorio 
+        dónde se montaron y el % de utilización
+*   b) Permisos de los soft y hard link, se ven distinto al resto de directorios ?
+*   c) Información de los directorios de los links, 
+        que Inodo utiliza el archivo original y cual utiliza el creado por el link ?
 
+### LPI  Certification - Módulo 3
+
+Fase 1 - SysAdmin   Módulo 3
+
+**101.1 Determinar y configurar parámetros del hardware**
+
+Peso: 2  ( importancia del 1 al 6. )
+
+Descripción:
+
+    Los alumnos deberán ser capaces de determinar y configurar el hardware básico.
+ 
+Áreas claves de conocimiento:
+    ● `Habilitar y deshabilitar periféricos` integrados.
+    ● Diferenciar entre los distintos tipos de dispositivos de almacenamiento masivo.
+    ● Utilización de `herramientas USB`.
+    ● Determinar los recursos de hardware para los dispositivos.
+    ● Herramientas y utilitarios para `listar` varios tipos de información 
+       del hardware (e.g. `lsusb, lspci`, etc.).
+    ● Herramientas y utilerías para manipular dispositivos USB.
+    ● Entendimiento conceptual de `sysfs, udev, dbus`.
+
+Términos y herramientas:
+    ● /sys.
+    ● /proc.
+    ● /dev.
+    ● modprobe.
+    ● lsmod.
+    ● lspci.
+    ● lsusb.
+
+**108.2: Registros de eventos del sistema**
+
+Peso: 4 de 1 a 6.
+
+Descripción:
+    Los alumnos deberían ser capaces de configurar `rsyslog`. 
+    configurar el `daemon de registro de eventos` para 
+    enviar la salida de logs a un `servidor de logs` central o  
+    aceptar la salida de logs  como un servidor  de log central
+    . 
+    Está cubierto el uso del subsistema journal de systemd. 
+    También, se incluye estar al tanto de `syslog` y `syslog-ng` 
+    como sistemas alternativos.
+
+
+Áreas Claves de Conocimiento
+    ● Configuración básica de rsyslog.
+    ● Entendimiento de `servicios estándares`, prioridades y acciones.
+    ● `Consultar el journal` de systemd.
+    ● Filtrar los datos del journal de systemd por criterios tales como 
+        fechas, servicios oprioridades.
+    ● Configurar almacenamiento persistente de journal de systemd 
+        y el tamaño del journal.
+    ● Borrar viejos datos del journal de systemd.
+    ● `Recuperar datos de journal` de systemd desde un sistema de rescate 
+        o de una copia del sistema de archivos.
+    ● Entender la interacción de rsyslog con  `systemd-journald`.
+    ● Configuración de logrotate.
+    ● Estar al tanto de syslog y syslog-ng.
+
+
+Términos y herramientas
+    ● /etc/rsyslog.conf
+    ● /var/log/
+    ● logger
+    ● logrotate
+    ● /etc/logrotate.conf
+    ● /etc/logrotate.d/
+    ● journalctl
+    ● systemd-cat
+    ● /etc/systemd/journald.conf
+    ● /var/log/journal/
+
+    
