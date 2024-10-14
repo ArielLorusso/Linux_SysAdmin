@@ -1973,4 +1973,156 @@ Términos y herramientas
     ● /etc/systemd/journald.conf
     ● /var/log/journal/
 
+
+## Arranque, servicios y apagado
+
+**Mecanismos de arranque**
+    Los `2 mecanismos` principales `de arranque` en Linux son 
+    `SysVinit` y `systemD`, los describiremos a  continuación.
+
+
+**SysVinit**
+    Muchos sistemas operativos UNIX usan este mecanismo, 
+    que fue por primera vez implementado en UNIX System III y
+    posteriormente en UNIX System V.
+
+**Proceso init**
+    El primer proceso se llama `init`, arranca luego de la carga del kernel. 
+    Al ser el primer proceso en ejecutarse toma el `PID 1`. 
+    Es un `daemon` (es decir, corre en segundo plano y sin una terminal 
+    que lo controle), 
+    Es el `padre de todos los procesos` iniciados durante el uso del sistema.
+    Al iniciar el sistema tendrá un nivel de ejecución
+    predeterminado (runlevel), en el que se definirán
+    los distintos procesos a iniciar. 
+    Entre los niveles de ejecución se encuentran:
+    ● La configuración principal del init es el
+    archivo /etc/inittab en el que se define cuál es
+    el nivel de ejecución predeterminado.
+    ● Luego de leer la configuración, el init cargará
+    los scripts que se encuentran dentro de
+    /etc/rc2.d (en caso de que el runlevel fuera el
+    1) o /etc/rc3.d (en caso de que el runlevel fuera el 3).
+
+    /dir_name.d : directorio de configuracion
+
+**Niveles de Ejecución ( `Runlevel` )**
+    Los niveles de ejecución en `SystemV` describen ciertos
+    estados del equipo, que se caracterizan por ejecutar ciertos
+    procesos. En general, existen 8 niveles de ejecución, que
+    van del 0 al 6 y S o s, siendo estos últimos alias del mismo
+    nivel de ejecución. De estos ocho niveles, tres son
+    considerados reservados, y son los siguientes:
+    ● `Nivel 0` nivel `Apagado` del sistema. Inicia el proceso normal de apagado.
+    ● `Nivel 1`,s,S Modo u`suario único`, se utiliza para la `reparación del sistema`, ya
+    que iniciará solo los procesos necesarios para el arranque del
+    sistema. Las tres opciones 1, s y S significan lo mismo.
+    ● `Nivel 6` nivel `Reinicio` del sistema. Inicia la secuencia de reinicio.
+    Dependiendo de la distribución:
+    ●` Nivel 2` Nivel `predeterminado`, multiusuario con o sin entorno gráfico  (Debian, Ubuntu).
+    ● `Nivel 3` Nivel `predeterminado,` multiusuario `sin entorno gráfico`      (Red-Hat, Slackware, CentOS).
+    ● `Nivel 4 `Nivel `multiusuario` o reservado.
+    ● `Nivel 5` Nivel `multiusuario` con entorno gráfico                        (Red-Hat)
+
+**Single User Mode (Usuario único)**
+    Este modo se utiliza para el mantenimiento del
+    sistema. En este modo las conexiones remotas,
+    red y la mayor parte de los servicios se
+    encuentran desactivados. Generalmente se
+    utiliza para corregir problemas del sistema de
+    archivos, y que el sistema no puede resolver
+    automáticamente.
+    Podemos acceder a este modo porque el sistema
+    así lo pide o especificando por la línea de
+    comandos del GRUB.
+   ```sh
+    kernel /vmlinuz-2.6.27.21-170.2.56.fc10.i686ro root=/dev/hda1 rhgb quiet
+   ```
+    Para modo mantenimiento se agrega al final de
+    la línea un número 1 o la palabra single como
+    parámetros.
     
+   ```sh
+    linux /boot/vmlinuz-3.13.0-29-generic   root=/dev/sda1t single
+   ```
+
+logs de servicios/var/log
+
+```sh
+> ls -la /etc/rc*
+lrwxrwxrwx 1 root root 7 Apr 29 16:38 /etc/rc -> rc.d/rc
+lrwxrwxrwx 1 root root 10 Apr 29 18:33 /etc/rc0.d -> rc.d/rc0.d
+lrwxrwxrwx 1 root root 10 Apr 29 18:33 /etc/rc1.d -> rc.d/rc1.d
+lrwxrwxrwx 1 root root 10 Apr 29 18:33 /etc/rc2.d -> rc.d/rc2.d
+lrwxrwxrwx 1 root root 10 Apr 29 18:33 /etc/rc3.d -> rc.d/rc3.d
+lrwxrwxrwx 1 root root 10 Apr 29 18:33 /etc/rc4.d -> rc.d/rc4.d
+lrwxrwxrwx 1 root root 10 Apr 29 18:33 /etc/rc5.d -> rc.d/rc5.d
+lrwxrwxrwx 1 root root 10 Apr 29 18:33 /etc/rc6.d -> rc.d/rc6.d
+lrwxrwxrwx 1 root root 13 Apr 29 16:38 /etc/rc.local -> rc.d/rc.local
+lrwxrwxrwx 1 root root 15 Apr 29 16:38 /etc/rc.sysinit -> rc.d/rc.sysinit
+```
+
+**/etc/init.d**
+    En este directorio se encuentran todos los `scripts`
+    encargados de `levantar` cada uno de los s`ervicios` del sistema.
+    Algunos de los servicios que podemos encontrar en el init.d son los referentes a:
+     ● httpd    Servidor Web `Apache`
+     ● smb      Servidor `Samba`
+     ● postfix  Servidor de `correo`
+     ● dhcpd    Servidor `DHCP`
+     ● named    Servidor `DNS`
+     ● mysqld   Manejador de `Base de Datos` MySQL
+
+```sh
+> ls -l /etc/rc.d/init.d/    #  Red-Hat
+-rwxr-xr-x 1 root root 2974 jun 23 10:18 dhcpd
+-rwxr-xr-x 1 root root 3099 feb 25 2008  httpd
+-rwxr-xr-x 1 root root 4239 mar 3  2008  mysqld
+-rwxr-xr-- 1 root root 6154 ago 6  05:05 named
+-rwxr-xr-x 1 root root 1745 sep 18 10:26 smb
+-rwxr-xr-x 1 root root 4112 mar 29 2008  postfix
+# (...salida cortada...)
+> ls -l /etc/init.d/         #  UBUNTU
+total 176
+-rwxr-xr-x 1 root root 2269 Nov 28  2019 acpid
+-rwxr-xr-x 1 root root 5574 Nov  5  2019 alsa-utils
+-rwxr-xr-x 1 root root 2055 Jul 16  2019 anacron
+-rwxr-xr-x 1 root root 3740 Apr  1  2020 apparmor
+-rwxr-xr-x 1 root root 2915 Jun 29  2022 apport
+-rwxr-xr-x 1 root root 2401 Aug 21  2018 avahi-daemon
+-rwxr-xr-x 1 root root 2968 Feb 26  2020 bluetooth
+# (...salida cortada...)
+-rwxr-xr-x 1 root root  924 Feb 13  2020 procps
+-rwxr-xr-x 1 root root 1942 Nov 26  2021 network-manager
+-rwxr-xr-x 1 root root 3939 Apr  3  2023 ssh
+
+```
+**/etc/rc.sysinit  o  /etc/init.d/rcS**
+    En sistemas basados en Red Hat, se hace uso del
+    script `rc.sysinit` para la inicialización.
+    La secuencia de comandos rcS de Debian hace el
+    mismo trabajo mediante la ejecución de varios
+    pequeños scripts colocados en dos directorios
+    diferentes.
+    En cada caso, el script se pone en marcha por
+    init en el arranque. Este se ocupa de algunas
+    tareas esenciales para preparar el sistema para
+    su uso, tales como montar sistemas de ficheros.
+    Algunas de las tareas son:
+    ● Configuración de `reloj` del sistema.
+    ● Configuración de los parámetros del Kernel.
+    ● Levantamiento de dispositivos `RAID y LVM`.
+    ● Activación y actualización de cuotas en disco.
+    ● Activación de la partición `SWAP`
+
+
+1:08:00
+
+```sh
+> cat /var/log/alternatives.log.1
+# RSH -> SSH
+update-alternatives 2024-09-19 13:23:54: run with --install /usr/bin/rsh rsh /usr/bin/ssh           20 --slave /usr/share/man/man1/rsh.1.gz rsh.1.gz        /usr/share/man/man1/ssh.1.gz
+update-alternatives 2024-09-19 13:23:54: run with --install /usr/bin/rlogin rlogin /usr/bin/slogin  20 --slave /usr/share/man/man1/rlogin.1.gz rlogin.1.gz  /usr/share/man/man1/slogin.1.gz
+# RCP -> SCP
+update-alternatives 2024-09-19 13:23:54: run with --install /usr/bin/rcp rcp /usr/bin/scp           20 --slave /usr/share/man/man1/rcp.1.gz rcp.1.gz        /usr/share/man/man1/scp.1.gz
+```
