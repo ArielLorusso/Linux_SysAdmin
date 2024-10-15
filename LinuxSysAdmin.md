@@ -3,7 +3,7 @@ freeCodeCamp.org - Linux Server Course - System Configuration and Operation
 
 https://www.youtube.com/watch?v=WMy3OzvBWc0
 
-<<<<<<< HEAD
+
 (0:00:00) Introduction
 (0:00:34) Explain Linux Kernel and Boot Concepts
 (0:37:20) Configure and Verify Network Connections
@@ -18,7 +18,7 @@ https://www.youtube.com/watch?v=WMy3OzvBWc0
 =======
 Linux Server Course - System Configuration and Operation
 freeCodeCamp.org
->>>>>>> 2c898f42c1f4349f73ed67f21de15abc857d87e3
+
 
 
 # BIOS & UEFI 

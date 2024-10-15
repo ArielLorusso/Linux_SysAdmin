@@ -18,7 +18,8 @@ nociones de linus y CLI
 
 ## Temario del Bootcamp
 
-bootcamp 5 fases :  10 clases por face, 50 clases + o -
+El bootcamp 5 fases :  10 clases por face, 50 clases aprox.
+
     FASE1: Sys Admin
             SSH  TFP  SFTP  VNC  RDP  
     FASE2: Cloud Computing  Azure AWS GCS
@@ -1485,7 +1486,7 @@ PTUUID="58e4232c" PTTYPE="dos"
 ```
 
 
-## clase 5 - Disk use + Links + BIOS /GRUB
+## Clase 5 - Disk use + Links + BIOS /GRUB
 
 
 luego veremos como configurar desde el CLI la IP estatica 
@@ -1850,7 +1851,7 @@ el **initramfs** le cede el control al gestor del sistema de la máquina.
 Llegado este punto se ejecuta el **primer proceso** llamado **init** o **systemd**
 que es el encargado deiniciar los distintos servicios del sistema.
 
-## clase 6
+## Clase 6 - Servicios + Conf + Logs
 
 METODOS ALERNATIVOS DE COMUNICARSE CON VM
 
@@ -1875,7 +1876,7 @@ montar los Filesystems y realizar algunas configuraciones de archivos/directorio
 6) Formatear última  de las particiones como xfs
 *   a) En caso de no contar con este tipo de formato disponible en nuestro sistema, 
        realizar de la instalación
-1) Montar los Filesystems de forma automática en nuestro sistema (/etc/fstab).  "mount -a"
+7) Montar los Filesystems de forma automática en nuestro sistema (/etc/fstab).  "mount -a"
    Para el montaje tendremos que montar/habilitar el swap y además las otras 3 particiones 
    se deberán montar de la siguiente forma (crear los directorios en caso de necesitario). 
    Montar los Filesystems sin ningún atributo extra, 
@@ -1884,15 +1885,16 @@ montar los Filesystems y realizar algunas configuraciones de archivos/directorio
 *   b) Para montarlos inicialmente pueden reiniciar la máquina virtual o forzar el montado
 *   c) Guardar en un archivo llamado "salida-fstab.txt" 
         el contenido del archivo /etc/fstab luego de haber agregado nuestros nuevos FS.
-1) Ya montados los Filesystems, crear los siguientes link simbólicos 
+8) Ya montados los Filesystems, crear los siguientes link simbólicos 
    (softlinks o hard links dependiendo el caso)
 *   a) softlink entre /data/manuales y /home/fase1/modulo2/manuales
 *   b) softlink entre /data/laboratorios y /home/fase1/laboratorios
 *   c) hardlink entre /data/exámenes y /home/fase 1/exámenes
-1) ¿ Funcionaron todos los enlaces simbólicos ? 
-    En caso de que alguno no lo haya hecho, documentar los errores. 
-    Crear un hard link entre el directorio /data/exámenes/fase1 y/data/exámenes/devops
-2)   Documentar la siguiente información:
+9) Funcionaron todos los enlaces simbólicos? 
+10) En caso de que alguno no lo haya hecho, documentar los errores. 
+    Crear un hard link entre el archivo /data/exámenes/fase1/modulo1.txt 
+    y /data/exámenes/sysadmin/modulo1.txt (crear el archivo original en caso de necesitarlo)
+11)  Documentar la siguiente información:
 *   a) Listado de particiones del nuevo disco junto al directorio 
         dónde se montaron y el % de utilización
 *   b) Permisos de los soft y hard link, se ven distinto al resto de directorios ?
@@ -1946,35 +1948,37 @@ Descripción:
 
 
 Áreas Claves de Conocimiento
-    ● Configuración básica de rsyslog.
-    ● Entendimiento de `servicios estándares`, prioridades y acciones.
-    ● `Consultar el journal` de systemd.
-    ● Filtrar los datos del journal de systemd por criterios tales como 
-        fechas, servicios oprioridades.
-    ● Configurar almacenamiento persistente de journal de systemd 
-        y el tamaño del journal.
-    ● Borrar viejos datos del journal de systemd.
-    ● `Recuperar datos de journal` de systemd desde un sistema de rescate 
-        o de una copia del sistema de archivos.
-    ● Entender la interacción de rsyslog con  `systemd-journald`.
-    ● Configuración de logrotate.
-    ● Estar al tanto de syslog y syslog-ng.
+
+● Configuración básica de rsyslog.
+● Entendimiento de `servicios estándares`, prioridades y acciones.
+● `Consultar el journal` de systemd.
+● Filtrar los datos del journal de systemd por criterios tales como 
+    fechas, servicios oprioridades.
+● Configurar almacenamiento persistente de journal de systemd 
+    y el tamaño del journal.
+● Borrar viejos datos del journal de systemd.
+● `Recuperar datos de journal` de systemd desde un sistema de rescate 
+    o de una copia del sistema de archivos.
+● Entender la interacción de rsyslog con  `systemd-journald`.
+● Configuración de logrotate.
+● Estar al tanto de syslog y syslog-ng.
 
 
 Términos y herramientas
-    ● /etc/rsyslog.conf
-    ● /var/log/
-    ● logger
-    ● logrotate
-    ● /etc/logrotate.conf
-    ● /etc/logrotate.d/
-    ● journalctl
-    ● systemd-cat
-    ● /etc/systemd/journald.conf
-    ● /var/log/journal/
+
+● /etc/rsyslog.conf
+● /var/log/
+● logger
+● logrotate
+● /etc/logrotate.conf
+● /etc/logrotate.d/
+● journalctl
+● systemd-cat
+● /etc/systemd/journald.conf
+● /var/log/journal/
 
 
-## Arranque, servicios y apagado
+### Arranque, servicios y apagado
 
 **Mecanismos de arranque**
     Los `2 mecanismos` principales `de arranque` en Linux son 
@@ -1986,70 +1990,86 @@ Términos y herramientas
     que fue por primera vez implementado en UNIX System III y
     posteriormente en UNIX System V.
 
-**Proceso init**
-    El primer proceso se llama `init`, arranca luego de la carga del kernel. 
-    Al ser el primer proceso en ejecutarse toma el `PID 1`. 
-    Es un `daemon` (es decir, corre en segundo plano y sin una terminal 
-    que lo controle), 
-    Es el `padre de todos los procesos` iniciados durante el uso del sistema.
-    Al iniciar el sistema tendrá un nivel de ejecución
-    predeterminado (runlevel), en el que se definirán
-    los distintos procesos a iniciar. 
-    Entre los niveles de ejecución se encuentran:
-    ● La configuración principal del init es el
-    archivo /etc/inittab en el que se define cuál es
-    el nivel de ejecución predeterminado.
-    ● Luego de leer la configuración, el init cargará
-    los scripts que se encuentran dentro de
-    /etc/rc2.d (en caso de que el runlevel fuera el
-    1) o /etc/rc3.d (en caso de que el runlevel fuera el 3).
+### Proceso INIT  + scripts RC
 
-    /dir_name.d : directorio de configuracion
+El primer proceso se llama `init`, arranca luego de la carga del kernel. 
+Al ser el primer proceso en ejecutarse toma el `PID 1`. 
+Es un `daemon` (es decir, corre en segundo plano y sin una terminal 
+que lo controle), 
+Es el `padre de todos los procesos` iniciados durante el uso del sistema.
+Al iniciar el sistema tendrá un nivel de ejecución predeterminado (runlevel),
+en el que se definirán los distintos procesos a iniciar. 
+
+Entre los niveles de ejecución se encuentran:
+● La `configuración` principal del `init` es el archivo `/etc/inittab `
+en el que se define cuál es el nivel de ejecución predeterminado.
+● Luego de leer la configuración, el init cargará los `scripts` que se encuentran dentro  de
+ `/etc/rc2.d`   (en caso de que el runlevel fuera el 1) o 
+ `/etc/rc3.d`      (en caso de que el runlevel fuera el 3).
+ /etc/rc significa `etcetera` o miselanius y  `run commands`
+directorios finalizados con `.d`  /dir_name.d  son `directorio de configuracion`
 
 **Niveles de Ejecución ( `Runlevel` )**
-    Los niveles de ejecución en `SystemV` describen ciertos
-    estados del equipo, que se caracterizan por ejecutar ciertos
-    procesos. En general, existen 8 niveles de ejecución, que
-    van del 0 al 6 y S o s, siendo estos últimos alias del mismo
-    nivel de ejecución. De estos ocho niveles, tres son
-    considerados reservados, y son los siguientes:
-    ● `Nivel 0` nivel `Apagado` del sistema. Inicia el proceso normal de apagado.
-    ● `Nivel 1`,s,S Modo u`suario único`, se utiliza para la `reparación del sistema`, ya
-    que iniciará solo los procesos necesarios para el arranque del
-    sistema. Las tres opciones 1, s y S significan lo mismo.
-    ● `Nivel 6` nivel `Reinicio` del sistema. Inicia la secuencia de reinicio.
-    Dependiendo de la distribución:
-    ●` Nivel 2` Nivel `predeterminado`, multiusuario con o sin entorno gráfico  (Debian, Ubuntu).
-    ● `Nivel 3` Nivel `predeterminado,` multiusuario `sin entorno gráfico`      (Red-Hat, Slackware, CentOS).
-    ● `Nivel 4 `Nivel `multiusuario` o reservado.
-    ● `Nivel 5` Nivel `multiusuario` con entorno gráfico                        (Red-Hat)
+
+Los niveles de ejecución en `SystemV` describen ciertos
+estados del equipo, que se caracterizan por ejecutar ciertos
+procesos. En general, existen 8 niveles de ejecución, que
+van del 0 al 6 y S o s, siendo estos últimos alias del mismo
+nivel de ejecución. De estos ocho niveles, tres son
+considerados reservados, y son los siguientes:
+● `Nivel 0` nivel `Apagado` del sistema. Inicia el proceso normal de apagado.
+● `Nivel 1`,`s`o `S` Modo u`suario único`, se utiliza para la `reparación del sistema`, 
+    ya que iniciará solo los procesos necesarios para el arranque del sistema. 
+    1, s y S significan lo mismo.
+● `Nivel 6` nivel `Reinicio` del sistema. Inicia la secuencia de reinicio.
+Dependiendo de la distribución:
+●` Nivel 2` Nivel `predeterminado`, multiusuario con o sin entorno gráfico  (Debian, Ubuntu).
+● `Nivel 3` Nivel `predeterminado,` multiusuario `sin entorno gráfico`      (Red-Hat, Slackware, CentOS).
+● `Nivel 4 `Nivel `multiusuario` o reservado.
+● `Nivel 5` Nivel `multiusuario` con entorno gráfico                        (Red-Hat)
 
 **Single User Mode (Usuario único)**
-    Este modo se utiliza para el mantenimiento del
-    sistema. En este modo las conexiones remotas,
-    red y la mayor parte de los servicios se
-    encuentran desactivados. Generalmente se
-    utiliza para corregir problemas del sistema de
-    archivos, y que el sistema no puede resolver
-    automáticamente.
-    Podemos acceder a este modo porque el sistema
-    así lo pide o especificando por la línea de
-    comandos del GRUB.
-   ```sh
-    kernel /vmlinuz-2.6.27.21-170.2.56.fc10.i686ro root=/dev/hda1 rhgb quiet
-   ```
-    Para modo mantenimiento se agrega al final de
-    la línea un número 1 o la palabra single como
-    parámetros.
-    
-   ```sh
-    linux /boot/vmlinuz-3.13.0-29-generic   root=/dev/sda1t single
-   ```
 
-logs de servicios/var/log
+Este modo se utiliza para el `mantenimiento del sistema`. 
+las conexiones remotas, red y la mayor parte de los `servicios` 
+se encuentran `desactivados`. Generalmente se
+utiliza para corregir problemas del sistema de archivos, 
+y que el sistema no puede resolver automáticamente.
+Podemos acceder a este modo porque el sistema
+así lo pide o especificando por la línea dd comandos del GRUB.
 
 ```sh
-> ls -la /etc/rc*
+kernel /vmlinuz-2.6.27.21-170.2.56.fc10.i686ro root=/dev/hda1 rhgb quiet
+```
+
+Para modo mantenimiento se agrega al final de la línea un número `1` 
+o la palabra `single` como parámetros.
+```sh
+ linux /boot/vmlinuz-3.13.0-29-generic   root=/dev/sda1t single
+```
+
+Para cambiar a modo single desde otro nivel se utiliza telinit 1 o init 1. 
+no es la más recomendada, porque no genera ningún tipo de aviso a los usuarios
+
+### Daemons
+
+**Estructura de los runlevels**
+
+Los directorios que veremos a continuación, por si solos, no cumplen función; 
+es por eso que cumplen con una lógica que fue definida desde
+que se creó `Unix System V`, donde se especificó
+cómo tenía que estar situados cada `daemon` de arranque.
+Cuando un sistema Linux arranca, éste inicia una serie de `scripts` 
+que se encuentran en `/etc`.
+
+Hay diferencias en `inicialisacion` distribuciones de Linux, 
+pero todas ellas tienen que cumplir con la `Linux Standard Base` 
+para poder tener un `orden genérico`.
+
+
+
+```sh
+> ls -la /etc/rc*   # Red-Hat
 lrwxrwxrwx 1 root root 7 Apr 29 16:38 /etc/rc -> rc.d/rc
 lrwxrwxrwx 1 root root 10 Apr 29 18:33 /etc/rc0.d -> rc.d/rc0.d
 lrwxrwxrwx 1 root root 10 Apr 29 18:33 /etc/rc1.d -> rc.d/rc1.d
@@ -2060,18 +2080,36 @@ lrwxrwxrwx 1 root root 10 Apr 29 18:33 /etc/rc5.d -> rc.d/rc5.d
 lrwxrwxrwx 1 root root 10 Apr 29 18:33 /etc/rc6.d -> rc.d/rc6.d
 lrwxrwxrwx 1 root root 13 Apr 29 16:38 /etc/rc.local -> rc.d/rc.local
 lrwxrwxrwx 1 root root 15 Apr 29 16:38 /etc/rc.sysinit -> rc.d/rc.sysinit
+
+> ls -la  /etc/ | grep -e'rc' # Ubuntu
+-rw-r--r--   1 root root     2319 Jan  6  2022 bash.bashrc
+-rw-r--r--   1 root root     1748 Jan  6  2022 inputrc
+-rw-r--r--   1 root root      288 Mar 17  2022 mecabrc
+-rw-r--r--   1 root root    11204 Feb  9  2022 nanorc
+drwxr-xr-x   2 root root     4096 Jan 22  2024 rc0.d
+drwxr-xr-x   2 root root     4096 Jan 22  2024 rc1.d
+drwxr-xr-x   2 root root     4096 Sep 19 13:23 rc2.d
+drwxr-xr-x   2 root root     4096 Sep 19 13:23 rc3.d
+drwxr-xr-x   2 root root     4096 Sep 19 13:23 rc4.d
+drwxr-xr-x   2 root root     4096 Sep 19 13:23 rc5.d
+drwxr-xr-x   2 root root     4096 Jan 22  2024 rc6.d
+-rw-r--r--   1 root root       37 Oct  1 21:12 rc.local
+drwxr-xr-x   2 root root     4096 Dec 17  2022 rcS.d
+-rw-r--r--   1 root root     4942 Jan 24  2022 wgetrc
+
 ```
 
-**/etc/init.d**
-    En este directorio se encuentran todos los `scripts`
-    encargados de `levantar` cada uno de los s`ervicios` del sistema.
-    Algunos de los servicios que podemos encontrar en el init.d son los referentes a:
-     ● httpd    Servidor Web `Apache`
-     ● smb      Servidor `Samba`
-     ● postfix  Servidor de `correo`
-     ● dhcpd    Servidor `DHCP`
-     ● named    Servidor `DNS`
-     ● mysqld   Manejador de `Base de Datos` MySQL
+### /etc/init.d
+
+En este directorio se encuentran todos los `scripts`
+encargados de `levantar` cada uno de los s`ervicios` del sistema.
+Algunos de los servicios que podemos encontrar en el `init.d` son :
+    ● httpd    Servidor Web `Apache`
+    ● smb      Servidor `Samba`
+    ● postfix  Servidor de `correo`
+    ● dhcpd    Servidor `DHCP`
+    ● named    Servidor `DNS`
+    ● mysqld   Manejador de `Base de Datos` MySQL
 
 ```sh
 > ls -l /etc/rc.d/init.d/    #  Red-Hat
@@ -2097,32 +2135,919 @@ total 176
 -rwxr-xr-x 1 root root 3939 Apr  3  2023 ssh
 
 ```
+### rc.sysinit
+
 **/etc/rc.sysinit  o  /etc/init.d/rcS**
-    En sistemas basados en Red Hat, se hace uso del
-    script `rc.sysinit` para la inicialización.
-    La secuencia de comandos rcS de Debian hace el
-    mismo trabajo mediante la ejecución de varios
-    pequeños scripts colocados en dos directorios
-    diferentes.
-    En cada caso, el script se pone en marcha por
-    init en el arranque. Este se ocupa de algunas
-    tareas esenciales para preparar el sistema para
-    su uso, tales como montar sistemas de ficheros.
-    Algunas de las tareas son:
-    ● Configuración de `reloj` del sistema.
-    ● Configuración de los parámetros del Kernel.
-    ● Levantamiento de dispositivos `RAID y LVM`.
-    ● Activación y actualización de cuotas en disco.
-    ● Activación de la partición `SWAP`
+
+En sistemas basados en Red Hat, se hace uso del
+script `rc.sysinit` para la inicialización.
+La secuencia de comandos rcS de Debian hace el mismo trabajo mediante la ejecución de varios
+pequeños scripts colocados en dos directorios
+diferentes.
+En cada caso, el script se pone en marcha por
+init en el arranque. Este se ocupa de algunas
+tareas esenciales para preparar el sistema para
+su uso, tales como montar sistemas de ficheros.
+Algunas de las tareas son:
+● Configuración de `reloj` del sistema.
+● Configuración de los parámetros del Kernel.
+● Levantamiento de dispositivos `RAID y LVM`.
+● Activación y actualización de cuotas en disco.
+● Activación de la partición `SWAP`
 
 
-1:08:00
+**/etc/rc.local**
+
+Este  `script` que se llama después de todos los demás scripts de init 
+(después de que todos los demonios del sistema han iniciado).
+Contiene las `personalizaciones` locales que afectan el inicio del sistema 
+y proporciona una alternativa para modificar los scripts de inicio de otros. 
+
+Muchos administradores prefieren evitar cambiar `rc.sysinit`, 
+porque esos cambios `se perderán durante` un sistema de `actualización`.
+El contenido de `rc.local no se pierde `en una actualización.
+
+```sh
+> cat /etc/rc.local
+#!/bin/sh
+
+# This script will be executed *after* all the other init scripts.
+# You can put your own initialization stuff in here
+# if you don't  want to do the full Sys V style init stuff.
+# touch /var/lock/subsys/local
+
+>cat /etc/rc.local
+#!/bin/sh
+redshift -l 46:-18 -t 5700:3600 # script para arreglar redshift
+```
+
+
+**/etc/rc**
+
+Este archivo es un script que se usa para cambiar entre los niveles de ejecución.
+No se usa en Debian.
+```sh
+> ls -la /etc/rc
+lrwxrwxrwx 1 root root 7 Apr 29 16:38 /etc/rc → rc.d/rc
+```
+
+
+### Servicios y `/etc/init.d`
+
+La tarea de iniciar y detener `servicios` del sistema  (también llamados `daemon`), 
+cuya intención es ser ejecutados en segundo plano, (por `ejemplo, un servidor web`) 
+está a cargo de archivos y enlaces simbólicos en `/etc/init.d` 
+y por  directorios de nivel de ejecución  llamados desde `/etc/rc0.d` a `/etc/rc6.d`.
+En este directorio tendremos una serie de `scripts` que nos proveerán 
+de diversas `funcionalidades` para cada servicio.
+Son scripts que llevan argumentos que dan un comportamiento a éstos, 
+ya sean los más básicos, como detener o iniciar un servicio.
+
+Al `ejecutar` el `httpd` sin parámetros:
+La salida nos indica que podemos ejecutar esos parámetros.
+```sh
+> ./httpd
+Usage: httpd
+{start|stop|restart|condrestart|reload|status|
+fullstatus|graceful|help|configtest}
+```
+`Detener` el servicio de `httpd`:
+```sh
+> ./httpd stop
+Stopping http
+```
+
+
+**nuevos servicios**
+
+Si agregamos un nuevo servicio por medio de un paquete rpm o dpkg, 
+éste creará los scripts correspondientes sin tener que hacer nada. 
+En otros casos tendríamos que agregarlos en el archivo rc.local o 
+crear nuestros propios `shell scripts` que contienen 
+los `parámetros de control` usados para administrar los `demonios`.
+
+No todos los demonios de Linux reconocen los argumentos
+detener, iniciar ,etc por la línea de comandos. 
+Pero los scripts en `/etc/init.d` están `estandarizados` 
+para que podamos ejecutarlos con los parámetros usados normalmente.
+
+
+**Soft_links en `/etc/rc0.d`  a  `/etc/rc6.d`**
+
+Los scripts de inicio en /etc/init.d 
+no son ejecutados directamente por el proceso init.
+
+Cada uno de los directorios `/etc/rc0.d` a `/etc/rc6.d `
+contienen enlaces simbólicos que `apuntan a` los scripts 
+del directorio `/etc/init.d.` 
+
+Se usan `enlaces simbólicos` en lugar de archivos regulares 
+para `evitar trabajo` innecesario al momento de `cambiar` un script.
+
+Cuando el proceso de inicio entra en ejecución en un nivel N, 
+se examinan todos los enlaces en el directorio rcN.d asociados. 
+A estos enlaces se les dan nombres especiales en las formas de
+`KNNname` y `SNNname`. Vamos a explicarlo:
+
+
+**Prefijos K y S**
+
+Estas letras corresponden a matar (`Kill`) e iniciar (`Start`).
+Cada nivel de ejecución define un estado en el que 
+determinados servicios se están ejecutando y en otros no lo están.
+
+El `prefijo S` se utiliza para marcar los archivos de todos los servicios 
+que se `van a ejecutar` en determinado runlevel.
+
+El `prefijo K` se utiliza para todos los demás servicios que 
+`no deben estar en ejecución` en determinado runlevel.
+
+
+**Secuencia NN**
+
+`Número de orden`. Esta parte del nombre del enlace es un `entero de dos dígitos` 
+(con un cero a la izquierda, si es necesario). 
+
+En él, se especifica el `orden relativo` de los servicios a `iniciar o detener`. 
+El número más `bajo ` ed el `primero` en secuencia de comandos ejecutados por init, 
+El número más `alto ` es el `último` en jecutar. 
+
+No hay reglas estandarizadas para la elección de estos números, 
+pero es importante que cuando añadamos un nuevo servicio, nos aseguremos
+que se inicie `después` de los servicios que este necesite o `dependencias`.
+Si dos servicios poseen el `mismo número`, posiblemente se ejecuten por `orden alfabético`.
+
+
+**name (Nombre)**
+
+El nombre que se usa para el servicio tiene relación con lo que hace. 
+Si el servicio se llama networks, éste tratará sobre algo de redes, 
+si el servicio se llama sshd, tiene relación con el tipo de conexión, secure shell.
+Cuando init tiene que iniciar un runlevel, usará
+el directorio correspondiente a su nivel (por
+ejemplo, /etc/rc2.d) y empezará a ejecutar los
+servicios que estén detallados.
+
+El orden establecido de ejecución estará
+representado por el número que está a
+continuación de las letras K o S.
+● La K es indicio de que ese script se llamará solamente para apagar algo.
+● La S es indicio de que será utilizado para iniciarlo 
+(Ej.: `S10network` luego `S11auditd`, `S12restorecond`, `S12syslog`).
+
+
+**Configurar el nivel de ejecución predeterminado**
+
+Para seleccionar el nivel predeterminado de
+arranque, hay que editar el archivo /etc/inittab.
+```sh
+# Ejemplo : Definir el runlevel 5 como predeterminado.
+id:5:initdefault:
+```
+
+
+**Determinar el runlevel del sistema**
+
+Para verificar en qué runlevel nos encontramos,
+se utiliza el comando runlevel, el cual mostrará
+el runlevel anterior y el actual.
+Si no hubo un nivel anterior, mostrará una N:
+```sh
+# Ejemplo : verificar en qué runlevel nos encontramos
+> runlevel
+N 2
+```
+
+
+**Cambiar el runlevel del sistema**
+Para cambiar de un runlevel al otro se utiliza el
+comando init o telinit (es un link simbólico).
+Para reiniciar sin aviso
+Para apagar sin aviso
+
+```sh
+> init 6
+INIT: Switching to runlevel: 6
+INIT: sending processes the TERM signal
+Stopping Postfix Mail Transport Agent: postfix
+#(...salida cortada...)
+
+> init 0
+INIT: Switching to runlevel: 0
+Stopping Postfix Mail Transport Agent: postfix
+#(...salida cortada...)
+```
+
+### Comando chkconfig
+Este comando es útil para activar o desactivar
+los servicios que se aplican durante el arranque
+del equipo, así como también conocer el estado
+de los servicios que se están ejecutando.
+Este comando se usa en distribuciones de estilo
+Red Hat.
+
+Para conocer el estado de los procesos activos,
+podemos ejecutar el siguiente comando:
+
+```sh
+> chkconfig –list
+```
+Para conocer el estado de httpd en cada runlevel:
+
+```sh
+> chkconfig –-list httpd
+httpd 0:desactivado 1:desactivado
+2:desactivado 3:desactivado 4:desactivado
+5:desactivado 6:desactivado
+# Para deshabilitar el servicio apache2:
+> chkconfig httpd off
+```
+
+
+
+**USANDO CHECK_CONFIG :**
+```sh
+# Para habilitar el servicio apache2:
+> chkconfig httpd on
+# Para activar el httpd en los niveles 3 y 5:
+> chkconfig –-level 35 httpd on
+# Para desactivar el httpd en los niveles 3 y 5:
+> chkconfig –-level 35 httpd off
+```
+
+**DE FROMA MANUAL :**
+```sh
+# Para desactivar httpd a mano en los niveles 3 y 5:
+> rm /etc/rc[35].d/S11httpd
+# Para activar httpd a mano en los niveles 3 y 5:
+> ln -s /etc/init.d/httpd /etc/rc3.d/S11httpd
+> ln -s /etc/init.d/httpd /etc/rc5.d/S11httpd
+```
+
+
+### Comando update-rc.d
+
+Este comando pertenece a las distribuciones
+basadas en Debian y es análogo a chkconfig.
+```sh
+# Para desactivar el servicio apache2:
+> update-rc.d -f apache2 remove
+# Para activar el servicio apache2 en los niveles predeterminados:
+> update-rc.d apache2 defaults
+```
+
+**Levantando, deteniendo y reiniciando servicios**
+
+Para iniciar, detener, o reiniciar un servicio 
+se puede poner la ruta completa del ejecutable 
+en init.d seguido del parámetro.
+```sh
+# ver parametros del comando para el servicio
+> /etc/init.d/nombreDelServicio
+{start|stop|status|restart|reload}
+```
+Supongamos que tenemos ya instalado y
+configurado un servidor web Apache y lo único
+que falta es iniciar el servicio. Para ello, solo
+bastará teclear lo siguiente:
+```sh
+# iniciar el servicio  httpd
+> /etc/init.d/httpd start
+```
+
+Para detener este servicio, solo debemos cambiar 
+la palabra start por stop:
+```sh
+# /etc/init.d/httpd stop
+Para reiniciar el servicio:
+# /etc/init.d/httpd restart
+Otra manera es mediante el comando service:
+# service httpd {start|stop|status|restart|reload}
+Para iniciar el servicio httpd:
+# service httpd start
+```
+
+### gestor Upstart
+
+Es un `gestor de servicios` alternativo a `SysV init` y `systemd`.
+Se basa en la detección de eventos.
+Los servicios se llaman `jobs` y `no usa scripts` de shell, 
+sino que poseen `archivos de configuración`
+con la extensión .conf dentro del directorio  `/etc/init.`
+Este mecanismo fue creado por Ubuntu, pero el
+proyecto está actualmente `descontinuado`.
+
+### Comando wall
+
+se puede utilizar para enviar un mensaje a todas las terminales 
+antes de cambiar de nivel de ejecución, apagar o reiniciar el sistema.
+Es posible restringir el mensaje a un grupo determinado del sistema. 
+```sh
+# todos los desarrolladores verán el mensaje:
+> wall “Pasaremos a modo monousuario para realizar \
+mantenimiento del sistema. Por favor, desconectarse.”
+
+# g : group  (mensaje que solamente el grupo desarrolladores puede ver )
+> wall -g desarrolladores “Pasaremos a modo monousuario para \
+realizar mantenimiento del sistema. Por favor, desconectarse.”
+```
+
+### Comando ShutDown
+
+Con el comando shutdown, podremos planear
+nuestra tarea de apagado o reinicio de sistema.
+
+Sintaxis
+```sh
+ shutdown [opciones] tiempo [mensaje de alerta]
+
+Opciones:
+ -f  Inicio rápido: omite el chequeo del disco al reiniciar.
+ -h  Apaga el equipo después de detener todo.
+ -k  Mensaje de alerta sin realizar el evento de apagado o de reiniciado.
+ -r  Reinicia después de detener todo.
+ -F  Fuerza al chequeo de discos después del reinicio.
+ -c  Cancelar shutdown.
+```
+
+```sh
+# Reiniciar el equipo en 60 segundos y enviar aviso.
+> shutdown -r 60 “salir del sistema”
+# Reiniciar el equipo ya mismo (ojo, usarlo si no hay nadie conectado):
+> shutdown -r now
+```
+
+**El botón de Power**
+El hardware actual en su gran mayoría soporta el
+apagado de un equipo mediante el botón de
+Power. Esto se puede lograr gracias al paquete
+acpid que proporciona el servicio del mismo
+nombre.
+
+
+### Parte Practica
+```sh
+> service sshd status
+● ssh.service - OpenBSD Secure Shell server
+     Loaded: loaded (/lib/systemd/system/ssh.service; enabled; vendor preset: e>
+     Active: active (running) since Mon 2024-10-14 10:08:12 -03; 7h ago
+       Docs: man:sshd(8)
+             man:sshd_config(5)
+    Process: 1295 ExecStartPre=/usr/sbin/sshd -t (code=exited, status=0/SUCCESS)
+   Main PID: 1340 (sshd)    Tasks: 1 (limit: 18829)
+
+    Oct 14 10:08:12 ariel-All-Series systemd[1]: Starting OpenBSD Secure Shell server...
+    Oct 14 10:08:12 ariel-All-Series sshd[1340]: Server listening on 0.0.0.0 port 22.
+
+> service --status-all
+ [ + ]  acpid
+ [ - ]  anacron
+ [ + ]  avahi-daemon
+ [ - ]  bluetooth
+ [ - ]  console-setup.sh
+ [ + ]  cron
+ [ - ]  cryptdisks
+ [ + ]  cups
+ [ - ]  dns-clean
+ [ + ]  docker
+ [ - ]  grub-common
+ [ - ]  hwclock.sh
+ [ + ]  irqbalance
+ [ + ]  kerneloops
+ [ - ]  keyboard-setup.sh
+ [ + ]  networking
+#  + :  Active   ( Running )
+#  - :  Inactice ( Dead    )
+
+# ver numero de servicios activos
+service --status-all | grep -e'+' | grep -e'+' -n
+1: [ + ]  acpid
+2: [ + ]  apparmor
+3: [ + ]  avahi-daemon
+4: [ + ]  binfmt-support
+
+> ls /etc/init.d/
+acpid           console-setup.sh  dns-clean          kmod           mysql         pulseaudio-enable-autospawn  uuidd
+alsa-utils      cron              docker             lightdm        networking    rsync                        virtualbox
+anacron         cryptdisks        grub-common        linuxlogo      ntp           saned                        x11-common
+apparmor        cryptdisks-early  hwclock.sh         lm-sensors     openvpn       speech-dispatcher            zfs-import
+avahi-daemon    cups
+
+# servicio /etc/init.d/ssh   (SCRIPT)
+> /etc/init.d/ssh
+ * Usage: /etc/init.d/ssh {start|stop|reload|force-reload|restart|try-restart|status}
+
+# commando /bin/ssh         (EJECUTABLE)
+> ssh
+usage: ssh [-46AaCfGgKkMNnqsTtVvXxYy] [-B bind_interface]
+           [-b bind_address] [-c cipher_spec] [-D [bind_address:]port]
+           [-E log_file] [-e escape_char] [-F configfile] [-I pkcs11]
+           [-i identity_file] [-J [user@]host[:port]] [-L address]
+           [-l login_name] [-m mac_spec] [-O ctl_cmd] [-o option] [-p port]
+           [-Q query_option] [-R address] [-S ctl_path] [-W host:port]
+           [-w local_tun[:remote_tun]] destination [command [argument ...]]
+
+# si inspeccionamos el binario veremos instrucciones y datos crudos   
+>cat /bin/ssh
+"BA
+(F0X
+   H!�ox8.     ������oH@���o���o*=���o� �
+                                         0�@�P�`�p�����������Р���� 
+�0�@�P�`�p�����������С���� �0�@�P�`�p�����������Т���� �0�@�P�`�p�����
+@�P�`�p�����������Ц���� �0�@�P�`�p�����������Ч���� �0�@�P�`�p���������
+
+
+# si inspeccionamos el script podremos ver como levanta el seervicio  
+> cat /etc/init.d/ssh | grep -A2 -e'start)' -e'stop)' -e'reload)' -e'restart)'
+case "$1" in  
+  start)
+	check_privsep_dir  # estas son funciones declaradas en esete mismo script
+	check_for_no_start # mostramos solo 2 lineas de cada posible entrada
+--;;
+  stop)
+	log_daemon_msg "Stopping OpenBSD Secure Shell server" "sshd" || true
+	if start-stop-daemon --stop --quiet --oknodo --pidfile /run/sshd.pid --exec /usr/sbin/sshd; then
+--;;
+  reload | force-reload )
+	check_for_no_start
+	check_config       
+--;;
+  restart )
+	check_privsep_dir
+	check_config
+
+# vemos el soft link para servicio ssh en modo 2  
+> ls -lasi /etc/rc2.d/ | grep ssh
+2363136  0 lrwxrwxrwx   1 root root    13 Sep 19 13:23 S01ssh -> ../init.d/ssh
+    # apunta al archivo "ssh" en directorio "init.d"  usando 13 bytes
+
+# podemos ver todos los servicios que se levantan al entrar en modo 2
+>ls -a /etc/rc2.d/
+S01binfmt-support   S01dbus    S01linuxlogo    S01plymouth    S01virtualbox
+
+
+
+> sudo /etc/init.d/ssh stop
+Stopping ssh (via systemctl): ssh.service.
+
+> sudo /etc/init.d/ssh start
+Starting ssh (via systemctl): ssh.service.
+
+> systemctl status ssh   # lo mismo ??
+> service   sshd status  # que esto ??
+● ssh.service - OpenBSD Secure Shell server
+     Loaded: loaded (/lib/systemd/system/ssh.service; enabled; vendor preset: enabled)
+     Active: active (running) since Mon 2024-10-14 18:06:47 -03; 1min 41s ago
+       Docs: man:sshd(8)
+             man:sshd_config(5)
+    Process: 153693 ExecStartPre=/usr/sbin/sshd -t (code=exited, status=0/SUCCESS)
+
+    PID: 153694 (sshd)      Tasks: 1 (limit: 18829)
+ # PID: 1340 (sshd)    <-  el PID cambio al reiniciar
+
+# REINICIO PC
+ > init 6
+
+> man init
+DESCRIPTION     systemd is a system and service manager for Linux operating systems.
+CONCEPTS        systemd provides a dependency system between 
+              . various entities called "units" of 11 different types.
+
+  1. |Service_units, which start and control daemons and the processes they consist of.
+   . For details, see systemd.service(5).
+
+  2. |Socket_units, which encapsulate local IPC or network sockets in the system, 
+   . useful for socket-based activation. For details about socket units, 
+   . see systemd.socket(5), for details on socket-based activation and , see daemon(7).
+  3. |Target_units are useful to group units, or provide well-known synchronization points during boot-up, see systemd.target(5).
+  4. |Device_units expose kernel devices in systemd and may be used to implement device-based activation. For details, see systemd.device(5).
+  5. |Mount_units control mount points in the file system, for details see systemd.mount(5).
+  6. |Automount_units provide automount capabilities, for on-demand mounting of file systems as well as parallelized boot-up. See systemd.automount(5).
+
+
+# cnfigu de puertos  NO esta en   apache2.conf
+osboxes@osboxes:/etc/apache2$ cat apache2.conf | grep 80
+
+# Listamos todos los archivos de conf de apache2
+osboxes@osboxes:/etc/apache2$ ls
+apache2.conf    conf-enabled magic   conf-available  envvars
+mods-available  mods-enabled         ports.conf      sites-available   sites-enabled
+
+# vemos que esta configuracion se encuentra en : /etc/apache2/ports.conf
+osboxes@osboxes:/etc/apache2$ cat ports.conf
+    # If you just change the port or add more ports here, you will likely also
+    # have to change the VirtualHost statement in
+    # /etc/apache2/sites-enabled/000-default.conf
+    Listen 80
+    <IfModule ssl_module>
+            Listen 443
+    </IfModule>
+    <IfModule mod_gnutools>
+            Listen 443       .......
+
+# procedemos a cambiar el puerto de 80 a 90 
+osboxes@osboxes:/etc/apache2$ sudo vim ports.conf
+# reiniciamos el servicio para aplicar cambios
+osboxes@osboxes:/etc/apache2$ service apache2 restart
+osboxes@osboxes:/etc/apache2$ service apache2 status
+
+
+
+
+# vemos todos los logs de apache
+osboxes@osboxes:/var/log/apache2$ ls
+access.log error.log other_vhosts_access.log
+# vemos los log de errores
+osboxes@osboxes:/var/log/apache2$ cat error.log
+[Tue Jun 27 19:22:59.477772 2023] [mpm_event:notice] [pid 3573:tid  140023124679744] AH00489: Apache/2.4.41 (Ubuntu) configured 
+[Tue Jun 27 19:22:59.477819 2023] [core:notice]      [pid 3573:tid  140023124679744] resuming normal operationsAH00094: Command line: '/usr/sbin/apache2'
+[Tue Jun 27 19:40:56.440587 2023] [mpm_event:notice] [pid 3573:tid  140023124679744] AH00491: caught SIGTERM, shutting down
+[Tue Jun 27 19:40:56.470343 2023] [mpm_event:notice] [pid 10888:tid 140392146041920] ΑΗ00489: Apache/2.4.41 (Ubuntu) configured resuming normal operations
+[Tue Jun 27 19:40:56.470396 2023] [core:notice]      [pid 10888:tid 140392146041920] AH00094: Command line: '/usr/sbin/apache2'
+
+# rompemos la configuracion con un error de tipeo  TYPO
+osboxesgosboxes:/etc/apache2$ sudo Vim ports.CONT
+
+# intentamos reiniciar el servicio a ver que nos muestra
+osboxes@osboxes:/etc/apache2$ sudo service apache2 restart
+    Job for apache2.service failed because the control process exited with error code. 
+    See "systemctl status apache2.service" and "journalctl -xe" for details.
+
+# Miramos el estatus para temer mas informacion y los logs nuevos
+osboxes@osboxes:/etc/apache2$ service apache2 status
+    ⚫apache2.service - The Apache HTTP Server
+        Loaded: loaded (/lib/systemd/system/apache2.service; enabled; vendor pres 
+        Active: failed (Result: exit-code) since Tue 2023-06-27 19:45:12 EDT; 315
+          Docs: https://httpd.apache.org/docs/2.4/
+       Process: 11306 ExecStart=/usr/sbin/apachectl start (code=exited, status=1/ 
+    #   Active: FAILED
+    Jun 27 19:45:12 osboxes systemd   [1]:     Starting The Apache HTTP Server...
+    Jun 27 19:45:12 osboxes apachectl [11309]: AH00526: Syntax error on line 5 of
+    Jun 27 19:45:12 osboxes apachectl [11309]: Invalid command 'Liste', perhaps mis
+    Jun 27 19:45:12 osboxes apachectl [11306]: Action 'start' failed.
+    Jun 27 19:45:12 osboxes apachectl [11306]: The Apache error log may have more info...
+    Jun 27 19:45:12 osboxes systemd   [1]:     apache2.service: Control process exited, co
+    Jun 27 19:45:12 osboxes systemd   [1]:     apache2.service: Failed with result 'exit->'
+    Jun 27 19:45:12 osboxes systemd   [1]:     Failed to start The Apache HTTP Server.
+    # en la linea 2 mos muetra que hay error de sintaxis en la linea 5 de la config
+    # en la linea 3 mos muetra que "Liste" no es commando validp
+
+osboxes@osboxes:/etc/apache2$ apachectl ports.conf Usage: /usr/sbin/apache2 [-D name] [-d directory] [-f file]
+    [-C "directive"] [-c "directive"]
+    [-k start restart|graceful|graceful-stop|stop]
+    [-v] [-V] [-h] [-l] [-L] [-t] [-T] [-S] [-X]
+    Options:
+    -D name: define a name for use in <IfDefine name> directives
+    -d  directorу:  specify an alternate initial ServerRoot
+    -f  file:       specify an alternate ServerConfigFile
+    -C "directive" :process directive before reading config files
+    -c  "directive":process directive after reading config files show startup errors of level (see LogLevel)
+    -e  level:
+    -E  file: log startup errors to file
+    -V: show version number
+    -V: show compile settings
+    -h: list available command line options (this page)
+    -1: list compiled in modules
+    -L: list available configuration directives
+
+# Podemos usar las eramiantas CLI del servivio para testear congifuraciones
+osboxes@osboxes:/etc/apache2$ apachectl configtest
+AH00526: Syntax error on line 5 of /etc/apache2/ports.conf:
+Invalid command 'Liste', perhaps misspelled or defined by a module not included in the server configuration
+Action 'configtest' failed.
+The Apache error log may have more information.
+
+# Una vez corregido a  "Listen 80"  no hay errores no hay error en la config
+osboxes@osboxes:/etc/apache2$ apachectl configtest
+AH00558: apache2: Could not reliably determine the server's 
+fully qualified domain name, using 127.0.1.1. 
+Set the 'ServerName' directive  globally to suppress this message 
+Syntax OK
+```
+
+### LOG de servicios  `/var/log` :
 
 ```sh
 > cat /var/log/alternatives.log.1
-# RSH -> SSH
+# RSH : Remote Shell
+#   -> alternativa insegura de : SSH
 update-alternatives 2024-09-19 13:23:54: run with --install /usr/bin/rsh rsh /usr/bin/ssh           20 --slave /usr/share/man/man1/rsh.1.gz rsh.1.gz        /usr/share/man/man1/ssh.1.gz
 update-alternatives 2024-09-19 13:23:54: run with --install /usr/bin/rlogin rlogin /usr/bin/slogin  20 --slave /usr/share/man/man1/rlogin.1.gz rlogin.1.gz  /usr/share/man/man1/slogin.1.gz
-# RCP -> SCP
+# RCP :Remote Copy
+#  -> alternativa insegura de : SCP
 update-alternatives 2024-09-19 13:23:54: run with --install /usr/bin/rcp rcp /usr/bin/scp           20 --slave /usr/share/man/man1/rcp.1.gz rcp.1.gz        /usr/share/man/man1/scp.1.gz
 ```
+
+***Otros directorios importantes :***
+
+  /var         : variables y archivos temporales 
+    /var/local
+    /var/backup
+  /proc         : procesos
+
+**Software mencionado:**
+
+  Putty GitBash WinSCP   Windows_cmd
+  Zabix Nagios  Keepaliv keepalived Jerkins DataDog
+
+## Clase 7
+
+Repaso de systemas de destion de servicios 
+https://architecnologia.es/lpic-1-101-systemd-sysv
+
+
+Como se cual usa mi systema ? 
+https://unix.stackexchange.com/questions/196166/how-to-find-out-if-a-system-uses-sysv-upstart-or-systemd-initsystem
+
+```
+/usr/lib/systemd    tells you you're on a systemd based system.
+/usr/share/upstart  tells you that you're probably on an Upstart-based system.
+/etc/init.d         tells you the box has SysV init in its history
+```
+
+```sh
+# verificar systema de arranque de mi linux
+osboxes@osboxes:~$ sudo stat /proc/1/exe | grep sys
+  File: /proc/1/exe -> /usr/lib/systemd/systemd
+            # este ubuntu usa : SYSTEMD 
+```
+
+Un `ataque DOS` puede llenar el disco mediante `los logs del servicio`
+si no lo impedimos `limitando` el flujo de request desde la `configuracion de servicio`
+`llenara el disco rigido `dejando al sistema operativo del servidor inoperable
+
+otra `buena practica` es hacer una `rotacion /automatisacion de logs`
+esto nos permite aplicarle alguna logica al logging para evitar problemas
+
+### Directorio /dev 
+
+Dispositivos `de caracteres`
+Estos dispositivos procesan la información `carácter por carácter`.
+    /dev/tty     Terminales.
+    /dev/console Terminal.
+    /dev/input   Dispositivos de entrada (mouse).
+    /dev/raw     Permite acceso directo a dispositivos de IO.
+    /dev/pts     Pseudoterminal.
+    /dev/lp      Impresora
+
+Directorio /dev  Dispositivos `de bloques`
+Estos dispositivos procesan la información usando `bloques y buffers`.
+    /dev/ramN    Disco en RAM (N es el número de disco).
+    /dev/hd[a-z] Disco IDE.
+    /dev/sd[a-z] Disco SATA/SCSI/USB.
+    /dev/mapper/ Mapea dispositivos en uno virtual (LVM y otras tecnologías)
+
+#### Directorio /proc
+
+El kernel de Linux tiene dos funciones principales:
+● Controlar el `acceso a los dispositivos` físicos del ordenador.
+● Establecer cuándo y `cómo los procesos interactúan` con estos dispositivos.
+
+El directorio / proc / contiene una jerarquía
+de archivos especiales que representan el `estado actual del kernel` 
+permitiendo a las aplicaciones y usuarios mirar detenidamente 
+en la vista del kernel del sistema.
+
+Dentro del directorio / proc /, se puede encontrar una
+gran cantidad de `información que detalla el hardware` 
+del sistema `y cualquier proceso` en ejecución. 
+Además, algunos de los archivos dentro del árbol de directorios
+/proc/ pueden ser manipulados por los usuarios y las
+aplicaciones comunican los cambios de `configuración al kernel`.
+
+
+El núcleo de Linux agrupa la información relacionada
+a la asignación de recursos en el directorio /proc.
+Los archivos relevantes de esta carpeta son los siguientes:
+
+/proc/dma         Archivo que contiene el histórico DMA del equipo.
+/proc/interrupts  Archivo que contiene el histórico IRQ del equipo.
+/proc/ioports     Archivo que contiene el histórico Entrada/Salida del equipo.
+/proc/bus/pci     La asignación de recursos puede ser consultada con comandos como lspci o dmesg
+
+
+#### Dispositivos SCSI ( HHD USB DVD )
+
+```sh
+> cat /proc/scsi/scsi
+    Attached devices:
+ -> Host  : scsi0 Channel: 00 Id: 00 Lun: 00
+    Vendor: ATA Model: # HITACHI HTS72503 Rev: PC3Z
+    Type  : Direct-Access ANSI SCSI revision: 05
+ -> Host  : scsi1 Channel: 00 Id: 00 Lun: 00
+    Vendor: Optiarc Model: # DVD RW AD-7930H Rev: 1.D0
+    Type  : CD-ROM ANSI SCSI revision: 05
+ -> Host  : scsi7 Channel: 00 Id: 00 Lun: 00
+    Vendor: WD Model: # My Passport 070A Rev: 1032
+    Type  : Direct-Access ANSI SCSI revision: 02
+ -> Host  : scsi7 Channel: 00 Id: 00 Lun: 01
+    Vendor: WD Model: # Virtual CD 070A Rev: 1032
+    Type  : CD-ROM ANSI SCSI revision: 04
+ -> Host  : scsi7 Channel: 00 Id: 00 Lun: 02
+    Vendor: WD Model: # SES Device Rev: 1032
+    Type  : Enclosure ANSI SCSI revision: 04
+```
+
+***Dispositivo USB***
+```sh
+> cat /proc/scsi/usb-storage/7
+ Host scsi7: usb-storage
+ Vendor: Western Digital
+ Product: My Passport 070A
+ Serial Number: 575844304342394830303435
+ Protocol: Transparent SCSI
+ Transport: Bulk
+ Quirks: SANE_SENSE
+```
+**Lector DVD :**
+```sh
+> cat /proc/scsi/sg/device_strs
+ATA HITACHI HTS72503 PC3Z
+Optiarc DVD RW AD-7930H 1.D0
+WD My Passport 070A 1032
+WD Virtual CD 070A 1032
+WD SES Device 1032
+```
+
+
+#### CPU
+```sh
+# cat /proc/cpuinfo
+processor : 0
+vendor_id : GenuineIntel
+cpu family : 6
+model : 37
+model name : Intel(R) Core(TM) i5 CPU M 520 @ 2.40GHz
+stepping : 2
+cpu MHz : 1199.000
+cache size : 3072 KB
+physical id : 0
+siblings : 4
+core id : 0
+cpu cores : 2
+apicid : 0
+initial apicid : 0
+fpu : yes
+fpu_exception: yes 
+```
+
+#### Interrupciones
+```sh
+> cat /proc/interrupts
+ CPU0 CPU1 CPU2 CPU3
+ 0: 636 72 10 3 IO-APIC-edge timer
+ 1: 382 290 60 51 IO-APIC-edge i8042
+ 8: 17 42 32 21 IO-APIC-edge rtc0
+ 9: 2850519 1206078 6738 6524 IO-APIC-fasteoi acpi
+ 12: 287326 300885 286864 252200 IO-APIC-edge i8042
+ 16: 0 0 0 0 IO-APIC-fasteoi mmc0
+ 17: 11 9 7 7 IO-APIC-fasteoi
+ 19: 443317 384748 4966 2223 IO-APIC-fasteoi ehci_hcd:usb2, ips
+ 23: 573117 8424 448034 229068 IO-APIC-fasteoi ehci_hcd:usb1
+ 40: 1947952 355339 2232 2222 PCI-MSI-edge ahci
+ 41: 5960060 222011 5813 4436 PCI-MSI-edge
+ 42: 214062 433404 305030 271928 PCI-MSI-edge em1
+ 43: 6925 11652 8915 8042 PCI-MSI-edge snd_hda_intel
+ 44: 1053 40 1 0 PCI-MSI-edge firewire_ohci
+NMI: 14734 102240 102151 102148 Non-maskable interrupts 
+```
+
+#### DMA
+
+```sh
+> cat /proc/dma
+ 4: cascade
+```
+
+#### Memoria
+```sh
+> cat /proc/meminfo
+MemTotal: 7971292 kB
+MemFree: 199292 kB
+Buffers: 204932 kB
+Cached: 2354312 kB
+SwapCached: 2004 kB
+Active:         3530724 kB
+Inactive:       1858672 kB
+Active  (anon): 2336544 kB
+Inactive(anon):  780000 kB
+Active  (file): 1194180 kB
+Inactive(file): 1078672 kB
+Unevictable: 20 kB
+Mlocked: 20 kB
+SwapTotal: 4095996 kB
+SwapFree: 4057368 kB
+Dirty: 704 kB
+Writeback: 0 kB
+AnonPages: 2828328 kB
+Mapped: 2108892 kB 
+```
+
+#### Estadísticas de disco
+```sh
+> cat /proc/diskstats
+ 1   0 ram0 0 0 0 0 0 0 0 0 0 0 0
+ 1   1 ram1 0 0 0 0 0 0 0 0 0 0 0
+ 1   2 ram2 0 0 0 0 0 0 0 0 0 0 0
+ 1   3 ram3 0 0 0 0 0 0 0 0 0 0 0
+ 8   0 sda 726060 44424 22017281 6018144 937356 113957 34200861 35812071 0 4276213 41832765
+ 8   1 sda1 722 1167 10734 2024 11 9 52 122 0 2025 2145
+ 8   2 sda2 725165 43246 22005075 6012069 889836 113948 34200809 34177257 0 2834939 40190903
+ 11  0 sr0 65 0 500 1926 0 0 0 0 0 1925 1925
+ 253 0 dm-0 769318 0 22003547 8706032 1051845 0 34200809 158419832 0 4396589 167187026
+ 8  16 sdb  623 455 17109 9156 44 0 8204 7109 0 7858 16265
+ 8  17 sdb1 87  91 1424 1169 0 0 0 0 0 1122 1169
+ 8  18 sdb2 85  91 1408 985  0 0 0 0 0 952 985
+ 11  1 sr1  28  0  224  175  0 0 0 0 0 175 175
+(...salida cortada...)
+```
+
+#### IOPorts
+```sh
+> cat /proc/ioports
+ 0000-0cf7 : PCI Bus 0000:00
+ 0000-001f : dma1
+ 0020-0021 : pic1
+ 0040-0043 : timer0
+ 0050-0053 : timer1
+ 0060-0060 : keyboard
+ 0062-0062 : EC data
+ 0064-0064 : keyboard
+ 0066-0066 : EC cmd
+ 0070-0071 : rtc0
+ 0080-008f : dma page reg
+ 00a0-00a1 : pic2
+ 00c0-00df : dma2
+ 00f0-00ff : fpu
+ 03c0-03df : vga+
+ 0800-080f : pnp 00:03
+  ....
+ 0cf8-0cff : PCI conf1
+ 0d00-ffff : PCI Bus 0000:00
+ 1000-107f : pnp 00:03
+ 1000-1003 : ACPI PM1a_EVT_BLK
+ 1004-1005 : ACPI PM1a_CNT_BLK
+ 1008-100b : ACPI PM_TMR
+ 1010-1015 : ACPI CPU throttle
+ 1020-102f : ACPI GPE0_BLK
+ 1030-1033 : iTCO_wdt
+ 1050-1050 : ACPI PM2_CNT_BLK
+ 1060-107f : iTCO_wdt
+ 1180-11ff : pnp 00:03
+ 15e0-15ef : pnp 00:03
+ 1600-1641 : pnp 00:03
+# (...salida cortada……)
+```
+
+#### Sistemas de Archivos
+```sh
+# cat /proc/filesystems
+nodev sysfs
+nodev rootfs
+nodev bdev
+nodev proc
+nodev cgroup
+nodev cpuset
+nodev tmpfs
+nodev devtmpfs
+nodev binfmt_misc
+nodev debugfs
+nodev securityfs
+nodev sockfs
+nodev usbfs
+nodev pipefs
+nodev anon_inodefs
+nodev devpts
+ext3
+ext4
+nodev ramfs
+nodev hugetlbfs
+iso9660
+nodev autofs
+nodev pstore
+nodev mqueue
+nodev fuse
+fuseblk
+nodev fusectl
+xfs
+```
+
+#### Procesos
+```sh
+> ls -d /proc/[0-9]*
+/proc/1     /proc/13481 /proc/17301 /proc/20891 /proc/23308 /proc/26 /proc/27417 /proc/27541
+/proc/28    /proc/403   /proc/68
+/proc/1034  /proc/13484 /proc/1731 /proc/21 /proc/23310 /proc/26791 /proc/27421 /proc/27559
+/proc/28011 /proc/405   /proc/69
+/proc/1041  /proc/13495 /proc/17315 /proc/21128 /proc/23450 /proc/268 /proc/27422 /proc/27562
+/proc/2805  /proc/406   /proc/6947
+/proc/1049  /proc/13516 /proc/17320 /proc/2138 /proc/23475 /proc/27 /proc/27424 /proc/27563
+/proc/28179 /proc/4356  /proc/7
+/proc/1050  /proc/13533 /proc/1737 /proc/21717 /proc/2353 /proc/27087 /proc/27425 /proc/27564
+/proc/28199 /proc/4357  /proc/70
+#(...salida cortada……)
+```
+
+### Directorio /sys 
+
+45:30
