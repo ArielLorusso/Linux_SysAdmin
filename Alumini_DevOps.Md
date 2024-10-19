@@ -8577,8 +8577,12 @@ Nube Aislado de accidentes locales
 
 # Fase 2 - Cloud Specialist   
 
-## Clase 9 Módulo 6
 
+## Clase 10 
+
+ Módulo 6
+
+###  Terminología a utilizar
 
 ● Amazon CloudWatch: permite a los
 desarrolladores, cloud architects y
