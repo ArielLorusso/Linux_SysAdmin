@@ -1,6 +1,6 @@
 
 # Clase 1 - Temario + Linux
-
+	
 ### Carga Oraria y organisacion
 
 6 meses 8hs semanales;
@@ -94,7 +94,7 @@ Fase 1 - SysAdmin   Módulo 1
 
 **103.7 Buscar en texto usando expresiones regulares**
 
-Peso: 3 (importancia del 1 al 6)
+Peso: 3    ( importancia para examen LPI   del 1 al 6).
 
 Los alumnos deberán ser capaces de :
     ● `editar` archivos de texto usando `Vi`.
@@ -110,7 +110,7 @@ Términos y herramientas
 
 **102.1: Arranque del sistema**
 
-Peso: 2 (importancia del 1 al 6)
+Peso: 2   ( importancia para examen LPI   del 1 al 6).
 
 
 Los alumnos deberán ser capaces :
@@ -320,12 +320,24 @@ B [numero]  Muestra "número" de líneas antes del patrón encontrado.
 /var/log/anaconda.log:1         # hay 1 conicidencia
 /var/log/anaconda.syslog:6      # hay 6 conicidencias
 
-# Muestra lo que no contenga la palabra "bash":
-> cat /etc/passwd|grep -v bash
+# muestra lo que NO contenga la palabra "bash":
+> cat /etc/passwd|grep -V bash
+ariel:4x^a41$%:1000:1000:ariel,,,:/home/ariel:/bin/bash
+
+
+> cat /etc/passwd |grep -v bash
+daemon:4x^a41$%:1:1     :daemon:/usr/sbin:/usr/sbin/nologin
+bin   :4x^a41$%:2:2     :bin   :/bin:/usr/sbin/nologin
+sys   :4x^a41$%:3:3     :sys   :/dev:/usr/sbin/nologin
+sync  :4x^a41$%:4:65534 :sync  :/bin:/bin/sync
+```
+
+```sh
+# Buscar el patrón "bin" dentro del archivo /etc/passwd
+> grep 'bin' /etc/passwd
+root:x:0:0:root:/root:/bin/bash
 daemon:x:1:1:daemon:/usr/sbin:/bin/sh
 bin:x:2:2:bin:/bin:/bin/sh
-sync:x:4:65534:sync:/bin:/bin/sync
-
 ```
 
 ```
@@ -333,14 +345,6 @@ Posicionales (position anchor)
  ^      Al inicio de la línea.
  $      Al final de la línea.
 \<\>    Palabra Exacta entre \< \>     Ejemplo: \<palabra\>
-```
-
-```sh
-# Buscar el patrón "bin" dentro del archivo I /etc/passwd
-> grep 'bin' /etc/passwd
-root:x:0:0:root:/root:/bin/bash
-daemon:x:1:1:daemon:/usr/sbin:/bin/sh
-bin:x:2:2:bin:/bin:/bin/sh
 ```
 ```
 Conjuntos de caracteres (character sets):
@@ -434,9 +438,8 @@ https://www.osboxes.org/virtualbox-images/
 1:36:45 
 
 
-### SED - editar strings
+### SED - Stream EDitor
 
-stream editor
 ```sh
     # s = sustitution
     sed 's/unix/linux/' geekfile.txt
@@ -444,11 +447,23 @@ stream editor
 ### AWK - editar tabas
 
     Aho, Weinberger & Kernighan
-
 ```sh
     # $1 = first column 
     hostname -I | awk '{print $1}'
 ```
+### WC - Word  Count
+```sh
+>echo hola como esta | wc
+      1       3      15
+    # lines   words  letters  
+> ps -ux | wc -l
+176
+> ls -la /home/ariel/ | wc -l
+113
+```
+
+
+
 ### VM Virtual machine
 
 
@@ -589,13 +604,13 @@ se puede usar "s" denro de grep pero no veremos lo ingresado
 ```sh
 [ariel @ ariel-All-Series] $ sudo ls /dev
 `[sudo]` password for ariel:   ****
-autofs       hwrng    loop6         rtc0    tty16  tty40  tty8       ttyS30	  vcsa1
-block        i2c-0    loop7	        sda     tty17  tty41  tty9       ttyS31	  vcsa2
-bsg	         i2c-1    loop8         sda1    tty18  tty42  ttyprintk  ttyS4 	  vcsa3
-btrfs-control i2c-2   loop9	        sda2    tty19  tty43  ttyS0      ttyS5 	  vcsa4
-bus	         i2c-3    loop-control  sda3    tty2   tty44  ttyS1      ttyS6 	  vcsa5
-char         i2c-4    mapper        sda4    tty20  tty45  ttyS10     ttyS7 	  vcsa6
-console      i2c-5    mcelog        sda5    tty21  tty46  ttyS11     ttyS8 	  vcsa7
+autofs       hwrng    loop6         rtc0    tty16  tty40  tty8       ttyS30   vcsa1
+block        i2c-0    loop7         sda     tty17  tty41  tty9       ttyS31   vcsa2
+bsg          i2c-1    loop8         sda1    tty18  tty42  ttyprintk  ttyS4    vcsa3
+btrfs-control i2c-2   loop9         sda2    tty19  tty43  ttyS0      ttyS5    vcsa4
+bus          i2c-3    loop-control  sda3    tty2   tty44  ttyS1      ttyS6    vcsa5
+char         i2c-4    mapper        sda4    tty20  tty45  ttyS10     ttyS7    vcsa6
+console      i2c-5    mcelog        sda5    tty21  tty46  ttyS11     ttyS8    vcsa7
 core         i2c-6    mem           sda6 
 ```
 
@@ -1080,7 +1095,7 @@ Fase 1 - SysAdmin   Módulo 2
 
 **104.2: Mantener la integridad de los sistemas de archivos**
 
-Peso: 2  ( mportancia del 1 al 6 )
+Peso: 2   ( importancia para examen LPI   del 1 al 6).
 
 Descripción:
 
@@ -1105,7 +1120,7 @@ Términos y herramientas
 
 **104.3: Controlar el montaje y desmontaje de sistemas de archivos**
 
-Peso: 3  (importancia de 1 al 6 )
+Peso: 3    ( importancia para examen LPI   del 1 al 6).
 
 Áreas claves de conocimiento:
     ● `Montar` y `desmontar` sistemas de archivos.
@@ -1504,20 +1519,25 @@ Extension para sudo SSH desde VS_Code
 
 
 
-### Espacio e los inodos libres de particiones
+### INODO y DISCO
 
-Un sistema de lectura/escritura no sirve de mucho 
-si crece hasta el punto en que no pueda admitir nuevos ficheros.
-Esto puede ocurrir si nuestro sistema de ficheros se llena o si se queda sin inodos libres. 
+Un sistema de lectura/escritura no sirve de mucho si crece 
+hasta el punto en que no pueda admitir nuevos ficheros.
+Esto puede ocurrir si nuestro sistema de ficheros se llena 
+o si se queda sin inodos libres. 
 
-Los inodos son las estructuras de datos  dentro del sistema de archivos 
+Los inodos son las estructuras de datos dentro del sistema de archivos 
 que describen los archivos en el disco. 
-Cada sistema de archivos contiene un número finito de inodos que se establecen
+Cada sistema de archivos contiene un `número finito` de inodos que se establecen
 en el momento de creación del sistema de archivos.
 
-Este número es, tabien el máximo número de archivos que un sistema de archivos puede acomodar.
-Como se crean con un número de inodos enorme, rara vez crearemos tantos archivos como para agotar los inodos. 
-No obstante, es posible quedarse sin inodos libres en particiones que contengan muchos ficheros pequeños.
+los `INODOS` determinan máximo número de archivos 
+que un sistema de archivos puede acomodar.
+
+Como se crean con un número de inodos enorme, 
+`rara vez` crearemos tantos archivos como para `agotar` los inodos. 
+No obstante, es posible quedarse sin inodos libres 
+en particiones que contengan muchos ficheros pequeños.
 
 
 ### df - Disc Fylesystem usage
@@ -1536,45 +1556,49 @@ montados en los dispositivos incluidos en /etc/fstab.
 
 La forma correcta de utilizar el comando df es la siguiente:
     
-    #df [opciones]/ dev/sd[a|b|c|d] [1,2,3,4]
 ```sh
-    > df --help 
-        Usage: df [OPTION]... [FILE]...
-        Show information about the file system on which each FILE resides, or all file systems by default.
+df [opciones]/ dev/sd[a|b|c|d] [1,2,3,4]
+```
 
-        -a, --all             include pseudo, duplicate, inaccessible file systems
-        -B, --block-size=SIZE  scale sizes by SIZE before printing them; e.g.,
-                                '-BM' prints sizes in units of 1,048,576 bytes;
-                                see SIZE format below
-        -h, --human-readable  print sizes in powers of 1024 (e.g., 1023M)
-        -H, --si              print sizes in powers of 1000 (e.g., 1.1G)
-        -i, --inodes          list inode information instead of block usage
-        -k                    like --block-size=1K
-        -l, --local           limit listing to local file systems
-            --no-sync         do not invoke sync before getting usage info (default)
-            --output[=FIELD_LIST]  use the output format defined by FIELD_LIST,
-                                    or print all fields if FIELD_LIST is omitted.
-        -P, --portability     use the POSIX output format
-            --sync            invoke sync before getting usage info
-            --total           elide all entries insignificant to available space,
+```sh
+# VER AYUDA 
+> df --help 
+    Usage: df [OPTION]... [FILE]...
+    Show information about the file system on which each FILE resides, 
+    or all file systems by default.
+
+    -a, --all               Include pseudo, duplicate, inaccessible file systems
+    -B, --block-size=SIZE   Scale sizes by SIZE before printing them; 
+                            .. e.g:'-BM' prints sizes in units of 1,048,576 bytes.
+    -h, --human-readable    Print sizes in powers of 1024 (e.g., 1023M)
+    -H, --si                Print sizes in powers of 1000 (e.g., 1.1G)
+    -i, --inodes            List inode information instead of block usage
+    -k                      Like --block-size=1K
+    -l, --local             Limit listing to local file systems
+        --no-sync           Do not invoke sync before getting usage info (default)
+     --output[=FIELD_LIST]  Use the output format defined by FIELD_LIST,
+                                or print all fields if FIELD_LIST is omitted.
+    -P, --portability       Use the POSIX output format
+        --sync              Invoke sync before getting usage info
+        --total             Elide all entries insignificant to available space,
                                 and produce a grand total
-        -t, --type=TYPE       limit listing to file systems of type TYPE
-        -T, --print-type      print file system type
-        -x, --exclude-type=TYPE   limit listing to file systems not of type TYPE
+    -t, --type=TYPE         Limit listing to file systems of type TYPE
+    -T, --print-type        Print file system type
+    -x, --exclude-type=TYPE  Limit listing to file systems not of type TYPE
 
-    # VER USO ESPACIO
-    > df 
-        Filesystem     1K-blocks      Used Available Use% Mounted on
-        tmpfs            1629056      1840   1627216   1% /run
-        /dev/sda6      166243912 156056984   1669348  99% /
-        tmpfs            8145264    304556   7840708   4% /dev/shm
+# VER USO ESPACIO
+> df 
+    Filesystem     1K-blocks      Used Available Use% Mounted on
+    tmpfs            1629056      1840   1627216   1% /run
+    /dev/sda6      166243912 156056984   1669348  99% /
+    tmpfs            8145264    304556   7840708   4% /dev/shm
     
-    # VER USO INODOS
-    > df -i
-        Filesystem       Inodes   IUsed   IFree IUse% Mounted on
-        tmpfs           2036316    1215 2035101    1% /run
-        /dev/sda6      10633216 1586980 9046236   15% /
-        tmpfs           2036316     567 2035749    1% /dev/shm
+# VER USO INODOS
+> df -i
+    Filesystem       Inodes   IUsed   IFree IUse% Mounted on
+    tmpfs           2036316    1215 2035101    1% /run
+    /dev/sda6      10633216 1586980 9046236   15% /
+    tmpfs           2036316     567 2035749    1% /dev/shm
 ```
 
 ### du - disk usage
@@ -1605,23 +1629,23 @@ el espacio en disco consumido. La forma correcta de utilizar el comando du es la
 
     # ver los diez archivos más grandes en el directorio actual, usamos:
     > du -s * | sort -nr | head
-        41963556	Videos
-        5010840	    Desktop
-        3684856	    cuda_11.4.0_470.42.01_linux.run
-        3054216	    VirtualBox VMs
-        1185372	    Documents
-        757396	    build
-        651364	    snap
-        647772	    Downloads
-        277100	    go
-        249084	    opencv-4.x
+        41963556    Videos
+        5010840     Desktop
+        3684856     cuda_11.4.0_470.42.01_linux.run
+        3054216     VirtualBox VMs
+        1185372     Documents
+        757396      build
+        651364      snap
+        647772      Downloads
+        277100      go
+        249084     opencv-4.x
 
     > du -sh * | sort -nr | grep -e'[0-9]G'|head
-        41G	    Videos
-        4,8G	Desktop
-        3,6G	cuda_11.4.0_470.42.01_linux.run
-        3,0G	VirtualBox VMs
-        1,2G	Documents
+        41G     Videos
+        4,8G    Desktop
+        3,6G    cuda_11.4.0_470.42.01_linux.run
+        3,0G    VirtualBox VMs
+        1,2G    Documents
 
 
     # I Espacio total ocupado por distintos directorios:
@@ -1783,48 +1807,48 @@ este texto lo escribimos dentro de el archivo ejemplo usando nano
 ```sh
 # podemos verificar que el directorio pesa lo musmo aunque borremos el hard link
 > du -al --block-size=1 ./
-4096	./ejemplo      # block-size=K,M,G,100,10k...(redondea hacia arriba)
-0	    ./ejemplo_soft
-4096	./ejemplo_hard
-12288	./  # ERROR <---  al usar "-l --block-size " DA MAL y GRANDE
+4096    ./ejemplo      # block-size=K,M,G,100,10k...(redondea hacia arriba)
+0       ./ejemplo_soft
+4096    ./ejemplo_hard
+12288   ./  # ERROR <---  al usar "-l --block-size " DA MAL y GRANDE
             #            esto es porque -l duplica el peso de los links
 
 > du -acl --apparent-size ./
 # KB  Name 
-  1	 ./ejemplo       # todos los archivos aparentan un peso de  1KB
-  1	 ./ejemplo_soft  # este es el peso real del archivo original en disco 
-  1	 ./ejemplo_hard  # esto se debe a sus metadatos y overhead (espacio minimo)
-  5	 ./              # El directorio ya pesaba 4 KB
-  5	 total           # SOLO el archivo ORIGINAL ocupa espacio REAL
+  1  ./ejemplo       # todos los archivos aparentan un peso de  1KB
+  1  ./ejemplo_soft  # este es el peso real del archivo original en disco 
+  1  ./ejemplo_hard  # esto se debe a sus metadatos y overhead (espacio minimo)
+  5  ./              # El directorio ya pesaba 4 KB
+  5  total           # SOLO el archivo ORIGINAL ocupa espacio REAL
 
 > du -al --apparent-size ./  # lo comprovamos con mas copias
-    1	./ejemplo
-    1	./ejemplo_soft     # tanto soft como hard no ocupan espacio
-    1	./ejemplo_hard     # Este kilobite aparetnte es del archivo original
-    1	./ejemplo_hard_2
-    1	./ejemplo_hard_3
-    1	./ejemplo_hard_4
-    1	./ejemplo_hard_5
-    5	./            # solo hay 1kb de ."/ejemplono" y 4kB de Metadata del directorio  
+    1  ./ejemplo
+    1  ./ejemplo_soft     # tanto soft como hard no ocupan espacio
+    1  ./ejemplo_hard     # Este kilobite aparetnte es del archivo original
+    1  ./ejemplo_hard_2
+    1  ./ejemplo_hard_3
+    1  ./ejemplo_hard_4
+    1  ./ejemplo_hard_5
+    5  ./            # solo hay 1kb de ."/ejemplono" y 4kB de Metadata del directorio  
 > rm eje* 
 > du -al --block-size=1 ./   
-4096	./              # directorio = 4Kb
+4096    ./              # directorio = 4Kb
 > du -al --apparent-size ./
-4	    ./              # directorio = 4Kb
+   4    ./              # directorio = 4Kb
 
 # Baobab_Disk_analizer  &  "ls -las"  muetran 4KB para "ejemplo"
 # Esto no es correcto y el tamanio   REAL es  1KB
 
 > rm ./ejemplo ./ejemplo_soft  ./ejemplo_hard 
 > du -acl  --block-size=1 
-4096	.
-4096	total   # el directorio vacio pesa 4 kb 
+4096    .
+4096    total   # el directorio vacio pesa 4 kb 
 
 > du /home/ariel/Desktop/ -ab --max-depth=2
-5	    /home/ariel/Desktop/GO/.gitignore
-1777760	/home/ariel/Desktop/GO/test
-5580021	/home/ariel/Desktop/GO
-8370	/home/ariel/Desktop/city.jpg
+5       /home/ariel/Desktop/GO/.gitignore
+1777760 /home/ariel/Desktop/GO/test
+5580021 /home/ariel/Desktop/GO
+8370    /home/ariel/Desktop/city.jpg
 
 # sort  du command   by name  not size 
 du -al --apparent-size ./ |awk ' { t = $1; $1 = $2; $2 = t; print; } ' | sort -u -r
@@ -1950,7 +1974,7 @@ Fase 1 - SysAdmin   Módulo 3
 
 **101.1 Determinar y configurar parámetros del hardware**
 
-Peso: 2  ( importancia del 1 al 6. )
+Peso: 2  ( importancia para examen LPI   del 1 al 6).
 
 Descripción:
 
@@ -1977,7 +2001,7 @@ Términos y herramientas:
 
 **108.2: Registros de eventos del sistema**
 
-Peso: 4 de 1 a 6.
+Peso: 4   ( importancia para examen LPI   del 1 al 6).
 
 Descripción:
     Los alumnos deberían ser capaces de configurar `rsyslog`. 
@@ -2604,20 +2628,20 @@ usage: ssh [-46AaCfGgKkMNnqsTtVvXxYy] [-B bind_interface]
 > cat /etc/init.d/ssh | grep -A2 -e'start)' -e'stop)' -e'reload)' -e'restart)'
 case "$1" in  
   start)
-	check_privsep_dir  # estas son funciones declaradas en esete mismo script
-	check_for_no_start # mostramos solo 2 lineas de cada posible entrada
+    check_privsep_dir  # estas son funciones declaradas en esete mismo script
+    check_for_no_start # mostramos solo 2 lineas de cada posible entrada
 --;;
   stop)
-	log_daemon_msg "Stopping OpenBSD Secure Shell server" "sshd" || true
-	if start-stop-daemon --stop --quiet --oknodo --pidfile /run/sshd.pid --exec /usr/sbin/sshd; then
+    log_daemon_msg "Stopping OpenBSD Secure Shell server" "sshd" || true
+    if start-stop-daemon --stop --quiet --oknodo --pidfile /run/sshd.pid --exec /usr/sbin/sshd; then
 --;;
   reload | force-reload )
-	check_for_no_start
-	check_config       
+    check_for_no_start
+    check_config       
 --;;
   restart )
-	check_privsep_dir
-	check_config
+    check_privsep_dir
+    check_config
 
 # vemos el soft link para servicio ssh en modo 2  
 > ls -lasi /etc/rc2.d/ | grep ssh
@@ -2795,11 +2819,11 @@ update-alternatives 2024-09-19 13:23:54: run with --install /usr/bin/rcp rcp /us
 
 ## Clase 7  Devices + Mopulos
 
-Repaso de systemas de destion de servicios 
+Repaso de sistemas de destion de servicios 
 https://architecnologia.es/lpic-1-101-systemd-sysv
 
 
-Como se cual usa mi systema ? 
+Como se cual usa mi sistema ? 
 https://unix.stackexchange.com/questions/196166/how-to-find-out-if-a-system-uses-sysv-upstart-or-systemd-initsystem
 
 ```
@@ -2809,7 +2833,7 @@ https://unix.stackexchange.com/questions/196166/how-to-find-out-if-a-system-uses
 ```
 
 ```sh
-# verificar systema de arranque de mi linux
+# verificar sistema de arranque de mi linux
 osboxes@osboxes:~$ sudo stat /proc/1/exe | grep sys
   File: /proc/1/exe -> /usr/lib/systemd/systemd
             # este ubuntu usa : SYSTEMD 
@@ -3203,7 +3227,7 @@ entorno de escritorio, relacionada con un
 dispositivo detectado
 
 
-### info adicional - Arquitectura del Sistema
+### HARDWARE
 
 #### hotplug y coldplug
 Hotplug es la capacidad que tienen algunos dispositivos para
@@ -3699,17 +3723,17 @@ https://manpages.ubuntu.com/manpages/bionic/en/man1/lshw.1.html
 
 # Syntax:
 # vendor  vendor_name
-#	device  device_name				<-- single tab
-#		subvendor subdevice  subsystem_name	<-- two tabs
+#   device  device_name   <----------------- single tab
+#       subvendor subdevice  subsystem_name <-- two tabs
 
 0001  SafeNet (wrong ID)
 0010  Allied Telesis, Inc (Wrong ID)
 # This is a relabelled RTL-8139
-	8139  AT-2500TX V3 Ethernet
+    8139  AT-2500TX V3 Ethernet
 0014  Loongson Technology LLC
-	7a00  Hyper Transport Bridge Controller
-	7a02  APB (Advanced Peripheral Bus) Controller
-	7a03  Gigabit Ethernet Controller
+    7a00  Hyper Transport Bridge Controller
+    7a02  APB (Advanced Peripheral Bus) Controller
+    7a03  Gigabit Ethernet Controller
 ```
 
 
@@ -4159,9 +4183,13 @@ El directorio de `configuración global` se encuentra en `/etc/logrotate.conf`;
 sino, también, tenemos `otro` directorio en `/etc/logrotate.d/`,
 donde podremos poner individualmente cada configuración.
 
-Para que cada una de las c`onfiguraciones tenga efecto`, 
+Para que cada una de las `configuraciones tenga efecto`, 
 se programa una entrada en el crontab del sistema, 
 para que corran cada determinado tiempo (`/etc/crond.daily/logrotate`).
+
+Sintaxis :
+
+logrotate [Option] /etc/logrotate.conf
 
  -d  Se utiliza para debug no hace nada, simula la rotación.
  -f  Fuerza la rotación
@@ -4247,16 +4275,242 @@ se tomará del archivo de configuración global `/etc/logrotate.conf`.
 
 #### Fail2ban
 
-#### Crontab
+### CRON + ANACRON  ( Rutinas )
 
-https://crontab.guru/
+Ambos son procesos de automatisacion  
+
+
+CRON : Es un Proceso que corre y ejecuta comandos 
+ejecuta `trabajos de rutina  ( jobs )` pasada la hora/fecha configurada.
+estos trabajos se realizaran periodicamente.
+
+ANACRON : En caso de que el sistema haya estado apagado 
+Anacron revisa los trabajos perdidos mientras el sistema estubo apagado
+
+
+#### Comparacion : CRON vs ANACRON
+
+
+https://rm-rf.es/cron-o-anacron-%C2%BFque-elegir/
+
+```js
+CRON        Ejecuta tarea a cierta hora si el sistemaesta encendido
+ANACRON     Garantiza la ejecucion aunque sistema no estaba encendido 
+
+CRON        Un crontab x usuario y varios archivos de cofig `(crontab)`
+ANACRON     Un unico archivo de config
+
+CRON        Corre de fondo como `servicio`
+ANACRON     Corre a travez de llamadas en `Aranque del sistema`
+
+
+/bin/crontab       `command` use by most users to `edit` personal crontab files
+/usr/bin/crontab   symbolic `link` to /bin/crontab, provides an alternative path
+
+/usr/sbin/anacron  `daemon` that runs periodic jobs on the system
+/usr/sbin/cron     `daemon` for scheduling & running jobs defined in crontab files.
+
+/etc/crontab        `config file` system-wide confug para CRON 
+/etc/anacrontab     `config file` para el daemon ANACRON
+```
+
+
 https://ostechnix.com/a-beginners-guide-to-cron-jobs/
 
-
-### PRACTICA  APACHE2
+#### CRON Sintaxis :
 
 ```sh
+Minute(0-59) Hour(0-24) Day_of_month(1-31) \
+ Month(1-12) Day_of_week(0-6)   Command_to_execute
+```
 
+https://crontab.guru/
+
+#### Atajos y Valores :
+
+```sh
+*	any value
+,	value list separator
+-	range of values
+/	step values
+@yearly	    (non-standard)
+@annually	(non-standard)
+@monthly	(non-standard)
+@weekly	    (non-standard)
+@daily	    (non-standard)
+@hourly	    (non-standard)
+@reboot	    (non-standard)
+```
+#### Anacron 
+
+https://opensource.com/article/21/2/linux-automation
+
+in this example we keep things simple, 
+so the task this article automates is the `creation of a file` called hello 
+in `the /tmp` directory:
+
+```sh
+#!/bin/sh
+touch /tmp/hello
+```
+Verify which cron system your Linux distribution provides. 
+If it's anything other than cronie, 
+you can probably install cronie from your distro's software repository
+
+**Cron jobs**
+
+```sh
+> which anacron
+/usr/sbin/anacron
+```
+we can place any script to run regularly into `~/.local/etc/cron.daily `directory. 
+```sh
+ mkdir -p ~/.local/etc/cron.daily ~/.var/spool/anacron
+```
+
+To configure anacron to run your cron jobs, 
+create a configuration file at /.local/etc/anacrontab:
+
+```sh
+$ cp example ~/.local/etc/cron.daily
+$ chmod +x ~/.local/etc/cron.daily/example
+```
+
+
+```sh
+> cat /.local/etc/anacrontab:
+    SHELL=/bin/sh
+    PATH=/sbin:/bin:/usr/sbin:/usr/bin
+    1  0  cron.mine    run-parts /home/tux/.local/etc/cron.daily/
+```
+**Adding anacron to .profile**
+
+Finally, you must ensure that anacron runs with your local configuration.
+Because you're running anacron as a regular user and not as the root user, 
+you must direct it to your local configurations :
+
+    The anacrontab file telling anacron what to do, 
+    And the spool directory helping anacron keep track of 
+    how many days it's been since each job was last executed
+
+```sh
+anacron -T -t ~/.local/etc/anacrontab   -S /home/tux/.var/spool/anacron
+
+```
+
+**Testing Our cron job**
+
+We can technically test this without rebooting, 
+but it makes the most sense to `reboot` ,
+because that's what this is `designed to handle`. 
+
+interrupted and irregular login sessions. 
+Take a moment to reboot your computer, log in, 
+and then look for the test file:
+
+```sh
+>ls /tmp/hello
+/tmp/hello
+```
+Assuming the file exists, 
+your example script has executed successfully. 
+You can now remove the test options from ~/.profile, 
+leaving this as your final configuration:
+
+```sh
+anacron -t /home/tux/.local/etc/anacrontab  -S /home/tux/.var/spool/anacron
+```
+
+**To add a new interval:**
+
+1. Add a directory to ~/.local/etc (for instance, cron.weekly).
+
+2. Add a line to ~/.local/etc/anacrontab to run scripts in the new directory. 
+   For a weekly interval, the configuration would be:
+```sh
+7 0 cron.mine run-parts /home/tux/.local/etc/cron.weekly/
+```
+(  with the 0 value optionally being some number of minutes 
+       to politely delay the start of the script      ).
+
+3. Place your scripts in the cron.weekly directory.
+
+
+
+**Archivos**
+
+A continuacion buscamos todos los archivos cron y anacron
+
+```sh
+>type cron 
+cron is     /usr/sbin/cron
+>type anacron 
+cron is     /usr/sbin/cron
+>type crontab
+crontab is  /usr/bin/crontab
+
+
+> ls -ap /etc |grep cron
+anacrontab   crontab        cron.d/
+cron.daily/  cron.hourly/   cron.monthly/    cron.weekly/
+
+>ls -ap /etc/cron*
+    /etc/crontab
+
+    /etc/cron.d:
+    ./  ../  anacron  e2scrub_all  .placeholder  zfsutils-linux
+
+    /etc/cron.daily:
+    ./        apt-compat     cracklib-runtime  google-chrome  microsoft-edge-dev 
+    ../       aptitude       dpkg              logrotate      ntp
+    0anacron  brave-browser  geogebra          man-db         .placeholder   plocate
+
+    /etc/cron.hourly:
+    ./  ../  .placeholder
+
+    /etc/cron.monthly:
+    ./  ../  0anacron  .placeholder
+
+    /etc/cron.weekly:
+    ./  ../  0anacron  man-db  .placeholder
+
+
+# lets find out how many cron files we find in /etc 
+> sudo ls -p /etc/* | grep -v -e'/' |grep -e'cron' | sort | uniq -c
+# matchhes  Filename:
+      3     0anacron
+      3     anacron
+      3     cron
+      4     S01anacron
+      4     S01cron         
+
+>sudo ls -ap /var/spool/* |grep cron
+    /var/spool/anacron/:
+        cron.daily
+        cron.monthly
+        cron.weekly
+    
+    /var/spool/cron/:
+        crontabs/       # empty directory
+
+```
+**ejemplo**
+
+```sh
+>crontab -e
+#  Ariel Test command
+#     Finf Process :             ps -aux |grep -e'\<yes you\>'
+#     kill Process :   kill -9 $(ps -aux |grep -e'\<yes you\>' | awk 'NR==1 { print $2; }')
+08 20 * * * yes you
+```
+
+
+
+### PRACTICA - APACHE2 y CRONTAB
+
+#### /proc
+
+```sh
 [osboxes@osboxes:~]$  ls /proc
 1      14    162    19     386   73    asound         locks
 10     1448  1633   194    387   739   bootconfig     mdstat
@@ -4268,23 +4522,23 @@ https://ostechnix.com/a-beginners-guide-to-cron-jobs/
 11278  1475  1654   23     5     76    |cpuinfo        net
 
 [osboxes@osboxes]:~$ sudo ls /proc/1 
-. arch_status   cwd        mem	          patch_state   |stat
-. attr	        environ    mountinfo      personality   statm
-. autogroup	    |exe       mounts	      projid_map    status
-. auxv		    fd	       mountstats     root	        syscall
-. |cgroup       fdinfo net  sched	      task
+. arch_status   cwd        mem            patch_state   |stat
+. attr          environ    mountinfo      personality   statm
+. autogroup     |exe       mounts         projid_map    status
+. auxv          fd         mountstats     root          syscall
+. |cgroup       fdinfo net  sched         task
 . clear_refs    gid_map    ns             schedstat     timens_offsets
-. cmdline	    io	       numa_maps      sessionid     timers
-. comm		    limits     |oom_adj	      setgroups     timerslack_ns
+. cmdline       io         numa_maps      sessionid     timers
+. comm          limits     |oom_adj       setgroups     timerslack_ns
 . coredump_filter     loginuid   oom_score    smaps     uid_map
 . cpu_resctrl_groups  map_files  oom_score_adj  smaps_rollup  wchan
 . cpuset        maps       pagemap        stack         
 # OOM = Out Of Memory
 osboxes@osboxes:~$ sudo ls -las /proc/1/ |grep exe
 0 lrwxrwxrwx   1 root root 0 Oct 13 21:44 exe -> /usr/lib/systemd/systemd
-
 ```
 
+#### service
 ```sh
 [osboxes@osboxes:~] $ ps -aux |grep firefox
 osboxes  35878 16.5 17.5 3208648 353968 ?  Sl   17:22   0:09 /usr/lib/firefox/firefox -new-window
@@ -4292,14 +4546,17 @@ osboxes  35954  0.0  2.1 228520   42792 ?  Sl   17:22   0:00 /usr/lib/firefox/fi
 osboxes  35996  0.9  5.2 2450464 105320 ?  Sl   17:22   0:00 /usr/lib/firefox/firefox -contentproc -isForBrowser -prefsLen 29131
 
 [osboxes@osboxes:~] $ service apache2 status
-apache2.service - The Apache HTTP Server
-Loaded: loaded (/lib/systemd/system/apache2.service; 
-Active: active (running) since Tue 2023-06-27 19:58:5
-Docs: https://httpd.apache.org/docs/2.4/
-Process : 11375 ExecStart=/usr/sbin/apachectl start (co
-Process : 13247 ExecReload=/usr/sbin/apachectl gracefu
-Main PID: 11379 (apache2)
+    apache2.service - The Apache HTTP Server
+        Loaded: loaded (/lib/systemd/system/apache2.service; 
+        Active: active (running) since Tue 2023-06-27 19:58:5
+            Docs: https://httpd.apache.org/docs/2.4/
+    Process : 11375 ExecStart=/usr/sbin/apachectl start (co
+    Process : 13247 ExecReload=/usr/sbin/apachectl gracefu
+    Main PID: 11379 (apache2)
+```
 
+#### apache - /proc
+```sh
 [osboxes@osboxes:~] $ ls /proc/11379 |grep exe
 lrwxrwxrwx 1 root root 0 Jun 28 07:14 exe -> /usr/sbin/apache2
 
@@ -4309,29 +4566,30 @@ root  29  0.0  0.0  0  0?  S  Jun27 0:00 [ооm rеарег]
 
 [osboxes@osboxes:~]$ cat /proc/uptime 
 50306.80 48011.93
-osboxes@osboxes:~$ uptime  # similar info to /proc/uptime 
+[osboxes@osboxes:~]$ uptime   # similar info to /proc/uptime 
  17:44:45 up 13:58,  1 user,  load average: 0.01, 0.04, 0.08
 #################################################################################
-
+```
+#### /proc/ HW info
+```sh
 [osboxes@osboxes:~] $ cat /proc/cpuinfo 
-processor	: 0
-vendor_id	: AuthenticAMD
-cpu family	: 23
-model		: 8
-model name	: AMD Ryzen 5 2600 Six-Core Processor
+processor   : 0
+vendor_id   : AuthenticAMD
+cpu family  : 23                 model  : 8
+model name  : AMD Ryzen 5 2600 Six-Core Processor
 #################################################################################
-
-osboxes@osboxes:~$ cat /proc/meminfo 
+[osboxes@osboxes:~ ]$ cat /proc/meminfo 
 MemTotal:        2011236 kB
 MemFree:          329564 kB
 MemAvailable:    1138600 kB
 Buffers:           69968 kB
-osboxes@osboxes:~$ free   # similar info to /proc/meminfo  
+[osboxes@osboxes:~] $ free   # similar info to /proc/meminfo  
               total        used        free      shared  buff/cache   available
 Mem:        2011236      681052      329564       13164     1000620     1138820
 Swap:       9473020      277380     9195640
-
-
+```
+#### /sys/ -  HW info
+```sh
 [osboxes@osboxes:~] $ ls /sys/
 block  bus  class  dev  devices  firmware  fs  hypervisor  kernel  module  power
 [osboxes@osboxes:~] $ ls /sys/block/
@@ -4349,7 +4607,9 @@ clockevents  gpio          mmc           platform     spi
 clocksource  hid           nd            pnp          usb
 container    i2c           node          rapidio      virtio
 cpu          isa           nvmem         scsi         vme
-
+```
+#### apache - /etc  config
+```sh
 [root@osboxes]: cat /etc/apache2/apache2.conf
 # ErrorLog: The location of the error log file.
 # If you do not specify an ErrorLog directive within a <Vir tualHost>  container,
@@ -4371,17 +4631,19 @@ LogLevel warn
 # Include module configuration:
 IncludeOptional mods-enabled/*.load
 #################################################################################
-
+```
+#### apache - logrotate
+```sh
 [root@osboxes]: cat /etc/logrotate.conf
 login.defs logrotate.d/
 # see "man logrotate" for details
 # rotate log files weekly
 weekly
 
-# use the adm group by default, since this is the owning gr
-oup
+# use the adm group by default, since this is the owning group
 # of /var/log/syslog.
 su root adm
+
 # keep 4 weeks worth of backlogs
 rotate 4
 
@@ -4403,7 +4665,7 @@ alternatives    btmp            speech-dispatcher
 apache2         gups-daemon     ubuntu-advantage-tools
 apport          dpkg            ufw
 apt             ppp             unattended-upgrades
-bootlog         rsyslog         wtmp_
+bootlog         rsyslog         wtmp
 
 
 [root@osboxes]: cat /etc/logrotate.d/apache2
@@ -4451,7 +4713,9 @@ bootlog         rsyslog         wtmp_
 access.log error.log other_vhosts_access.log
 access.log.1 егror.log.1
 other_vhosts_access.log.1 
-
+```
+#### apache - crontab 
+```
 [root@osboxes]: ls /etc/ |grep cron
 anacrontab      # otro tipo de crontab
 cron.d          # rutinas personalizadas
@@ -4461,7 +4725,9 @@ cron.monthly    # cada mes
 crontab
 cron.weekly
 #################################################################################
-
+```
+ #### crontab
+```sh 
 [root@osboxes]:  cat /etc/crontab 
 # /etc/crontab: system-wide crontab
 # Unlike any other crontab you don't have to run the `crontab'
@@ -4481,10 +4747,10 @@ SHELL=/bin/sh
 # |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
 # |  |  |  |  |
 # *  *  *  *  * user-name command to be executed
- 17  *	* * *	root    cd / && run-parts --report /etc/cron.hourly
- 25  6	* * *	root	test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.daily )
- 47  6	* * 7	root	test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.weekly )
- 52  6	1 * *	root	test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.monthly )
+ 17  *  * * *   root    cd / && run-parts --report /etc/cron.hourly
+ 25  6  * * *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.daily )
+ 47  6  * * 7   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.weekly )
+ 52  6  1 * *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.monthly )
 #################################################################################
 
 [root@osboxes]:  service cron status
@@ -4497,13 +4763,13 @@ SHELL=/bin/sh
      Memory: 764.0K
 
 ``` 
-
+#### Destruir la pc
 ```sh
 # comando prohibido :     ' sudo rm -fr /* '
-# borra todo los archivos del systema desde la raiz
+# borra todo los archivos del sistema desde la raiz
 ```
 
-## CLase 8
+## CLase 8 - Admin + Passwd + C-Make
 
 ### DESAFIO
 
@@ -4573,14 +4839,14 @@ describir qué hace cada sección/parte de la configuración.
 
 Entregable
 Los entregables serán almacenados en la carpeta compartida 
-que tienen en drive con el formato (<carpeta con su nombre>/<Fase>/<módulo>/archivo).
+que tienen en drive con el formato (`<carpeta con su nombre>/<Fase>/<módulo>`/archivo).
 
 
 ### LPI  Certification - Módulo 4
 
 #### 110.1 Realizar tareas de administración de seguridad
 
-Peso: 3 (importancia del 1 al 6).
+Peso: 3   ( importancia para examen LPI   del 1 al 6).
 
 Descripción:
 saber como revisar la `configuración` del sistema 
@@ -4608,7 +4874,7 @@ para `asegurar la seguridad` del mismo de acuerdo a las políticas locales.
 
 #### 206.1: Compilar e instalar paquetes a partir de código fuente.
 
-Peso: 2 (importancia del 1 al 6).
+Peso: 2   ( importancia para examen LPI   del 1 al 6).
 
 **Descripción:**
 
@@ -4619,8 +4885,8 @@ Este tema pertenece al nivel 2 de la certificación LPI.
 **Temas cubiertos de LPI en este módulo**
 
 ● Desempaquetar código fuente usando herramientas de compresión y archivado.
-● Entender lo básico de la invocación de make para compilar programas.
-● Aplicar parámetros a un script configure.
+● Entender lo básico de la invocación de` make `para `compilar programas`.
+● Aplicar parámetros a un `script configure`.
 ● Saber dónde el código fuente se almacena de manera predeterminada.
 
 **Términos y herramientas**
@@ -4637,31 +4903,46 @@ Este tema pertenece al nivel 2 de la certificación LPI.
 ● install
 ● patch
 
-### Comandos para gestionar usuarios y grupos
+### gestion USUARIOS 
 
-Introducción
-Las cuentas de usuario están localizadas en el
-fichero /etc/passwd y las contraseñas cifradas
-de los usuarios son asignadas al archivo
-/etc/shadow.
-Cuando una nueva cuenta de usuario es creada
-(usando el comando useradd), de manera
-predeterminada toma la plantilla (opción -m)
-/etc/skel para generar el entorno de trabajo
-del usuario (/home/nombredeusuario).
+**Introducción**
+
+Las `cuentas` de usuario están localizadas en el `fichero /etc/passwd`  y 
+las `contraseñas cifradas` de los usuarios estan en el `archivo /etc/shadow`.
+Cuando una nueva cuenta de usuario es creada (usando el comando useradd),
+de manera predeterminada `toma la plantilla` (opción -m) ` /etc/skel `
+para generar el entorno de trabajo del usuario (`/home/nombredeusuario`).
  
+#### Least Privilege Principle
+
+El administrador de un sistema deve asegurar que 
+cada usuario tenega el `minimo posible de privilegios`,
+los justos y necesarios `para realizar sus tareas`
+brindar privilegios de mas vulnerabilidades al sistema
+en caso de que algun usuaruio sea hackeado o `robem su contraseña`
+
+ ● Limitar permisos de ejecucion y escritura
+ ● permitir solo comandos especificos
+ ● Forzar usuarios a cambios de contraseña regularmente
 
 ####  useradd
 
-Para generar una cuenta de usuario haremos uso
-del comando useradd, siguiendo esta sintaxis:
+Para `generar` una cuenta de usuario nueva , 
+siguiendo esta sintaxis:
+
 ```sh
-# useradd [opciones] nombreDelUsuario
-Ejemplo
-# useradd -g sistemas usuario1
-Si queremos crear una cuenta del sistema hacemos así:
-# useradd -r backup
+ useradd [opciones] nombreDelUsuario
 ```
+ Ejemplo
+
+```sh
+ useradd -g sistemas usuario1
+```
+Si queremos crear una cuenta del sistema hacemos así:
+```sh
+ useradd -r backup
+```
+
 Opciones
  -b  Define la base para el home del usuario.
  -d  Define el home del usuario.
@@ -4679,10 +4960,52 @@ Opciones
  -s  Intérprete de comandos SHELL que será asignado al usuario. 
      Ej.: /bin/bash
 
-#### Comando id
+Al crear el usuario se crea su directorio    /home/user_name
+dentro de este se crean binarios del usuario /home/user_name/bin
+donde hallaremos la shell de ese usuario y comandos
+
+```sh
+[root@osboxes]: / $  ls /home.
+bin     cdrom       etc     lib     lib64   lost+found  mnt     proc 
+run     sys         usr     boot    dev     home        lib32   libx32
+media   opt         root    snap    sbin    srv         tmp     var
+
+[osboxes@osboxes:~ ]$ cat /etc/passwd
+# CONTRASENAS se guardan encriptadas 
+# User name : encript_pass : UID : GID : GECOS name : home_dir : logi shell
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+ #  (... salida cortada...)  ################################
+                             # nologin = usados por el sistema
+[osboxes@osboxes:~] $ cat /etc/passwd |grep osbo
+osboxes:x:1000:1000:osboxes.org,,,:/home/osboxes:/bin/bash
+
+> cat /etc/passwd 
+daemon:4x^a41$%:1:1:daemon:/usr/sbin:/bin/sh
+bin:4x^a41$%:2:2:bin:/bin:/bin/sh
+sync:4x^a41$%:4:65534:sync:/bin:/bin/sync
+nvidia-persistenced:x:129:139:NVIDIA Persistence Daemon,,,:/nonexistent:/usr/sbin/nologin
+ariel:4x^a41$%:1000:1000:ariel,,,:/home/ariel:/bin/bash
+# Podemos verificar que el UID y GID es correcto con commando id
+> id 
+uid=1000(ariel) gid=1000(ariel) groups=1000(ariel),4(adm),24(cdrom),27(sudo),30(dip)
+```
+
+https://www.ibm.com/docs/en/aix/7.1?topic=passwords-using-etcpasswd-file
+
+
+
+
+#### id
 
 El comando id sirve para ver la información de
 un usuario y sus grupos, por ejemplo:
+
 ```sh
 > id sergio
 uid=1000(sergio) gid=1000(sergio) grupos=1000(sergio),27(sudo)
@@ -4690,11 +5013,11 @@ uid=1000(sergio) gid=1000(sergio) grupos=1000(sergio),27(sudo)
 
 #### usermod
 
-El comando usermod modifica los parámetros de acceso
-asignados a una cuenta existente del sistema.
+modifica los parámetros de acceso asignados a una cuenta existente del sistema.
+
 Sintaxis:
 ```sh
-> usermod [-c comment] [-d home_dir [ -m]] nombreDelUsuario
+ usermod [-c comment] [-d home_dir [ -m]]  [ nombreDelUsuario]
 ```
 
 Opciones
@@ -4719,11 +5042,13 @@ Si quisiéramos cambiar  el nombre de usuario de ’carita’ a ’carlita’:
 seguro también cambiará el nombre del directorio de inicio o Home en /home,
 pero si no fuera así, hacemos lo siguiente:
 Otros cambios o modificaciones en la misma cuenta:
+
 ```sh
-# usermod -l carita carlita
-# usermod -d /home/carlita carlita
-# usermod -c “supervisor de área” -s /bin/ksh -g 505 carlita
+ usermod -l carita carlita              # cambiar nombre de usuario
+ usermod -d /home/carlita carlita       # cambiar nombre del directorio inicio
+ usermod -c “supervisor de área” -s /bin/ksh -g 505 carlita
 ```
+
 El ejemplo modifica el comentario de la cuenta, su SHELL por defecto,
 que ahora será Korn SHELL, y su grupo principal de usuario 
 que quedó establecido al GID 505. 
@@ -4733,9 +5058,10 @@ debe ser el último argumento del command.
 #### userdel
 
 El comando userdel remueve un usuario del sistema.
+
 Sintaxis:
 ```sh
-# userdel [opción] nombreDelUsuario
+ userdel [opción] nombreDelUsuario
 ```
 -r  Este parámetro indica que se elimina la cuenta 
     y la carpeta de trabajo del usuario con todos sus datos.
@@ -4745,9 +5071,8 @@ Sintaxis:
     pero además lo hace sin importar si el usuario está 
     actualmente en el sistema trabajando.
 
-Los caracteres admitidos para las contraseñas son los siguientes:
-Sintaxis:
-#### Comando passwd
+
+#### passwd - Forzar r actualizar contraseñas
 
 El comando passwd se utiliza para cambiar contraseñas.
 
@@ -4757,17 +5082,21 @@ Primero nos exigirá la contraseña vigente
 y luego pedirá dos veces la nueva para prevenir cualquier error.
 
 La utilización del comando passwd con los parámetros usuario 
-y contraseña sólo es posible para root. 
+y contraseña sólo es posible para root.
+
 Si se utiliza sólo el parámetro usuario al usar este comando,
 entonces, root puede cambiar la contraseña para ese usuario.
+ 
+Los caracteres admitidos para las contraseñas son los siguientes 
+`   * , . ; : _ - + ! $ % & / | ? { [ ( ) ] }   `
+ 
+Sintaxis:
 ```sh
-# * , . ; : _ - + ! $ % & / | ? { [ ( ) ] }
-# passwd [Opciones] nombreDelUsuario
+passwd [Opciones] nombreDelUsuario
 ```
 
 Opciones
- -e  Esta opción forzará al usuario a cambiar su contraseña 
-     en su siguiente login al sistema.
+ -e  Esta opción forzará al usuario a cambiar su contraseña  en su siguiente login al sistema.
  -l  Con esta opción, el administrador del sistema
      puede inhabilitar la contraseña de algún usuario específico.
  -u  Con esta opción, el administrador revierte el efecto de la opción -l.
@@ -4776,20 +5105,20 @@ Opciones
  -f  Cambia el nombre completo del usuario.
  -s  Cambia el SHELL del usuario.
 
-### Administración de grupos
+### gestion GRUPOS
 
-#### Comando groupadd
-Para dar de alta grupos de trabajo en el sistema usaremos
-el comando groupadd, el cual deberá ser aplicado según la
-siguiente sintaxis:
+#### groupadd
+
+Para crear grupos de trabajo en el sistema 
+el cual deberá ser aplicado según la siguiente sintaxis:
+
 ```sh
-# groupadd [opciones] nombreDelGrupo
+groupadd [opciones] nombreDelGrupo
 ```
  -g  Define mediante un valor numérico el ID del grupo, 
      este número no puede ser uno negativo.
- -r  Define un grupo del sistema. Un grupo del sistema 
-     es aquel que tiene un número de identidad (GID) de grupo 
-     por debajo del número 500. 
+ -r  Define un `grupo del sistema`. Un grupo del sistema  es aquel que 
+     tiene un número de `identidad (GID)` de grupo `por debajo` del número `500`. 
      Este particular GID es utilizado por los servicios del sistema 
      como un servidor web o de correo.
  -f  Forza al sistema a crear el grupo aunque éste ya exista.
@@ -4800,8 +5129,9 @@ siguiente sintaxis:
 El comando groupmod permite modificar el nombre o GID de un grupo.
 
 Sintaxis:
+
 ```sh
-# groupmod [-g nuevo-gid] [-n nuevoNombre] nombreDelGrupo
+groupmod [-g nuevo-gid] [-n nuevoNombre] nombreDelGrupo
 ```
  -g  cambia el GID de un grupo existente en el sistema.
  -n  sirve para cambiar el nombre de un grupo existente por otro.
@@ -4812,7 +5142,7 @@ El comando groupdel elimina un grupo del sistema.
 
 Sintaxis:
 ```sh
-# groupdel nombreDelGrupo
+groupdel nombreDelGrupo
 ```
 
 #### gpasswd
@@ -4823,7 +5153,7 @@ indicar una contraseña para el grupo.
 
 Sintaxis:
 ```sh
-# gpasswd [opciones] nombreDelGrupo
+ gpasswd [opciones] nombreDelGrupo
 ```
 Las contraseñas de grupo sólo son necesarias si un
 usuario que no es miembro del mismo quisiera anexarse
@@ -4845,21 +5175,3511 @@ Sintaxis:
 
 #### groups
 Nos dice en qué grupos está un usuario:
-Comando grpck y comando groups
+
+####  grpck  y  groups
 ```sh
-# grpck nombreDelGrupo # groups educacionit
+> grpck  nombreDelGrupo     # revisar el  grupo 
+> groups educacionit        # revisar los grupos del usuario 
 educacionit : educacionit users
 ```
 
+### gestion PERMISOS
+
+#### chmod
+
+`Change mode` nos permite editar los permisos de directorios y archivos
+
+Sintaxis :
 ```sh
+chmod [options] [files/directores]
+```
+
+UGOA            RWX
+u = User        r =  Read
+g = Group       w =  Write
+o = Others      x = eXecute
+a = All = ugo
+
+se puede setear con `3 numeros` para los 3 tipos
+`octal '0-7'` que representados en binario `7 = 111 = rwx ` 
+
+```sh
+> chmod ugo=- /home/ariel/Public/
+> ls -l /home/ariel/ |grep Public
+d---------  2 ariel ariel       4096 Oct 17 15:36 Public
+
+> sudo chmod ug=+rx /home/ariel/Public/
+> ls -l /home/ariel/ |grep Public
+dr-xr-x---  2 ariel ariel       4096 Oct 17 15:36 Public
+
+> $ sudo chmod 755 /home/ariel/Public/
+> $ ls -l /home/ariel/ |grep Public
+drwxr-xr-x  2 ariel ariel       4096 Oct 17 15:36 Public
+
+# 755 = Permite al resto usar pero no modificar
+# 777 = anarqia ! cualquier cosa es permitida
 
 ```
 
+#### chown
+
+#### ACL - Permisos espesificos
+
+Access Control List
+
+https://juncotic.com/acl-access-control-lists-y-los-permisos-en-gnu-linux/
+
+
+Las ACL son representaciones de permisos para elementos del sistema de archivos,
+que extienden los permisos nativos POSIX.1 del sistema. 
+
+los permisos nativos también tienen su representación en ACL cuando éstas están activadas,
+los permisos nativos son representados por ACL’s, y además, podemos agregar ACL’s adicionales
+para otorgar permisos más granularizados a otras entidades del sistema de archivos.
+
+```
+Tipo de entrada  | Etiqueta de permisos |   Forma en text
+=================|======================|=============================
+Owner (dueño) *  |   ACL_USER_OBJ       | user::rwx ó u::rwx
+Named user       |   ACL_USER           | user:name:rwx ó u:name:rwx
+Owning group  *  |   ACL_GROUP_OBJ      | group::rwx ó g::rwx
+Named group      |   ACL_GROUP          | group:name:rwx ó g:name:rwx
+Mask (máscara)   |   ACL_MASK           | mask::rwx ó m::rwx
+Others (otros)   |   ACL_OTHER          | other::rwx ó o::rwx
+```
+
+**ACL: requisitos**
+
+● Que las ACL’s estén soportadas en los módulos de sistemas de archivos en el kernel Linux.
+● Que el sistema de archivos sobre el que se vayan a implementar tenga activada la opción acl.
+● Que se encuentren instaladas las utilidades para gestionar las ACL’s.
+
+**Soporte de ACL en el núcleo Linux**
+
+Para verificar si las ACL están soportadas por nuestro kernel tenemos dos formas.
+
+● Si existe el archivo de configuración que se utilizó 
+para compilar el núcleo en nuestra distribución, 
+en general se encontrará dentro de /boot, y su nombre será 
+config-<version del nucleo Linux activo>. 
+
+En definitiva podríamos utilizar el siguiente comando para verificarlo:
+
 ```sh
+[ ariel-All-Series ] $  grep ACL  /boot/config-$(uname -r)
+CONFIG_XILINX_EMACLITE=m
+CONFIG_EXT4_FS_POSIX_ACL=y
+# (...salida recortada ... )  ###############################
+# $(uname -r) = config-5.15.0-79-generic = nuestra version de kernell
+```
+●  Si no disponemos de este archivo de configuración, 
+podríamos verificar si existe el archivo /proc/config.gz. 
+Este archivo contiene las configuraciones utilizadas por el kernel 
+que está en ejecución en este momento
+```sh
+[ ariel-All-Series ] $ grep ACL /proc/config.gz
+grep: /proc/config.gz: No such file or directory
+```
+
+**Instalación de las utilidades**
+
+Si ya verificamos que el kernel tiene soporte para ACL, 
+no quedará más que instalar las utilidades necesarias, 
+en general, incluidas en el paquete acl del repositorio de la distribución:
+```sh
+# Debian:
+sudo apt install acl
+# Arch Linux
+sudo pacman -S acl
+```
+
+**Otorgando permisos a usuarios y grupos**
+Supongamos que el usuario uaa necesita acceso 
+de lectura y escritura al archivo archivo.txt. 
+
+Como comentamos arriba, no podríamos darle estos permisos 
+al usuario sin asignarlo como dueño, o cambiar el grupo del archivo.
+
+Con ACL podríamos otorgar estos permisos utilizando setfacl 
+y el modificador -m o --modify de esta manera:
+
+setfacl -m u:uaa:rw- archivo.txt
+
+El dueño del archivo (o el root) podrán setear estos permisos.
+Ahora la ACL del archivo se verá como la siguiente imagen, 
+y el usuario uaa podrá modificarlo. 
+Se aprecia también una entrada para la máscara, o mask.
+```sh
+diego@cryptos: $  setfacl mutuaa:rw- archivo.txt
+diego@cryptos: $  getfacl archivo.txt
+#file: archivo.txt
+#owner: diego
+#group: users
+user::rw-
+user:uaa: rw-
+group::r--
+mask::rw-
+other::r--
+```
+Lo mismo podría aplicarse a un directorio.
+
+La sintaxis de setfacl especifica los permisos para usuarios o grupos 
+utilizando la siguiente nomenclatura:
+
+u:named_user:permission
+g:named_group:permission
+
+Y se pueden otorgar varios permisos en la misma línea 
+separando los mismos por coma, por ejemplo:
+
+(los guiones - pueden omitirse, los uso para mantener claridad en los permisos).
+
+setfacl -m u:usuario1:rw-,u:usuario2:r--,g:grupo1:r-- archivo.txt
+
+En el caso de que el destino sea un directorio 
+y quisiéramos aplicar la ACL a todos los elementos interiores de manera recursiva,
+podemos utilizar el modificador -R:
+
+setfacl -Rm u:usuario1:rw- directorio/
+
+#### SUID, SGID & StickyBit 
+
+https://www.redhat.com/en/blog/suid-sgid-sticky-bit
+
+**user + s (pecial)**
+SUID, the special permission for the user access level has a single function:
+A file with SUID always executes as the user who owns the file,
+regardless of the user passing the command.
+If the file owner doesn't have execute permissions, 
+then use an uppercase S here.
+
+Now, to see this in a practical light, 
+let's look at the /usr/bin/passwd command. 
+This command, by default, has the SUID permission set:
+```sh
+[tcarrigan@server ~]$ ls -l /usr/bin/passwd 
+-rwsr-xr-x. 1 root root 33544 Dec 13  2019 /usr/bin/passwd
+```
+Note the s where x would usually indicate execute permissions for the user.
+
+**group + s (pecial)**
+Commonly noted as SGID, this special permission has a couple of functions:
+
+If set on a file, it allows the file to be executed as 
+the group that owns the file (similar to SUID)
+If set on a directory, any files created in the directory 
+will have their group ownership set to that of the directory owner
+
+```sh
+[tcarrigan@server article_submissions]$ ls -l 
+total 0
+drwxrws---. 2 tcarrigan tcarrigan  69 Apr  7 11:31 my_articles
+```
+This permission set is noted by a lowercase s 
+where the x would normally indicate execute privileges for the group.
+It is also especially useful for directories 
+that are often used in collaborative efforts between members of a group. 
+Any member of the group can access any new file. 
+This applies to the execution of files, as well. 
+SGID is very powerful when utilized properly.
+
+for SUID, if the owning group does not have execute permissions, 
+then an uppercase S is used.
+
+
+### Políticas de CONTRASEñAS y cuentas
+
+Introducción
+se realizarán tareas básicas para poder aplicar una `seguridad básica` 
+y mínima al control de los usuarios, viendo temas como seguridad en claves,
+aplicación y creación reglas para ejecución de `comandos administrativos`,
+control de los recursos del sistema y auditar `permisos especiales`.
+
+Seguridad en el equipo
+La seguridad en el equipo es muy importante, 
+no importa lo pequeña que parezca la tarea a `securizar`, 
+lo importante es saber los métodos y aplicarlos según corresponda.
+
+
+
+#### chage
+
+Se usa para listar o cambiar el tiempo en el que
+expira una contraseña de usuario.
+
+Sintaxis:
+```sh
+ chage [opciones] nombreDelUsuario
+```
+
+Opciones
+ -d días    cuenta el `número de días` (desde 01-01-1970) transcurridos 
+            desde que `cambió la contraseña` por última vez. Se puede usar /MM/DD/YY
+ -E fecha   Modifica la fecha en que la cuenta del usuario `Expira` y será bloqueada.
+            Se puede usar /MM/DD/YY
+ -I días    Modifica cuántos días puede `permanecer` una cuenta coon  
+            con una contraseña expirada (`Iinactiva`) antes de ser bloqueada.
+ -M días    Modifica el `Máximo de días` durante los que es válida una contraseña
+            Pasados los`días, el usuario debe modificarla.
+ -m días    Modifica el `mínimo de días` entre el cambio de una contraseña 
+            Evita que el usuario cambie de clave reiteradas veces en el día.
+ -W días    Modifica cuantos días que se avisará (`Warning`) al usuari
+            antes de `cambiar la contraseña`.
+ -l usuario Muestra la información del usuario especificado.
+
+**Ejemplos** 
+
+Primero veamos la configuracion luego cambiaremos cada uno de los ítems:
+
+```sh
+[root@oc6127656113 ~] chage -l matias
+Last password change    : Nov 26, 2011
+Password expires        : Feb 24, 2012
+Password inactive       : Mar 02, 2012
+Account expires         : never
+Minimum number of days between password change    : 5
+Maximum number of days between password change    : 90
+Number of days of warning before password expires : 7
+```
+
+cambiamos cada uno de sus parámetros:
+
+```sh
+[root@oc6127656113 ~] chage -d 10 -E 01/22/2012 -I 9 -M 5 -m 2 -W 2 matias
+[root@oc6127656113 ~] chage -l matias
+Last password change   : Jan 11, 1970     # -d 10 
+Password expires       : Jan 16, 1970     #       <---- this is calculated 11 + 5
+Password inactive      : Jan 25, 1970     # -I 9
+Account expires        : Jan 22, 2012     # -E  01/22/2012 
+Minimum number of days between password change    : 2     #  -m 2
+Maximum number of days between password change    : 5     #  -M 5 
+Number of days of warning before password expires : 2     #  -W 2
+```
+
+Es importante establecer estos puntos, dado que nos servirán para
+poder controlar bien el comportamiento de nuestras cuentas.
+
+```sh
+# Si quisiéramos omitir todo tipo de seguridad:
+[root@oc6127656113 ~] chage -d -1 -E -1 -I -1 -M -1 -m -1 -W -11 matias
+[root@oc6127656113 ~] chage -l matias
+Last password change   : never
+Password expires       : never
+Password inactive      : never
+Account expires        : never
+Minimum number of days between password change    : -1
+Maximum number of days between password change    : -1
+Number of days of warning before password expires : -1
+```
+
+```sh
+# O también así:
+[root@oc6127656113 ~] chage -d 999999 -E 999999 -I 999999 -M 999999 -m 999999 -W -999999 matias
+# Como verán, los tiempos que marcan son imposibles:
+[root@oc6127656113 ~] chage -l matias
+Last password change   : Nov 28, 4707
+Password expires       : never
+Password inactive      : never
+Account expires        : Nov 28, 4707
+Minimum number of days between password change    : 999999
+Maximum number of days between password change    : 999999
+Number of days of warning before password expires : 999999
+```
+
+#### SU + SUDO
+
+https://docs.bluehosting.cl/tutoriales/servidores/de-la-teoria-a-la-practica-sudo-sudoers-y-visudo.html
+
+**Elevando privilegios con su**
+
+```sh
+> man su
+NAME   su - run a command with substitute user and group ID
+
+SYNOPSIS   su [options] [-] [user [argument...]]
+
+-, -l, --login
+    Start the shell as a login shell with an environment similar to a real login
+-P, --pty
+    Create a pseudo-terminal for the session. The independent terminal
+    has better security, the user does not share a terminal with the original session
+-s, --shell=shell
+    Run the specified shell instead of the default.
+```
+
+el comando su (`Switch User` o "cambiar de usuario).
+ejecuta una nueva sesión en la consola shell como otro usuario, 
+en general, el usuario root. 
+nos convertimos en el usuario root hasta cerrar esa sesión. 
+
+Por razones de seguridad y estabilidad 
+`no es una buena práctica` utilizar este comando
+ya que equivale a `iniciar sesión como root`,
+
+ya hemos explicado algunas razones de peso para no utilizar esta cuenta.
+ej: digamos que un usuario regular que no tiene experiencia 
+en la administración de sistemas Linux quiere borrar un archivo personal
+y por error elimina  de forma recursiva y forzada archivos del sistema (rm -rf). 
+Esto es potencialmente catastrófico y podría dañar el sistema por completo.
+
+para usar el comando su el usuario debe conocer la contraseña del usuario root.
+La sintaxis de este comando es la siguiente:
+
+```sh
+su - miusuario
+```
+
+```sh
+# ejemplo mio : 
+osboxes@osboxes:~$ touchprueba.txt
+osboxes@osboxes:~$ sudo  su              # sudo su == sudo su root
+root@osboxes:/home/osboxes# touch prueba2
+root@osboxes:/home/osboxes# su osboxes
+osboxes@osboxes:~$ 
+-rw-r--r-- 1 root    root    0 Jul 4 19:32 prueba2.txt
+-rwsrwsr-- 1 osboxes osboxes 0 Jul 4 19:18 prueba.txt
+# OJO !!   el archivo prueva2 no fue hecho por osboxes
+# fue hecho por   ROOT   y esto    NO NOS PERMITE EDITARLO !!
+# esto es ejemplo de malas practicas
+```
+
+Una vez ejecutado el comando se le pedirá la contraseña del usuario en cuestión.
+El guion (-) permite el inicio de un nuevo shell de conexión 
+con las preferencias del usuario miusuario. 
+
+Si omite el guion no se cargará la sesión desde el directorio home del usuario
+y no se inicializarán las variables de preferencia para ese usuario 
+(HOME, SHELL, USER, LOGNAME and PATH).
+
+Si ejecuta el comando su o su - por sí solo, sin especificar ningún usuario,
+se da por sentado que está invocando al usuario root.
+
+**Elevando privilegios con sudo**
+
+Otra forma `más segura` de otorgar privilegios root temporalmente a un usuario
+es usando el comando **sudo** (`Super User DO`, por sus siglas en inglés). 
+
+Esta es la `forma recomendada` y la mejora práctica 
+para ejecutar acciones con privilegios elevados. 
+La gran diferencia, es que los comandos precedidos con sudo 
+son ejecutados `por el propio usuario, NO por root`.
+
+¿Y cuál es la ventaja de esto? Son muchas ventajas, 
+en general relacionadas con la seguridad de su sistema. 
+Aprenderá más a medida que lee esta guía.
+
+Para ejecutar un comando que requiera privilegios elevados,
+simplemente use la palabra sudo delante del comando:
+```sh
+sudo comando_con_root_requierment
+```
+
+Cuando lo haga se le pedirá su contraseña personal, 
+se ejecutará el comando y luego usted seguirá siendo un usuario regular.
+si debe ejecutar 100 comandos que requieran privilegios root, 
+tendrá que precederlos todos con la utilidad sudo.
+
+En la mayoría de las distribuciones de Linux,
+la utilidad sudo debe habilitarse manualmente 
+para los usuarios que lo requieran. 
+
+explicamos cómo activar esta opción para un usuario regular.
+
+Diferencias entre sudo y su
+Algunas de las diferencias entre estas dos utilidades se enumeran a continuación:
+
+```js
+        SUDO                        |      SU
+====================================|============================================
+Los comandos son ejecutados         |    
+por un usuario regular que          |   Sirve para cambiar de un usuario a otro,
+`debe ser parte  de` un grupo       |   generalmente se pasa 
+de usuarios con la posibilidad      |   de un usuario regular al usuario root.
+ de utilizar sudo `(sudoers)`       |
+====================================|============================================
+Solo es necesaria                   |   requiere saber la contraseña, del root
+la contraseña del usuario actual.   |   la cual no debería ser revelada
+                                    |   a ningún usuario regular
+====================================|============================================
+Se pueden registrar las acciones    |   Las posibilidades para registrar
+ejecutadas bajo la figura de sudo.  |   eventos son más limitadas.
+====================================|=============================================
+Ofrece varias características que   |   Una vez que accede como root,
+proveen un mayor control de         |   no hay control de lo que
+lo que hacen los usuarios.          |   puede hacer en el sistema.
+```
+
+#### /etc/sudoers
+
+Para  Fefora y CentOS  sudoers se llama wheel
+
+`etc/sudoers ` contiene una lista de los usuarios
+que pueden ejecutar el comando sudo y cuáles son los alcances de sus privilegios.
+  
+Cuando un usuario ejecuta un comando precedido por sudo,
+el sistema busca en el archivo `/etc/sudoers` 
+y los archivos en `/etc/sudoers.d` para comprobar la información allí plasmada 
+y otorgar o denegar el permiso para usar el comando.
+
+La estructura básica para los usuarios enumerados en este archivo es la siguiente:
+
+quién dónde = (como_quién) qué
+
+Por ejemplo, un usuario con privilegios administrativos absolutos como root
+ tendrá la siguiente estructura:
+```
+    root    ALL=(ALL)       ALL
+```
+Considerando que ALL significa "todos", 
+esto quiere decir que la regla aplica al usuario root, en todos los hosts,
+root puede ejecutar comandos como todos los usuarios 
+y se pueden ejecutar todos los comandos.
+
+Esta guía da un enfoque muy general del archivo sudoers 
+y no pretende detallar su estructura o personalización.
+La documentación de este archivo es muy extensa 
+
+https://www.linuxtotal.com.mx/index.php?cont=info_admon_014
+
+/etc/sudoers puede tener 3 clases de configuraciones
+    Alias
+    Opciones (Defaults)
+    Reglas de acceso
+
+##### ALIAS
+
+Un alias se refiere a un `usuario`, un `comando` o a un `equipo`. 
+El alias engloba bajo un solo nombre (nombre del alias) una serie de elementos 
+que después en la parte de definición de reglas 
+
+ Sintaxis :
+```sh
+tipo_alias NOMBRE_DEL_ALIAS = elemento1, elemento2, elemento3, ... elementoN
+```
+
+Es posible indicar `varios alias del mismo tipo` separando por` : `entre ellos 
+```sh
+tipo_alias NOMBRE1 = elemento1, elemento2 : NOMBRE2 = elemento1, elemento2
+```
+
+tipo_alias:
+```
+    Cmnd_Alias  - alias de comandos.
+    User_Alias  - alias de usuarios normales.
+    Runas_Alias - alias de usuarios administradores o con privilegios.
+    Host_Alias  - alias de hosts o equipos.
+```
+
+**Cmnd_Alias**
+Definen uno o más comandos y otros alias de comandos que podrán 
+ser utilizados después en alias de usuarios. Ejemplos:
+```sh
+    Cmnd_Alias WEB       = /usr/sbin/apachectl, /usr/sbin/httpd, sudoedit /etc/httpd/
+    Cmnd_Alias APAGAR    = /usr/bin/shutdown -h 23\:00
+    Cmnd_Alias NET_ADMIN = /sbin/ifconfig,    /sbin/iptables,  WEB  # (primero alias) 
+    Cmnd_Alias TODO_BIN  = /usr/bin/,         !/usr/bin/rpm
+```
+
+**User_Alias**
+Define a uno o más usuarios: 
+grupos del sistema (indicados con %),  grupos de red (netgroups indicados con +) 
+ Ejemplos:
+```sh
+    User_Alias MYSQL_USERS = andy, marce, juan, %mysql
+    User_Alias ADMIN       = sergio, ana
+    User_Alias OPERADORES  = ADMIN, alejandra
+    User_Alias TODOS       = ALL, !samuel, !david
+```
+
+**Host_Alias**
+
+Definen uno o más equipos u otros alias de host. 
+pueden indicarse 
+    por su nombre (si se encuentra en /etc/hosts) 
+    por nombre de dominio, si existe un resolvedor de dominios, 
+    por dirección IP, por dirección IP con máscara de red. Ejemplos:
+
+```sh
+Host_Alias LANS       = 192.168.0.0/24, 192.168.0.1/255.255.255.0
+Host_Alias WEBSERVERS = 172.16.0.21, web1 :   DBSERVERS = 192.168.100.10, dataserver
+# WEBSERVERS y DBSERVERS = en el mismo renglón
+```
+
+Opciones ( o defaults)
+
+    permiten definir ciertas características de comportamiento 
+    para los alias previamente creados, para usuarios, usuarios privilegiados, 
+    para equipos o de manera global para todos. 
+
+
+Las opciones tienen `cuatro niveles` de uso:
+
+    De manera global, afecta a todos
+    Por usuario
+    Por usuario privilegiado
+    Por equipo (host)
+
+Elemplos:
+    Global : Defaults         opcion1, opcion2 ...
+    Usuario: Defaults`:usuario` opcion1, opcion2 ...
+    Equipo : Defaults`@equipo`  opcion1, opcion2 ...
+    Usuario Privilegiado: Defaults`>usuario` opcion1, opcion2 ...
+
+##### LISTAS
+
+Permite establecer/eliminar `variables de entorno` propias de sudo. 
+Los `Defaults` para variables es de los menos usados en 
+las configuraciones de sudo y ciertamente de los más confusos. 
+
+Para entender como se aplican es más fácil  si primero 
+
+al ejecutas el comando `sudo -V` , y al final del listado 
+`encontrarás en mayúsculas` las posibles `variables de entorno` 
+que se pueden  establecer o quitar y que vienen del shell.
+
+```sh
+Defaults env_delete -= HOSTNAME
+```
+
+Elimina la variable de entorno 'HOSTNAME', 
+comandos que se ejecuten bajo sudo y que requieran de esta variable 
+no la tendrían disponible.
+```sh
+Defaults env_reset
+Defaults env_check += DISPLAY, PS1
+```
+opción 'env_reset' reinicializa las variables de entorno 
+que sudo utilizará o tendrá disponibles, 
+y solo quedan disponibles LOGNAME, SHELL, USER y USERNAME. 
+
+La siguiente línea indica que agregue (+=) a lo anterior,
+la variable de entorno DISPLAY a su valor establecido antes del reset.
+
+
+
+##### REGLAS de acceso
+
+Aunque no es obligatorio declarar alias, ni opciones (defaults), 
+y de hecho tampoco reglas de acceso, pues el archivo /etc/sudoers 
+no tendría ninguna razón de ser si no se crean reglas de acceso.
+
+De hecho podríamos concretarnos a crear solamente reglas de acceso, 
+sin opciones ni alias y podría funcionar todo muy bien.
+
+Sintaxis :
+
+```sh
+usuario host = comando1, comando2, ... comandoN
+```
+
+```js
+`usuario` puede ser un usuario, un 'alias' de usuario o un `grupo` [indicado por %], 
+
+`host` puede ser `ALL` cualquier equipo, un solo 'equipo', un `alias` de equipo
+     , una dirección `IP` o una definición de red `IP`/máscara, 
+      
+`comandoX` es cualquier comando indicado con su ruta completa. 
+    Si se `termina en '/' ` como en `/etc/http/` entonces indica 
+    `todos` los archivos dentro de ese directorio.
+```
+
+Las reglas de acceso definen :
+
+    que usuarios ejecutan que comandos
+    bajo que usuario y en que equipos. 
+
+Sintaxis :
+```sh
+usuario host = comando1, comando2, ... comandoN
+```
+La mejor forma de  aprender a configurar sudoers  es con ejemplos:
+
+```sh
+%gerentes dbserver = (director) /usr/facturacion, (root) /var/log/*
+```
+
+Un ejemplo más detallado. 
+Los usuarios que pertenezcan al grupo del sistema llamado `gerentes`
+pueden en el equipo llamado `dbserver` 
+ejecutar como si fueran el usuario `director` 
+la aplicación llamada `facturacion`, 
+además como usuarios `root` 
+pueden ver el contendido de los archivos que contenga el directorio /var/log.
+
+
+Lo anterior intoduce algo nuevo, 
+que en la lista de comandos es posible indicar 
+bajo que usuario se debe ejecutar el permiso. 
+
+Por defecto es el usuario 'root', pero no siempre tener que asi. 
+
+Además la lista 'hereda' la primera definición de usuario
+que se indica entre paréntesis ( ), 
+por eso si se tiene más de alguno hay que cambiar de usuario 
+en el comando conveniente. 
+
+El ejemplo anterior también sería válido de la siguiente manera:
+
+```sh
+%gerentes dbserver = /var/log/*, (director) /usr/facturacion
+```
+No es necesario indicar (root) 
+ya que es el usuario bajo el cual se ejecutan los comandos por defecto.
+
+También es válido usar (ALL) 
+para indicar bajo cualquier usuario. 
+
+El ejemplo siguiente da permisos absolutos.
+
+
+```sh
+sergio ALL = (ALL) ALL
+```
+
+Se establece permiso para el usuario 'sergio' en cualquier host, 
+ejecutar cualquier comando de cualquier usuario, 
+por supuesto incluyendo los de root.
+
+
+#### visudo
+
+visudo, el comando que permite al administrador modificar /etc/sudoers
+`bloquea el archivo /etc/sudoers` de tal manera que nadie más lo puede utilizar,
+esto por razones obvias de seguridad 
+
+`evita` que dos o más usuarios administradores `modifiquen simultaneamente`
+pisando accidentalmente los cambios que el otro realizó.
+
+visudo es que al cerrar el archivo, `verifica` que el archivo este` bien configurado`
+Si al cerrar visudo detecta un `error` 
+nos mostrará la línea donde se encuentra, y la pregunta "What now?":
+
+    >>> sudoers file: syntax error, line 15 <<<
+    What now?  
+
+Se tienen tres opciones para esta pregunta:
+
+    e - edita de nuevo el archivo, 
+    x - salir sin guardar los cambios.
+    Q - salir y guarda los cambios.
+
+
+```sh
+> sudo cat /etc/sudoers
+# This file MUST be edited with the 'visudo' command as root.
+#
+# Please consider adding local content in /etc/sudoers.d/ instead of
+# directly modifying this file.
+#
+# See the man page for details on how to write a sudoers file.
+#
+Defaults	env_reset
+Defaults	mail_badpass
+Defaults	secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+Defaults	use_pty
+
+# This preserves proxy settings from user environments of root
+# equivalent users (group sudo)
+#Defaults:%sudo env_keep += "http_proxy https_proxy ftp_proxy all_proxy no_proxy"
+
+# This allows running arbitrary commands, but so does ALL, and it means
+# different sudoers have their choice of editor respected.
+#Defaults:%sudo env_keep += "EDITOR"
+
+# Allow members of group sudo to execute any command
+%sudo	ALL=(ALL:ALL) ALL
+# See sudoers(5) for more information on "@include" directives:
+# (...salida cortada...)  #############################################
+
+> $ ls  /etc/sudoers.d
+0pwfeedback  mintdrivers  mintupdate  README  zfs
+```
+
+```sh
+> man 5 sudoers         # See sudoers(5)
+```
+
+
+#### Other Sudo Workflows
+
+Ariel is a Linux system Admin
+Raul is a non root user that needs temporary privileges
+
+is there a way to give Raul access to sudo command 
+without allowing him to run  visudo , edit /etc/sudoers , chage , chown ,etc
+to modify another user's passwords or gain permanent super user status ?
+
+
+Yes, there are ways to grant Raul temporary sudo privileges 
+without allowing him to modify other users' passwords 
+or gain permanent superuser status.
+
+Here are 3 methods you can consider:
+
+1. ) Using the sudo -u command:
+Temporary privileges: 
+
+This method grants Raul root privileges for a single command.
+```sh
+# Example:
+sudo -u root <command>
+# Replace `<command>` with the specific command you want Raul to run.
+```
+
+2. ) Creating a specific sudoers rule:
+Custom command restrictions: 
+
+You can create a rule in the /etc/sudoers file 
+that allows Raul to run specific commands
+but restricts his ability to modify other users passwords 
+or gain permanent superuser status.
+```sh
+# Allow Raul to run specific commands
+raul ALL=(root) NOPASSWD: /usr/bin/command1, /usr/bin/command2
+# Replace command1 and command2 with the actual commands you want Raul to be able to run.
+```
+
+3. ) Using a sudoers group:
+Group-based privileges: 
+
+Create a sudoers group and add Raul to it. 
+Grant the group specific privileges.
+```sh
+# Create a sudoers group
+sudo groupadd sudoers_group
+
+# Add Raul to the group
+sudo usermod -a -G sudoers_group raul
+
+# Grant the group specific privileges
+sudoers_group ALL=(root) NOPASSWD: /usr/bin/command1, /usr/bin/command2
+```
+
+Important notes:
+
+Security: Always exercise caution when granting sudo privileges. 
+Ensure that the rules you create are specific and necessary.
+
+Refer to the `sudoers manual` 
+for more detailed information and examples.
+
+Consider` alternative` methods: Depending on your specific use case, 
+you might consider other methods, such as using a passwordless 
+sudo configuration or leveraging tools like `sudoedit` 
+for temporary editing privileges.
+
+
+###  AT - ATtention (Automatic temporization)
+
+**Introducción**
+
+Ahora veremos temas relacionados con la `automatización de tareas`,
+delegar tareas al sistema y controlar mejor su funcionamiento.
+Utilizaremos y configuraremos servicios fundamentales como 
+`cron, at y anacron`, viendo su funcionamiento y configuración en cada caso.
+
+hay tareas que se realizan `sin intervension` nuestra.
+evitamos tener que estar presente para poder realizarla.
+
+¿Qué son las tareas programadas ?
+
+#### at
+
+Con el comando at se pueden ejecutar `trabajos por lotes`, 
+para ser ejecutados por única vez.
+Se puede programar un trabajo de dos maneras diferentes:
+
+● Programar el trabajo a ser ejecutado en un `tiempo absoluto`. 
+  Por ejemplo, el 03 de julio, 10am.
+
+● Programar el trabajo a ser ejecutado en el `tiempo relativo` . 
+  Por ejemplo, 5 horas a partir de ahora.
+
+```
+Tipo de 
+referencia :
+     Sintaxis :  Descripción :
+Fija  
+     HH:MM      Específica hora y minutos cuando los comandos se debe ejecutar. 
+                El demonio asume que la hora es hoy, a menos que 
+                esa hora ya haya pasado realmente y asume que es mañana.
+                También podemos agregar am o pm para especificar mañana o tarde.
+      Noon      Específica que el comando correrá a las 12:00 PM.
+      Midnight  Específica que el comando correrá a las 12:00 AM.
+      Teatime   Específica que el comando correrá a las 4:00 AM.
+      MM/DD/YY  Específica el mes, día, año exacto en que un comando se ejecutará.
+   HH:MM MMDDYY Específica el mes, día, año y tiempo exacto en que un comando se ejecutará.
+
+Relativa  
+        now     Específica que un comando debe ejecutarse inmediatamente.
+    now + valor Específica que un comando debe ejecutarse en el futuro, es un tiempo estimado.
+                Por ejemplo: now +5 minutes, now +2 hours, now +3 days.
+        today   Específica que el comando debe correr hoy. T
+                ambién se puede usar con otros parámetros para determinar
+más opciones. Por ejemplo: 2 pm today.  
+    tomorrow    Específica que el comando deberá correr mañana. 
+                posible usar otros parámetros para determinar más opciones. 
+                Por ejemplo: 2pm tomorrow. 
+```
+**Ejemplos**
+
+hacemos lo siguiente:
+```sh
+# Programar un trabajo especificando fecha y hora.
+> at [tiempo] [fecha] -f [archivo_comandos]
+# Programar un trabajo a las 11 am el 20 de mayo,
+> at  11 am   may 20  -f  lista_de_comandos.txt
+```
+
+ Programar un trabajo con at usando un `tiempo relativo`
+ a partir de ahora ( `now` ). 
+
+```sh
+> at now + Cantidad Unidad
+
+# Trabajo a ejecutar en un minuto a partir de ahora:
+> at now + 1 min    -f  lista_de_comandos.txt
+# Lo musmo ahora por STDIN.
+> echo ”killall httpd” | at now + 1 min
+```
+Tambien podemos ejecutaelo dentro una hora o `al dia siguirntr`
+
+```sh
+> at now + 1 hour      
+> at now + 1 day        
+```
+
+Ingresar los comandos   `por medio del teclado`,
+al terminar de tipear pulsar las teclas `ctrl d`
+y aparecerá `<EOT> `y la `fecha` en la que se ejecutará.
+
+```sh 
+> at now + 2 min
+at> touch /tmp/lala.txt
+at> touch /tmp/lala2.txt
+at> <EOT>
+job 11 at Wed Dec 1 22:21:00 2014
+```
+
+#### atq
+
+para `mostrar todos los trabajos` en el orden que están programadas 
+o enejecución actualmente. 
+Mostrará una lista de todos los trabajos pendientes.
+
+El `primer` número que se muestra es el `número de trabajo`, 
+`seguido` de la `hora` en que el proceso se va a ejecutar,
+y el `nombre del usuario`.
+
+También se puede utilizar at -l.
+```sh
+> atq
+4 2010-04-20 11:00 educacionit
+```
+
+####  atrm
+
+El comando atrm se utiliza para `eliminar un trabajo` en particular.
+Por ejemplo, para eliminar el trabajo número 4,
+utilizamos el siguiente comando atrm.
+También se puede utilizar `atd -d 4`.
+
+```sh
+> atrm 4       #  atd -d 4
+```
+ 
+
+#### batch 
+
+ejecutará un trabajo solo cuando :
+el promedio de carga del sistema sea menor a 1,5.
+
+Al igual que el comando at, se puede ejecutar batch,
+ingresar los comandos y luego pulsar las teclas “ctrl d”.
+
+Por ejemplo, actualizar la base de datos de locate cuando
+la carga sea menor a 1.5:
+
+```sh
+> batch
+at> updatedb
+at> <EOT>
+job 11 at Wed Dec 1 22:25:00 2014
+```
+
+#### at.allow y at.deny
+
+En primer lugar, el sistema controla el archivo `at.allow`. 
+Si at.allow existe, solo los nombres de usuario especificados
+en el archivo `at.allow` están permitidos para el uso de trabajos.
+A continuación, (si at.allow no existe), se controla a `at.deny`. 
+
+Si at.deny existe, a los nombres de usuarios especificados en
+`at.deny` no se les permite utilizar el comando at.
+
+De manera predeterminada, la mayoría de los sistemas 
+utiliza `at.deny` para poner fin al uso de trabajos 
+a ciertos usuarios de sistema, como `www-data, nobody, backup`, etc.
+Archivos at.allow y at.deny
+Ejecutar un comando y luego salir de la SHELL.
+
+Podemos ejecutar un comando (o SHELL script)
+en el servidor remoto utilizando el comando at y salir de la SHELL.
+```sh
+> at -f myjob now + 1 min
+> exi`t
+```
+
+Myjob seguirá funcionando incluso después de salir fuera del servidor,
+de manera similar al comando nohup.
+
+Otros tipos adicionales de formatos de hora del comando at
+Puede utilizar cualquiera de los siguientes formatos 
+en orden de fecha y hora:
+
+```sh
+> at 10 am tomorrow
+> at 11:00 next month
+> at 22:00 today
+> at now + 1 week
+> at noon
+```
+
+###  CRON 
+
+#### /erc/Crontab
+
+Para poder utilizar este tipo de tareas programadas 
+primero debemos ver cómo es el` archivo de configuración`, 
+para así programar nuestras tareas.
+
+Las tareas las pueden programar los usuarios o tambiénel sistema.
+
+
+SHELL   Indica que `interprete` deberá ejecutar los comandos 
+PATH    Lista de Directorios de comandos a utilizar.
+MAILTO  el email al que llega las salidas de los comandos ejecutados.
+
+Estas variables no son estrictamente necesarias.
+
+Ejemplo
+
+Estas líneas muestran la distribución de la información 
+en el archivo de configuración del crontab del sistema.
+```sh
+> cat /etc/crontab
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=root
+# For details see man 4 crontabs
+# Ejemplo de definición:
+# .---------------- minuto (0 - 59)
+# | .------------- hora (0 - 23)
+# | | .----------- día del mes (1 - 31)
+# | | | .--------- mes (1 - 12) o en inglés  jan,feb,mar,apr ...
+# | | | | .------- día de la semana (0 - 6)   (Domingo=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# | | | | |  .---- usuario a ejecutar la tarea (el usuario solo se configura en este archivo)
+# * * * * * usuario comando_a_ejecutar
+ ```
+
+#### crontab
+
+permite  realizar ciertas `tareas de administración`,
+limitadas al usuario que las realice.
+
+Opciones:
+ -l  Lista las tareas programadas del usuario.
+ -e  Edita las tareas programadas.
+ -r  Borra las tareas programadas.
+
+crearemos un crontab para un usuario normal del sistema.
+
+**Atajos**
+
+En lugar de especificar los valores en los `cinco campos`,
+se puede especificar un “@” seguido de una `palabra clave` 
+midnight, daily, monthly, yearly, hourly.
+```sh
+    Clave    Equivalente
+    @yearly  0 0 1 1 *
+    @monthly 0 0 1 * *
+    @daily   0 0 * * *
+    @hourly  0 * * * *
+    @reboot  Arranca en el inicio.
+```
+**Ejemplos**
+
+● Ejecutar el script mantenimiento_anual.sh de manera anual :
+```sh
+ @yearly /home/educacionit/bin/mantenimiento_anual.sh
+```
+● Ejecutar comando borra_temporales.sh luego de reiniciar :
+
+```sh
+ @reboot borra_temporales.sh
+```
+
+● Listar las tareas programadas :
+```sh
+ crontab -l
+ 0 4 * * * /backup/backup.sh
+# ejecutará el script backup.sh todos los días a las 04:00.
+```
+
+● Ejecutar una tarea cada 5 horas :
+El segundo campo que corresponde a la hora tiene / ,
+eso significa que lo hará cada 5 horas  (*/5).
+usando */2 sería cada 2 horas, */3 para 3 horas, etc.
+
+```sh
+ */5 * * * * /home/crond1/backup.sh
+```
+
+
+
+● Ejecutar una tarea cada 5 minutos : 
+El primer campo que corresponde a los minutos tiene /,
+eso significa que lo hará cada 5 minutos (*/5).
+usando */6 sería cada 6 minutos, */15 para 15 minutos, etc.
+
+```sh
+ 0 */5 * * * /home/crond1/backup.sh
+```
+
+
+● Ejecutar una tarea cada una hora de 9 a 18.
+Se ejecutará al minuto cero, de cada hora definida en el rango.
+
+● Ejecutar una tarea el día 1 del mes.
+
+● Ejecutar todos los viernes a la medianoche.
+
+se puede escribir el nombre del día en inglés.
+```sh
+0 9-18 * * * /home/crond1/backup.sh
+0 5 1 * *    /home/crond1/backupfull.sh
+0 0 * * 5    /home/crond1/backup.sh
+0 0 * * Fri  /home/crond1/backup.sh
+```
+podremos utilizar valores que corresponden a cada día.
+```sh
+0=Sun (También se puede utilizar el 7)
+1=Mon
+2=Tue
+3=Wed
+4=Thu
+5=Fri
+6=Sat
+```
+● Ejecutar una tarea cada 5 meses.
+No hay una forma de decir exactamente
+“cada 5 meses”; para lograr eso debemos
+especificar en qué meses queremos correr la
+tarea donde, por ejemplo, el quinto mes sea
+mayo (May) y el décimo mes Octubre (Oct),
+separados por coma.
+También puedes escribir los meses en inglés.
+
+● El siguiente ejemplo ejecutará la tarea dos
+veces al año una el primero de Mayo (May) a
+la medianoche, y otra, el primero de Octubre
+(Oct) a la medianoche.
+También se puede escribir los meses en
+inglés.
+
+No confundir 5, 10 (ejecutará en Mayo y Octubre) con 5-10
+(ejecutará desde Mayo hasta Octubre).
+```sh
+0 0 * 5,10 * /home/crond1/backup.sh
+0 0 1 5,10 * /home/crond1/backup.sh
+0 0 1 May,Oct * /home/crond1/backup.sh
+0 0 * may,oct * /home/crond1/backup.sh
+```
+
+Ejemplos
+
+● Ejecutar una misma tarea dos veces al día.
+El siguiente script realiza un backup incremental dos veces al día, todos los días.
+Se ejecutará un SHELL script de backup incremental (incrementa-backup)
+a las 11 y a las 16, todos los días.
+La separación con la coma en el campo específico 
+significa que debe ser ejecutado en la hora correspondiente.
+
+● Ejecutar una tarea diariamente.
+El siguiente ejemplo chequea el estado de la
+base de datos todos los días de semana
+(excluyendo los Sábados y Domingo) durante
+la franja horaria 9 a 18.
+
+00 11,16 * * * /home/crond1/bin/incremental-backup
+0 09-18 * * 1-5 /home/ramesh/bin/check-db-status
+
+Los crontabs de los usuarios se encuentran en el directorio /var/spool/cron/
+o /var/spool/cron/crontabs/ según la distribución. 
+Dentro de este directorio aparecerá un archivo con el nombre del usuario,
+dentro tendrá las tareas programadas.
+
+● Editar las tareas programadas del usuario crond1.
+● Listar las tareas programadas del usuario crond1.
+● Borrar las tareas programadas del usuario crond1.
+```sh
+# Administración de tareas programadas
+> ls-l /var/spool/cron
+-rw------- 1 crond1 root 523 dic 18 02:38 crond1
+> crontab -u crond1 -e
+> crontab -u crond1 -l
+> crontab -u crond1 -r
+```
+
+Crontab del sistema
+
+El archivo de cron de sistema es `/etc/crontab`.
+Si ponemos tareas en dicho archivo serán ejecutadas igualmente, 
+aunque no es recomendable. 
+Este crontab se deja para que lo maneje la distribución y sus programas. 
+Es igual que el crontab de root, salvo que en este podemos especificar 
+con qué usuario se ejecuta cada cosa, 
+y cron hará una suplantación previa a la ejecución.
+[...]
+
+Archivos de configuración
+Los archivos de configuración del crontab se encuentran en /etc/cron. 
+También tenemos un /etc/crond.deny para denegar 
+o un /etc/cron.allow para permitir el uso de cron.
+
+```sh
+# ls -ld /etc/cron.*
+drwxr-xr-x. 2 root root 4096 dic 18 04:24 /etc/cron.d
+drwxr-xr-x. 2 root root 4096 feb 8   2011 /etc/cron.daily
+ -rw-r--r-- 1 root root 0    jun 29 09:55 /etc/cron.deny
+drwxr-xr-x. 2 root root 4096 feb 8   2011 /etc/cron.hourly
+drwxr-xr-x. 2 root root 4096 feb 8   2011 /etc/cron.monthly
+drwxr-xr-x. 2 root root 4096 feb 8   2011 /etc/cron.weekly
+```
+
+Directorios predefinidos: hourly, daily, weekly y monthly
+
+Los sistemas UNIX modernos vienen con directorios predefinidos
+para que cron lea y ejecute lo que hay dentro 
+en los intervalos que su nombre indica:
+
+Dichos directorios se suelen utilizar para enlazar scripts 
+que deben ser llamados en el intervalo correspondiente al directorio, sin argumentos.
+
+Por ejemplo
+Si creamos un script de bash y lo guardamos en /root/bin, 
+le damos permisos de ejecución, y lo enlazamos en /etc/cron.hourly
+y cron lo ejecutará cada hora:
+```sh
+# chmod +x /root/bin/miScript.sh
+# ln -s /root/bin/miScript.sh /etc/cron.hourly/
+/etc/cron.daily
+/etc/cron.hourly
+/etc/cron.weekly
+/etc/cron.monthly
+```
+
+Algunos archivos importantes que deniegan el
+acceso a crontab son /etc/cron.deny,
+/etc/cron.allow; con estos dos archivos,
+dependiendo cuál utilicemos, le permitirán a los
+usuarios poder usar crontab, o, sino, especificar
+quiénes no van a poder utilizarlo.
+Es más útil definir quién lo puede utilizar, así
+acotamos el margen de error.
+/cron…
+ 
+
+● Verificar el estado del servicio cron.
+```sh
+#Servicio Crontab
+> service crond status
+Redirecting to /bin/systemctl status crond.service
+crond.service - Command Scheduler
+ Loaded: loaded (/lib/systemd/system/crond.service)
+ Active: active (running) since Sun, 18 Dec 2011
+04:31:23 -0300; 5s ago
+ Main PID: 17885 (crond)
+ CGroup: name=systemd:/system/crond.service
+ └ 17885 /usr/sbin/crond -n
+ ```
+
+● Reiniciar el servicio de cron.
+(No es necesario reiniciar al agregar una tarea).
+```sh
+> service crond restart
+```
+Restarting periodic command scheduler: cron [ ok ]
+Starting periodic command scheduler: cron. [ ok ] 
+
+
+### gestor contraseñas + MFA
+
+sojo bitguard  keypass 
+vulnerados : lastpass passvolt ?
+
+combiene que el gestor de contraseñas y el MFA esten separados
+
+YubiKey  : usb-paswords ( Hardware Authentication key )
+          U2F : Universal Second Factor = FIDO2 Protocol    
+          https://fidoalliance.org/fido2/
+          https://www.microsoft.com/en-us/security/business/security-101/what-is-fido2
+
+los caracteres iniciales del valor del campo de contraseña en /etc/shadow 
+identifican el algoritmo de cifrado:
+●  $1$  es resumen de mensaje 5 (MD5)        INSEGURO !
+●  $2a$ es pes perglobo
+●  $5$  es un algoritmo hash seguro de 256 bits (SHA-256)
+●  $6$  es un algoritmo hash seguro de 512 bits (SHA-512)
+●  Sy$(o $7$) es sicrypt
+●  ninguno de los anteriores significa DES
+
+### ForkBomb y ulimit
+
+Fork bomb es un programa que crea inumerables instancias de si misma
+esto agota los recursos del sistema y cuelga el servidor
+para protejerlo debemos limitar el uso maximo 
+
+
+
+Preventing fork bomb on Linux: 
+
+https://www.cyberciti.biz/faq/understanding-bash-fork-bomb/
+
+Understanding `:(){ :|:& };:` fork() bomb code
+WARNING! These examples may crash your computer if executed.
+
+The `:()  ` Defined the function called :
+This function accepts no arguments
+The syntax for bash function is as follows:
+```c
+foo(){
+ arg1=$1
+ arg2=$2
+ echo 'Bar..'
+ #do_something on $arg argument
+}
+```
+fork() bomb is defined as follows:
+```sh
+:(){
+ :|:&
+};:
+```
+`:|: ` Next it will call itself using programming 
+     technique called recursion and pipes 
+     the output to another call of the function ‘:’
+     The worst part is function get called two times to bomb your system.
+
+`&   ` Puts the function call in the background 
+     so child cannot die at all and start eating system resources.
+
+`;  `  Terminate the function definition.
+
+`:  `  Call (run) the function aka set the fork() bomb.
+
+
+
+Please note that ulimit is a shell builtin. 
+You can verify this using the `type command` or command command as follows:
+```sh
+type -a ulimit
+ulimit is a shell builtin
+```
+https://linuxcommand.org/lc3_man_pages/typeh.html
+
+To find out the current maximum processes you can run on Linux:
+```sh
+# view number of process limit
+ulimit -u  
+# view all limitations
+ulimit -a
+```
+https://www.ss64.com/bash/ulimit.html
+
+ ulimit --help
+
+Syntax      ulimit [-HS] -a
+            ulimit [-HS] [-bcdefiklmnpqrstuvxPRT] [limit]
+Key
+   -S   Set a soft limit for the given resource.
+   -H   Set a hard limit for the given resource.
+
+   -a   All current limits are reported.
+   -b   The maximum `socket buffer` size.
+   -c   The maximum size of core files created. 
+   -d   The maximum size of a process’s data segment.
+   -e   The maximum scheduling priority ("nice") 
+   -f   The maximum size of files created by the shell(default option).
+   -i   The maximum number of pending signals.
+   -k   The maximum number of `kqueues` that may be allocated.
+   -l   The maximum size that can be `locked into memory`. 
+   -m   The maximum `resident memory` set size. 
+   -n   The maximum number of open file descriptors. 
+   -p   The pipe buffer size.
+   -P   The maximum number of `pseudoterminals`.
+   -q   The maximum number of bytes in POSIX message queues.
+   -r   The maximum real-time scheduling priority.
+   -R   The maximum time a real-time process can run before blocking, in microseconds.
+   -s   The maximum `stack size`. 
+   -t   The maximum amount of `cpu time` in seconds.
+   -T   The maximum number of threads.
+   -u   The maximum number of `processes` available to a single user.
+
+ulimit configures the  /etc/security/limits.conf file
+
+https://www.seguinet.es/limitando-el-uso-de-recursos-con-ulimit/
+https://linuxhint.com/disk_quota_ubuntu/
+
+```sh 
+cat /etc/security/limits.conf 
+# /etc/security/limits.conf
+#
+#Each line describes a limit for a user in the form:
+#
+#<domain>        <type>  <item>  <value>
+#
+#Where:
+#<domain> can be:
+#        - a user name
+#        - a group name, with @group syntax
+#        - the wildcard *, for default entry
+#        - the wildcard %, can be also used with %group syntax,
+#                 for maxlogin limit
+#        - NOTE: group and wildcard limits are not applied to root.
+#          To apply a limit to the root user, <domain> must be
+#          the literal username root.
+#
+#<type> can have the two values:
+#        - "soft" for enforcing the soft limits
+#        - "hard" for enforcing hard limits
+#
+#<item> can be one of the following:
+#        - core - limits the core file size (KB)
+#        - data - max data size (KB)
+#        - fsize - maximum filesize (KB)
+#        - memlock - max locked-in-memory address space (KB)
+#        - nofile - max number of open file descriptors
+#        - rss - max resident set size (KB)
+#        - stack - max stack size (KB)
+#        - cpu - max CPU time (MIN)
+#        - nproc - max number of processes
+#        - as - address space limit (KB)
+#        - maxlogins - max number of logins for this user
+#        - maxsyslogins - max number of logins on the system
+#        - priority - the priority to run user process with
+#        - locks - max number of file locks the user can hold
+#        - sigpending - max number of pending signals
+#        - msgqueue - max memory used by POSIX message queues (bytes)
+#        - nice - max nice priority allowed to raise to values: [-20, 19]
+#        - rtprio - max realtime priority
+#        - chroot - change root to directory (Debian-specific)
+#
+#<domain>      <type>  <item>         <value>
+#
+
+#*               soft    core            0
+#root            hard    core            100000
+#*               hard    rss             10000
+#@student        hard    nproc           20
+#@faculty        soft    nproc           20
+#@faculty        hard    nproc           50
+#ftp             hard    nproc           0
+#ftp             -       chroot          /ftp
+#@student        -       maxlogins       4
+
+# End of file
+
+```
+### Matar procesos
+```sh
+> type yes
+yes is /usr/bin/yes
+```
+
+```sh
+>man yes
+NAME       yes - output a string repeatedly until killed
+SYNOPSIS   yes [STRING]...
+```
+
+```sh
+> yes you
+you
+you .....
+
+> ps -aux |grep you
+ariel       2549  0.0  0.2 392548 40872 ?        Sl   11:05   0:00 /usr/lib/x86_64-linux-gnu/xfce4/panel/wrapper-2.0 /usr/lib/x86_64-linux-gnu/xfce4/panel/plugins/libxfce4powermanager.so 11 14680082 power-manager-plugin Power Manager Plugin Display the battery levels of your devices and control the brightness of your display
+ariel      80394 52.6  0.0  10904  1056 pts/0    R+   15:51   0:16 yes you
+ariel      80595  0.0  0.0  11748  2432 pts/2    S+   15:52   0:00 grep --color=auto you
+
+> kill -9  80394
+ errno 137 : SIGKILL   
+
+# Conociendo el nombre se puede evaluar el PID dentro del comando kill
+> kill -9 $(ps -aux |grep -e'\<yes you\>' | awk 'NR==1 { print $2; }')
 
 ```
 
 
 
+### Compilar aplicaciones
+
+**Introducción**
+
+La manera común de instalar programas en
+Linux es mediante paquetes ya compilados por
+la distribución. En casos excepcionales puede ser
+necesario compilar, algunas razones son:
+```
+● El paquete no está en los repositorios de la distribución.
+
+● El paquete está en los repositorios de la distribución
+ pero está muy desactualizado.
+
+● Queremos compilarlo quitando y/o agregando funcionalidades.
+Los desarrolladores adoptan distintas maneras y software 
+para permitir que sus programas sean instalados, 
+algunos de ellos son:
+
+    ● Archivo Makefile.
+    ● Autotools.
+    ● CMake.
+```
+
+En general, los paquetes con código fuente vienen como archivos tarball
+(extensiones .tar.gz, .tar.bz2, .tar.xz) o sencillamente como zip.
+
+La mayoría de estos paquetes se bajan desde sitios como 
+GitHub, GitLab, o del propio proyecto.
+
+Es costumbre que este tipo de paquetes 
+incluyan archivos llamados  `INSTALL` y `README`. Estos
+muy importantes ya que contienen información sumamente útil 
+
+● los pasos a seguir para compilar 
+● los requisitos previos para llevar a cabo dicha acción.
+
+Este proceso consta de los siguientes pasos:
+Compilar programas empaquetados con `Autotools`
+
+Ejecución de make install
+Ejecución del comando make
+Ejecución de script configure
+Extracción del paquete
+
+#### Autools
+
+Descarga del paquete
+```sh
+> curl -O https://dev.yorhel.nl/download/ncdu-1.14.2.tar.gz
+% Total % Received % Xferd Average Speed Time Time Time Current
+Dload Upload Total Spent Left Speed
+100 141k 100 141k 0 0 67272 0 0:00:02 0:00:02 --:--:-- 67272
+```
+
+Descompresión y extracción del paquete
+```sh
+# tar xvzf ncdu-1.14.2.tar.gz
+ncdu-1.14.2/
+ncdu-1.14.2/install-sh
+ncdu-1.14.2/Makefile.am
+ncdu-1.14.2/deps/
+ncdu-1.14.2/deps/khashl.h
+ncdu-1.14.2/deps/yopt.h
+ncdu-1.14.2/aclocal.m4
+#  (... salida cortada...)  ################################
+```
+
+El paquete podría estar comprimido con bzip2,
+gzip, o xz como se ve en el curso de Introducción
+a Linux, de manera que hay que usar el
+modificador para el comando tar que
+corresponda. Si está comprimido con zip se
+puede usar el comando unzip para Linux.
+```sh
+# Entrar en el directorio de las fuentes
+ cd ncdu-1.14.2
+```
+#### Generación del archivo Makefile
+
+En este paso se ejecuta el script configure que viene con
+el paquete este se encargará de verificar que está todo lo
+necesario para poder compilar e instalar el paquete,
+además va a generar un archivo llamado Makefile el cual
+tendrá una serie de recetas para el compilador:
+```sh
+> ./configure
+./configure
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
+checking for gawk... gawk
+checking whether make sets $(MAKE)... yes
+checking whether make supports nested variables... yes
+checking for gcc... gcc …
+checking whether the C compiler works... yes
+#  (... salida omitida ...)  
+configure: Using /bin/sh as the default shell if $SHELL is not set
+checking that generated files are newer than configure... done
+configure: creating ./config.status
+config.status: creating Makefile
+config.status: creating config.h
+config.status: executing depfiles commands
+```
+Este paso es crucial, si termina con error
+significa que no podrá compilarse el paquete.
+Las distribuciones suelen tener en sus repositorios 
+compiladores y otras herramientas para desarrollo.
+
+Por ejemplo :
+
+● En CentOS hay un grupo de paquetes que puede
+instalarse llamado “Developement Tools”.
+
+● En Debian hay un metapaquete con el nombre
+“build-essential”.
+
+Supongamos el siguiente escenario: 
+```sh
+checking for unistd.h… yes
+checking limits.h usability… yes
+checking limits.h presence… yes
+checking for limits.h… yes
+checking sys/time.h usability… yes
+checking for unistd.h… (cached) yes
+checking fnmatch.h usability… yes
+checking fnmatch.h presence… yes
+checking for fnmatch.h… yes
+checking ncurses.h usability… NO    # NO
+checking ncurses.h presence…  NO    # NO
+checking for ncurses.h…       NO    # NO
+configure: error: required header file not found
+```
+Vemos que el proceso terminó con error, en
+particular para los encabezados de la librería
+ncurses, por lo tanto en CentOS debería hacerse
+lo siguiente:
+
+Y luego se deberá ejecutar nuevamente el script
+configure hasta que no haya más errores.
+
+En las distribuciones relacionadas con Red Hat 
+los paquetes de desarrollo terminan con “-devel”,
+mientras que en las distribuciones basadas en Debian 
+finalizan con “-dev”.
+
+El script configure depende totalmente en la
+manera en que el desarrollador armó el paquete
+para compilar, pero en general posee una ayuda:
+Por ejemplo, la opción --prefix define el
+directorio de instalación del paquete, en este
+caso se puede instalar como usuario común en
+algún directorio dentro de su $HOME.
+```sh
+ yum install ncurses-devel
+ ./configure --prefix
+```
+El paso siguiente es efectivamente compilar:
 
 
+#### Make
+
+```sh
+> make
+make all-am
+make[1]: Entering directory '/root/ncdu-1.14.2'
+depbase=`echo src/browser.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I. -I./deps -g -O2 -MT src/browser.o   -MD -MP -MF $depbase.Tpo -c -o src/browser.osrc/browser.c &&\
+mv -f $depbase.Tpo $depbase.Podepbase=`echo src/delete.o  | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I. -I./deps -g -O2 -MT src/delete.o     -MD -MP -MF $depbase.Tpo -c -o src/delete.osrc/delete.c &&\
+mv -f $depbase.Tpo $depbase.Podepbase=`echo src/dirlist.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I. -I./deps -g -O2 -MT src/dirlist.o    -MD -MP -MF $depbase.Tpo -c -o src/dirlist.osrc/dirlist.c &&\
+mv -f $depbase.Tpo $depbase.Podepbase=`echo src/dir_common.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\ …
+gcc -DHAVE_CONFIG_H -I. -I./deps -g -O2 -MT src/dir_common.o -MD -MP -MF $depbase.Tpo -c -osrc/dir_common.o src/dir_common.c &&\
+mv -f $depbase.Tpo $depbase.Podepbase=`echo src/dir_export.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I. -I./deps -g -O2 -MT src/dir_export.o -MD -MP -MF $depbase.Tpo -c -osrc/dir_export.o src/dir_export.c &&\
+mv -f $depbase.Tpo $depbase.Podepbase=`echo src/dir_import.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I. -I./deps -g -O2 -MT src/dir_import.o -MD -MP -MF $depbase.Tpo -c -osrc/dir_import.o src/dir_import.c &&\
+mv -f $depbase.Tpo $depbase.Podepbase=`echo src/dir_mem.o  | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I. -I./deps -g -O2 -MT src/dir_mem.o    -MD -MP -MF $depbase.Tpo -c -o src/dir_mem.osrc/dir_mem.c &&\
+mv -f $depbase.Tpo $depbase.Podepbase=`echo src/dir_scan.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I. -I./deps -g -O2 -MT src/dir_scan.o   -MD -MP -MF $depbase.Tpo -c -osrc/dir_scan.o src/dir_scan.c &&\
+mv -f $depbase.Tpo $depbase.Podepbase=`echo src/exclude.o  | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I. -I./deps -g -O2 -MT src/exclude.o    -MD -MP -MF $depbase.Tpo -c -o src/exclude.o src/exclude.c &&\
+mv -f $depbase.Tpo $depbase.Podepbase=`echo src/help.o  | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I. -I./deps -g -O2 -MT src/help.o       -MD -MP -MF $depbase.Tpo -c -o src/help.osrc/help.c &&\
+mv -f $depbase.Tpo $depbase.Podepbase=`echo src/shell.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I. -I./deps -g -O2 -MT src/shell.o      -MD -MP -MF $depbase.Tpo -c -o src/shell.osrc/shell.c &&\
+mv -f $depbase.Tpo $depbase.Podepbase=`echo src/quit.o  | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I. -I./deps -g -O2 -MT src/quit.o       -MD -MP -MF $depbase.Tpo -c -o src/quit.osrc/quit.c &&\
+mv -f $depbase.Tpo $depbase.Podepbase=`echo src/main.o  | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+```
+Y el último paso es instalar…
+
+```sh
+> make install
+make[1]: Entering directory '/root/ncdu-1.14.2'
+/usr/bin/mkdir -p '/usr/local/bin'
+/usr/bin/install -c ncdu '/usr/local/bin'
+/usr/bin/mkdir -p '/usr/local/share/man/man1'
+/usr/bin/install -c -m 644 ncdu.1 '/usr/local/share/man/man1'
+make[1]: Leaving directory '/root/ncdu-1.14.2'
+```
+
+Si quisiéramos desinstalar se debería ejecutar:
+```sh
+> make uninstall
+( cd '/usr/local/bin' && rm -f ncdu )
+( cd '/usr/local/share/man/man1' && rm -f ncdu.1 )
+```
+`CMake` se usa mucho con los lenguajes C y C++, 
+y se usa en proyectos de software libre (`Ninja`),
+software privativo (`Visual Studio`) y mixto (`Xcode`).
+
+Hay algunos paquetes que usan un tipo de
+controlador de compilación distinto como cmake.
+En este caso el tipo de compilación es un poco distinto.
+
+#### Compilar usando CMake
+
+En general, se prefiere no compilar sobre el
+propio directorio de las fuentes sino en un
+directorio aparte.
+Luego, creamos los archivos necesarios para
+poder compilar
+Notar como apuntamos al directorio de las fuentes. 
+La opción `-DCMAKE_BUILD_TYPE=release` 
+en este caso puntual es para indicarle el tipo de compilación.
+```sh
+> mkdir build && cd build
+> cmake -DCMAKE_BUILD_TYPE=release 
+```
+
+Si se presenta un error como vemos a continuación:
+-- Looking for GnuTLS
+-- Could NOT find GnuTLS (missing: GNUTLS_LIBRARY GNUTLS_INCLUDE_DIR)
+CMake Error at CMakeLists.txt:127 (message):
+ Cannot find GnuTLS. Use -DENABLE_SYNC=OFF to build Taskwarrior without
+ sync support. See INSTALL for more information.
+ 
+
+Eso indica que un archivo necesario para
+compilar con todas las funcionalidades está ausente. 
+En Debian 10, lo solucionaremos así :
+
+```sh
+> apt -y install libgnutls28-dev   # instalo  libgnutls28
+> cmake --build                  # ejecuto la herramienta de compilación
+> make install                   # instalo el paquete compilado
+gcc -DHAVE_CONFIG_H -I. -I./deps -g -O2 -MT src/main.o -MD -MP -MF $depbase.Tpo -c -o src/main.osrc/main.c &&\
+mv -f $depbase.Tpo $depbase.Podepbase=`echo src/path.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I. -I./deps -g -O2 -MT src/path.o -MD -MP -MF $depbase.Tpo -c -o src/path.osrc/path.c &&\
+mv -f $depbase.Tpo $depbase.Podepbase=`echo src/util.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+gcc -DHAVE_CONFIG_H -I. -I./deps -g -O2 -MT src/util.o -MD -MP -MF $depbase.Tpo -c -o src/util.osrc/util.c &&\
+mv -f $depbase.Tpo $depbase.Po
+gcc -g -O2 -o ncdu src/browser.o src/delete.o src/dirlist.o src/dir_common.o src/dir_export.o
+src/dir_import.o src/dir_mem.o src/dir_scan.o src/exclude.o src/help.o src/shell.o src/quit.o src/main.o src/path.o src/util.o -lncursesw -ltinfo
+make[1]: Leaving directory '/root/ncdu-1.14.2'
+```
+
+### Compilación del Kernel 
+
+El kernel Linux es **monolítico**
+
+Un núcleo monolítico es un tipo de núcleo o kernel 
+de un sistema operativo. 
+
+Como ejemplos de sistemas operativos de núcleo monolítico
+están `UNIX, Linux, Solaris, DOS, AIX y FreeBSD`.
+
+Estos sistemas tienen un núcleo grande y complejo, 
+que engloba todos los servicios del sistema. 
+
+Está programado de forma `no modulmar`,
+y tiene un rendimiento mayor que un micronúcleo.
+
+Sin embargo, cualquier cambio a realizar en
+cualquier servicio requiere la recopilación del núcleo 
+y el reinicio del sistema para aplicar los nuevos cambios.
+
+Hay diversas ramificaciones de este diseño, 
+que se han ido amoldando a nuevas necesidades.
+
+el sistema de módulos ejecutables `en tiempo de ejecución`, 
+que le brinda al modelo de núcleo monolítico 
+algunas de las ventajas de un micronúcleo. 
+
+Dichos módulos pueden ser compilados, modificados, 
+cargados y descargados en tiempo de ejecución, 
+de manera similar a los servicios de un micronúcleo, 
+pero con la diferencia de que se ejecutan 
+en el espacio de memoria del núcleo mismo (anillo 0). 
+
+De esta forma, un bloqueo del módulo, 
+es probable que bloquee todo el núcleo. 
+Además, el módulo pasa a formar un todo con el núcleo,
+usando la API del mismo, 
+y no se emplea un sistema de mensajes como en los micronúcleos.
+
+Este es el esquema usado por, entre otros, Linux,
+FreeBSD y varios derivados de UNIX.
+Cabe resaltar que el paso constante de mensajes 
+entre los servicios del micronúcleo,
+es en parte responsable del pobre rendimiento de los micronúcleos.
+
+un sistema operativo con núcleo monolítico concentra 
+todas las funcionalidades posibles :
+` ( planificación, sistema de archivos, redes, `
+`   controladores de dispositivos, gestión de memoria, etc)`
+dentro deun gran programa. 
+
+El mismo puede tener un tamaño considerable, 
+y deberá ser recopilado por completo al añadir una nueva funcionalidad.
+
+Todos los componentes funcionales del núcleo tienen acceso 
+a todas sus estructuras de datos internas y a sus rutinas. 
+
+Un error en una rutina puede propagarse a todo el núcleo.
+La alternativa es tener una estructura de micronúcleo,
+donde las partes funcionales están divididas en unidades 
+separadas con mecanismos de comunicación estrictos entre ellos.
+
+**Diagrama del núcleo**
+
+Arquitectura de Linux
+
+Actualmente Linux es un núcleo monolítico
+híbrido. Los controladores de dispositivos y las
+extensiones del núcleo normalmente se ejecutan
+en un espacio privilegiado conocido como anillo 0
+con acceso irrestricto al hardware, aunque
+algunos se ejecutan en espacio de usuario.
+A diferencia de los núcleos monolíticos
+tradicionales, los controladores de dispositivos y
+las extensiones al núcleo se pueden cargar y
+descargar fácilmente como módulos, mientras el
+sistema continúa funcionando sin interrupciones.
+Además, los controladores pueden ser
+prevolcados (detenidos momentáneamente por
+actividades más importantes) bajo ciertas
+condiciones.
+Esta habilidad fue agregada para gestionar
+correctamente interrupciones de hardware, y
+para mejorar el soporte de multiprocesamiento
+simétrico.
+El hecho de que Linux no fuera desarrollado
+siguiendo el diseño de un micronúcleo (diseño
+que, en aquella época, era considerado el más
+apropiado para un núcleo por muchos teóricos
+informáticos) fue asunto de una famosa y
+acalorada discusión entre Linus Torvalds y
+Andrew S. Tanenbaum.
+
+Categorías del kernel
+Prepatch o RC Tiene nuevas funcionalidades aún no probadas.
+Mainline Posee nuevas funcionalidades.
+Stable Tiene correcciones de errores provenientes de Mainline.
+Longterm Corrección de errores para las ramas más viejas.
+Distribution Cualquier versión que viene empaquetada en una distribución de Linux y
+no ha sido compilada “a mano” a partir del código fuente de kernel.org.
+
+Instalar paquetes necesarios para compilar Compilando el kernel
+Compilar un kernel consume mucho tiempo y espacio disco 
+(al menos unos 16 GB)
+por otro lado en algunas distribuciones perdemos el soporte 
+al utilizar un kernel personalizado.
+Debian CentOS
+```sh
+apt install
+build-essentials
+yum group install
+“Development Tools”
+apt install ncurses-dev yum install
+binutils-devel
+ncurses-devel
+elfutils-libelf-devel
+hmaccalc
+```
+Salvo que tengamos una buena razón, 
+solo deberíamos bajar una versión ‘stable’ o ‘longterm’.
+Por ejemplo :
+```sh
+$ curl -O
+```
+Otra opción es instalar el paquete de fuentes del
+kernel de la distribución.
+Por ejemplo
+En Debian se pueden buscar con 
+```sh
+apt search ‘^linux-source’.
+```
+Extraer las fuentes del kernel
+Tradicionalmente se usaba el directorio /usr/src para
+poner las fuentes del kernel, en la actualidad eso no se
+recomienda y es preferible hacerlo como usuario distinto
+de root.
+
+```sh
+$ cd /home/sergio
+$ tar --auto-detect -xvf linux-5.4.71.tar.xz && cd linux-5.4.71
+```
+
+Luego podemos hacer un listado de los archivos y veremos
+un directorio llamado Documentation el cual contiene
+información muy importante de los distintos componentes
+del kernel.
+Por ejemplo
+El archivo `Documentation/process/changes.rst` tiene un listado
+de los requerimientos para instalar el kernel.
+
+```sh
+$ ls
+arch    certs           CREDITS     Documentation   fs          init 
+Kbuild  kernel          LICENSES    Makefile        net         samples 
+block   COPYING         crypto      drivers         include     Kconfig 
+lib     MAINTAINERS     mm          README          scripts     sound 
+ipc     security        xtools      virt            usr
+```
+
+Usar la configuración del kernel actual como plantilla
+Copiar la configuración del kernel actual:
+Actualizar la configuración para adaptarlo a la nueva
+versión del kernel y decirle que use los valores
+predeterminados para las opciones nuevas:
+Cuando se usa el archivo ‘config’ de la distribución puede
+ser necesario hacer lo siguiente:
+```sh
+$ cp /boot/config-$(uname -r) .config
+$ make localmodconfig
+sed -i -r 's#(CONFIG_SYSTEM_TRUSTED_KEYS=")(.*)(")#\1\3#g' .config
+```
+
+Configuramos el kernel
+Ahora vamos a personalizar nuestro kernel, para
+eso, deberíamos ejecutar el siguiente comando:
+Allí veremos una interfaz con menús, como la que
+se muestra en la siguiente pantalla.
+
+```sh
+  make menuconfig
+```
+
+Podemos navegar a través de esta interfaz con las flechas del teclado y
+con la tecla TAB. Podemos salir con Esc o elegir alguna de las opciones
+principales situadas debajo con la tecla Enter.
+
+La siguiente tabla muestra los tipos de
+funcionalidades que podemos encontrar:
+```c
+Precedidas por :          Tipo de funcionalidad :
+[ ]  Pueden estar dentro o fuera de la imagen del kernel
+< >  Pueden estar dentro de la imagen del kernel o como módulos.
+{ }  Se seleccionan por medio de otra funcionalidad 
+       pueden estar dentro de la imagen del kernel o como módulos
+--   Se seleccionan por medio de otra funcionalidad.
+```
+Se puede usar la barra de estado para habilitar o deshabilitar funciones.
+Si una funcionalidad está en blanco significa que 
+no se compilará de ninguna manera en el kernel,
+si tiene ‘M’ estará como módulo y si tiene ‘*’
+estará dentro del kernel.
+Una vez que terminamos nuestra configuración
+podemos guardarla, seleccionando <Save>.
+
+Se pueden usar interfaces alternativas de configuración
+cambiando el parámetro de make, como vemos en la
+siguiente tabla:
+Interfaces de configuración alternativas
+Comando Interfaz
+make Línea de comandos (Texto puro).
+make xconfig Gráfica, basada en librerías Qt.
+make gconfig Gráfica: basada en librerías GTK+.
+
+Compilar Instalar los módulos del kernel y el kernel
+El sistema se encargará de:
+● Generar las dependencias entre los módulos.
+● Copiar el kernel nuevo a la ubicación correcta.
+● Generar el archivo de initramfs (disco de
+memoria inicial).
+● Actualizar grub.
+```sh
+> make menuconfig $ su -c “make modules_install && make install” 
+```
+
+Disco de Memoria Inicial
+En versiones más viejas se puede usar el comando o bien
+mkinitramfs o dracut para generar el archivo initramfs:
+**Uso de update-initramfs**
+**Uso de mkinitramfs**
+(El último parámetro es la versión del kernel)
+
+**Uso de dracut**
+En distribuciones de la rama Red Hat se utiliza dracut:
+
+```sh
+ update-initramfs -u -v
+ mkinitramfs -k -o /boot/initrd.img-5.4.71 5.4.71
+ dracut -f /boot/initramfs-5.4.71.img 5.4.71
+```
+
+Aplicar un parche para actualizar el kernel
+Si se queremos revertir los cambios hacemos:
+Parches de actualización
+
+```sh
+> cd linux-5.4.71
+> curl -L -O
+https://cdn.kernel.org/pub/linux/kernel/v5.x/incr/patch-5.4.71-72.xz
+
+> xzcat patch-5.4.71-72.xz | patch -p1
+> xzcat patch-5.4.71-72.xz | patch -R -p1
+```
+
+Parches no diferenciales
+Si un parche no es diferencial primero hay que aplicar en
+forma reversa el parche, de esa manera el kernel queda
+como estaba en la rama mainline:
+Una vez allí podemos aplicar el parche para pasar a la
+siguiente versión stable:
+```sh
+> curl -L -O
+https://cdn.kernel.org/pub/linux/kernel/v5.x/patch-5.4.71.xz
+
+> xzcat patch-5.4.71.xz | patch -R -p1
+
+> curl -L -O
+https://cdn.kernel.org/pub/linux/kernel/v5.x/patch-5.4.72.xz
+
+> xzcat patch-5.4.72.xz | patch -p1
+```
+● [Núcleo (informática) - Wikipedia, laenciclopedia libre]
+● [Monolithic kernel - Wikipedia]
+● [Building a custom kernel - Fedora ProjectWiki]
+● [8.10. Compilación de un núcleo]
+● Capítulo 9. Trucos del sistema]
+● [HowTos/Custom_Kernel - CentOS Wiki]
+● [Applying Patches To The Linux Kernel 
+    —  TheLinux Kernel documentation]
+● [Building External Modules
+     — The Linux Kernel  documentation]
+
+
+## Clase 9
+
+
+### Certificacion LPI - Fase 1 - Módulo 5 
+
+#### 106.2: Escritorios gráficos 
+
+Peso: 1   ( importancia para examen LPI   del 1 al 6).
+
+
+Descripción:
+Los alumnos deberían tener un conocimiento conceptual de 
+los escritorios de Linux principales.
+Además, deberían tener un conocimiento conceptual de 
+los protocolos usados para acceder a las sesiones de escritorio remoto.
+Temas cubiertos de LPI en este módulo
+
+Áreas Claves de Conocimiento
+● Concepto de los `escritorios de Linux` principales.
+● Concepto de los protocolos de `sesiones de escritorio remoto`.
+
+Términos y herramientas
+● `KDE`
+● `Gnome`
+● `Xfce`
+● X11
+● XDMCP
+● VNC
+● Spice
+● RDP
+
+####  106.3: Accesibilidad
+
+Peso: 1  ( importancia para examen LPI   del 1 al 6).
+
+Descripción:
+
+Los alumnos deberían demostrar que conocen
+y están al tanto de las tecnologías de almacenamiento.
+
+Áreas Claves de Conocimiento
+● Conocimiento básico de `configuraciones y temas visuales`.
+● Conocimiento básico de `tecnología de asistencia`.
+
+Términos y herramientas
+
+● Alto contraste/Temas de escritorio con letra grande.
+● Lector de pantalla.
+● Pantalla Braille.
+● Lupa de pantalla.
+● Teclado en pantalla.
+● Teclas pegajosas/Teclas repetitivas.
+● Teclas lentas/Rechazo de teclas/Alternar teclas.
+● Teclas como mouse.
+● Gestos.
+● Reconocimiento de voz.
+
+####  204.3: Gestor de Volúmenes Lógicos
+
+Peso: 3   ( importancia para examen LPI   del 1 al 6).
+
+Descripción:
+Los candidatos deberían ser capaces de `crear y eliminar` 
+`volúmenes lógicos`, grupos de volúmenes, y `volúmenes físicos`. 
+Este objetivo incluye `instantáneas` y `redimensionar` volúmenes lógicos.
+
+Áreas Claves de Conocimiento
+● Herramientas en la suite LVM.
+● Redimensionar, renombrar y eliminar volúmenes lógicos, 
+   grupos de volúmenes, y volúmenes físicos.
+● Crear y mantener instantáneas.
+● Activar grupos de volúmenes.
+
+Términos y herramientas
+● /sbin/pv*
+● /sbin/lv*
+● /sbin/vg*
+● mount
+● /dev/mapper/
+● lvm.conf
+
+####  206.2 Operaciones de backup
+Peso: 3   ( importancia para examen LPI   del 1 al 6).
+
+Los candidatos deberían ser capaces de usar las técnicas 
+de `clave pública` para `asegurar los datos y las comunicaciones`.
+
+Descripción:
+Los candidatos deberían ser capaces de usar las
+herramientas para realizar copias de respaldo de
+los datos del sistema importantes.
+Este tópico pertenece al examen LPIC-2 201.
+
+Áreas Claves de Conocimiento
+● Saber que directorios tienen que ser incluidos 
+   en las copias de seguridad.
+● Estar al tanto de las soluciones de 
+   copias de respaldo tales como `Amanda, Bacula y BackupPC`.
+● Saber los beneficios y desventajas de 
+  las cintas, `CDR`, discos u otro medio de `copia de seguridad`.
+● Realizar copias de respaldo parciales y manuales.
+● Verificar la integridad de las copias de respaldo.
+● Restaurar parcial o totalmente copias de seguridad.
+
+Términos y herramientas
+
+● /bin/sh
+● dd
+● tar
+● /dev/st* y /dev/nst*
+● mt
+● rsync
+
+
+### Accesibilidad 
+
+
+Introducción a accesibilidad
+
+En este tópico vamos a explicar las diferentes
+herramientas que existen para personas con
+capacidades diferentes.
+
+
+Demostración y uso de programas de accesibilidad
+Para apoyar a una fuerza laboral diversa, es
+necesario estar familiarizado con la forma de
+configurar la accesibilidad en la configuración
+de sistemas Linux. El software de asistencia para
+los usuarios con capacidades diferentes se puede
+clasificar así:
+
+● Herramientas de teclado para las personas con dificultades para tipear.
+● Herramientas de mouse para las personas con dificultades para usar el mouse.
+● Los lectores de pantalla para las personas ciegas o con baja visión.
+● Lupas de pantalla para personas para visualizar bien la pantalla.
+● Los dispositivos Braille (dispositivos con caracteres braille) 
+para personas ciegas o con baja visión.
+● Temas de escritorio de alto contraste para personas con dificultades visuales.
+
+
+Todas estas herramientas y/o configuraciones 
+(a excepción de los dispositivos Braille que se trata de hardware) 
+están disponibles en los entornos de escritorios más usados 
+tales como GNOME y KDE Plasma.
+Es recomendable en estos casos usar una distribución actualizada 
+y orientada a usuarios finales y estaciones de trabajo.
+
+
+Vamos a empezar por mirar el uso de AccessX
+para proporcionar accesibilidad del teclado.
+La mayoría de distribuciones Linux incluyen una
+variedad de herramientas de accesibilidad para
+ayudar a los usuarios con impedimentos físicos
+que hace que sea difícil para ellos usar un mouse
+tradicional o el teclado. Una de las herramientas
+que puedes utilizar se llama AccessX: Es una
+aplicación incluida con la mayoría de entornos
+de escritorio Linux, que permite configurar una
+amplia variedad de palabras clave para el
+ajustes de parámetros de accesibilidad.
+
+Estos ajustes están diseñados para permitir a
+usuarios con alguna discapacidad física, utilizar
+un teclado tradicional. Se pueden configurar los
+ajustes que veremos en la próxima pantalla.
+
+#### Accesibilidad de teclado
+
+
+StickyKeys Permite bloquear las teclas modificadoras, 
+tales como CTRL y SHIFT. Esto les permite realizar
+
+tareas de teclado con un solo dedo que normalmente requieren dos o más dedos.
+
+MouseKeys Permite secuencias de teclas que se utilizan 
+para mover el cursor del ratón sobre la pantalla
+
+y enviar clics del ratón.
+
+**SlowKeys**
+
+Configura el teclado de manera que el usuario debe 
+presionar una tecla durante un período
+determinado de tiempo, antes de que la combinación de teclas sea enviada. 
+Esto ayuda al usuario a evitar el envío de pulsaciones accidentales.
+
+`ToggleKeys` Emite una alerta sonora si bien la tecla Bloq Mayús 
+o el núm de bloqueo está activada.
+
+`RepeatKeys` Configura el teclado para dar tiempo a los usuarios 
+de pulsar más de una vez, antes de enviarmúltiples secuencias de teclas.
+
+`BounceKeys `y Delay Keys Inserta un ligero retraso entre pulsaciones de teclas,
+para evitar que el teclado envíe pulsaciones de teclas involuntarias.
+
+
+Si bien los conceptos que podemos extraer de
+AccessX son muy útiles, el proyecto tiene unos
+cuantos años de inactividad.
+Para los usuarios con impedimentos físicos para
+utilizar un teclado tradicional, Linux ofrece la
+opción de utilizar un teclado en pantalla
+(GNOME viene con uno ya incorporado). Los
+teclados en pantalla permiten a los usuarios
+utilizar cualquier dispositivo señalador (como un
+ratón) para seleccionar las teclas de un teclado
+virtual. Comúnmente utilizados en aplicaciones
+de pantalla de teclado incluyen xkbd, kvbd, etc.
+
+Los entornos de escritorios principales tienen la
+manera de configurar opciones de Accesibilidad,
+por ejemplo en Plasma de KDE, podemos en
+Preferencias del Sistema. Allí encontraremos
+varias secciones:
+
+**Accesibilidad de mouse**
+
+Funcionalidad Ayuda a las personas que tienen
+ 
+dificultad para:  Timbre Oir.
+
+Teclas modificadoras: Teclas adhesivas  Presionar varias teclas almismo tiempo.
+
+Teclas modificadoras: Teclas de bloqueo Presionar una tecla una solavez.
+
+Filtros de teclado: Teclas lentas Evitar tipear accidentalmente una tecla.
+
+Filtros de teclado: Teclas de rechazo
+
+Evitar tipear accidentalmente múltiples teclas.
+
+Lector de pantalla Ver y/o leer.
+
+
+Una opción disponible para usuarios con
+discapacidad visual es un lector de pantalla.
+Los lectores de pantalla “leen” el texto que
+aparece en la pantalla de forma audible para
+el usuario. Algunos lectores de pantalla pueden
+utilizar su placa de sonido del ordenador,
+mientras que otros requieren hardware especial
+sintetizador de voz.
+
+La aplicación Orca es probablemente el lector
+de pantalla libre más utilizado. A diferencia de
+muchos otros lectores de pantalla, Orca puede
+leer el texto desde el escritorio de GNOME y
+también desde Plasma. Muchos otros lectores
+de pantalla, como Emacspeak, sólo trabajan con
+pantallas de terminales basadas en texto.
+Orca también incluye opciones de magnificación
+de pantalla.
+
+#### Lector de pantalla Orca
+
+Configuración General
+En la pestaña General se puede configurar:
+● Distribución de teclado: determinar si se
+usará un equipo de escritorio o una notebook.
+● `Ratón`: comportamiento cuando el movimiento
+del puntero activa consejos en pantalla o los
+objetos del bajo del mismo.
+● `Actualización de barras de progreso`:
+comportamiento del lector y de la pantalla
+braille cuando existan barras de progreso.
+
+● `Fecha y hora`: como se leerá la fecha y la hora.
+● Perfiles: mantener y usar varias configuraciones.
+● Hablar todo: habilita la lectura de pantalla
+desde la ubicación actual hasta el final.
+
+
+**Voz**
+● `Tipo de voz`: aplicar voces distintas de acuerdo al contexto.
+● Sistema de voz: el software que envía el texto al sintetizador.
+● Sintetizador de voz: el software que se encarga de hablar.
+● Idioma: el idioma de la voz.
+● Persona: elegir la voz del lector.
+● Estilo de capitalización: el estilo de capitalización que usará el sintetizador.
+
+● `Velocidad, tono, volumen`: más opciones de personalización de la voz.
+● Configuración global de la voz: el manejo de las pausas; 
+palabras con mayúsculas y minúsculas; y de los números.
+
+
+**Lee**
+● Activar Lee: para habilitar/deshabilitar el sintetizador de voz.
+● Cantidad de información: el nivel de detalle en la lectura.
+● Nivel de puntuación: con qué detalle se leerán los signos de puntuación.
+● Contexto hablado: información adicional sobre elemento seleccionado.
+
+Los usuarios de Linux con alguna discapacidad
+visual también pueden utilizar los dispositivos
+de Braille. Existen varios tipos de herramientas
+Braille. Para interactuar con este tipo de
+dispositivos, el sistema Linux debe estar
+ejecutando el demonio de brltty.
+La utilidad Orca que hemos estado trabajando
+se puede utilizar para trabajar con dispositivos
+Braille. Orca se puede activar/desactivar usando
+el atajo de teclado Alt + Tecla Window + s, o
+bien abrirlo desde consola con el comando orca.
+
+Podemos lanzar el siguiente comando para
+configurar Orca:
+
+````sh
+> orca --setup
+````
+
+⠛ ⠝ ⠕ ⠍
+
+#### Pantalla Braille
+
+● Activar Soporte Braille: configurar Orca para utilizar una pantalla Braille.
+● Configuración de Pantalla:
+aquí en Activar Braille contraído se puede usar una terminal Braille contraída.
+● Configuración de mensajes temporales: opciones para mensajes temporales.
+● Cantidad de información: configurar Orca para utilizar una pantalla Braille.
+
+● Indicador de selección: 
+cómo el texto seleccionado en la pantalla aparecerá subrayada
+en la línea Braille.
+● Indicador de hiperenlace: 
+cómo el hipertexto en la pantalla aparecerá subrayada en la línea Braille
+● Enable Braille Support: 
+configurar Orca para utilizar una pantalla Braille.
+Seleccione Aceptar para guardar los cambios 
+en la configuración de Orca Braille.
+
+
+Eco de teclas
+● Activar eco de teclas: qué teclas pulsadas se leerán.
+● Activar eco por carácter: si queremos que el
+lector mencione los caracteres tipeados como texto.
+● Activar eco por palabras: si queremos que
+el lector mencione las palabras tipeadas.
+● Activar eco por frases: si queremos que el
+lector mencione las oraciones tipeadas.
+
+Atajo de teclado
+● Teclas modificadoras del Lector de pantalla:
+Aquí se puede elegir la tecla que servirá para
+realizar atajos dentro de Orca. Además, hay
+una lista de combinaciones de teclas
+disponibles con una determinada acción vinculada.
+
+Pronunciación
+● Diccionario de pronunciación: Aquí podemos
+modificar el comportamiento del sintetizador.
+Por ejemplo: podríamos configurar para que
+cuando encuentre “FYI” en lugar de leerlo
+literalmente, diga “Para tu información”.
+
+
+Atributos de texto
+Aquí se puede definir de qué modo el lector
+(y eventualmente un dispositivo Braille) se
+comportará frente a ciertos atributos de texto.
+Por ejemplo: estilos de párrafos, subrayado,
+
+
+### Gestión de Volúmenes Lógicos
+
+Device Mapper
+En Linux el LVM se basa en un concepto
+denominado Device Mapper: es una rutina del
+kernel que permite mapear un dispositivo de
+bloques a otro, mediante la interfaz de
+aplicación ioctl.
+
+Consideremos el siguiente ejemplo del comando
+dmsetup: vemos que los volúmenes lógicos
+/dev/mapper/centos-swap y /dev/mapper/root
+tienen como target la partición /dev/sda2.
+Otro target es el dm-raid que sirve como puente
+de un Device Mapper a un RAID.
+
+```sh
+> dmsetup ls --tree
+    centos-swap (253:0)
+    └─ (8:2)
+    centos-root (253:1)
+    └─ (8:2)
+
+> ls -l /dev/ | tr -s " " | grep "8, 2"
+brw-rw---- 1 root disk 8, 2 ago 20 23:06 sda2
+
+> fdisk -luc | grep sda2
+/dev/sda2 1026048 16777215 7875584 8e Linux LVM
+```
+
+
+La organización de un LVM es como
+se muestra en el diagrama de la derecha:
+```sh
+/dev/sda1           PV 1
+/dev/sda2           PV 2
+/dev/sdb1           PV 3
+Volumen Lógico 1    /usr
+Volumen Lógico 2    /var    VG 1
+```
+
+#### Componentes de la anatomía de un LVM:
+
+● Volume Group    (VG)
+● Physical Volume (PV)
+● Logical Volume  (LV). 
+
+
+**Organización de un LVM**
+
+**Volume Group (VG)**
+Un VG o un Grupo de Volúmenes podemos
+pensarlo como una determinada cantidad
+discreta de espacio disponible para crear
+volúmenes lógicos (LVs).
+
+**Physical Volume (PV)**
+Un PV o un Volumen Físico, son las unidades
+físicas que constituyen un VG. Una partición
+puede ser convertida en PV. Cada PV tiene
+una Physical Extent (PE), podríamos hacer una
+analogía de una PE con bloque de un disco. El
+tamaño mínimo que puede tener un LV está
+dado por el PE.
+
+**Logical Volume (LV)**
+Un LV o Volumen Lógico es el equivalente a una
+partición común en los esquemas MBR o GPT.
+Cada LV tiene una Logical Extent (LE) que es
+igual al PE del PV.
+
+**Creación de PVs**
+Antes de poder crear un VG tenemos que crear
+uno o más PVs. Un PV se arma a partir de una
+partición. Es decir, tenemos que indicar que la
+partición es de tipo LVM. Entonces usaremos el
+fdisk para este caso. Crearemos dos PVs.
+Veamos el código de la próxima pantalla.
+
+#### Creación de un VG
+
+```sh
+> fdisk /dev/sdg
+Welcome to fdisk (util-linux 2.23.2).
+Changes will remain in memory only, until you decide to write them.
+Be careful before using the write command.
+Device does not contain a recognized partition table
+Building a new DOS disklabel with disk identifier `0x16d6d0f6`.
+Orden (m para obtener ayuda): n
+Partition type:
+p primary (0 primary, 0 extended, 4 free)
+e extended
+Select (default p): p
+Número de partición (1-4, default 1): 1
+Primer sector (2048-8388607, valor predeterminado 2048):
+Se está utilizando el valor predeterminado 2048
+Last sector, +sectors or +size{K,M,G} (2048-8388607, valor predeterminado 8388607):
+Se está utilizando el valor predeterminado 8388607
+Partition 1 of type Linux and of size 4 GiB is set
+Orden (m para obtener ayuda): t
+Selected partition 1
+Hex code (type L to list all codes): 8e
+Changed type of partition 'Linux' to 'Linux LVM'
+Orden (m para obtener ayuda): p
+Disk /dev/sdg: 4294 MB, 4294967296 bytes, 8388608 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk label type: dos
+Identificador del disco: `0x16d6d0f6`
+Disposit. Inicio Comienzo Fin Bloques Id Sistema
+/dev/sdg1 2048 8388607 4193280 8e Linux LVM
+Orden (m para obtener ayuda): w
+¡Se ha modificado la tabla de particiones!
+Llamando a ioctl() para volver a leer la tabla de particiones.
+Se están sincronizando los discos.
+```
+
+Con el disco /dev/sdh hacemos el mismo procedimiento.
+Se puede crear una partición de tipo LVM que ocupe todo
+el disco de manera interactiva del siguiente modo:
+
+Aquí creamos una partición que ocupa todo el disco, pero
+podríamos haber creado más de una partición de tipo LVM.
+```sh
+> fdisk /dev/sdh < <(echo -e 'd\nn\np\n1\n\n\nt\n8e\nw')
+```
+
+
+Entonces nos quedan dos particiones, `/dev/sdg1` y `/dev/sdh1` 
+que usaremos como PVs de la siguiente manera:
+
+Ahora sí, con los PVs podemos armar nuestro VG:
+```sh
+> pvcreate /dev/sd[gh]1
+Physical volume "/dev/sdg1" successfully created
+Physical volume "/dev/sdh1" successfully created
+
+> vgcreate sergio /dev/sd[gh]1
+Volume group "sergio" successfully created
+```
+
+
+
+Recién cuando se ha creado un VG podemos
+crear volúmenes lógicos que serían como las
+particiones en un disco tradicional.
+
+Crearemos un LV más de 5G:
+```sh
+> lvcreate --size 4G --name lv1 sergio
+Logical volume "lv1" created
+Creación de volúmenes lógicos
+
+> lvcreate --size 4G --name lv2 sergio
+Logical volume "lv2" created
+```
+
+
+
+Vemos el resultado de los últimos comandos:
+
+Mappeo de sergio-lv1 :
+
+```sh
+> mkfs.xfs /dev/mapper/sergio-lv1
+meta-data=/dev/mapper/sergio-lv1    isize=256   agcount=4, agsize=262144 blks=                               sectsz=512  attr=2, projid32bit=1 
+                                    crc=0
+data    =                           bsize=4096  blocks=1048576, imaxpct=25
+        =                           sunit=0     swidth=0 blks
+naming  =version 2                  bsize=4096 ascii-ci=0 ftype=0
+log     =internal                   log bsize=4096 blocks=2560, version=2
+        =                           sectsz=512 sunit=0 blks, lazy-count=1
+realtime =none                      extsz=4096 blocks=0, rtextents=0
+```
+
+Mappeo de sergio-lv2:
+
+```sh
+> mkfs.ext4 /dev/mapper/sergio-lv2
+mke2fs 1.42.9 (28-Dec-2013)
+Etiqueta del sistema de ficheros=
+OS type : Linux
+Tamaño del bloque   =4096 (bitácora=2)
+Tamaño del fragmento=4096 (bitácora=2)
+Stride=0 blocks, Stripe width=0 blocks
+327680 inodes, 1310720 blocks
+65536 blocks (5.00%) reserved for the super user
+Primer bloque de datos=0
+Número máximo de bloques del sistema de ficheros=1342177280
+40 bloque de grupos
+32768 bloques por grupo, 32768 fragmentos por grupo
+8192 nodos-i por grupo
+Respaldo del superbloque guardado en los bloques:
+32768, 98304, 163840, 229376, 294912, 819200, 884736
+Allocating group tables: hecho
+Escribiendo las tablas de nodos-i: hecho
+Creating journal (32768 blocks): hecho
+Escribiendo superbloques y la información contable del sistema de ficheros: hecho
+```
+
+Finalmente tenemos que activar el VG para comenzar
+a usar los LVs:
+
+Ahora posdemos montar los LVs:
+```sh
+> vgchange -a y sergio
+2 logical volume(s) in volume group "sergio" now active
+
+> mount /dev/mapper/sergio-lv1 /lv1
+> mount /dev/mapper/sergio-lv2 /lv2
+```
+
+
+### Más operaciones con Volúmenes Lógicos
+
+
+
+#### Agrandar un LV
+Una de las características más ventajosas de un LVM es que
+si hay espacio disponible en el VG se puede agrandar un LV.
+Cambiar de tamaño volúmenes lógicos
+
+```sh
+[root@centos7 ~] :  lvs sergioexample/lv1
+LV VG Attr LSize Pool Origin Data% Move Log Cpy%Sync Convert
+lv1 sergioexample -wi-ao---- 1,00g
+
+[root@centos7 ~] :  lvresize -r -L+2G sergioexample/lv1
+Extending logical volume lv1 to 3,00 GiB
+Logical volume lv1 successfully resized
+resize2fs 1.42.9 (28-Dec-2013)
+Filesystem at /dev/mapper/sergioexample-lv1 is mounted on /lv1; on-line resizing required
+old_desc_blocks = 1, new_desc_blocks = 1
+The filesystem on /dev/mapper/sergioexample-lv1 is now 786432 blocks long.
+
+[root@centos7 ~] :  lvs sergioexample/lv1
+LV VG Attr LSize Pool Origin Data% Move Log Cpy%Sync Convert
+lv1 sergioexample -wi-ao---- 3,00g
+```
+
+
+La primera sentencia le suma 2G, mientras que
+la segunda lo establece en 2G. Es una sutil pero
+importante diferencia.
+
+● La opción -r se vale de fsadmin para
+redimensionar online el sistema de archivos.
+● Otra opción es usar el comando lvextend y
+luego la herramienta apropiada para agrandar
+el sistema de archivos.
+
+Notar que:
+`lvresize -r -L+2G sergioexample/lv1`
+
+No es lo mismo que:
+`lvresize -r -L2G sergioexample/lv1`
+
+
+
+Reducir el tamaño de un LV
+Para esta tarea hay que tomar más recaudos,
+ya que esta tarea implica reducir el tamaño del
+sistema de archivos dentro el LV.
+
+Por lo tanto, hay que desmontar el sistema de
+archivos, en este caso es conveniente usar la
+herramienta lvresize. Tomemos este ejemplo:
+
+```sh
+[root@centos7 ~] :  findmnt -T /lv2
+TARGET SOURCE FSTYPE OPTIONS
+/lv2 /dev/mapper/sergioexample-lv2 ext4 rw,relatime,data=ordered
+
+[root@centos7 ~] :  lvs -v sergioexample/lv2
+Using logical volume(s) on command line
+LV VG #Seg Attr LSize Maj Min KMaj KMin Pool Origin Data% Meta% Move Cpy%Sync Log
+Convert LV UUID LProfile
+lv2 sergioexample 1 -wi-ao---- 1,00g -1 -1 253 2
+QRtBVT-PJLu-fBVg-w0fd-5m3g-KVEN-tCRgZI
+
+[root@centos7 ~] :  df -h /lv2
+S.ficheros Tamaño Usados Disp Uso% Montado en
+/dev/mapper/sergioexample-lv2 976M 313M 596M 35% /lv2
+```
+
+Ahora procedemos a  redimensionar:
+
+```sh
+[root@centos7 ~] :  umount /lv2
+[root@centos7 ~] :  lvresize -r -L600M sergioexample/lv2
+fsck de util-linux 2.23.2
+/dev/mapper/sergioexample-lv2: 8143/65536 files (0.2% non-contiguous), 92340/262144 blocks
+resize2fs 1.42.9 (28-Dec-2013)
+Resizing the filesystem on /dev/mapper/sergioexample-lv2 to 153600 (4k) blocks.
+The filesystem on /dev/mapper/sergioexample-lv2 is now 153600 blocks long.
+Reducing logical volume lv2 to 600,00 MiB
+Logical volume lv2 successfully resized
+
+[root@centos7 ~] :  e2fsck -f /dev/mapper/sergioexample-lv2
+e2fsck 1.42.9 (28-Dec-2013)
+Paso 1: Verificando nodos-i, bloques y tamaños
+Paso 2: Verificando la estructura de directorios
+Paso 3: Revisando la conectividad de directorios
+Paso 4: Revisando las cuentas de referencia
+Paso 5: Revisando el resumen de información de grupos
+/dev/mapper/sergioexample-lv2: 8143/40960 files (0.2% non-contiguous), 90540/153600 blocks ...
+
+[root@centos7 ~] :  mount /dev/mapper/sergioexample-lv2 /lv2
+[root@centos7 ~] :  df -h /lv2
+S.ficheros Tamaño Usados Disp Uso% Montado en
+/dev/mapper/sergioexample-lv2 558M 312M 205M 61% /lv2
+
+[root@centos7 ~] :  lvs -v sergioexample/lv2
+Using logical volume(s) on command line
+LV VG #Seg Attr LSize Maj Min KMaj KMin Pool Origin Data% Meta% Move Cpy%Sync
+Log Convert LV UUID LProfile
+lv2 sergioexample 1 -wi-ao---- 600,00m -1 -1 253 2
+```
+
+Una snapshot de LVM sirve para capturar
+el estado del sistema de archivos en un
+determinado momento. Sirve por ejemplo,
+para probar modificaciones en archivos de
+configuración y en caso de problemas, volver
+al estado anterior a dichos cambios.
+
+El tamaño del snapshot está determinado por:
+
+● El espacio libre en el VG.
+● El tamaño que ocupa el sistema de archivos en el LV.
+● El tamaño que tendrán las modificaciones
+respecto al momento en que creamos la instantánea.
+Si la instantánea llega al 100% del tamaño
+asignado, la misma no funcionará.
+
+#### Uso de snapshots
+
+Generación de una snapshot
+Se crea con el comando lvcreate como se muestra
+a continuación:
+
+Hacer un backup de la instantánea
+
+Si el sistema de archivos es xfs debe montarse con la opción nouuid.
+```sh
+[root@centos7 ~] :  lvcreate --size 100M --snapshot --name alfa /dev/mapper/sergioexample-lv2
+umo Logical volume "alfa" created
+
+[root@centos7 ~] :  mkdir /mnt/alfa
+[root@centos7 ~] :  mount /dev/mapper/sergioexample-alfa /mnt/alfa
+[root@centos7 ~] :  tar cJf alfa-$(date '+%F').tar.xz /mnt/alfa
+```
+
+El tarball generado se puede usar luego
+para restaurar el estado de los archivos al
+momento en que se hizo la instantánea.
+
+Volver al estado en que se generó la instantánea
+Otra manera de volver al punto en que se generó la
+snapshot es con este comando:
+
+Para que comience a hacer el merge tanto el LV de la
+snapshot como el del LV de origen tienen que estar
+activos y sus sistemas de archivos desmontados. Como
+se puede apreciar además, el LV correspondiente a la
+instantánea se borra al terminar la combinación.
+
+```sh
+[root@centos7 ~] :  lvconvert --merge /dev/mapper/sergioexample-alfa
+Merging of volume alfa started.
+lv2: Merged: 99,9%
+lv2: Merged: 100,0%
+Merge of snapshot into logical volume lv2 has finished.
+Logical volume "alfa" successfully removed
+```
+
+Crear snapshots en el sistema de archivos raíz
+En ese caso debe agregarse el módulo dm_snapshot al
+initramfs, de lo contrario fallará al arrancar. Se debe
+usar` mkinitrd, mkinitramfs o dracut`, como se muestra a continuación:
+
+```sh
+[root@centos7 ~] : dracut --add-drivers dm-snapshot.ko /boot/initramfs-sergio.img
+```
+
+#### Configuración y administración
+
+La configuración, salvo que realmente se
+justifique, no se necesita cambiar y se puede ver
+con el comando siguiente:
+[root@centos7 ~] :  lvm dumpconfig | less
+
+La configuración está determinada por los
+siguientes factores de preeminencia:
+● Opción --config en la línea de comandos.
+● Perfiles (Están alojados en /etc/lvm/profiles).
+● Etiquetas por host (útil para un cluster).
+● Archivo `/etc/lvm/lvm.conf`.
+
+
+#### Recuperar un LVM borrado
+
+Se puede recuperar un LVM reciente borrado de la
+siguiente manera:
+
+Este comando mostrará una lista de archivos de backups
+de metadatos, veremos en el listado un archivo que tiene
+lo que buscamos:
+```sh
+[root@centos7 ~] :  vgcfgrestore --list sergioexample
+
+File: /etc/lvm/archive/sergioexample_00065-2109576959.vg
+VG name: sergioexample
+Description: Created *before* executing 'lvremove sergioexample/lv4'
+Backup Time: Sat Aug 23 17:11:01 2014
+```
+
+Entonces recuperamos los metadatos:
+
+Resta ahora solamente activar el volumen:
+```sh
+[root@centos7 ~] :  vgcfgrestore -v -f /etc/lvm/archive/sergioexample_00065-2109576959.vg
+sergioexample Restored volume group sergioexample
+
+[root@centos7 ~] :  lvchange -a y /dev/mapper/sergioexample-lv4
+Tabla de comandos lvm
+```
+
+Fuentes y más recursos
+
+    ● LVM - ArchWiki.
+    ● How to configure LVM on Arch Linux 2017.
+    ● Configurar y extender Linux Logical Volume Manager.
+
+
+### GPG:  encriptacion y claves 
+
+#### GnuPG  ( GNU Pass Gen )
+
+En agosto de 1996 D. Atkins, de MIT; W. Stallings,
+de Comp-Comm Consulting y P. Zimmerman, 
+de Boulder Software Engineering 
+
+escribieron una RFC ( Request for Comments) 
+sobre `PGP` (`Pretty Good Privacy`). 
+
+Estos servicios proporcionaban en relación firma digital, 
+`confidencialidad`, `compresión` y `conversión` en base 64 
+de archivos de mensajes y de datos.
+
+Poco más de 10 años después J. Callas, de PGP
+Corporation; L. Donnerhacke, de IKS GmbH; H.
+Finney, de PGP Corporation; D. Shaw y R. Thayer
+publicaron una actualización para lo que ya se
+conocía como OpenPGP.
+
+`GnuPG` es una implementación completa y libre
+del estándar OpenPGP y proporciona además,
+una herramienta de línea de comandos con
+características para la fácil integración con otras
+aplicaciones.
+
+
+
+#### Tipos de cifrado
+
+##### Cifrado simétrico
+
+Es el más antiguo. Un ejemplo sencillo es el
+siguiente: supongamos que tenemos el siguiente
+mensaje, el cual queremos enviar a un
+destinatario: “Hola Mundo”. Podríamos
+reemplazar cada consonante por la que le sigue
+en el alfabeto y reemplazar cada vocal por un
+número, entonces nos queda: “I4m1 N5oe4”.
+La persona que lo recibe debería saber qué
+método usamos para cifrar el mensaje, que
+consistiría en ejecutar exactamente lo mismo que
+hicimos nosotros pero a la inversa.
+
+
+Por dicho motivo este tipo de cifrado se
+denomina simétrico. En la actualidad se usan
+algoritmos mucho más sofisticados para cifrar.
+Sin embargo esta forma de cifrar tiene una
+importante desventaja: solamente se puede
+transmitir mediante un canal seguro.
+Trasladado al ejemplo con GnuPG, esta
+herramienta es capaz de cifrar mediante una
+clave secreta un archivo. Si deseamos enviarle
+dicho archivo a otro usuario, éste deberá conocer
+la clave que usamos.
+
+
+
+##### Cifrado asimétrico
+
+En el cifrado asimétrico, tanto el emisor como el
+receptor usan un método distinto para descifrar
+un mensaje, haciéndolo mucho más resistente
+para transmitirlo por un canal inseguro.
+El método para cifrado asimétrico que se emplea
+con GnuPG se llama clave pública.
+Supongamos que tenemos a los usuarios Alice y
+Bob. Alice creará:
+
+    ● Una clave privada.
+    ● Una clave pública.
+
+Cuando Bob quiera enviarle un mensaje lo cifrará
+mediante la clave pública de Alice. Dicho mensaje
+solamente se puede descifrar mediante la clave
+privada de Alice.
+Este método, aunque un poco más complejo, es
+mucho más seguro y resistente para ser enviado
+por canales inseguros. El único recaudo que debe
+tener Alice es que debe mantener su clave
+privada sin compartir.
+
+
+
+##### Cifrado híbrido
+
+GnuPG usa cifrado híbridas. Por ejemplo, si Juan
+quiere enviarle a Pedro un archivo cifrado
+necesitará la clave pública de Pedro. GnuPG hará
+lo siguiente de manera transparente:
+
+● Creará una clave de sesión para cifrar el archivo.
+● Cifrará la clave de sesión con la clave pública de Pedro.
+
+Pedro, al recibir el archivo cifrado, podrá
+descifrarlo con GnuPG, el cual hará lo siguiente
+de manera transparente:
+
+● Usará la clave privada de Pedro para descifrar la clave de sesión.
+● Usará la clave de sesión para descifrar el archivo.
+
+
+####  firmas digitales ( Algoritmos )
+
+● AES
+● 3DES
+● Blowfish
+
+● Elgamal
+● RSA
+● Hashes:
+● MD5
+● SHA-1 and -2
+● RIPEMD-160
+
+● DSA
+● RSA
+
+GPG utiliza muchos algoritmos de encriptación, 
+incluyendo los siguientes:
+
+
+GnuPG usa criptografía de clave pública para
+que los usuarios puedan comunicarse de manera
+segura. En un sistema de clave pública, cada
+usuario tiene un par de claves consistiendo de
+una clave privada y una clave pública.
+
+Una clave privada se mantiene en secreto, no se
+necesita revelar. La clave pública se puede entrar
+a cualquiera con quien el usuario desee
+comunicarse.
+
+GnuPG usa un esquema algo más sofisticado en
+el que un usuario tiene un par de claves primario
+y luego cero o más pares de claves subordinadas
+adicionales. Los pares primarios y subordinados
+se empaquetan para facilitar la gestión de claves.
+
+
+#### Sistemas de claves públicas
+
+Para poder entender mejor el sistema de
+codificación usado por los sistemas de claves
+asimétricas (ie. claves públicas y privadas), es
+necesario entender las diferencias con los
+sistemas de claves simétricas (ie. claves
+secretas).
+Como se mencionó previamente, los sistemas de
+cifrado con clave simétrica son aquellos en los
+que la clave que se usa para cifrar una serie de
+datos, es la misma que la que se usará para
+descifrar estos datos.
+
+En el caso del correo electrónico, el remitente
+cifraría el mensaje con una clave secreta, y para
+que el destinatario pueda descifrarlo, necesitaría
+haber obtenido previamente esta misma clave de
+un modo «seguro», o sea de modo que la clave no
+haya podido ser interceptada durante la entrega.
+Si no tenemos la completa seguridad de que el
+intercambio de la clave ha sido seguro, la validez
+de este sistema es nula.
+
+
+
+Por el contrario, los sistemas de cifrado con
+claves asimétricas usan claves distintas para el
+cifrado y posterior descifrado de los datos.
+En un caso como el anterior, el remitente usaría la
+clave pública del destinatario para cifrar el
+mensaje, y el destinatario descifraría el mensaje
+con su propia clave privada. Así pues, la clave
+privada no debe ser accesible para nadie que no
+sea el propio dueño de la misma, mientras que la
+clave pública, puede ser entregada a cualquier
+persona. En un sistema de cifrado bien
+implementado, la clave privada no debe derivar
+nunca de la clave pública.
+
+
+El concepto de la firma digital se basa en la
+verificación de la autoría de un mensaje. Esto
+quiere decir que se puede comprobar que el
+destinatario del mensaje puede comprobar que el
+«supuesto» remitente es quien afirma ser. Para
+ello, el remitente, una vez compuesto el mensaje,
+lo firma usando su propia clave privada. El
+destinatario, una vez recibido el mensaje,
+comprobará la veracidad de éste, esto es, lo
+verificará usando la clave pública del remitente.
+
+Este método es de especial utilidad para reducir
+riesgos de seguridad en nuestros sistemas (nos
+podrían enviar un supuesto parche para un
+programa, y éste en realidad ser un virus o un
+troyano); también podrían enviarnos información
+o datos, como provenientes de una fuente lícita o
+fiable. En ambos casos, no sería muy difícil
+falsificar la dirección y nombre del remitente, pero
+sí imposible falsificar la firma digital de éste.
+
+#### Firmas digitales
+
+Como ya hemos dicho, la verificación de un
+mensaje firmado digitalmente se lleva a cabo
+mediante el uso de la clave pública del
+remitente sobre el texto del propio mensaje. De
+este modo no sólo podemos verificar la identidad
+del autor, sino que también podemos comprobar
+la integridad del mensaje, ya que la firma digital
+ha sido generada con el texto y la clave privada.
+Así pues, una alteración o modificación del texto
+«a posteriori», o cualquier manipulación del
+mensaje (especialmente si hacemos uso de las
+especificaciones MIME/PGP), daría como
+resultado un error en la verificación.
+
+
+
+Un punto flaco en los algoritmos de clave
+asimétrica es la transmisión del código público.
+Es posible que una persona ponga en circulación
+código con un identificador de usuario falso. Si se
+codifican mensajes con este pseudo código, el
+intruso los puede decodificar y leerlos.
+La solución PGP (y por consiguiente la solución
+GnuPG) está en firmar los códigos. La clave
+pública de un usuario puede estar firmada con
+las claves de otros usuarios.
+Anillos de confianza
+
+El objetivo de estas firmas es el de reconocer que
+el UID (identificador de usuario) de la clave
+pertenece al usuario a quien dice pertenecer.
+A partir de ahí es un problema de cada usuario
+de GnuPG el decidir hasta qué punto se puede
+fiar de la firma.
+
+
+
+Una clave se puede considerar fiable cuando se
+confía en el remitente y cuando se sabe con
+seguridad que dicha clave pertenece a éste. Solo
+cuando se puede confiar plenamente en la clave
+del firmante, se puede confiar en la firma que
+acompaña a la clave de un tercero.
+Para tener la certeza de que la clave es correcta
+hay que compararla con la huella digital por
+medio de canales fiables (por ejemplo, podríamos
+llamarle por teléfono, y que nos la dijera de
+palabra para poder compararla), antes de darle
+una confianza absoluta.
+
+
+Pero eso no significa que todo lo cifrado sea
+seguro; si la NSA (Agencia de Seguridad
+Nacional de los EE.UU.) hubiera conseguido
+descodificar una clave PGP mediante
+criptoanálisis, análisis del código, o cualquier otro
+modo, no es probable que lo hicieran público.
+
+#### Límites de seguridad
+
+Si se desea mantener la confidencialidad de los
+datos que se poseen, no basta con determinar
+qué algoritmo de cifrado se va a usar; también es
+necesario pensar en la seguridad general del
+sistema.
+En principio, PGP está considerado como
+suficientemente seguro, y hasta el momento no
+se sabe que haya habido ningún incidente en el
+que una clave PGP haya sido descodificada.
+
+Pero aún en el caso de que las claves PGP fueran
+a todas luces imposibles de decodificar, otros
+tipos de ataques a la seguridad pueden ser
+utilizados.
+
+A principios de febrero fue detectado un troyano
+que buscaba las claves PGP en el disco duro, y
+las transfería al atacante mediante FTP. 
+Si en este caso hubiéramos escogido una contraseña
+débil o fácil, un simple análisis que consistiera en
+un «ataque de diccionario» la descubriría en poco
+tiempo.
+
+Otra posibilidad técnica, aunque más difícil, es la
+de los troyanos que recogen entradas de teclado
+y las transmiten al asaltante. También es posible,
+aunque muy difícil, pasar el contenido de una
+pantalla a otra. En este último caso no sería
+necesario ningún análisis sobre datos cifrados, ya
+que se obtendrían «pre-cifrados».
+Por todo esto es necesaria una planificación de la
+seguridad que esté bien prevista y que minimice
+los riesgos.
+
+
+La idea no es la de recrear una atmósfera de
+paranoia entre la gente, sino dejar claro que para
+implementar un sistema seguro no basta con la
+instalación de un programa criptográfico, que si
+bien es un paso hacia un sistema más seguro, no
+es una solución completa.
+Troyanos como el aparecido en marzo de 1999
+(Melissa) probaron que muchas compañías no se
+encuentran preparadas en temas de seguridad.
+
+### Uso de GnuPG 
+
+#### Creación de claves
+
+Lo primero que hay que hacer una vez que se tiene GnuPG
+instalado es crear nuestra clave pública y privada. Para
+hacerlo hay que usar el comando gpg --gen-key.
+
+Usa gpg --full-generate-key para el diálogo completo de generación de clave.
+```sh
+$ gpg --gen-key
+gpg (GnuPG) 2.2.12; Copyright (C) 2018 Free Software Foundation, Inc.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+gpg: caja de claves '/home/educacionit/.gnupg/pubring.kbx' creada
+```
+
+
+GnuPG debe construir un ID de usuario para identificar su clave.
+
+Es necesario generar muchos bytes aleatorios.
+Es una buena idea realizar alguna otra tarea
+(trabajar en otra ventana/consola, mover el ratón,
+usar la red y los discos) durante la generación de
+números primos. Esto da al generador de
+números aleatorios mayor oportunidad de
+recoger suficiente entropía.
+
+En este momento aparecerán cuadros de
+diálogos para ingresar la passphrase y luego su
+confirmación:
+```sh
+    Nombre y apellidos: Sergio Belkin
+    Dirección de correo electrónico:
+    sbelkin@example.com
+    Ha seleccionado este ID de usuario:
+    "Sergio Belkin <sbelkin@example.com>"
+    ¿Cambia (N)ombre, (D)irección o (V)ale/(S)alir? V
+```
+
+
+Y luego vamos a ver cómo genera la clave:
+```sh
+gpg: clave E12874DA0D8297CA marcada como de confianza absoluta
+gpg: certificado de revocación guardado como
+'/home/educacionit/.gnupg/openpgp-revocs.d/0C6AE5792E5A9A11A37
+42ACEE12874DA0D8297CA.rev'
+claves pública y secreta creadas y firmadas.
+pub rsa3072 2021-01-29 [SC] [caduca: 2023-01-29]
+0C6AE5792E5A9A11A3742ACEE12874DA0D8297CA
+uid Sergio Belkin <sbelkin@example.com>
+sub rsa3072 2021-01-29 [E] [caduca: 2023-01-29]
+```
+
+#### Ver claves públicas disponibles
+
+Para ver las claves públicas que tenemos disponibles hay
+que hacerlo con el comando gpg --list-keys. Esto lista las
+claves que hay disponibles dentro del fichero pubring.gpg.
+
+```sh
+$ gpg --list-key
+gpg: comprobando base de datos de confianza
+gpg: marginals needed: 3 completes needed: 1 trust model: pgp
+gpg: nivel: 0 validez: 1 firmada: 0 confianza: 0-, 0q, 0n, 0m, 0f, 1u
+gpg: siguiente comprobación de base de datos de confianza el: 2023-01-29
+/home/educacionit/.gnupg/pubring.kbx
+------------------------------------
+pub rsa3072 2021-01-29 [SC] [caduca: 2023-01-29]
+0C6AE5792E5A9A11A3742ACEE12874DA0D8297CA
+uid [ absoluta ] Sergio Belkin <sbelkin@example.com>
+sub rsa3072 2021-01-29 [E] [caduca: 2023-01-29]
+```
+
+El identificador de las claves es lo que hayamos
+metido en el nombre, en el apellido, en la
+dirección de correo o el número que aparece
+después del 1024D al hacer `gpg –list-keys`. Si
+en algún caso coincide el ID, se mostrarán los que
+coinciden.
+
+#### Ver claves privadas disponibles
+
+Para ver las claves privadas que tenemos disponibles hay
+que hacerlo con el comando `gpg –list-secret-keys`. Esto
+lista las claves que hay disponibles dentro del fichero
+secring.gpg.
+
+
+Se llama anillos a los archivos en los que se
+guardan las claves públicas y privadas.
+Generalmente donde se guardan las claves
+públicas es el archivo pubring.gpg y en el que se
+guardan las claves secretas secring.gpg.
+
+#### Borrar claves de los anillos
+
+Si se quiere borrar alguna clave primero hay que
+borrar la clave privada y después la pública. Si se
+intenta borrar primero la clave pública y ésta
+tiene asociada una clave privada, da un mensaje
+de error.
+
+
+Para borrar claves privadas se hace con el
+siguiente comando:
+
+```sh
+gpg –delete-secret-key ClaveID
+```
+
+Para borrar claves públicas se hace con el
+comando a continuación:
+
+```sh
+gpg –delete-key ClaveID
+```
+
+#### Ver la huella de la clave
+
+Las claves están identificadas por lo que se
+llama huella. La huella es una serie de números
+que se usa para verificar si una clave pertenece
+realmente al propietario. Si se recibe una clave
+podemos ver cuál es su huella y luego pedirle a
+su propietario que nos diga su huella. Si ambas
+coinciden la clave es correcta y no ha sido
+manipulada. Si no fuera igual es que ha sido
+modificada.
+
+La huella es como el md5 que verifica que un
+archivo no ha sido manipulado.
+
+
+
+#### Exportar claves
+
+Las claves se pueden exportar a ficheros para
+que las podamos distribuir entre la gente que
+queremos que nos encripte o firme cosas o bien
+porque vamos a formatear el equipo y
+necesitamos salvarlas.
+Para exportar la clave pública se hace poniendo:
+
+
+```sh
+gpg –armor –output fichoeDeSalida –export ClaveID
+```
+
+Para exportar la clave privada se haría poniendo:
+```sh
+gpg –armor –output fichoeDeSalida –export-secret-key ClaveID
+```
+
+Si quisiéramos salvar todas las claves que tenemos valdría 
+con copiar los archivos pubring.gpg y secring.gpg y luego 
+cuando vayamos al nuevo equipo ponerlas en el directorio de GnuPG.
+
+#### Importar claves
+
+Si se quiere importar claves nuevas porque, por
+ejemplo, hemos formateado el equipo y queremos
+volver a tener nuestras claves, las importamos
+con el comando gpg –import ClaveID.
+En el apartado anterior se han salvado las claves
+pública y privada, ahora vamos a importarlas.
+Primero importamos la pública y luego la privada.
+
+
+Ahora, si queremos importar la clave de una amigo, pues
+se haría igual.
+
+
+
+### Backups -  fundamentos
+
+
+¿Qué es una copia de seguridad?
+
+Tanto los archivos del sistema como los del
+usuario son susceptibles a ser borrados,
+eliminados o corrompidos por:
+    ● Fallas de software.
+    ● Fallas de hardware.
+    ● Errores humanos.
+    ● Ataques informáticos.
+    ● Accidentes y desastres climáticos.
+
+Atendiendo a estos riesgos es importante realizar
+copias de los datos tanto del sistema como
+documentos del usuario de una manera segura,
+esto es lo que comúnmente conocemos como
+backup.
+
+
+
+#### Niveles de backups
+
+Las copias de seguridad tienen al menos tres niveles
+dependiendo de lo que se respalde.
+
+    Nivel Completo o Full   1
+    Nivel Incremental       2
+    Nivel Diferencial       3
+
+
+**Nivel Completo o Full**
+
+En este nivel se realiza un una copia de la
+totalidad de los datos que se desean respaldar.
+Siempre es útil realizar un backup completo, no
+obstante, realizar copias de respaldo todas las
+veces, sería imposible o al menos costoso en
+cuanto a dispositivos de almacenamiento. Para
+recuperar un backup full se debe hacer la
+operación inversa.
+Muchas veces no se recuperan los datos sobre la
+ubicación original, sino en otro lado de manera de
+poder verificar los archivos recuperados si es
+necesario.
+
+
+**Nivel Incremental**
+
+El nivel incremental toma como punto de referencia el
+backup inmediatamente anterior (que puede ser Full o
+Incremental). Suponiendo que luego del backup completo
+(B0) se hicieron tres backups incrementales (B1, B2 y B3) si
+se desea volver al estado de los datos al realizar B2, es
+necesario aplicarle al B0, los backups B1 y B2.
+
+
+
+**Nivel Diferencial**
+
+El nivel diferencial toma como punto de referencia
+el backup full. 
+Suponiendo que luego del backup completo (B0) 
+se hicieron tres backups diferenciales (B1, B2 y B3) 
+si se desea volver al estado de los datos al realizar B2,
+es necesario aplicarle al B0 solamente el B2.
+
+¿Qué tipo de backup es mejor? ¿Cuál deberíamos aplicar? 
+Si podemos, lo ideal es usar los dos. 
+El backup incremental ahorra más espacio de almacenamiento, 
+pero hace que las restauración de datos sea algo engorrosa.
+
+
+
+Es más fácil determinar qué directorios no hay que
+respaldar. Conviene copiarlo máximo que se pueda
+excluyendo aquellos directorios que son volátiles:
+
+#### Directorios a respaldar
+
+    ● /dev
+    ● /proc
+    ● /run
+    ● /sys
+    ● /tmp 
+
+
+(Dependiendo de la distribución y de las aplicaciones usadas).
+
+Si podemos elegir solamente entre unos pocos directorios,
+lo recomendable sería hacer backup de:
+
+    ● /etc       (Configuraciones).
+    ● /root      (Configuraciones del superusuario).
+    ● /usr/local (Aplicaciones compiladas o que no están en la distribución).
+    ● /home      (Si es una estación de trabajo, o si en lugar de usar root 
+                    se emplea un usuario con sudo para administrar).
+    ● /var       (Muy usado en servidores).
+
+Y obviamente cualquier otro directorio que se haya creado
+a mano que esté directamente dentro del directorio raíz.
+
+
+#### Medios de almacenamiento
+
+Este es un análisis de los distintos medios de
+almacenamiento disponibles:
+
+**Medios ópticos: CDR, DVD, etc.**
+● Económicos 
+● Poco espacio
+
+**Cintas Larga duración**
+● Costosas
+● Necesitan hardware especial
+
+**Discos rígidos/sólidos**
+● Alta capacidad
+● Facilidad de uso Costosos  (en particular los de estado sólido)
+
+Nube Aislado de accidentes locales 
+● Interrupción del servicio no controlada
+(si se hace en equipos de un tercero).
+
+
+# Fase 2 - Cloud Specialist   
+
+## Clase 9 Módulo 6
+
+
+● Amazon CloudWatch: permite a los
+desarrolladores, cloud architects y
+administradores el monitoreo de aplicaciones
+basadas en la nube de AWS.
+
+● Amazon EBS (Amazon Elastic Block Store):
+servicio de almacenamiento de bloques de alto
+rendimiento con facilidad de uso, diseñado
+para su uso con EC2, tanto en cargas de
+trabajo intensivas de rendimiento como de
+transacciones a cualquier escala.
+
+● Amazon EC2 (Amazon Elastic Compute
+Cloud): servicio web que proporciona
+capacidad informática en la nube segura y de
+tamaño modificable. Está diseñado para
+facilitar a los desarrolladores el uso de la
+informática en la nube a escala de la Web.
+
+● Amazon EC2 Auto Scaling: nos ayudará a
+garantizar que tenga la cantidad correcta de
+instancias de Amazon EC2 disponibles para
+manejar la carga de su aplicación.
+
+● Amazon EFS (Amazon Elastic File Storage):
+proporciona capacidad de almacenamiento
+elástica, que escala para adaptarse a las
+cargas de trabajo que se ejecutan en
+instancias de Elastic Compute Cloud (EC2) y
+acceder a archivos a través de solicitudes de
+la API (interfaz de programación de
+aplicaciones).
+
+● Amazon RDS (Amazon Relational Database
+Service): servicio administrado de base de
+datos en la nube de AWS.
+
+● Amazon S3: es el servicio principal de AWS
+para el almacenamiento y recuperación de
+archivos mediante un API (Application
+Programming Interface).
+
+● Amazon S3 Glacier: servicio orientado a
+proporcionar almacenamiento de objetos
+duradero para archivos de datos a un precio
+muy reducido.
+
+● Block Storage (almacenamiento en bloques):
+divide los datos en bloques y los almacena
+separados. Cada bloque de datos recibe un
+identificador único, que permite que el sistema
+de almacenamiento coloque los datos más
+pequeños donde sea más conveniente.
+
+
+● Bucket: en Amazon S3 no es más que un
+directorio lógico de alto nivel en el que se
+encuentran los objetos, cada uno de ellos
+identificado con una clave.
+
+● Cloud Computing (computación en nube):
+significa que el hardware y software es
+proporcionado como un servicio de otra
+empresa a través de Internet.
+
+● DynamoDB: base de datos sin servidor NoSQL
+proporcionada por AWS. Sigue una estructura
+de tienda de valor clave y adopta una
+arquitectura distribuida para alta
+disponibilidad y escalabilidad.
+
+
+● Elastic Load Balancing (ELB): tiene la
+capacidad de escalar automáticamente los
+balanceadores de carga y las aplicaciones,
+según el tráfico en tiempo real.
+
+● Identity and Access Management:
+herramienta que AWS pone a nuestra
+disposición para garantizar la seguridad de
+nuestra infraestructura y su contenido.
+
+● Nube privada virtual de Amazon (Amazon VPC): 
+permite a los clientes lanzar recursos de
+AWS en una red virtual dedicada a la cuenta
+del cliente.
+
+
+● Object-based Storage (almacenamiento de
+objetos): término general que se refiere a la
+forma en que organizamos y trabajamos con
+las unidades de almacenamiento a las que
+llamamos objetos.
+
+● Región: conjunto de zonas de disponibilidad,
+las regiones se encuentran alrededor de todo
+el mundo.
+
+● Zona de disponibilidad: es un conjunto de
+Data Centers donde se almacenan los miles y
+miles de servidores físicos. Se encuentran
+aislados entre sí, se interconectan mediante
+redes de alta frecuencia.
