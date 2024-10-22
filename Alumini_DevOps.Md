@@ -1,7 +1,10 @@
 
+
 # Clase 1 - Temario + Linux
 	
-### Carga Oraria y organisacion
+ educacionit.com/bootcamp-devops-engineer:
+
+## Carga Horaria y organisacion
 
 6 meses 8hs semanales;
 
@@ -10,11 +13,9 @@ Videos clases:
     1   Hs  : Teoria 
     1   Hs  : Practica y tareas
 
-Material PDF
-Desafios
+Material PDF y Desafios
 
-educacionit.com/bootcamp-devops-engineer:
-nociones de linus y CLI
+nociones de Linux y CLI
 
 ## Temario del Bootcamp
 
@@ -41,14 +42,15 @@ El bootcamp 5 fases :  10 clases por face, 50 clases aprox.
                 4) Vinculacion laboral
 
 
-
 Tecnologias :
+
     AWS Apache Jerkins Github Docker Azure Kubernetes Terraform Linux
 
 [Plan de estudio](https://static.educacionit.com/educacionit/assets/bootcamp-devops-engineer.pdf):
-1. Introduccion a EducacionIT 
-2. Descripcion del Bootcccamp
-3. requisitos (intdod a redes y introd a linux)
+
+    1. Introduccion a EducacionIT 
+    2. Descripcion del Bootcccamp
+    3. requisitos (intdod a redes y introd a linux)
 
 ## Vamos a Aprender: 
 
@@ -73,13 +75,13 @@ Implementación un sistema de Ecommerce
 
 ## 3 Metodologias
 
-Lern by doing: problemas, desafios de forma individual y en equipo
+    Lern by doing: problemas, desafios de forma individual y en equipo
 
-Pair Programing: utilizando metodologia Agile con un companiero
+    Pair Programing: utilizando metodologia Agile con un companiero
 
-Mentoring: apollo constante del tutor
+    Mentoring: apollo constante del tutor
 
-## LPI - Certificaciones Linux - MODULO 1
+## LPI - Certificacion Linux - Módulo 1
 
 **Certificaciones de Linux**
 
@@ -180,7 +182,7 @@ A mayores recursos y conectiviad mas vulnerable el servidor
 
 Configurar red    desde CLI o Hypervisor  ( Virtual box )
 
-### PACKETES
+## PACKETES e intaladores
 
 APT vs Snap                     https://www.youtube.com/watch?v=1f-dzz5l1Fg
 Flatpak vs Snaps vs DEB & RPM   https://www.youtube.com/watch?v=1lLZ-59xH3Y
@@ -239,13 +241,12 @@ Los módulos en muchos casos son drivers (controladores) de dispositivos.
 * NICE: la prioridad que le da la CPU a un proceso, 
 a menor valor de nice, mayor prioridad y viceversa. 
 
-* PID (Identificador de Proceso): número con el que el kernel identifica a un proceso.
+* PID (Identificador de Proceso): número con el que el kernel
+identifica a un proceso.
 
+# FASE 1 - Linux SysAdmin
 
-
-# FASE 1
-
-## Clase 2 - VM + RegExp
+## Clase 2 - VM + commandos + RegExp
 
 https://www.cocalc.com/features/terminal
 
@@ -271,6 +272,7 @@ competencias:
 
 ### Expresiones regulares
 https://www.regexr.com/
+https://www.sitepoint.com/learn-regex/
 
 Expresiones regulares:
 
@@ -288,21 +290,26 @@ script : conjunto de instrucciones interpretadas por algun programa
 
 GREP : global regular expression print 
 
-```
+```sh
 grep [opciones] patron archivo
 ```
-Opciones:
-i   No diferencia mayúsculas de mínúsculas.
-C   Cuenta la cantidad de coincidencias.
-V   Muestra el resultado inverso.
-e   Utiliza expresiones regulares.
-E   Utiliza expresiones regulares extendidas.
-r   Búsqueda recursiva.
-n   Muestra el número de línea.
-A [numero]  Muestra "número" de líneas después del patrón encontrado.
-B [numero]  Muestra "número" de líneas antes del patrón encontrado.
---color
 
+Opciones:
+
+    i   No diferencia mayúsculas de mínúsculas.
+    C   Cuenta la cantidad de coincidencias.
+    V   Muestra el resultado inverso.
+    e   Utiliza expresiones regulares.
+    E   Utiliza expresiones regulares extendidas.
+    r   Búsqueda recursiva.
+    n   Muestra el número de línea.
+    A [numero]  Muestra "número" de líneas después del patrón encontrado.
+    B [numero]  Muestra "número" de líneas antes del patrón encontrado.
+--color 
+
+```sh
+[root@osboxes]: grep -r '^bin' /etc
+```
 
 ```sh
 # Muestra exptesiones regulares con '-e' para el manual ignorando mayusculas
@@ -386,12 +393,12 @@ Argentina
 argentina
 
 # Buscar tres números consecutivos del 0 al 9:
-> grep '[0-9][0-9][0-9]'
-prueba.txt
+> grep '[0-9][0-9][0-9]' prueba.txt
 124Argentina
 12345JMR
+
 # Buscar todo lo que no comience con un número:
-> grep '^[^0-9]'test
+> grep '^[^0-9]' test
 Villa Dalmine
 Restaurador de Leyes de Argentina
 JMR
@@ -399,11 +406,16 @@ Argentina
 argentina
 evil5
 
-# Buscar exactamente abc y que aparezca sólo de 2 a 4 veces:
-> grep --color '\<\(abc\){2,4\}\>' prueba2.txt
-abcabc
-abcabcabc
-abcabcabcabc
+# Buscar exactamente abcd y que aparezca sólo de 2 a 4 veces:
+> grep  '\<\(abcd\){2,4\}\>' prueba2.txt
+abcdabcd
+abcdabcdabcd
+abcdabcdabcdabcd
+
+# Buscar exactamente cualquier caracter que sea alfabetico y no c o d 
+
+> grep  '[a-zA-Z^c]'  prueba2.txt 
+
 ```
 
 ### Expresiones regulares extendidas
@@ -414,14 +426,16 @@ Existen dos tipos de expresiones regulares: básicas y extendidas.
    * En las expresiones regulares básicas para que 
 dicho carácter tenga un sentido especial es necesario 
 anteponer una contra barra, tal como se muestra a continuación:
+
 ```
 Basicas     Extendidas      Descripción
-    *        *          Identifica 0 a más veces un único carácter
-    \?       ?          Identifico O o una vez la expresión regular que antecede
-    \+       +          Identifica 1 o más veces la expresión regular que antecede
-  \{n,m}     {nm}       Identifica un rango de ocurrencias jun carácter a una expresión regular) que antecede. Debe identificar al menos n hosta m ocurrencias
-    \|       |          Identifica una u otro. Función logica OR
-\(regex\)   (regex)     Agrupo Identifica grupo de expresiones regulares
+    *        *          0 a más veces un único carácter
+    \?       ?          0 o una vez la expresión regular que antecede
+    \+       +          1 o más veces la expresión regular que antecede
+  \{n,m\}    {n,m}      rango de ocurrencias a expresión regular que antecede. 
+                               Debe identificar al menos n hosta m ocurrencias
+    \|       |          una u otro. Función logica OR
+\(regex\)   (regex)     grupo de expresiones regulares
 ```
 
 https://www.ionos.es/digitalguide/servidores/
@@ -430,12 +444,6 @@ https://www.ionos.es/digitalguide/servidores/
 
 
 https://www.osboxes.org/virtualbox-images/
-
-```sh
-[root@osboxes]: /etc# grep -r '^bin' .
-```
-
-1:36:45 
 
 
 ### SED - Stream EDitor
@@ -2817,7 +2825,7 @@ update-alternatives 2024-09-19 13:23:54: run with --install /usr/bin/rcp rcp /us
   Putty GitBash WinSCP   Windows_cmd
   Zabix Nagios  Keepaliv keepalived Jerkins DataDog
 
-## Clase 7  Devices + Mopulos
+## Clase 7 - Devices + Modulos + Logs
 
 Repaso de sistemas de destion de servicios 
 https://architecnologia.es/lpic-1-101-systemd-sysv
@@ -3776,11 +3784,12 @@ Los dispositivos USB son agregados al equipo en forma de árbol,
 identificados de forma unívoca por el sistema.
 
 Existen 4 tipos de controladores USB:
-Controlador          Módulo kernel  Protocolo   Velocidad máxima
-● OHCI :  (Compaq)   usb-ohci.o     USB 1.1     12Mbps.
-● UHCI :  (Intel)    usb-uhci.o     USB 1.1     12Mbps
-● EHCI :  (USB 2.0)  ehci-hdc.o     USB 2.0     480Mbps
-● XHCI :                                        5 Gbps
+
+    Controlador          Módulo kernel  Protocolo   Velocidad máxima
+    ● OHCI :  (Compaq)   usb-ohci.o     USB 1.1     12Mbps.
+    ● UHCI :  (Intel)    usb-uhci.o     USB 1.1     12Mbps
+    ● EHCI :  (USB 2.0)  ehci-hdc.o     USB 2.0     480Mbps
+    ● XHCI :                                        5 Gbps
 
 
 El soporte a dispositivos USB está disponible desde 
@@ -4686,9 +4695,9 @@ bootlog         rsyslog         wtmp
         fi;                                   # reinicia el servicio de apache
     endscript
     prerotate
-        if [ -d /etc/logrotate.d/httpd-prerotate ];  # si existe config   httpd-prerotate
+        if [ -d /etc/logrotate.d/httpd-prerotate ];  # si existe config  httpd-prerotate
         then \
-            run-parts /etc/logrotate.d/httpd-prerotate; \    #  ejecutarla con run-parts
+            run-parts /etc/logrotate.d/httpd-prerotate; \  #  ejecutarla con run-parts
         fi; \
     endscript
 }
@@ -4769,9 +4778,9 @@ SHELL=/bin/sh
 # borra todo los archivos del sistema desde la raiz
 ```
 
-## CLase 8 - Admin + Passwd + C-Make
+## CLase 8 - SysAdmin Security  Passwd
 
-### DESAFIO
+### DESAFIO 3
 
 **Objetivo**
 
@@ -4790,23 +4799,28 @@ Dividiremos el desafío en 2 partes:
 Obtener información de nuestro servidor y agregar una entrada a nuestro inventario de servidores
 Instalar el servicio, verificar su funcionamiento, revisar los logs y revisar el logrotate
 
-Parte 1:
-La entrega de esta primera parte será un archivo creado en google sheets (Con el nombre: server-inventory). Este archivo tendrá que tener la siguiente información:
+**Parte 1**:
+
+La entrega de esta primera parte será un archivo creado en google sheets (
+Con el nombre: server-inventory). Este archivo tendrá que tener la siguiente información:
+
 1) Hostname
 2) IP (necesitará ser una IP fija)
 3) Cantidad de memoria (asignada, no libre)
-4) Procesador (Agregar información de cuantos nucleos tiene disponibles en caso de ser una máquina virtual)
+4) Procesador (Agregar información de cuantos nucleos tiene disponibles si es una máquina virtual)
 1) Storage (Cantidad de almacenamiento asignado y particiones como así también los filesystems)
 2) Sistema operativo y versión
-3) Notas (información adicional del servidor, por ejemplo si es una máquina virtual y con que virtualizador fue creada, si es una notebook, si es un servidor remoto, etc).
+3) Notas (información adicional del servidor, por ejemplo si es una máquina virtual 
+   y con que virtualizador fue creada, si es una notebook, si es un servidor remoto, etc).
 
-ATENCIÓN: Toda la información obtenida y cargada en el inventario de servidores (archivo de google sheets) tendrá que ser respaldada con el comando utilizado para obtener dicha
+ATENCIÓN: Toda la información obtenida y cargada en el inventario de servidores 
+(archivo de google sheets) tendrá que ser respaldada con el comando utilizado para obtener dicha
 información y documentado en el instructivo, de esta forma cualquier persona podrá seguir
 su instructivo para obtener información de su sistema. En caso de usar un comando
 específico de un tipo de sistema operativo, agregar la aclaración en el instructivo.
 
 
-Parte 2:
+**Parte 2**:
 
 contarán con la posibilidad de instalar un servicio a su gusto 
 en el servidor que configuraron en el punto anterior, 
@@ -4822,15 +4836,15 @@ tendrán que documentar lo siguiente:
 (revisar el estado del servicio luego de instalario). 
 En caso de que no esté iniciado, iniciarlo.
 
-2) Verificar el funcionamiento del mismo (en caso de ser una aplicación web, 
+1) Verificar el funcionamiento del mismo (en caso de ser una aplicación web, 
 acceder a la misma, en caso de ser una base de datos, ejecutar una query, etc)
 
-3) Verificar si en los logs se almacena la información de nuestra prueba de funcionamiento 
+1) Verificar si en los logs se almacena la información de nuestra prueba de funcionamiento 
 (en caso de un servidor web, un log con la request, en caso de una base de datos, 
 un log con la query que corrimos, en caso de un acceso remoto, 
 un log con la información del usuario y la ip de donde se quiso conectar).
 
-4) En algunos servicios, al instalario ya configura logrotate, 
+1) En algunos servicios, al instalario ya configura logrotate, 
 verificar si logrotate ya nos creó una configuración para nuestro servicio 
 y en caso contrario, crearla y verificar su funcionamiento. 
 En caso de que la configuración ya exista, 
@@ -4844,7 +4858,7 @@ que tienen en drive con el formato (`<carpeta con su nombre>/<Fase>/<módulo>`/a
 
 ### LPI  Certification - Módulo 4
 
-#### 110.1 Realizar tareas de administración de seguridad
+#### 110.1 Treas de admin de seguridad
 
 Peso: 3   ( importancia para examen LPI   del 1 al 6).
 
@@ -5095,8 +5109,8 @@ Sintaxis:
 passwd [Opciones] nombreDelUsuario
 ```
 
-Opciones
- -e  Esta opción forzará al usuario a cambiar su contraseña  en su siguiente login al sistema.
+Opciones:
+ -e  Esta opción forzará al usuario a cambiar su contraseña en su siguiente login al sistema.
  -l  Con esta opción, el administrador del sistema
      puede inhabilitar la contraseña de algún usuario específico.
  -u  Con esta opción, el administrador revierte el efecto de la opción -l.
@@ -5115,14 +5129,14 @@ el cual deberá ser aplicado según la siguiente sintaxis:
 ```sh
 groupadd [opciones] nombreDelGrupo
 ```
- -g  Define mediante un valor numérico el ID del grupo, 
-     este número no puede ser uno negativo.
- -r  Define un `grupo del sistema`. Un grupo del sistema  es aquel que 
-     tiene un número de `identidad (GID)` de grupo `por debajo` del número `500`. 
-     Este particular GID es utilizado por los servicios del sistema 
-     como un servidor web o de correo.
- -f  Forza al sistema a crear el grupo aunque éste ya exista.
- -o  Asigna un ID existente a un grupo.
+    -g  Define mediante un valor numérico el ID del grupo, 
+        este número no puede ser uno negativo.
+    -r  Define un `grupo del sistema`. Un grupo del sistema  es aquel que 
+        tiene un número de `identidad (GID)` de grupo `por debajo` del número `500`. 
+        Este particular GID es utilizado por los servicios del sistema 
+        como un servidor web o de correo.
+    -f  Forza al sistema a crear el grupo aunque éste ya exista.
+    -o  Asigna un ID existente a un grupo.
 
 #### groupmod
 
@@ -5161,14 +5175,15 @@ al grupo y convertirlo en uno de sus grupos efectivos,
 para ello deberá proporcionar la contraseña del grupo.
 
 Opciones
- -R  Hace que el grupo sea reservado para miembros.
- -A  usuario,, grupo Señala como administrador de un grupo particular a un usuario del grupo.
- -M  usuario,, grupo Añade miembros a un grupo.
- -r  grupo Elimina la contraseña del grupo.
- -a  usuario,, grupo Se añade permanentemente un usuario a un grupo.
- -d  usuario,, grupo Se borra permanentemente a un usuario del grupo.
- -r  grupo Elimina la contraseña del grupo.
-
+```sh
+  -R  Hace que el grupo sea reservado para miembros.
+  -A  usuario,, grupo Señala como administrador de un grupo particular a un usuario del grupo.
+  -M  usuario,, grupo Añade miembros a un grupo.
+  -r  grupo Elimina la contraseña del grupo.
+  -a  usuario,, grupo Se añade permanentemente un usuario a un grupo.
+  -d  usuario,, grupo Se borra permanentemente a un usuario del grupo.
+  -r  grupo Elimina la contraseña del grupo.
+```
 #### grpck
 El comando grpck revisa un grupo de sistema.
 Sintaxis:
@@ -5193,13 +5208,14 @@ Sintaxis :
 ```sh
 chmod [options] [files/directores]
 ```
-
-UGOA            RWX
-u = User        r =  Read
-g = Group       w =  Write
-o = Others      x = eXecute
-a = All = ugo
-
+```py
+    UGOA         |   RWX
+=================|=============
+  u = User       |  r =  Read
+  g = Group      |  w =  Write
+  o = Others     |  x = eXecute
+  a = All = ugo  |
+```
 se puede setear con `3 numeros` para los 3 tipos
 `octal '0-7'` que representados en binario `7 = 111 = rwx ` 
 
@@ -5237,7 +5253,7 @@ los permisos nativos también tienen su representación en ACL cuando éstas est
 los permisos nativos son representados por ACL’s, y además, podemos agregar ACL’s adicionales
 para otorgar permisos más granularizados a otras entidades del sistema de archivos.
 
-```
+```py
 Tipo de entrada  | Etiqueta de permisos |   Forma en text
 =================|======================|=============================
 Owner (dueño) *  |   ACL_USER_OBJ       | user::rwx ó u::rwx
@@ -5294,6 +5310,7 @@ sudo pacman -S acl
 ```
 
 **Otorgando permisos a usuarios y grupos**
+
 Supongamos que el usuario uaa necesita acceso 
 de lectura y escritura al archivo archivo.txt. 
 
@@ -5303,7 +5320,9 @@ al usuario sin asignarlo como dueño, o cambiar el grupo del archivo.
 Con ACL podríamos otorgar estos permisos utilizando setfacl 
 y el modificador -m o --modify de esta manera:
 
+```sh
 setfacl -m u:uaa:rw- archivo.txt
+```
 
 El dueño del archivo (o el root) podrán setear estos permisos.
 Ahora la ACL del archivo se verá como la siguiente imagen, 
@@ -5326,27 +5345,34 @@ Lo mismo podría aplicarse a un directorio.
 La sintaxis de setfacl especifica los permisos para usuarios o grupos 
 utilizando la siguiente nomenclatura:
 
-u:named_user:permission
-g:named_group:permission
+```sh
+    u:named_user:permission
+    g:named_group:permission
+```
 
 Y se pueden otorgar varios permisos en la misma línea 
 separando los mismos por coma, por ejemplo:
 
 (los guiones - pueden omitirse, los uso para mantener claridad en los permisos).
 
+```sh
 setfacl -m u:usuario1:rw-,u:usuario2:r--,g:grupo1:r-- archivo.txt
+```
 
 En el caso de que el destino sea un directorio 
 y quisiéramos aplicar la ACL a todos los elementos interiores de manera recursiva,
 podemos utilizar el modificador -R:
 
-setfacl -Rm u:usuario1:rw- directorio/
+```sh
+ setfacl -Rm u:usuario1:rw- directorio/
+```
+#### chmod  SUID, SGID & StickyBit 
 
-#### SUID, SGID & StickyBit 
 
 https://www.redhat.com/en/blog/suid-sgid-sticky-bit
 
 **user + s (pecial)**
+
 SUID, the special permission for the user access level has a single function:
 A file with SUID always executes as the user who owns the file,
 regardless of the user passing the command.
@@ -5363,6 +5389,7 @@ This command, by default, has the SUID permission set:
 Note the s where x would usually indicate execute permissions for the user.
 
 **group + s (pecial)**
+
 Commonly noted as SGID, this special permission has a couple of functions:
 
 If set on a file, it allows the file to be executed as 
@@ -5386,6 +5413,79 @@ SGID is very powerful when utilized properly.
 for SUID, if the owning group does not have execute permissions, 
 then an uppercase S is used.
 
+#### Atributos de archivos
+https://www.techtarget.com/searchdatacenter/tip/Working-with-Linux-file-system-attributes
+https://linuxopsys.com/show-file-attributes-in-linux
+
+Attributes in Linux
+Some filesystems support additional attributes 
+(other than those described in the preceding sections). 
+
+In particular, some Linux-native filesystems 
+support several attributes that you can adjust with the chattr command. 
+
+**The  Attributes:**
+
+    a - append only
+    c - compressed
+    d - no dump
+    e - extent format
+    i - immutable
+    j - data journaling
+    s - secure deletion
+    t - no tail-merging
+    u - undeletable
+    A - no atime updates
+    D - synchronous directory updates
+    S - synchronous updates
+    T - top of directory hierarchy
+
+**Definitions**     The detailed meaning  ( according to the manual page )
+
+a - append only: this attribute allows a file to be added to, but not to be removed.
+    It prevents accidental or malicious changes to files that record data, log etc...
+c - compressed: it causes the kernel to compress data written to the file automatically 
+    and uncompress it when it’s read back.
+d - no dump: it makes sure the file is not backed up in backups where the dump utility is used
+e - extent format: it indicates that the file is using extents for mapping the blocks on disk.
+i - immutable:  it makes a file immutable,  beyond simply disabling write access to the file. 
+    The file can’t be deleted, links to it can’t be created, and the file can’t be renamed.
+j - data journaling: it ensures that on an Ext3 file system the file is first written to the journal
+    and only after that to the data blocks on the hard disk.
+s - secure deletion: it makes sure that recovery of a file is not possible after it has been deleted.
+t - no tail-merging: Tail-merging is a process in which small data pieces 
+    at a file’s end that don’t fill a complete block are merged with similar pieces of data
+    from other files.
+u - undeletable: When a file is deleted, its contents are saved which allows a utility 
+    to be developed that works with that information to salvage deleted files.
+A - no atime updates: Linux won’t update the access time stamp when you access a file.
+D - synchronous directory updates: it makes sure changes to files are written to disk immediately,
+    and not to cache first.
+S - synchronous updates: the changes on a file are written synchronously on the disk.
+T - and top of directory hierarchy: A directory will be deemed to be the top of directory hierarchies
+ for the purposes of the Orlov block allocator.
+
+##### lsattr
+
+To list attribute of files and sub-directory of the current directory
+
+    lsattr [oprions] [ files...  ]
+
+```sh
+> lsattr  ./
+ -----a-----------e- ./file1
+ ----i------------e- ./hello_dir
+ -----------------e- ./usrcopy
+```
+##### chattr
+
+To change attribute of files and sub-directory of the current directory
+
+    lsattr [oprions] [ files...  ]
+
+```sh
+>chattr +i  ./file1
+```
 
 ### Políticas de CONTRASEñAS y cuentas
 
@@ -5969,6 +6069,8 @@ sudo configuration or leveraging tools like `sudoedit`
 for temporary editing privileges.
 
 
+## Clase 9 - uLimit + AT + Cron + C-Make + Kernell
+
 ###  AT - ATtention (Automatic temporization)
 
 **Introducción**
@@ -6452,12 +6554,13 @@ WARNING! These examples may crash your computer if executed.
 The `:()  ` Defined the function called :
 This function accepts no arguments
 The syntax for bash function is as follows:
-```c
+```sh
 foo(){
  arg1=$1
  arg2=$2
+
  echo 'Bar..'
- #do_something on $arg argument
+ # do_something on $arg argument
 }
 ```
 fork() bomb is defined as follows:
@@ -6947,7 +7050,43 @@ separadas con mecanismos de comunicación estrictos entre ellos.
 
 **Diagrama del núcleo**
 
-Arquitectura de Linux
+Sistema operativo basado en un kernel monolítico :
+
+                    ●  Application
+                 ┌- ●  VFS, System call
+                 |  ●  IPC, File System
+    MODO KERNEL <   ●  Scheduler, Virtual Memory
+                 └- ●  Device Drivers, Dispatcher....
+                    ●  Hardware
+
+
+Sistema operativo basado en microkernel:
+
+    ●          Application
+        ┌------┬---┴----┬----------┐     ---------------
+    ● IPC     UNIX    Device      File      MODO
+      Applic  Server  Driver      Server    USUARIO
+        └-------┴---┬---┴-----------┘      ------------
+    ●  IPC, Virtual Memory, Scheduler =     MODO KERNEL
+                    |                     --------------
+    ●            Hardware
+
+Sistema operativo basado en kernel híbirido :
+
+    ●           Application
+        ┌-------┬---┴----┬------┐    -------------
+    ●  File     |      UNIX     |        Modo
+       Server   |      Server   |        USUARIO
+        |       |        |      |    --------------              
+    ●   |     Applic     |    Device      Modo
+        |      IPC       |    Driver      KERNEL
+        └-------┴---┬----┴------┘
+                    |                         
+    ●  Basic IPC, Virtual Memory, Scheduling  
+    ●         Hardware                  -------------
+
+
+** Arquitectura de Linux**
 
 Actualmente Linux es un núcleo monolítico
 híbrido. Los controladores de dispositivos y las
@@ -6989,52 +7128,56 @@ Compilar un kernel consume mucho tiempo y espacio disco
 (al menos unos 16 GB)
 por otro lado en algunas distribuciones perdemos el soporte 
 al utilizar un kernel personalizado.
-Debian CentOS
+
+Debian 
 ```sh
-apt install
-build-essentials
-yum group install
-“Development Tools”
-apt install ncurses-dev yum install
-binutils-devel
-ncurses-devel
-elfutils-libelf-devel
-hmaccalc
+
+apt install build-essentials
+apt install ncurses-dev 
+
+```
+CentOS
+
+```sh
+yum group install “Development Tools”
+yum install binutils-devel
+yum install ncurses-develel
+yum install futils-libelf-devel
+yum install hmaccalc
 ```
 Salvo que tengamos una buena razón, 
 solo deberíamos bajar una versión ‘stable’ o ‘longterm’.
+
 Por ejemplo :
+
 ```sh
 $ curl -O
 ```
 Otra opción es instalar el paquete de fuentes del
 kernel de la distribución.
-Por ejemplo
-En Debian se pueden buscar con 
+
+Por ejemplo En Debian se pueden buscar con :
+
 ```sh
 apt search ‘^linux-source’.
 ```
-Extraer las fuentes del kernel
-Tradicionalmente se usaba el directorio /usr/src para
-poner las fuentes del kernel, en la actualidad eso no se
-recomienda y es preferible hacerlo como usuario distinto
-de root.
+**Extraer las fuentes del kernel**
+
+Tradicionalmente se usaba el directorio /usr/src para poner las fuentes del kernel,
+en la actualidad eso no se recomienda y es preferible hacerlo como usuario distinto de root.
 
 ```sh
 $ cd /home/sergio
 $ tar --auto-detect -xvf linux-5.4.71.tar.xz && cd linux-5.4.71
 ```
 
-Luego podemos hacer un listado de los archivos y veremos
-un directorio llamado Documentation el cual contiene
-información muy importante de los distintos componentes
-del kernel.
-Por ejemplo
-El archivo `Documentation/process/changes.rst` tiene un listado
-de los requerimientos para instalar el kernel.
+Luego podemos hacer un listado de los archivos y veremos un directorio llamado Documentation 
+el cual contiene información muy importante de los distintos componentes del kernel.
+Por ejemplo El archivo `Documentation/process/changes.rst` 
+tiene un listado de los requerimientos para instalar el kernel.
 
 ```sh
-$ ls
+$ ls    Documentation/process/changes.rst
 arch    certs           CREDITS     Documentation   fs          init 
 Kbuild  kernel          LICENSES    Makefile        net         samples 
 block   COPYING         crypto      drivers         include     Kconfig 
@@ -7042,132 +7185,279 @@ lib     MAINTAINERS     mm          README          scripts     sound
 ipc     security        xtools      virt            usr
 ```
 
-Usar la configuración del kernel actual como plantilla
+**Usar la configuración del kernel actual como plantilla**
+
 Copiar la configuración del kernel actual:
+```sh
+$ cp /boot/config-$(uname -r) .config
+```
 Actualizar la configuración para adaptarlo a la nueva
 versión del kernel y decirle que use los valores
 predeterminados para las opciones nuevas:
-Cuando se usa el archivo ‘config’ de la distribución puede
-ser necesario hacer lo siguiente:
+
 ```sh
-$ cp /boot/config-$(uname -r) .config
 $ make localmodconfig
+```
+Cuando se usa el archivo ‘config’ de la distribución 
+puede ser necesario hacer lo siguiente:
+
+```sh
 sed -i -r 's#(CONFIG_SYSTEM_TRUSTED_KEYS=")(.*)(")#\1\3#g' .config
 ```
 
-Configuramos el kernel
+**Configuramos el kernel**
+
 Ahora vamos a personalizar nuestro kernel, para
 eso, deberíamos ejecutar el siguiente comando:
-Allí veremos una interfaz con menús, como la que
-se muestra en la siguiente pantalla.
 
 ```sh
   make menuconfig
 ```
 
+Allí veremos una interfaz con menús, como la que
+se muestra en la siguiente pantalla.
+
+
 Podemos navegar a través de esta interfaz con las flechas del teclado y
 con la tecla TAB. Podemos salir con Esc o elegir alguna de las opciones
 principales situadas debajo con la tecla Enter.
 
-La siguiente tabla muestra los tipos de
-funcionalidades que podemos encontrar:
-```c
+La siguiente tabla muestra los tipos de funcionalidades que podemos encontrar:
+```     
 Precedidas por :          Tipo de funcionalidad :
-[ ]  Pueden estar dentro o fuera de la imagen del kernel
-< >  Pueden estar dentro de la imagen del kernel o como módulos.
-{ }  Se seleccionan por medio de otra funcionalidad 
-       pueden estar dentro de la imagen del kernel o como módulos
---   Se seleccionan por medio de otra funcionalidad.
+    [ ]    Pueden estar dentro o fuera de la imagen del kernel
+    < >    Pueden estar dentro de la imagen del kernel o como módulos.
+    { }    Se seleccionan por medio de otra funcionalidad
+             pueden estar dentro de la imagen del kernel o como módulos
+    --     Se seleccionan por medio de otra funcionalidad.
 ```
 Se puede usar la barra de estado para habilitar o deshabilitar funciones.
 Si una funcionalidad está en blanco significa que 
 no se compilará de ninguna manera en el kernel,
 si tiene ‘M’ estará como módulo y si tiene ‘*’
 estará dentro del kernel.
+
 Una vez que terminamos nuestra configuración
-podemos guardarla, seleccionando <Save>.
+podemos guardarla, seleccionando `<Save>`.
+
+**Interfaces de configuración alternativas**
 
 Se pueden usar interfaces alternativas de configuración
-cambiando el parámetro de make, como vemos en la
-siguiente tabla:
-Interfaces de configuración alternativas
-Comando Interfaz
-make Línea de comandos (Texto puro).
-make xconfig Gráfica, basada en librerías Qt.
-make gconfig Gráfica: basada en librerías GTK+.
+cambiando el parámetro de make, como vemos en la si guiente tabla:
 
-Compilar Instalar los módulos del kernel y el kernel
+  Comando :           Interfaz :
+
+    make                Línea de comandos (Texto puro).
+    make xconfig        Gráfica, basada en librerías Qt.
+    make gconfig        Gráfica: basada en librerías GTK+.
+
+
 El sistema se encargará de:
+
 ● Generar las dependencias entre los módulos.
 ● Copiar el kernel nuevo a la ubicación correcta.
-● Generar el archivo de initramfs (disco de
-memoria inicial).
+● Generar el archivo de initramfs (disco de memoria inicial).
 ● Actualizar grub.
+
+**Compilar**
+
 ```sh
-> make menuconfig $ su -c “make modules_install && make install” 
+> make menuconfig 
 ```
 
-Disco de Memoria Inicial
+**Instalar los módulos del kernel y el kernel**
+
+```sh
+$ su -c “make modules_install && make install” 
+```
+
+El sistema se encargará de:
+
+    ● Generar las dependencias entre los módulos.
+    ● Copiar el kernel nuevo a la ubicación correcta.
+    ● Generar el archivo de initramfs (disco de memoria inicial).
+    ● Actualizar grub.
+
+**Disco de Memoria Inicial**:
 En versiones más viejas se puede usar el comando o bien
 mkinitramfs o dracut para generar el archivo initramfs:
-**Uso de update-initramfs**
-**Uso de mkinitramfs**
-(El último parámetro es la versión del kernel)
 
-**Uso de dracut**
-En distribuciones de la rama Red Hat se utiliza dracut:
+**Uso de update-initramfs**
 
 ```sh
  update-initramfs -u -v
+```
+
+**Uso de mkinitramfs**
+
+```sh
  mkinitramfs -k -o /boot/initrd.img-5.4.71 5.4.71
+```
+( El último parámetro es la versión del kernel)
+
+**Uso de dracut**
+
+En distribuciones de la rama Red Hat se utiliza dracut:
+
+```sh
  dracut -f /boot/initramfs-5.4.71.img 5.4.71
 ```
 
-Aplicar un parche para actualizar el kernel
-Si se queremos revertir los cambios hacemos:
-Parches de actualización
+**Parches de actualización**
 
+Aplicar un parche para actualizar el kernel:
 ```sh
 > cd linux-5.4.71
 > curl -L -O
 https://cdn.kernel.org/pub/linux/kernel/v5.x/incr/patch-5.4.71-72.xz
-
 > xzcat patch-5.4.71-72.xz | patch -p1
+```
+
+Si se queremos revertir los cambios hacemos:
+
+```sh
 > xzcat patch-5.4.71-72.xz | patch -R -p1
 ```
 
-Parches no diferenciales
-Si un parche no es diferencial primero hay que aplicar en
-forma reversa el parche, de esa manera el kernel queda
-como estaba en la rama mainline:
-Una vez allí podemos aplicar el parche para pasar a la
-siguiente versión stable:
+**Parches no diferenciales**
+
+Si un parche no es diferencial primero hay que aplicar en forma reversa el parche, 
+de esa manera el kernel queda como estaba en la rama mainline:
+
+**siguiente versión stable:**
+
 ```sh
 > curl -L -O
 https://cdn.kernel.org/pub/linux/kernel/v5.x/patch-5.4.71.xz
-
 > xzcat patch-5.4.71.xz | patch -R -p1
+```
+Una vez allí podemos aplicar el parche para pasar a la siguiente versión stable:
 
+```sh
 > curl -L -O
 https://cdn.kernel.org/pub/linux/kernel/v5.x/patch-5.4.72.xz
-
 > xzcat patch-5.4.72.xz | patch -p1
 ```
-● [Núcleo (informática) - Wikipedia, laenciclopedia libre]
-● [Monolithic kernel - Wikipedia]
-● [Building a custom kernel - Fedora ProjectWiki]
-● [8.10. Compilación de un núcleo]
-● Capítulo 9. Trucos del sistema]
-● [HowTos/Custom_Kernel - CentOS Wiki]
-● [Applying Patches To The Linux Kernel 
-    —  TheLinux Kernel documentation]
-● [Building External Modules
-     — The Linux Kernel  documentation]
+
+**Fuentes y recursos adicionales**
+
+    ● [Núcleo (informática) - Wikipedia, laenciclopedia libre]
+    ● [Monolithic kernel - Wikipedia]
+    ● [Building a custom kernel - Fedora ProjectWiki]
+    ● [8.10. Compilación de un núcleo]
+    ● Capítulo 9. Trucos del sistema]
+    ● [HowTos/Custom_Kernel - CentOS Wiki]
+    ● [Applying Patches To The Linux Kernel 
+        —  TheLinux Kernel documentation]
+    ● [Building External Modules
+        — The Linux Kernel  documentation]
 
 
-## Clase 9
+## Clase 10 - Accesibilidad + Backups + Encriptacion
+
+### DESAFIO 4
+
+   **Objetivo**
+    Administrar usuarios y grupos de nuestro sistema 
+    (crearemos usuarios y grupos, asignaremos permisos a
+    distintos archivos y directorios y una vez terminada la práctica 
+    haremos una limpieza para completar el ciclo).
+    
+    Además, utilizaremos algunas herramientas de automatización 
+    para ejecutar comandos de forma periódica o en algún momento determinado.
+
+   **Parte 1**  Administracion de grupos y usuarios
+
+1) Crear 3 usuarios (Asegurarse de que sus directorios home sean creados)
++   a) Mariano
++   b) Luis
++   c) Jose
+1) Crear 3 grupos
+*   a) Administradores
+*   b) Desarrolladores
+*   c) Operaciones
+1) Realizar las siguientes modificaciones:
+*   a) Mariano tiene que ser parte del grupo Administradores (primario)
+*   b) Luis tiene que ser parte del grupo Desarrolladores (primario)
+*   c) Jose tiene que ser parte del grupo Administradores (primario) 
+                                            y Operaciones (Secundario)
+1) Los miembros del grupo de Administradores, deben poder correr cualquier comando como sudo sin utilizar la contraseña
+2) Los miembros del grupo Operaciones, deben poder correr el comando mount y umount 
+    (con cualquier argumento) como sudo y tendrán que utilizar la contraseña.
+    
+3) Desarrollar la siguiente estructura de directorios y archivos: 
+*   a) Dentro del Home del usuario Mariano, tendrán que crear la siguiente estructura:
+    +   i) Scripts/ping.sh (tendrá que tener el siguiente contenido) 
+                           (permisos 2770, owner Mariano y grupo Administradores)
+        #!/bin/bash
+        ping www.google.com.ar
+    +   ii) Scripts/kick.sh (permiso rwx-rwx-, owner Mariano y grupo administradores)
+            docs/test.txt (permiso el owner puede leer y escribir, el grupo puede leer y escribir y los demás usuarios no pueden hacer nada, owner Mariano y grupo administradores)
+    +   iv) docs/readme.txt (permiso 660, owner Mariano y grupo Administradores)
+*   b) Dentro del Home del usuario Luis, tendrán que crear la siguiente estructura:
+    +   i) feat-1/index.html (tendrá que tener el siguiente contenido) 
+                             (permisos ugo=664, owner Luis y grupo Luis) 
+         `<H1> Hola Bootcamp! </H1>`
+    +   ii) feat-1/readme.txt (permisos rwrwr, owner Luis y grupo Desarrolladores)
+            feat-2/tests      (permisos rwrwr, owner Luis y grupo Luis)
+*   c) Dentro del Home del usuario Jose, tendrán que crear la siguiente estructura:
+    +   i) ops/script.sh (permisos 4770, owner Jose y grupo operaciones)
+    +   ii)ops/test.sh   (permisos el owner tiene todos los permisos, 
+                          el grupo tambien y los demas usuarios solo pueden leer, 
+                          owner Jose y grupo operaciones)
+        adm/mount.sh (Tendrá que tener el siguiente contenido) 
+                     (permisos rwxrwx, owner Jose y grupo administradores, 
+                     además agregar un FACL que haga que el usuario Mariano 
+                     no pueda ejecutar este archivo, sólo pueda leerlo).
+        #!/bin/bash
+        mount -a
+    +   iv) procedures/kick.txt (permisos rwrwr, owner Jose y grupo operaciones)
+1) Bloquear el acceso del usuario Luis (no borrar el usuario, solo bloquear el acceso)
+2) Forzar un cambio de contraseña en el siguiente login del usuario Jose
+3) Configurar el vencimiento de la contraseña del usuario Mariano (en 7 días)
 
 
+    **Parte 2**  Automatización de tareas 
+
+1) En el crontab del usuario Mariano, 
+    agregar una linea que ejecute el script ping.sh c
+    ada 5 minutos de cada hora de cada dia
+2) En el crontab del usuario Jose, 
+    agregar una línea que ejecute el comando echo $USER > procedures/kick.txt 
+    (agregar el path completo) en la hora 18 de cada día de cada hora
+3) En el crontab general del sistema, 
+    agregar una línea que ejecute el comando free -m como el usuario Mariano 
+    en el minuto 15, 30, 45 de las horas 6, 12 y 18 el dia Lunes de cada mes
+4) En el crontab general del sistema, 
+    agregar una línea que ejecute el comando df -h como el usuario Jose 
+    cada minuto entre las 15:30 y las 15:35 el día 17 del mes.
+
+IMPORTANTE: Realizar una copia del home de los usuarios que creamos 
+ya que los vamos a eliminar y eliminar su home, 
+necesitaran los archivos para el entregable.
+
+5) Crear el archivo /tmp/usuarios-eliminados.txt
+*   a) Logueado como cada usuario, realizar el comando echo $USER >> /tmp/usuarios-eliminados.txt
+6) Automatizar la eliminación de los usuarios con el comando AT:
+*   a) Eliminar el usuario Jose y su home en 5m
+*   b) Eliminar el usuario Luis y su home en 10m
+*   c) Eliminar el usuario Mariano y su home en 15m
+
+
+    **ENTREGABLE** 
+
+Se esperan los archivos:
+    Instructivo
+    Directorio home de cada usuario (Mariano, Jose y Luis) junto a sus archivos
+    Crontab del usuario Mariano (crontab-mariano.txt)
+    Crontab del usuario Jose (crontab-jose.txt)
+    Crontab General del sistema (crontab-general.txt)
+
+Recuerden seguir las instrucciones al pie de la letra para los entregables.
+    Paara esta entrega se espera que sepan realizar un instructivo
+    en un formato optimo y legible
+    https://www.instructables.com/How-to-make-a-great-Instructable/
+    https://geekflare.com/es/user-manual-software/
 ### Certificacion LPI - Fase 1 - Módulo 5 
 
 #### 106.2: Escritorios gráficos 
@@ -7176,6 +7466,7 @@ Peso: 1   ( importancia para examen LPI   del 1 al 6).
 
 
 Descripción:
+
 Los alumnos deberían tener un conocimiento conceptual de 
 los escritorios de Linux principales.
 Además, deberían tener un conocimiento conceptual de 
@@ -7259,10 +7550,9 @@ los datos del sistema importantes.
 Este tópico pertenece al examen LPIC-2 201.
 
 Áreas Claves de Conocimiento
-● Saber que directorios tienen que ser incluidos 
-   en las copias de seguridad.
-● Estar al tanto de las soluciones de 
-   copias de respaldo tales como `Amanda, Bacula y BackupPC`.
+● Saber que directorios tienen que ser incluidos en las copias de seguridad.
+● Estar al tanto de las soluciones de copias de respaldo 
+  tales como `Amanda, Bacula y BackupPC`.
 ● Saber los beneficios y desventajas de 
   las cintas, `CDR`, discos u otro medio de `copia de seguridad`.
 ● Realizar copias de respaldo parciales y manuales.
@@ -7277,6 +7567,270 @@ Términos y herramientas
 ● /dev/st* y /dev/nst*
 ● mt
 ● rsync
+
+###  Entornos y Acceso remoto
+
+
+#### Escritorios Gráficos
+
+    ● KDE
+    ● GNOME
+    ● XFCE
+
+**KDE**
+
+KDE es en realidad un `equipo` internacional que desarrolla software libre, 
+uno de sus proyectos es `Plasma` altamente personalizable. 
+Está basado en las `librerías Qt`
+
+**GNOME**
+
+Este entorno de escritorio que se propone ser amigable para los usuarios finales 
+y posee una configuración minimalista. GNOME usa las librerías GTK.
+
+**XFCE**
+
+XFCE usa las librerías GTK, pero se propone ser un escritorio 
+con` bajo consumo de recursos` sin perder por eso amigabilidad.
+
+##### startx Gestor de pantallas
+
+Si bien se puede lanzar un entorno gráfico con el `comando startx`, 
+para instalaciones de escritorio o estaciones de trabajo 
+es más común usar un gestor de pantallas o `Display Manager  (DM)`.
+Existen varios display managers, veamos la tabla de la derecha:
+
+
+● **xdm** 
+Es el display manager `más antiguo` y, por ello, 
+el visualmente más rudimentario de todos.
+
+● **kdm**
+Era el gestor de pantallas predeterminado de KDE, 
+hasta ahora, que está siendo desplazado por SDDM.
+
+● **gdm** 
+Es un gestor de pantallas escrito desde cero
+que no tiene código en común con XDM.
+
+● **lightdm**
+`Light Display Manager `oporta diferentes entornos de escritorio,
+consume relativamente `poca memoria`, 
+soporta diferentes tecnologías de pantallas.
+
+**sddm** 
+Es el display manager predeterminado del proyecto KDE Plasma 5 para Wayland*.
+(*) Wayland es un protocolo alternativo a X Window System.
+
+
+##### lightdm
+
+**Instalación de lightdm**
+
+En CentOS 7 se puede instalar mediante:
+```sh
+[CentOS]:$  yum install lightdm
+```
+
+**Configurar LightDM**
+
+Los archivos y subdirectorios de configuración
+están en el directorio `/etc/lightdm`:
+
+```sh
+[CentOS]:$ ls etc/lightdm
+keys.conf   lightdm.conf    lightdm.conf.d
+lightdm-kde-greeter.conf     users.conf
+```
+
+El archivo de configuración principal es el denominado `lightdm.conf`, 
+a la derecha vemos un resumen del mismo:
+
+```sh 
+[CentOS]:$ cat etc/lightdm/lightdm.conf
+
+[LightDM]
+minimum-vt=1
+user-authority-in-system-dir=true
+[SeatDefaults]
+xserver-command=X -background none
+greeter-session=lightdm-greeter
+session-wrapper=/etc/X11/xinit/Xsession
+[XDMCPServer]
+# Cambiar de false a true para habilitar XDMCP
+>enabled=false
+>port=177
+[VNCServer]
+# Cambiar de false a true para habilitar VNC
+>enabled=false
+>command=Xvnc
+>port=5900
+```
+
+**Ubuntu** usa Gnome como interfaz, 
+asi que `no tiene lightdm` instalado por defecto sino `gdm`  por defecto
+
+```sh
+[osboxes@osboxes]:~$ cat /etc/gdm3/custom.conf 
+# GDM configuration storage
+# See /usr/share/gdm/gdm.schemas for a list of available options.
+
+[daemon]
+# Uncomment the line below to force the login screen to use Xorg
+#WaylandEnable=false
+#####  (...salida recortada ...) ##########################################
+```
+```sh
+[osboxes@osboxes]:~$  systemctl status lightdm
+Unit lightdm.service could not be found.
+
+[osboxes@osboxes]:~$  locate lightdm
+/snap/gtk-common-themes/1519/share/themes/Greybird/gtk-3.0/apps/lightdm-unity-greeter.css
+/snap/gtk-common-themes/1519/share/themes/Greybird-dark/gtk-3.0/apps/lightdm-unity-greeter.css
+/snap/gtk-common-themes/1535/share/themes/Greybird-dark/gtk-3.0/apps/lightdm-unity-greeter.css
+/usr/share/lightdm                          #  
+/usr/share/lightdm/lightdm.conf.d          
+```
+
+LinuxMint con Xfce,  si trae Lightdm por defecto
+
+```sh
+[ariel-All-Series]:$  systemctl status lightdm.service 
+● lightdm.service - Light Display Manager
+     Active: active (running) since Sat 2024-10-19 21:38:38 -03; 2h 16min ago
+
+[ariel-All-Series]:$  locate lightdm.conf
+/etc/init/lightdm.conf
+/etc/lightdm/lightdm.conf.d
+/etc/lightdm/lightdm.conf.d/70-linuxmint.conf
+
+[ariel-All-Series]:$  cat /etc/lightdm/lightdm.conf.d/70-linuxmint.conf 
+[SeatDefaults]
+user-session=xfce
+```
+
+Guarda muchas similitudes con otros display managers
+(configuración del greeter y la manera en que se ejecuta X). 
+Además tiene secciones para la `configuración del acceso remoto`
+(`XDMCPServer` y `VNCServer`). 
+El aspecto de `LightDM` se puede realizar editando el archivo
+`lightdm-kde-greeter.conf`.
+
+Además, LightDM posee una opción muy interesante para probarlo, la cual es:
+
+```sh
+> lightdm --test-mode
+```
+
+De esta manera, podemos probar el Display Manager sin salir de la sesión.
+
+**Servicio lightdm:**
+
+Se habilita y deshabilita como cualquier otro servicio en system :
+
+```sh
+> systemctl sttus   lightdm        # Revisar:
+> systemctl start   lightdm        # Arrancar:
+> systemctl enable  lightdm        # Habilitar:
+> systemctl disable lightdm        # Deshabilitar:
+> systemctl stop    lightdm        # Detener:
+```
+
+#### Acceso remoto
+
+##### XDMCP como cliente
+
+XDMCP : `X Display Manager` Control Protocol
+Supongamos que tenemos un `servidor XDMCP`
+con dirección` IP 192.168.91.1` en ese caso el
+comando para usar desde el cliente sería:
+
+```sh
+X -query 192.168.91.1
+```
+Hay que tener en cuenta que la conexión sería sin cifrar, 
+por lo tanto, al utilizarlo en producción
+sería conveniente usar un `túnel SSH`, para proporcionar mayor seguridad.
+
+```sh
+[ariel-All-Series]:$ X -query ***.***.***.***
+/usr/lib/xorg/Xorg.wrap: Only console users are allowed to run the X server
+
+[ariel-All-Series]:$ sudo X -query ***.***.***.***
+(EE) 
+Fatal server error:
+(EE) Server is already active for display 0
+	If this server is no longer running, remove /tmp/.X0-lock and start again.
+
+[ariel-All-Series]:$ sudo X -help 
+use: X [:<display>] [option]
+-a #                   default pointer acceleration (factor)
+-ac                    disable access control restrictions
+-audit int             set audit trail level
+
+#  THIS RUINED DISPLAY :   sudo X :1 -query ***.***.***.***
+#  I clearly don't any idea how this works
+```
+https://en.wikipedia.org/wiki/X.Org_Server
+
+
+##### VCN
+
+VNC (Virtual Network Computing) parmite  acceso a un escritorio remoto .
+El software `TigerVNC` ofrece tanto un `componente cliente` como `servidor`. 
+
+Este último `se puede lanzar` como usuario `sin privilegios de root`.
+En algunos casos es necesario ajustar el archivo  `~/.vnc/xstartup`,
+
+en el siguiente ejemplo estaría lanzando una sesión 
+del entorno de escritorio XFCE al conectarse:
+
+```sh
+#!/bin/sh
+unset SESSION_MANAGER
+unset DBUS_SESSION_BUS_ADDRESS
+vncconfig -nowin &
+exec dbus-launch xfce4-session
+```
+
+Hay que ejecutar el `comando vncpasswd` para setear la contraseña de acceso 
+y luego lanzar el proceso de servidor:
+
+```sh
+vncserver --localhost no :1
+```
+Y suponiendo que el servidor vnc tiene IP 10.0.0.1, 
+desde el cliente ejecutar: 
+
+```sh
+vncviewer 192.168.79.38:5901
+```
+
+Tal como muestra la captura de pantalla, 
+la conexión no está cifrada, por lo tanto es `insegura`, 
+es recomendable usar un `túnel ssh` para asegurarla.
+
+##### RDP
+
+`RDP` (Remote Desktop Protocol) es un protocolo que se usa principalmente 
+para acceder a `sistemas operativos Microsoft Windows`, 
+sin embargo existe una implementación libre que se puede instalar en Linux.
+Existen varias herramientas gráficas que sirven para acceder de manera remota,
+una de ellas es `Remmina` la cual soporta `varios protocolos`.
+
+##### Spice
+
+Otro protocolo es `Spice` 
+(Simple Protocol for Independent Computing Environments) 
+que se usa principalmente para acceso al escritorio de `máquinas virtuales` 
+tanto de manera local como remota.
+
+
+● 106.2 Lesson 1: 106.2 Lesson 1.
+● Xrdp by neutrinolabs: http://xrdp.org/.
+● Proyecto SPICE: Spice-Space.org.
+● TigerVNC: TigerVNC.
+● Screen access to any PC: Remmina.
 
 
 ### Accesibilidad 
@@ -7333,7 +7887,6 @@ un teclado tradicional. Se pueden configurar los
 ajustes que veremos en la próxima pantalla.
 
 #### Accesibilidad de teclado
-
 
 StickyKeys Permite bloquear las teclas modificadoras, 
 tales como CTRL y SHIFT. Esto les permite realizar
@@ -7530,8 +8083,9 @@ Por ejemplo: estilos de párrafos, subrayado,
 
 ### Gestión de Volúmenes Lógicos
 
-Device Mapper
-En Linux el LVM se basa en un concepto
+**Device Mapper**
+
+En Linux el` LVM` se basa en un concepto
 denominado Device Mapper: es una rutina del
 kernel que permite mapear un dispositivo de
 bloques a otro, mediante la interfaz de
@@ -7539,8 +8093,8 @@ aplicación ioctl.
 
 Consideremos el siguiente ejemplo del comando
 dmsetup: vemos que los volúmenes lógicos
-/dev/mapper/centos-swap y /dev/mapper/root
-tienen como target la partición /dev/sda2.
+`/dev/mapper/centos-swap` y` /dev/mapper/root`
+tienen como target la partición `/dev/sda2.`
 Otro target es el dm-raid que sirve como puente
 de un Device Mapper a un RAID.
 
@@ -7560,14 +8114,20 @@ brw-rw---- 1 root disk 8, 2 ago 20 23:06 sda2
 
 
 La organización de un LVM es como
-se muestra en el diagrama de la derecha:
-```sh
-/dev/sda1           PV 1
-/dev/sda2           PV 2
-/dev/sdb1           PV 3
-Volumen Lógico 1    /usr
-Volumen Lógico 2    /var    VG 1
-```
+se muestra en el diagrama :
+
+    ╔==================================╗
+    ║ ┌-----------┐     ┌-----------┐  ║
+    ║ | /dev/sda1 |     | /dev/sdb1 |  ║
+    ║ | PV 1      |     |  PV 3     |  ║
+    ║ | /dev/sda2 |     └-----------┘  ║
+    ║ | PV 2      |      Volumen       ║
+    ║ └-----------┘      Lógico 2      ║
+    ║  Volumen                /var     ║
+    ║  Lógico 1                        ║
+    ║      /usr                        ║
+    ╚==================================╝
+                    VG 1
 
 #### Componentes de la anatomía de un LVM:
 
@@ -7612,46 +8172,51 @@ Veamos el código de la próxima pantalla.
 ```sh
 > fdisk /dev/sdg
 Welcome to fdisk (util-linux 2.23.2).
-Changes will remain in memory only, until you decide to write them.
-Be careful before using the write command.
+
 Device does not contain a recognized partition table
 Building a new DOS disklabel with disk identifier `0x16d6d0f6`.
+
 Orden (m para obtener ayuda): n
-Partition type:
-p primary (0 primary, 0 extended, 4 free)
-e extended
-Select (default p): p
-Número de partición (1-4, default 1): 1
-Primer sector (2048-8388607, valor predeterminado 2048):
-Se está utilizando el valor predeterminado 2048
-Last sector, +sectors or +size{K,M,G} (2048-8388607, valor predeterminado 8388607):
-Se está utilizando el valor predeterminado 8388607
-Partition 1 of type Linux and of size 4 GiB is set
+    Partition type:
+        p primary (0 primary, 0 extended, 4 free)
+        e extended
+    Select (default p): p
+        Número de partición (1-4, default 1): 1
+        Primer sector (2048-8388607, valor predeterminado 2048):
+               Se está utilizando el valor predeterminado 2048
+        Last sector, +sectors or +size{K,M,G} (2048-8388607, 
+                               valor predeterminado 8388607):
+        Partition 1 of type Linux and of size 4 GiB is set
+
 Orden (m para obtener ayuda): t
-Selected partition 1
-Hex code (type L to list all codes): 8e
-Changed type of partition 'Linux' to 'Linux LVM'
+    Selected partition 1
+    Hex code (type L to list all codes): 8e
+    Changed type of partition 'Linux' to 'Linux LVM'
+
 Orden (m para obtener ayuda): p
-Disk /dev/sdg: 4294 MB, 4294967296 bytes, 8388608 sectors
-Units = sectors of 1 * 512 = 512 bytes
-Sector size (logical/physical): 512 bytes / 512 bytes
-I/O size (minimum/optimal): 512 bytes / 512 bytes
-Disk label type: dos
-Identificador del disco: `0x16d6d0f6`
-Disposit. Inicio Comienzo Fin Bloques Id Sistema
-/dev/sdg1 2048 8388607 4193280 8e Linux LVM
+    Disk /dev/sdg: 4294 MB, 4294967296 bytes, 8388608 sectors
+    Units = sectors of 1 * 512 = 512 bytes
+    Sector size (logical/physical): 512 bytes / 512 bytes
+    I/O    size (minimum/optimal) : 512 bytes / 512 bytes
+    Disk label type: dos
+    Identificador del disco: `0x16d6d0f6`
+    Disposit. Inicio Comienzo Fin Bloques Id Sistema
+    /dev/sdg1 2048 8388607 4193280 8e Linux LVM
+
 Orden (m para obtener ayuda): w
-¡Se ha modificado la tabla de particiones!
-Llamando a ioctl() para volver a leer la tabla de particiones.
-Se están sincronizando los discos.
+    ¡Se ha modificado la tabla de particiones!
+    Llamando a ioctl() para volver a leer la tabla de particiones.
+    Se están sincronizando los discos.
 ```
 
-Con el disco /dev/sdh hacemos el mismo procedimiento.
-Se puede crear una partición de tipo LVM que ocupe todo
+Con el disco `/dev/sdh` hacemos el mismo procedimiento.
+Se puede crear una `partición de tipo LVM` que ocupe todo
 el disco de manera interactiva del siguiente modo:
 
-Aquí creamos una partición que ocupa todo el disco, pero
-podríamos haber creado más de una partición de tipo LVM.
+Aquí creamos una partición que ocupa todo el disco, 
+pero podríamos haber creado más de una partición de tipo LVM.
+
+
 ```sh
 > fdisk /dev/sdh < <(echo -e 'd\nn\np\n1\n\n\nt\n8e\nw')
 ```
@@ -7661,6 +8226,7 @@ Entonces nos quedan dos particiones, `/dev/sdg1` y `/dev/sdh1`
 que usaremos como PVs de la siguiente manera:
 
 Ahora sí, con los PVs podemos armar nuestro VG:
+
 ```sh
 > pvcreate /dev/sd[gh]1
 Physical volume "/dev/sdg1" successfully created
@@ -7670,41 +8236,37 @@ Physical volume "/dev/sdh1" successfully created
 Volume group "sergio" successfully created
 ```
 
-
+**Creación de volúmenes lógicos**
 
 Recién cuando se ha creado un VG podemos
 crear volúmenes lógicos que serían como las
 particiones en un disco tradicional.
 
 Crearemos un LV más de 5G:
+
+Mappeo de sergio-lv1 y sergio-lv2:
 ```sh
 > lvcreate --size 4G --name lv1 sergio
 Logical volume "lv1" created
-Creación de volúmenes lógicos
 
 > lvcreate --size 4G --name lv2 sergio
 Logical volume "lv2" created
 ```
 
-
-
 Vemos el resultado de los últimos comandos:
 
-Mappeo de sergio-lv1 :
 
 ```sh
 > mkfs.xfs /dev/mapper/sergio-lv1
-meta-data=/dev/mapper/sergio-lv1    isize=256   agcount=4, agsize=262144 blks=                               sectsz=512  attr=2, projid32bit=1 
-                                    crc=0
-data    =                           bsize=4096  blocks=1048576, imaxpct=25
-        =                           sunit=0     swidth=0 blks
-naming  =version 2                  bsize=4096 ascii-ci=0 ftype=0
-log     =internal                   log bsize=4096 blocks=2560, version=2
-        =                           sectsz=512 sunit=0 blks, lazy-count=1
-realtime =none                      extsz=4096 blocks=0, rtextents=0
+meta-data=/dev/mapper/sergio-lv1   isize=256   agcount=4, agsize=262144 blks=                              sectsz=512  attr=2, projid32bit=1 
+                                   crc=0
+data     =                         bsize=4096  blocks=1048576, imaxpct=25
+         =                         sunit=0     swidth=0 blks
+naming   =version 2                bsize=4096  ascii-ci=0 ftype=0
+log      =internal                 bsize=4096  blocks=2560,   version=2
+         =                         sectsz=512  sunit=0 blks,  lazy-count=1
+realtime =none                     extsz=4096  blocks=0,      rtextents=0
 ```
-
-Mappeo de sergio-lv2:
 
 ```sh
 > mkfs.ext4 /dev/mapper/sergio-lv2
@@ -7715,28 +8277,31 @@ Tamaño del bloque   =4096 (bitácora=2)
 Tamaño del fragmento=4096 (bitácora=2)
 Stride=0 blocks, Stripe width=0 blocks
 327680 inodes, 1310720 blocks
-65536 blocks (5.00%) reserved for the super user
+65536  blocks (5.00%) reserved for the super user
 Primer bloque de datos=0
 Número máximo de bloques del sistema de ficheros=1342177280
 40 bloque de grupos
 32768 bloques por grupo, 32768 fragmentos por grupo
 8192 nodos-i por grupo
 Respaldo del superbloque guardado en los bloques:
-32768, 98304, 163840, 229376, 294912, 819200, 884736
+    32768, 98304, 163840, 229376, 294912, 819200, 884736
+
 Allocating group tables: hecho
 Escribiendo las tablas de nodos-i: hecho
 Creating journal (32768 blocks): hecho
 Escribiendo superbloques y la información contable del sistema de ficheros: hecho
 ```
 
-Finalmente tenemos que activar el VG para comenzar
-a usar los LVs:
+Finalmente tenemos que activar el VG para comenzara usar los LVs:
 
-Ahora posdemos montar los LVs:
 ```sh
 > vgchange -a y sergio
 2 logical volume(s) in volume group "sergio" now active
+```
 
+Ahora posdemos montar los LVs:
+
+```sh
 > mount /dev/mapper/sergio-lv1 /lv1
 > mount /dev/mapper/sergio-lv2 /lv2
 ```
@@ -7747,6 +8312,7 @@ Ahora posdemos montar los LVs:
 
 
 #### Agrandar un LV
+
 Una de las características más ventajosas de un LVM es que
 si hay espacio disponible en el VG se puede agrandar un LV.
 Cambiar de tamaño volúmenes lógicos
@@ -7760,35 +8326,39 @@ lv1 sergioexample -wi-ao---- 1,00g
 Extending logical volume lv1 to 3,00 GiB
 Logical volume lv1 successfully resized
 resize2fs 1.42.9 (28-Dec-2013)
-Filesystem at /dev/mapper/sergioexample-lv1 is mounted on /lv1; on-line resizing required
+Filesystem at /dev/mapper/sergioexample-lv1 is 
+   mounted on /lv1; on-line resizing required
 old_desc_blocks = 1, new_desc_blocks = 1
-The filesystem on /dev/mapper/sergioexample-lv1 is now 786432 blocks long.
+The filesystem on /dev/mapper/sergioexample-lv1 
+   is now 786432 blocks long.
 
 [root@centos7 ~] :  lvs sergioexample/lv1
 LV VG Attr LSize Pool Origin Data% Move Log Cpy%Sync Convert
 lv1 sergioexample -wi-ao---- 3,00g
 ```
 
+Notar que:
+```sh
+    lvresize -r -L+2G sergioexample/lv1`
+```
+No es lo mismo que:
+```sh
+    lvresize -r -L2G sergioexample/lv1
+```
 
 La primera sentencia le suma 2G, mientras que
+
 la segunda lo establece en 2G. Es una sutil pero
 importante diferencia.
 
-● La opción -r se vale de fsadmin para
+● La opción `-r` se vale de `fsadmin` para
 redimensionar online el sistema de archivos.
-● Otra opción es usar el comando lvextend y
-luego la herramienta apropiada para agrandar
-el sistema de archivos.
 
-Notar que:
-`lvresize -r -L+2G sergioexample/lv1`
+● Otra opción es usar el comando `lvextend` 
+y luego la herramienta apropiada para agrandar el sistema de archivos.
 
-No es lo mismo que:
-`lvresize -r -L2G sergioexample/lv1`
+#### Reducir el tamaño de un LV
 
-
-
-Reducir el tamaño de un LV
 Para esta tarea hay que tomar más recaudos,
 ya que esta tarea implica reducir el tamaño del
 sistema de archivos dentro el LV.
@@ -7814,7 +8384,7 @@ S.ficheros Tamaño Usados Disp Uso% Montado en
 /dev/mapper/sergioexample-lv2 976M 313M 596M 35% /lv2
 ```
 
-Ahora procedemos a  redimensionar:
+Ahora procedemos a redimensionar:
 
 ```sh
 [root@centos7 ~] :  umount /lv2
@@ -7848,6 +8418,8 @@ Log Convert LV UUID LProfile
 lv2 sergioexample 1 -wi-ao---- 600,00m -1 -1 253 2
 ```
 
+#### Uso de snapshots
+
 Una snapshot de LVM sirve para capturar
 el estado del sistema de archivos en un
 determinado momento. Sirve por ejemplo,
@@ -7864,15 +8436,14 @@ respecto al momento en que creamos la instantánea.
 Si la instantánea llega al 100% del tamaño
 asignado, la misma no funcionará.
 
-#### Uso de snapshots
 
 Generación de una snapshot
 Se crea con el comando lvcreate como se muestra
 a continuación:
 
 Hacer un backup de la instantánea
-
 Si el sistema de archivos es xfs debe montarse con la opción nouuid.
+
 ```sh
 [root@centos7 ~] :  lvcreate --size 100M --snapshot --name alfa /dev/mapper/sergioexample-lv2
 umo Logical volume "alfa" created
@@ -7997,72 +8568,70 @@ aplicaciones.
 
 ##### Cifrado simétrico
 
-Es el más antiguo. Un ejemplo sencillo es el
-siguiente: supongamos que tenemos el siguiente
-mensaje, el cual queremos enviar a un
-destinatario: “Hola Mundo”. Podríamos
-reemplazar cada consonante por la que le sigue
-en el alfabeto y reemplazar cada vocal por un
-número, entonces nos queda: “I4m1 N5oe4”.
-La persona que lo recibe debería saber qué
-método usamos para cifrar el mensaje, que
-consistiría en ejecutar exactamente lo mismo que
-hicimos nosotros pero a la inversa.
+Es el más antiguo. Un ejemplo sencillo es el siguiente: 
+supongamos que tenemos el siguiente mensaje, 
+el cual queremos enviar a un destinatario: `“Hola Mundo”`. 
 
+Podríamos reemplazar cada consonante por la que le sigue
+y reemplazar cada vocal por un número, 
+entonces nos queda: `"I4m1 N5oe4"`.
 
-Por dicho motivo este tipo de cifrado se
-denomina simétrico. En la actualidad se usan
-algoritmos mucho más sofisticados para cifrar.
-Sin embargo esta forma de cifrar tiene una
-importante desventaja: solamente se puede
-transmitir mediante un canal seguro.
-Trasladado al ejemplo con GnuPG, esta
-herramienta es capaz de cifrar mediante una
-clave secreta un archivo. Si deseamos enviarle
-dicho archivo a otro usuario, éste deberá conocer
-la clave que usamos.
+La persona que lo recibe debería saber qué método usamos 
+para cifrar el mensaje, que consistiría en ejecutar 
+exactamente `lo mismo` que hicimos nosotros pero a la `inversa`.
+
+Por dicho motivo este tipo de cifrado se denomina `simétrico`.
+En la actualidad se usan algoritmos mucho más sofisticados para cifrar.
+Sin embargo esta forma de cifrar tiene una importante `desventaja`: 
+solamente se puede transmitir `mediante un canal seguro`.
+
+Trasladado al ejemplo con GnuPG, esta herramienta es capaz de
+cifrar mediante una clave secreta un archivo. 
+
+Si deseamos enviarle dicho archivo a otro usuario, 
+éste deberá conocer la clave que usamos.
 
 
 
 ##### Cifrado asimétrico
 
-En el cifrado asimétrico, tanto el emisor como el
-receptor usan un método distinto para descifrar
-un mensaje, haciéndolo mucho más resistente
-para transmitirlo por un canal inseguro.
-El método para cifrado asimétrico que se emplea
-con GnuPG se llama clave pública.
-Supongamos que tenemos a los usuarios Alice y
-Bob. Alice creará:
+En el cifrado asimétrico, tanto el emisor como el receptor 
+usan un método distinto para descifrar un mensaje, 
+haciéndolo mucho más resistente
+para transmitirlo `por un canal inseguro`.
+
+El método para cifrado asimétrico que se emplea con GnuPG se llama `clave pública`.
+Supongamos que tenemos a los usuarios Alice y Bob. Alice creará:
 
     ● Una clave privada.
     ● Una clave pública.
 
-Cuando Bob quiera enviarle un mensaje lo cifrará
-mediante la clave pública de Alice. Dicho mensaje
-solamente se puede descifrar mediante la clave
-privada de Alice.
-Este método, aunque un poco más complejo, es
-mucho más seguro y resistente para ser enviado
-por canales inseguros. El único recaudo que debe
-tener Alice es que debe mantener su clave
-privada sin compartir.
+Cuando Bob quiera enviarle un mensaje 
+lo cifrará mediante la clave pública de Alice. 
+Dicho mensaje solamente se puede descifrar 
+mediante la `clave privada` de Alice.
+
+Este método, aunque un poco más complejo, 
+es mucho más seguro y resistente para ser enviado por canales inseguros. 
+
+El único recaudo que debetener Alice es que 
+debe mantener su clave privada sin compartir.
 
 
 
 ##### Cifrado híbrido
 
-GnuPG usa cifrado híbridas. Por ejemplo, si Juan
-quiere enviarle a Pedro un archivo cifrado
-necesitará la clave pública de Pedro. GnuPG hará
-lo siguiente de manera transparente:
+GnuPG usa cifrado híbridas.
+Por ejemplo, si Juan quiere enviarle a Pedro un archivo cifrado
+necesitará la clave pública de Pedro.
+GnuPG hará lo siguiente de manera transparente:
 
 ● Creará una clave de sesión para cifrar el archivo.
 ● Cifrará la clave de sesión con la clave pública de Pedro.
 
-Pedro, al recibir el archivo cifrado, podrá
-descifrarlo con GnuPG, el cual hará lo siguiente
-de manera transparente:
+Pedro, al recibir el archivo cifrado, 
+podrá descifrarlo con GnuPG, 
+el cual hará lo siguiente de manera transparente:
 
 ● Usará la clave privada de Pedro para descifrar la clave de sesión.
 ● Usará la clave de sesión para descifrar el archivo.
@@ -8070,19 +8639,26 @@ de manera transparente:
 
 ####  firmas digitales ( Algoritmos )
 
-● AES
-● 3DES
-● Blowfish
 
-● Elgamal
-● RSA
-● Hashes:
-● MD5
-● SHA-1 and -2
-● RIPEMD-160
+**Cifrado Simetrico :**
 
-● DSA
-● RSA
+    ● AES
+    ● 3DES
+    ● Blowfish
+
+**Cifrado Asimetrico :**
+
+    ● Elgamal
+    ● RSA
+    ● Hashes:
+    ● MD5
+    ● SHA-1 and -2
+    ● RIPEMD-160
+
+**Firmas Digitales :**
+
+    ● DSA
+    ● RSA
 
 GPG utiliza muchos algoritmos de encriptación, 
 incluyendo los siguientes:
@@ -8112,8 +8688,8 @@ Para poder entender mejor el sistema de
 codificación usado por los sistemas de claves
 asimétricas (ie. claves públicas y privadas), es
 necesario entender las diferencias con los
-sistemas de claves simétricas (ie. claves
-secretas).
+sistemas de claves simétricas (ie. claves secretas).
+
 Como se mencionó previamente, los sistemas de
 cifrado con clave simétrica son aquellos en los
 que la clave que se usa para cifrar una serie de
@@ -8185,7 +8761,6 @@ especificaciones MIME/PGP), daría como
 resultado un error en la verificación.
 
 
-
 Un punto flaco en los algoritmos de clave
 asimétrica es la transmisión del código público.
 Es posible que una persona ponga en circulación
@@ -8204,7 +8779,6 @@ pertenece al usuario a quien dice pertenecer.
 A partir de ahí es un problema de cada usuario
 de GnuPG el decidir hasta qué punto se puede
 fiar de la firma.
-
 
 
 Una clave se puede considerar fiable cuando se
@@ -8230,39 +8804,36 @@ modo, no es probable que lo hicieran público.
 
 #### Límites de seguridad
 
-Si se desea mantener la confidencialidad de los
-datos que se poseen, no basta con determinar
-qué algoritmo de cifrado se va a usar; también es
-necesario pensar en la seguridad general del
-sistema.
-En principio, PGP está considerado como
-suficientemente seguro, y hasta el momento no
-se sabe que haya habido ningún incidente en el
-que una clave PGP haya sido descodificada.
+Si se desea mantener la confidencialidad de los datos que se poseen,
+no basta con determinar qué algoritmo de cifrado se va a usar;
+también es necesario pensar en la seguridad general del sistema.
+
+En principio, PGP está considerado como `suficientemente seguro`, 
+y hasta el momento no se sabe que haya habido ningún incidente 
+en el que una clave PGP haya sido descodificada.
 
 Pero aún en el caso de que las claves PGP fueran
-a todas luces imposibles de decodificar, otros
-tipos de ataques a la seguridad pueden ser
-utilizados.
+a todas luces imposibles de decodificar, 
+otros tipos de ataques a la seguridad pueden ser utilizados.
 
-A principios de febrero fue detectado un troyano
-que buscaba las claves PGP en el disco duro, y
-las transfería al atacante mediante FTP. 
-Si en este caso hubiéramos escogido una contraseña
-débil o fácil, un simple análisis que consistiera en
-un «ataque de diccionario» la descubriría en poco
-tiempo.
+A principios de febrero fue detectado `un troyano` 
+que buscaba las claves `PGP` en el disco duro, 
+y las transfería al atacante mediante `FTP`. 
+
+Si en este caso hubiéramos escogido una contraseña débil o fácil,
+un simple análisis que consistiera en un `«ataque de diccionario»` 
+la descubriría en poco tiempo.
 
 Otra posibilidad técnica, aunque más difícil, es la
 de los troyanos que recogen entradas de teclado
-y las transmiten al asaltante. También es posible,
-aunque muy difícil, pasar el contenido de una
-pantalla a otra. En este último caso no sería
-necesario ningún análisis sobre datos cifrados, ya
-que se obtendrían «pre-cifrados».
-Por todo esto es necesaria una planificación de la
-seguridad que esté bien prevista y que minimice
-los riesgos.
+y las transmiten al asaltante. 
+También es posible, aunque muy difícil, 
+pasar el contenido de una pantalla a otra. 
+En este último caso no sería necesario ningún análisis
+sobre datos cifrados, ya que se obtendrían `«pre-cifrados»`.
+
+Por todo esto es necesaria una planificación de la seguridad 
+que esté bien prevista y que minimice los riesgos.
 
 
 La idea no es la de recrear una atmósfera de
@@ -8279,11 +8850,12 @@ encuentran preparadas en temas de seguridad.
 
 #### Creación de claves
 
-Lo primero que hay que hacer una vez que se tiene GnuPG
-instalado es crear nuestra clave pública y privada. Para
-hacerlo hay que usar el comando gpg --gen-key.
+Lo primero que hay que hacer una vez que se tiene GnuPG instalado 
+es crear nuestra clave pública y privada. 
+Para hacerlo hay que usar el comando `gpg --gen-key`.
 
-Usa gpg --full-generate-key para el diálogo completo de generación de clave.
+Usa `gpg --full-generate-key` para el diálogo completo de generación de clave.
+
 ```sh
 $ gpg --gen-key
 gpg (GnuPG) 2.2.12; Copyright (C) 2018 Free Software Foundation, Inc.
@@ -8291,7 +8863,6 @@ This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
 gpg: caja de claves '/home/educacionit/.gnupg/pubring.kbx' creada
 ```
-
 
 GnuPG debe construir un ID de usuario para identificar su clave.
 
@@ -8303,9 +8874,9 @@ números primos. Esto da al generador de
 números aleatorios mayor oportunidad de
 recoger suficiente entropía.
 
-En este momento aparecerán cuadros de
-diálogos para ingresar la passphrase y luego su
-confirmación:
+En este momento aparecerán cuadros de diálogos 
+para ingresar la `passphrase` y luego su confirmación:
+
 ```sh
     Nombre y apellidos: Sergio Belkin
     Dirección de correo electrónico:
@@ -8317,6 +8888,7 @@ confirmación:
 
 
 Y luego vamos a ver cómo genera la clave:
+
 ```sh
 gpg: clave E12874DA0D8297CA marcada como de confianza absoluta
 gpg: certificado de revocación guardado como
@@ -8447,7 +9019,295 @@ Primero importamos la pública y luego la privada.
 Ahora, si queremos importar la clave de una amigo, pues
 se haría igual.
 
+### RAIDS y JBOD
 
+RAID es Rebundancia a fallos de Hardware de almacenamiento.
+`NO ES BACKUP`, los backup se suelen hacer esporadicamente
+A diferencia de un backup tradicional el `RAID opera en todo momento`
+Nos permite que el Sisema/BaseDatos siga funsionando al fallar algun disco.
+
+El Backup se usa `en conjunto` con RAID  para garantizar la robustez del sistema
+
+
+https://aprendeit.com/crear-raid-en-linux-con-mdadm/
+https://www.baeldung.com/linux/raid-intro
+https://www.ionos.com/digitalguide/server/security/
+https://www.seagate.com/la/es/products/nas-drives/raid-calculator/
+https://www.diskinternals.com/raid-recovery/jbod-vs-raid/
+
+**Qué es un RAID?**
+
+Podemos definir un raid de discos como un grupo o matriz de discos independientes 
+de hecho RAID es un acrónimo de `Redundant Array of Indepent Disks`.
+
+Los discos se unifican mediante software o hardware para redundar datos 
+y/o utilizar toda la capacidad de cada disco en conjunto. 
+ 
+Esto será más fácil de entender cuando definamos cada tipo de RAID más adelante.
+
+**RAID por software**
+Es una aplicación que permite la creación de RAIDs a nivel lógico 
+a partir de discos conectados a nuestro equipo. 
+Este software crea un sistema de ficheros en el cual trabaja 
+comportándose según el tipo de RAID configurado
+
+**RAID por Hardware**
+Es un dispositivo físico que permite la creación de un RAID de discos.
+Puede ser una tarjeta de expansión PCI o PCIE o bien esté integrada en la placa base,
+este hardware integra todo lo necesario para realizar un RAID 
+sin utilizar el procesador ni la memoria RAM del sistema (como norma general), 
+además puede integrar una caché. 
+Esta caché puede agilizar las operaciones de lectura/escritura.
+
+**VENTAJAS DE CADA TIPO**
+
+**El RAID por hardware** 
+Requiere hardware el cual conlleva un coste 
+Con el RAID por hardware en caso de fallar un disco, 
+solo debemos insertar el disco nuevo y el normalmente se encarga de 
+reconstruir el RAID sin ningún paso adicional (como norma general)
+El RAID por hardware no utiliza recursos del procesador de la máquina anfitrión.
+
+**El RAID por software**
+evita el el punto de fallo de una única tarjeta RAID. 
+Si falla esta tarjeta el RAID no funcionará.
+En los sistemas actuales ya no se nota tanto la diferencia de rendimiento 
+respecto a los RAID por hardware ya que los procesadores son más potentes.
+
+
+#### Niveles RAID más usados
+
+##### RAID 0 (Data Striping, Striped Volume)
+
+Este raid toma la capacidad de los discos añadidos y la suma. 
+si tenemos 2 discos de 1TB con este RAID conseguiremos un volumen de 2TB. 
+Si los discos son de distintas capacidades, siempre toma la más baja para utilizarla,
+al igual que las RPM (revoluciones por minuto) del disco. 
+si tenemos un disco de 2TB a 7200RPM y otro de 1TB a 5400RPM 
+tendremos un volumen de 2TB a 5400RPM, volvemos a tener un volumen de 2TB pero más lento.
+Por eso es importante que los discos sean similares.
+Por otro lado en este tipo de RAIDs prima el rendimiento pero no la seguridad,
+no hay redundancia de datos por lo que si un disco se rompe se corromperá el volumen.
+
+##### RAID 1 (espejo)
+
+Este RAID al igual que en el RAID anterior y en todos los RAID, 
+los discos deben tener la misma capacidad para evitar desaprovechar discos. 
+En esta modalidad de RAID se configura los dos discos en espejo, 
+esto quiere decir que se replica todo el contenido del disco 
+en otro disco por cada 2 discos 1 disco se dedica a redundar datos. 
+
+Está recomendado para 2 discos. Este RAID tiene una ventaja añadida 
+y son mayores velocidad de lectura multiusuario 
+ya que pueden leerse datos de los dos discos. 
+Sin embargo las escrituras se ralentizan ya que tienen que hacerse en ambos discos.
+
+##### RAID 5
+
+Este RAID es el más popular debido a su bajo coste. 
+Con 3 discos se dispone del 75% de la capacidad de los discos aproximadamente. 
+Requiere solamente un mínimo de 3 discos y soporta la pérdida por completo de un disco.
+La información se sirve en bloques distribuidos por el total de los discos
+por lo que a mas discos mas rendimiento también influye el tamaño de los discos
+cuanto mas grandes sean mas tiempo tarda en reconstruirse el RAID 
+en caso de fallo de un disco.
+
+Este RAID protege contra los fallos distribuyendo el cálculo de paridad 
+por el conjunto de los discos y así protegiendo contra posibles errores de hardware.
+
+El punto flaco de este tipo de RAID está en que si falla un disco, 
+hasta reponerlo el volumen queda desprotegido contra algún fallo de otro disco.
+Aquí es donde entran los discos Spare. 
+Un disco spare es un disco de reserva para que entre “a formar parte del juego”
+cuando uno de los discos falle, de esta forma el numero de discos que pueden fallar es dos
+(mientras que el RAID no esté en procedo de reconstrucción cuando falle el segundo disco) 
+
+De esta forma evitamos el punto de fallo mencionado antes. 
+Cuando se añade el disco spare este tipo de RAID también se conoce como RAID 5E.
+Hay dos tipos de spare: “Standby spare” y “hot spare”.
+
+Si es un standby spare conlleva un proceso de reconstrucción 
+durante la incorporación del disco spare sustituyendo al disco fallido 
+sin embargo si es un hot spare este tiempo se minimiza.
+
+##### RAID 6
+
+Digamos que es la evolución del RAID 5, necesita como mínimo 4 discos. 
+Funciona como RAID 5 pero con doble banda de paridad 
+que también se reparte por todos los discos. 
+Este tipo de RAID soporta el fallo total de hasta dos discos 
+hasta durante la reconstrucción del RAID. 
+Es menos utilizado debido a que cuando se utilizan pocos discos
+se desaprovecha capacidad de dos discos ya que no llegan al máximo teórico,
+con 4 discos el RAID tendrá cerca de la mitad de la capacidad de los discos.
+Cuantos más discos se utilicen en el RAID más capacidad de cada disco es utilizada.
+
+Al igual que en el RAID 5, en RAID 6 se pueden añadir discos spare
+(se suele llamar RAID 6E) para soportar un tercer disco fallido 
+(este ultimo puede fallar sin corromper el volumen siempre 
+  y cuando el raid no se esté reconstruyendo ).
+
+##### Niveles RAID anidados
+
+Los niveles anidados de RAID es “RAID sobre RAID”. 
+Es decir un RAID de un tipo montado sobre otro/s RAID de otro tipo. 
+Así se pueden aprovechar las ventajas de cada RAID. Por ejemplo:
+
+RAID 0+1 : Es un espejo de RAIDs 0, es decir si tenemos 4 discos, 
+se crean 2 raids 0 con cada pareja de discos y con los 2 volúmenes RAID 
+creados se crea un raid 1. De esta forma añadimos redundancia al RAID 0.
+
+RAID 1+0: Es un RAID 0 de dos espejos (RAID 1). Se crean 2 RAID 1 
+con cada pareja de discos y con la pareja de RAID 1 creados, se crea un RAID 0.
+
+RAID 50 (5+0): Para este RAID son necesarios un mínimo de 6 discos.
+Se crean con cada trío de discos un RAID 5. 
+Después con cada RAID creado se crea un raid 0 con los RAID 5 creados. 
+Con 6 discos se alcanza un total de aproximadamente el 65% de la capacidad de los discos.
+
+#### mdadm - Montar RAID 
+
+Un raid en linux es muy fácil de configurar utilizando 
+los 3 pasos que vamos a describir:
+
+**Paso1:** 
+
+Instalar mdadm: por defecto no suele estar instalado en Linux.
+
+En debian y derivados:
+```sh
+apt-get install mdadm
+```
+
+En RedHat / CentOS y derivados:
+```sh
+yum install mdadm
+```
+
+**Paso2**: 
+
+Hay que llenar de ceros los discos que se van a incluir en el RAID 
+para evitar problemas con sistemas de ficheros existentes:
+
+```sh
+root@localhost:~# mdadm --zero-superblock /dev/hdb /dev/hdc
+```
+
+(Y tantos otros discos a utilizar) o con DD:
+```sh
+dd
+```
+
+**Paso 3**: 
+
+Lo siguiente sería crear el RAID, básicamente sería con:
+
+###### SINTAXIS RAID :
+
+```sh
+mdadm -C /dev/NOMBRERAID --level=raid[NUMERO] --raid-devices=NUMERO_DE_DISCOS /dev/DISCO1 /dev/DISCO2
+```
+
+
+**SINTAXIS RAID 0:**
+
+Se seleccionan un mínimo de dos discos (como ejemplo vdc y vdd):
+```sh
+mdadm -C /dev/md0 --level=raid0 --raid-devices=2 /dev/vdc /dev/vdd
+```
+
+con commandos  `fdisk -l /dev/md0`  o 'cat /proc/mdstat'
+podemos revisar el progreso de la tarea del RAID
+
+**EJEMPLO RAID 0:**
+
+```sh
+[root@localhost ~]:$ mdadm -C /dev/mdo --level-raido=raid0 -devices=2 /dev/vdb /dev/vde
+    mdadm: Defaulting to version 1.2 metadata
+    ........
+
+[root@localhost ~]:$ fdisk -l /dev/md0
+    Disk /dev/md0: 2198.8 GB, 2198752722944 bytes, 4294438912 sectors
+    Units sectors of 1 512 512 bytes
+    Sector size (logical/physical): 512 bytes / 512 bytes
+    1/0 size (minimum/optimal): 524288 bytes / 1048576 bytes
+
+
+[root@localhost ~]# fdisk -l /dev/md0
+    Disk /dev/mde: 1099.4 GB, 1899376361472 bytes, 2147219456 sectors
+    Units sectors of 1 512 512 bytes
+    Sector size (logical/physical): 512 bytes / 512 bytes
+    1/0 size (minimum/optimal): 512 bytes / 512 bytes
+
+[root@localhost ~]# cat /proc/mdstat
+    Personalities: [raide] [raid1]
+    mde active raid1 vdc [1] vdb[6]
+    1073609728 blocks super 1.2 [2/2] [UU] [..........] resync = 1.7% (19266304/1073609728) finish=109.6min spee
+    d=160195K/sec
+    bitmap: 8/8 pages [32KB], 65536KB chunk
+    unused devices: <none>
+```
+
+
+**SINTAXIS RAID 1:**
+EN el caso de RAID 1 lo mejor es seleccionar 
+un máximo de 2 discos / volúmenes (ponemos como ejemplo igualmente vdc y vdd):
+
+```sh
+mdadm -C /dev/md0 --level=raid1 --raid-devices=2 /dev/vdc /dev/vdd
+```
+ejemplo de salida del comando
+```sh
+[root@localhost ~]:$ mdadmc/dev/mde --level=raid1 --raid-devices=2 /dev/vdb /dev/vdc
+    mdadm: Note: this array has metadata at the start and may not be suitable 
+           as a boot device. If you plan to store '/boot' on this device please 
+           ensure that your boot-loader understands md/v1.x metadata, or use
+           --metadata=0.90
+    Continue creating array? yes
+    mdadm: Defaulting to version 1.2 metadata
+    mdadm: array /dev/mde started.
+```
+
+**SINTAXIS RAID 5:**
+
+Requiere como mínimo tres discos:
+```sh
+mdadm -C /dev/md0 --level=raid5 --raid-devices=3 /dev/vdb  /dev/vdc  /dev/vdd
+```
+Si queremos un disco spare (tenemos que añadir todos los discos 
+incluso el spare al RAID desde el principio):
+```sh
+mdadm -C /dev/md0 --level=raid5 --raid-devices=3 --spare-devices=1 /dev/vdb /dev/vdc /dev/vdd /dev/vde
+```
+ 
+
+**SINTAXIS RAID 6:**
+
+Reqiere como mínimo 4 discos
+```sh
+mdadm -C /dev/md0 --level=raid5 --raid-devices=4 /dev/vdb /dev/vdc /dev/vdd /dev/vde
+```
+Y con spares:
+```sh
+mdadm -C /dev/md0 --level=raid5 --raid-devices=4 --spare-devices=1 /dev/vdb /dev/vdc /dev/vdd /dev/vde /dev/vdf
+```
+En caso de fallar un disco de un RAID solo debemos extraerlo e insertar el nuevo disco 
+y cuando introduzcamos el nuevo disco  (mirando el log del sistema de /var/log/messages) 
+ejecutamos:
+```sh
+mdadm --add /dev/RAID /dev/NUEVO_DISCO
+```
+
+**ADEMAS PODEMOS :**
+
+En caso de querer parar un RAID:
+```sh
+mdadm --stop /dev/md0 && mdadm --remove /dev/md0
+```
+Y para consultar el estado:
+```sh
+cat /proc/mdstat
+```
 
 ### Backups -  fundamentos
 
@@ -8575,12 +9435,709 @@ Nube Aislado de accidentes locales
 (si se hace en equipos de un tercero).
 
 
+
+### DESAFIO 5
+
+**LVM** (Logical Volume Manager)
+
+1) Agregar 4 discos a la máquina virtual (como mínimo 2 de 1gb y 2 de 2gb)
+2) Crear 1 partición que ocupe todo el tamaño del disco y formatearla como LVM
+3) Crear 4 volúmenes físicos con las particiones que creamos
+*   a) pv-1
+*   b) pv-2
+*   c) pv-3
+*   d) pv-4
+4) Crear 2 Volume groups
+*   a) volgroup-1
+    +   i )     pv-1
+    +   ii)     pv-2
+*   b) volgroup-2
+    +   i )     pv-3
+    +   ii)     pv-4
+5) Crear 5 LVS
+*   a) Iv-1 (300M, volgroup-1)
+*   b) Iv-2(1.4G, volgroup-1)
+*   c) Iv-3 (2.5G, volgroup-2)
+*   d) Iv-4 (200M, volgroup-2)
+*   e) Iv-5 (500G, volgroup-2)
+6) Crear un FS de tipo ext4 utilizando la LV Iv-2
+7) Crear un FS de tipo ext3 utilizando la LV Iv-5
+8) Montar el FS de Iv-2 en el directorio /home/<usuario>/desafio5
+9) Montar el FS de Iv-5 en el directorio /home/<usuario>/resize
+
+**RAID**
+
+1) Utilizando 2 particiones (elijan las que deseen), crear un raid 0, 
+   formatearlo (ext4) y montarlo en un directorio a elección. 
+   Probar crear un archivo dentro del directorio una vez creado el raid.
+*   a) Ejecutar el comando mdadm -D y la ubicación del dispositivo raid 
+       para obtener la información del raid 
+      (no es necesario guardarla en un archivo, si documentar la salida en el instructivo)
+*   b) Apagar la máquina virtual, remover uno de los 2 discos del raid, 
+       el archivo sigue existiendo? por que?
+3) Agregar otros 3 discos al sistema (1gb cada uno),crear una partición de tipo linux 
+   que ocupe todo el espacio del disco y utilizar las mismas para crear un raid 5. 
+   Una vez creado el raid, formatearlo (ext4) y montarlo en el directorio /etc/servicio-web
+   y dentro del mismo crear un directorio llamado "configuración".
+*   a) Ejecutar el comando mdadm -D y la ubicación del dispositivo raid 
+        para obtener la información del raid (no es necesario guardarla en un archivo, 
+        si documentar la salida en el instructivo)
+*   b) Apagar la maquina virtual, remover uno de los 3 discos del raid, 
+        el directorio sigue existiendo? por que?
+
+**SSH**
+
+Para esta práctica van a necesitar una máquina (ya sea su Host o una segunda máquina virtual)
+de donde podamos conectarnos por SSH a nuestra máquina virtual principal.
+
+1) En la máquina secundaria o Host, crear un par de llaves para conectarnos al host principal
+2) Copiar la llave necesaria al host principal para poder conectarnos por SSH sin contraseña
+3) Probar la conexión por ssh sin contraseña
+4) Deshabilitar el login por ssh con contraseña
+*   a) Verificar que no nos podemos loguear sin contraseña como hacíamos antes
+1) Volver a habilitar el login por ssh con contraseña
+*   a) Verificar que volvió a funcionar
+   
+
+
+### REPASO TENARIO  Y LFCS
+https://training.linuxfoundation.org/certification/linux-foundation-certified-sysadmin-lfcs/
+
+
+
+
+**Operations Deployment** 25% (LO VIMOS)
+
+Configure kernel parameters, persistent and non-persistent
+Diagnose, identify, manage, and troubleshoot processes and services
+Manage or schedule jobs for executing commands
+Search for, install, validate, and maintain software packages or repositories
+Recover from hardware, operating system, or filesystem failures
+Manage Virtual Machines (libvirt)                  <------ salvo esto
+Config container engines, create/manage containers <------ salvo esto
+Create and enforce MAC using SELinux               <------ salvo esto
+
+**Networking** 25%      ( NO LO VIMOS)   <------ 
+
+Configure IPv4 and IPv6 networking and hostname resolution
+Set and synchronize system time using time servers
+Monitor and troubleshoot networking
+Configure the OpenSSH server and client
+Configure packet filtering, port redirection, and NAT
+Configure static routing
+Configure bridge and bonding devices
+Implement reverse proxies and load balancers
+
+**Storage** 20%         (LO VIMOS)
+
+Configure and manage LVM storage
+Manage and configure the virtual file system
+Create, manage, and troubleshoot filesystems
+Use remote filesystems and network block devices  <------ salvo esto
+Configure and manage swap space
+Configure filesystem automounters
+Monitor storage performance
+
+**Essential Commands**  20%  ( LO VIMOS)
+
+Basic Git Operations      <------ salvo esto
+Create, configure, and troubleshoot services 
+Monitor and troubleshoot system performance and services
+Determine application and service specific constraints
+Troubleshoot diskspace issues
+Work with SSL certificates  <------ salvo esto
+
+**Users and Groups**  10%   (LO VIMOS)
+Create and manage local user and group accounts
+Manage personal and system-wide environment profiles
+Configure user resource limits
+Configure and manage ACLS
+Configure the system to use LDAP user and group accounts
+
+
+https://www.lpi.org/our-certifications/lpic-2-overview/
+
+To become LPIC-2 certified the candidate must be able to:
+
+perform advanced system administration,
+ including common tasks regarding the Linux kernel, 
+ system startup and maintenance;
+
+perform advanced Management of block storage and file systems 
+as well as advanced networking and authentication and system security,
+ including firewall and VPN;
+
+install and configure fundamental network services, 
+including DHCP, DNS,  SSH, Web servers, file servers using FTP,
+ NFS and Samba, email delivery; 
+ 
+supervise assistants and advise management on automation and purchases.
+
+
+
+
 # Fase 2 - Cloud Specialist   
 
-
-## Clase 10 
+## Clase 12 -  AWS certif + New Acount + 2FA + EC2 + IAM 
 
  Módulo 6
+
+### Servicios : IaaS  PaaS  SaaS 
+
+    ● IssS : Infraestructura como servicio  
+    ● PaaS : Plataforma      como servicio
+    ● SaaS : Software        como servicio
+
+    como servicio =  as a Service  = aaS
+
+```j
+     TODO POR                                          TODO VIENE  
+  NUESTRA CUEBTA  <-------------------------------->   YA PREPARADO
+
+Traditional   |  Infrastructure  |  Platform         |   Software 
+On-Premises   |  as a service    |  as a service     |   as a service
+( On-Prem )   |  ( IaaS )        |  ( PaaS )         |   ( SaaS )
+==============|==================|===================|===================
+              |                  |                   |   Applications    
+              |                  |                   |   Data            
+              |                  |  Runtime          |   Runtime         
+              |                  |  Middleware       |   Middleware      
+              |                  |  O/S              |   O/S             
+              |  Virtualization  |  Virtualization   |   Virtualization  
+              |  Networking      |  Networking       |   Networking      
+              |  Servers         |  Servers          |   Servers         
+              |  Storage         |  Storage          |   Storage         
+==============|==================|===================|=================
+```
+
+**Proveedores:**
+```j
+    DigitalOcean     -    Iaas  + PaaS
+    Heroku           -    PaaS
+    Hostinger        -    Iaas  + PaaS
+    Don Web
+
+Iaas                |     PaaS             |     SaaS
+====================|======================|=================
+Amazon Web Services |   Google App Engine  |    HubSpot
+Google Cloud        |   Red Hat OpenShift  |    JIRA
+Microsoft Azure     |   Heroku             |    Dropbox
+IBM Cloud           |   Apprenda           |    DokuSign
+```
+
+**Otros proveedores :**
+    GoGoDady   Linode   Akamai    Whawei
+    CloudFlare  Wix   HostGator 
+
+**Proovedores Grandes:**
+    **AwS**  GCP   Azure  Alibaba
+
+`Big Querry`  primer servicio de AWS  que uso el docente
+
+
+De cada `10 puestos` laborales mas de la mitad son para AWS
+
+    6 o 7   AWS   <----  Mayor Demanda,  Mucho material y Gran comunidad
+    2 o 3   AZURE
+    1       GCS
+
+
+### Certificacion AWS
+
+https://aws.amazon.com/certification/
+
+
+FUNDATIONAL < ASSOCIATE < PROFESIOMA:
+```py
+  ● AWS Certif :  Cloud Practitioner                      ( FACIL )    Multiple Choice
+    AWS Certif :  AI    Practitioner                     
+    AWS Certif :  Solutions Architect   Associate         ( MEDIO ) + Practicas
+    AWS Certif :  Developer             Associate           "3hs*Dia /1mes"
+  ● AWS Certif : "SysOps" Administrator Associate
+    AWS Certif :  Data     Engineer     Associate
+    AWS Certif :  Architect               - Professional  ( DIFICIL )
+  ● AWS Certif :  "DevOps" Engineer       - Professional   
+    AWS Certif :  Security              - Speciality       ( MEDIO )
+  ● AWS Certif :  Advanced Networking   - Speciality
+  ● AWS Certif :  Data Analytics        - Speciality
+    AWS Certif :  Database              - Speciality
+    AWS Certif :  Machine Learning      - Speciality
+```
+
+**certificaciones**
+
+Son muy demandadas pero pueden dejarte poco preparado 
+para algunas de las oportunidades laborales (Sobretodo si la apruevan de memoria)
+En los trabajos algunos puestos mas altos pueden tener la certificafion como filtro.
+Se recomienda rendir `examen presencial`.
+En remoto son muy exigentes y hasta tediosos con demostrar que no estas haciendo trampa.
+
+
+Pregunta fundamental de entrevista laboral
+3 capas : `Three Layered Architecture`
+https://medium.com/@deanrubin/the-three-layered-architecture-fe30cb0e4a6
+
+    ● Presentation   Layer   (PL)
+    ● Business Logic Layer   (BLL)
+    ● Data  Access   Layer   (DAL)
+
+Vamos a aprender a diagramar aplicaciones usando este concepto
+CRUD operations , ACID principles y metodologias SCRUM y AGILE
+son tambien conceptos que uno deve conocer para estar preparado
+(CI/CD) Continuous Integration/Continuous Delivery
+
+
+**Partnership**
+
+Epresa Partner a AWS : AWS te ofrece clientes como consultor.
+Hay categorias de Partnerchips, con distintos requisitos de certificacion
+para cierto numero de empleados de la empresa.
+
+```
+    ● EC2 = AWS      Elastic CLoud Computing
+      GCE = Google   Compute Engine
+      AVM = Azure    Virtual Machine
+      ECS = Whawei   Elastic Cloud Sercer
+
+AWS   ECS =  Elastic Container Sercer
+```
+AWS Beanstalk   Poroto ? .. No todos los nombres son literales
+                En este caso es referencia a cono crece de forma absurda
+                el arbol de `Las Habichuelas Magicas` ( Jack and the Beanstalk )
+
+**COSTOS**
+https://aws.amazon.com/aws-cost-management/aws-budgets/
+```c
+    "Completamente" gratis "Free Tier" T4 con cuotas de CPU
+
+    "Parcialmente Gratuito" por 12 meses
+
+    Costo obligatorio
+```
+
+
+### Creacion Cuenta AWS
+
+
+
+#### Primera Parte: 
+
+Creacion de la cuenta  Cosas a tener en cuenta:
+
+    ● Se debe contar si o si con una tarjeta de crédito
+
+    ● Siempre y cuando se sigan las recomendaciones de la guía, no tendrá 
+    ningún costo asociado a su tarjeta pero es responsabilidad de  cada uno.
+
+    ● Es importante seguir las recomendaciones de seguridad 
+    para evitar accesos indeseados a la cuenta. 
+
+1) Acceder al siguiente link para `crear la cuenta`
+https://aws.amazon.com/resources/create-account/
+
+
+2) Agregar `mail` para el `usuario root` y `un nombre` para la `cuenta`
+   una vez hecho esto, recibiremos un `mail de verificacion` de AWS paranuestra cuenta:
+
+3) Acto siguiente, introducimos el código que nos enviaron por mail
+
+4) Luego, nos pedirá ingresar `una contraseña` para el usuario Root 
+   ( Este usuario es un Admin, similar al usuario Root en un Sistema Operativo Linux,
+    es fundamental que además de ser `una contraseña segura`, `la guardemos muy bien` ).
+
+5) AWS nos preguntara si es una cuenta personal o de una organización 
+   ( `elegir personal `) y completar con sus datos el cuestionario.
+
+6) AWS nos pedirá la información de nuestra `tarjeta credito`
+   ( a pesar de no tener ningún costo, tendremos que agregar nuestra tarjeta )
+
+7) AWS nos pedirá nuestro `número de teléfono` para enviarnos un código de verificación
+
+8) Nos pedirá elegir un plan de soporte 
+   ( En nuestro caso, nos mantendremos con el plan gratuito ).
+
+9) Y listo, ahora nos tocará esperar unos minutos hasta recibir el mail de confirmación de AWS 
+   diciendo que la cuenta está lista para utilizarse
+
+10) En este paso recibiremos 3 mails,siendo el siguiente el más importante 
+    el que marca que ya estamos listos para iniciar sesión en nuestra cuenta
+
+
+11)  Para esto, y nuestro paso final en esta primer parte, 
+    iniciaremos sesion en nuestra cuenfa recien creada, 
+    haremos click en el boton de `Go to the AWS Management Console`,
+    elegiremos loggearnos como el usuario rool (En caso de haber perdido la cuenta)
+     https://aws.amazon.com/marketplace/management/signin
+
+
+#### Segunda parte: Seguridad
+
+En esta parte de la guia, aumentaremos la seguridad de nuestra cuenta, 
+Configuraremos la seguridad del usuario root como así también crearemos un usuario administrador 
+para utilizar en las prácticas en vez del usuario root.
+
+1) En esta primer mitad de la segunda parte nos encargaremos de hacer más seguro al `usuario root,`
+   para esto tendremos que buscar el `servicio IAM`
+
+3) Vamos a asegurarnos de configurar las 2 sugerencias de seguridad, 
+   que el usuario Root no tenga `access keys activas` y que tenga MFA activado para mayor seguridad 
+   
+4) En el caso de cuentas nuevas el usuario Root por defecto no tiene llaves de acceso 
+   pero si tendremos que `configurar el MF`A, naremos click en el botón `Add MFA`
+
+5) Una vez en la sección de seguridad, agregaremos un dispositivo de MFA
+
+6) Para esto, pueden usar alguna aplicación o dispositivo físico, 
+   en nuestro caso usaremos `Google Authenticator`:
+
+7) Seguimos los pasos que nos dice la gula de configuración para agregar nuestro código
+    Y una vez terminado nuestro usuario root ya quedo seguro 
+    ( MFA activado y sin llaves de acceso programático, solo por Consola )
+
+8) Ahora, crearemos un usuario Admin que serà el usuario que usaremos para las prácticas,
+    en nuestro caso crearemos un usuario para todos los servicios
+    pero pueden crear un usuario con permisos más acotados 
+    e ir añadiendo permisos a medida que los vayan necesitando en las prácticas.
+    Para crear este usuario, iremos a la sección de Users dentro del `servicio IAM:`
+
+9) Y ahora le daremos al botón Add Users (Botón Azul, arriba a la derecha) 
+    y nos dará la siguiente ventana:  `SPecify User datails`
+
+    Es importante destacar que queremos marcar la opción de que el usuario tenga acceso a la Consola de AWS 
+    y que sea un usuario IAM, ya que necesitaremos `acceso programático`
+
+10) El siguiente paso será asignar permisos, 
+    como solo usaremos un usuario no será necesario crear un grupo y asignarle los permisos al grupo
+    sino que directamente asignaremos los permisos al usuario, 
+    en este caso usaremos una `Policy` que sea de `Administrador `y que nos brinde acceso a todos los servicios.
+    Para esto, seleccionaremos la opción `Attach policies directly` 
+    y en el buscador de policies, busceremos una llamada AdministratorAccess, 
+    tendra que darnos le siguiente policy
+
+11) Seleccionamos esta policy y le damos a next, 
+    ahora podremos revisar que esté todo como esperamos:
+
+12) Al crear el usuario, nos dará una opción de descargar un archivo.csv, 
+    recomendamos descargario para tener un backup de nuestras credenciales. 
+    De ahora en más, este es el usuario que utilizaremos
+    
+    Recomendamos `añadirle un MFA` de la misma forma que lo hicimos para el usuario root.
+
+13) Una vez creado el usuario, lo seleccionamos desde la sección de Users de IAM
+     para configurar un Access Key para poder acceder a los servicios de AWS de forma programática. 
+     Para esto, en la sección de Access Key le daremos al botón de Create access key:
+
+14) Elegiremos la opción Other
+
+15) En la siguiente ventana no le agregaremos un tag sino que directamente crearemos el access key,
+    en la siguiente ventana nos mostrará el access key y el secret key 
+    con la opción de `descargar el .csv `de nuevo (recomendamos guardar una copia de este archivo). 
+    Es importante guardar estas credenciales ya que son las que utilizaremos en herramientas 
+    como `Terraform` más adelante.
+    En caso de perder estas credenciales podremos eliminar estas Access Keys y crear otras.
+
+
+16) Y listo, así tendremos nuestro usuario Administrador listo para utilizar 
+    ya sea desde la Consola de AWS o de forma programática desde nuestra terminal u otras aplicaciones.
+
+
+#### Tercera parte: Presupuestos y Alertas
+
+
+1) En esta última parte, explicaremos un poco la sección gratuita de AWS 
+    (además de proveer recursos para una lectura más en detalle) 
+    además de configurar alertas para que en caso de llegar al límite del uso gratuito 
+    o en caso de tener algún costo, que nos notifiquen para poder así apagar el servicio. 
+    El free tier de AWS se compone de 3 tipos: 
+    
+        Un periodo de 12 meses de free tier para algunos servicios, 
+        otros servicios que son gratuitos para siempre 
+        y pruebas gratuitas cortas (para algunos servicios específicos).
+
+    Slempre antes de crear cualquier tipo de infraestructura o de utilizar cualquier servicios,
+    que revisemos los costos asociados con este, 
+    para más información del free tier visitar la siguiente pagina:
+    https://aws.amazon.com/free/free-tier-faqs/
+
+1) Primero configuraremos las alertas por uso del free tier que nos notifican 
+   
+2) al llegar al 85% de uso de free tier de los servicios, para esto buscaremos el servicio de billing:
+
+3) Una vez dentro de billing, iremos a Billing Preferences en la izquierda, 
+    casi abajo de todo y aca activaremos les alertas de AWS Free tier:
+    Por default, estas `alertas se activan al 85% del límite` del free tier.
+
+4) Pero no solo queremos configurar las alertas para el free tier, 
+   que pasa si sin querer utilizamos un servicio fuera del free tier? 
+   Bueno, para ello configuraremos un presupuesto 
+   que su limite a 0 dólares gastados y que nos alerte.
+
+5) Para esto, dentro del mesmo `servicio de Billing`, iremos a la seccion de Budgets
+
+6) Sin cambiar nada ya estará por default la opción de utilizar `un template `
+    y utilizar el `Zero Spend Budget` template, este presupuesto nos indicará 
+    una vez que los costos `pasen los 0.01 centavos` de dólar
+
+7) Una vez creado el presupuesto nuestra cuenta ya estará lista para utilizarse, 
+    es importante no olvidarse de `agregar el mail` 
+    al que queremos que se envien `las notificaciones` en el paso anterior.
+
+
+
+
+###  Tips de 2FA 
+
+AWS nos dara `plazo de un mes` para implementar 2 Factor Autetification
+si no lo hacemos perderemos control de servicios pasado el plazo
+
+El metodo mas sensillo es usar una `App` como `Google Autenticator`
+esta se puede usar para asegurar sus cuentas de `AWS, GitHub` y otros servicios
+
+Amazon nos dara un `QR a escanear` desde la APP
+Esto generara un numero de `6 Digitos` que cambia `cada 30 segundos`
+
+Estos 6 digiros devemos introducirlos en el `2FA Code 1`
+Esperamos a que venza e introducimos  en el `2FA Code 1` el nuevo codigo
+Son los ultimos 2 codigos generados por el mismo qr.
+
+Google Autenticator tiene 2 metodos 
+● Escanear el Qt automaticamente 
+● Ingresar manualmente codigo de `32 digitos` 
+que conecta la app con la cuenta a proteger
+
+El metodo manual es mas personalizado y nos deja seleccionar si 2FA 
+esta `basoado en tiempo` TOTP ( por defecto) `basado en contador` HOTP
+
+Es mas seguro el metodo basado en tiempo por algo esta por defecto. 
+
+https://blog.uniqkey.eu/hotp-vs-totp/
+●  **TOTP** stands for Time-based One-Time Password.
+●  **HOTP** stands fo  HMAC-based One-Time Password
+HMAC stands for Hash-based message authentication code.
+
+`TOTP` is an improvement on `HOTP` and they have certain common elements. 
+
+
+### Consola Ammazon
+
+
+**CONSOLA**
+https://console.aws.amazon.com/console/home
+
+Veremos como crear una maquina virtual y conectarse 
+ entramos a EC2
+
+**EC2**
+https://console.aws.amazon.com/ec2/home
+
+**instancias**
+https://console.aws.amazon.com/ec2/home#Instances
+
+**Crear instancia**
+https://console.aws.amazon.com/ec2/home#LaunchInstances:
+
+
+### EC2 INSANCE
+
+1) **Name & tags**
+
+     Name
+
+
+1) **AMI**
+Application and OS Images (Amazon Machine Image)  Info
+
+        Quick Start:
+     Amazon Linux    macOS       Ubuntu      Windows 
+     Red Hat         SUSE Linux  Debian      etc....
+
+1) **Instance type**
+
+     t2.micro    Free tier eligible  
+    
+     Family: t2      1 vCPU      1 GiB Memory
+
+
+3) **Key pair (login)**
+   
+     you can use a key-pair to securely connect to your instance. 
+   
+     Key-pair name  :  required
+
+     -> Generate NEW KEY <-
+
+     Key pair type
+         RSA     encrypted private & public key-pair
+         ED25519 encrypted private & public key-pair
+     Private key file format
+         .pem    For use with OpenSSH
+         .ppk    For use with PuTTY
+
+4) **Network settings  Info**
+
+     vpc-*****
+     Subnet
+     Auto-assign public IP
+     Allow SSH traffic from  :  Anywhere 0.0.0.0
+     Allow HTTPS traffic from : NO 
+
+5) **Configure storage  Info**
+
+     1x8GiB  gp3     Root volume     (Not encrypted)
+     Volume is smaller than snapshot, must be at least 8GB
+
+        -> ADVANCED <-
+
+     Size (GiB)      8
+     Volume type     gp3
+     IOPS            3000
+     Delete on termination : YES
+     Encrypted       Not encrypted
+     KMS key
+     Throughput      125
+     File systems    EFS/FSx
+
+6) **Advanced details  Info**
+   
+     Domain join directory
+     Shutdown behavior
+     Elastic GPU
+     Purchasing option   None/Capacity Blocks
+
+7) **Summary**
+   
+     Number of instances     1
+     Software Image (AMI)    Amazon Linux 2023 ami-07c5ecd8498c59db5
+     Virtual server type     t2.micro
+     Firewall                New security group
+     Storage (volumes)       1 volume(s) - 8 GiB
+
+
+
+
+**EC2 Instance  ( REQUIERE 3 cosas )**
+
+     1) Imagen (IAM)
+     2) Tipo (T2)
+     3) Informacion red (Default)
+
+
+### Connect 
+
+https://console.aws.amazon.com/ec2/home
+
+Seleccionamos la instancia y click secuntario-> connect
+
+https://console.aws.amazon.com/ec2/home#ConnectToInstance:instanceId=i-####
+
+
+(EC2 Instance Connect)    (Session Manager)     (SSH client)    (EC2 serial console)
+
+**EC2 Instance Connect**
+
+     Port 22 (SSH) is currently open to all IPv4 addresses, indicated by 0.0.0.0/0 
+     in the inbound rule in your security group.  
+     For increased security, consider restricting access to only the EC2
+
+     Instance ID  i-############# (lab1)
+
+     Connection Type :
+         Connect using EC2 Instance Connect           
+             with a public IPv4 or IPv6 address.
+         Connect using EC2 Instance Connect Endpoint     
+             with a private IPv4 address and a VPC endpoint.
+
+     Public IPv4 address ###.###.###.###
+
+     IPv6 address    
+
+**Session Manager**
+
+      We weren't able to connect to your instance. Common reasons for this include:
+      1. SSM Agent isn't installed on the instance. 
+      You can install the agent on both Windows instances and Linux instances.
+      2. The required IAM instance profile isn't attached to the instance. 
+      You can attach a profile using AWS Systems Manager Quick Setup.
+      3. Session Manager setup is incomplete. For more information, 
+      see Session Manager Prerequisites.
+
+     Session Manager usage:
+
+     ● Connect to your instance without SSH keys, a bastion host, or opening any inbound ports.
+     ● Sessions are secured using an AWS Key Management Service key.
+     ●  You can log session commands and details in an Amazon S3 bucket or CloudWatch Logs log group.
+     ●  Configure sessions on the Session Manager Preferences  page.
+
+
+**CUAL USO ?  Session Manager :**
+
+    ● No requiere usuario y contrasenia 
+    ● Ni siquiera hace falta acceso a la llave 
+    ya que esta puede ser guardada gestod de archivo seguro 
+    como Lass-oass o keypass 
+    ● No escala lo que previene cambios en los costos 
+
+
+### AWS ( SSM ) SystemS-Manager    
+
+https://console.aws.amazon.com/systems-manager/quick-setup
+
+->Config Recording <-       Conformance Packs       DevOps Guru
+
+Distributor                 Host Management         Patch Manager 
+
+Resource Scheduler
+
+
+**SSM Create config**
+https://console.aws.amazon.com/systems-manager/quick-setup/create-configuration
+
+
+**SSM Create Preferences**
+https://console.aws.amazon.com/systems-manager/session-manager/preferences
+
+
+### IAM - Identity Authentification Manager
+
+
+https://console.aws.amazon.com/iam/home
+
+
+https://console.aws.amazon.com/iam/home/security_credentials
+
+
+    IAM Dashboard
+
+    Security recommendations 1
+
+    Root user has MFA
+
+    Having multi-factor authentication (MFA) for the root user improves security for this account.
+    Deactivate or delete access keys for root user
+
+    Deactivate or delete the access keys for the root user. 
+    Instead, use access keys attached to an IAM user to improve security.
+
+    Manage access keys
+    
+    IAM resources       Resources in this AWS Account
+
+    User groups         0
+    Users               0
+    Roles               9
+    Policies            0
+    Identity providers  0
+
+
+### SSH ( EC2 Connection Requisit )
+
+                    Public           Private
+    access keys  =  Access key ID  + Secret access key
+
+    SSH Requires : access keys + EC2_Public_IP (Dinamic)
+
+## Clase 13
+
 
 ###  Terminología a utilizar
 
@@ -8687,3 +10244,24 @@ Data Centers donde se almacenan los miles y
 miles de servidores físicos. Se encuentran
 aislados entre sí, se interconectan mediante
 redes de alta frecuencia.
+
+## AZ = DataCen1 + DataCent2 +
+
+## REGION =  AZ1 + AZ1 + AZ3
+                                    
+Availability Zone 1  -------------  Data Center
+Data Center                         Data Center
+Data Center                         Data Center
+      \      Coneccion de fibra   / Availability Zone 3
+       \        baja latencia    /
+        \                       /
+         \  Data Center        /
+            Data Center       /
+            Availability Zone 2
+
+
+
+
+
+
+#  VOY A LOS  40min clase 10
