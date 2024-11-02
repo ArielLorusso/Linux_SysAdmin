@@ -1255,13 +1255,13 @@ commands will detect it and remind you to do so if necessary.
 ```
 
 
-
+```
 terraform init 
     makes      file :  .terraform.lock.hcl  
     makes directory :  .terraform  
     makes      file :  .terraform/terraform-provider-aws_v5.69.0_x5
     makes      file :  .terraform/lisence
-
+```
 
 
 ### Terraform plan

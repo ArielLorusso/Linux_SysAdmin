@@ -1,7 +1,11 @@
 rootkey.csv
 lab-key-pair
+Ofertas_Linked In.md
 *.pub
+*.pdf
 .terraform
 .terraform.lock.hcl
 
+
 git rm --cached rootkey.csv  # remoove if not ignored
+git rm --cached Ofertas_Linked.md 

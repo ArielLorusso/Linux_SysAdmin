@@ -1,23 +1,19 @@
 #!/bin/bash
 #
 
-
-get_hostname() {
-	echo $HOSTNAME
-}
-
 get_home() {
 	echo $HOME
+	echo "hola"
 }
 
-echo "Hello, I am $(get_hostname). I live in the $(get_home) directory."
+echo "I live in the $(get_home) directory."
 
 echo
 
 list_files() {
         echo "There are $# arguments"
-	echo "Argument 1 is $1"
-	ls -al $1
+	echo "Argument 2 is" $2 "como esta"
+	ls $3
 }
 
-list_files $(get_home)
+list_files $(get_home) '/'
