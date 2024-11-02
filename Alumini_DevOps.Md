@@ -10228,13 +10228,9 @@ d reduced modulo q-1    (128 bytes)
 
 ## Clase 13
 
-<<<<<<< HEAD
 ### EC2 - Elastic Cloud Computing
 
 ####  Analisis de EC2 desde  ssm
-=======
-###  Analisis de EC2 desde  ssm
->>>>>>> f493ec3f41aea7b2f266c4e4b48fb5418e84ac75
 ```sh
 sh-5.2$ bash
 [ssm-user@ip-172-31-89-42 bin]$ whoami
@@ -10324,11 +10320,7 @@ Complete!
             59563 "nginx: master process /usr/sbin/nginx"
 ```
 
-<<<<<<< HEAD
 #### Analisis de EC2 desde web amazon
-=======
-### Analisis de EC2 desde web amazon
->>>>>>> f493ec3f41aea7b2f266c4e4b48fb5418e84ac75
 
 https://console.aws.amazon.com/ec2/home#Instances  (Datos del EC2 de docente)
 
@@ -10422,11 +10414,7 @@ Commercial support is available at nginx.com.
 Thank you for using nginx.
 
 
-<<<<<<< HEAD
 ####  IP & Jump Server
-=======
-###  IP & Jump Server
->>>>>>> f493ec3f41aea7b2f266c4e4b48fb5418e84ac75
 
 Publica : axesible desde internet
 Privada : axesible desde LAN (red loca)
@@ -10576,11 +10564,7 @@ Lo ideal es poner contenido critico de baja latencia en la edge location
 
 
 
-<<<<<<< HEAD
 ####  Región y AZ
-=======
-###  Región y AZ
->>>>>>> f493ec3f41aea7b2f266c4e4b48fb5418e84ac75
 
 Una región es un grupo de zonas de
 disponibilidad que están aisladas de forma
@@ -10846,19 +10830,11 @@ $ 0.021    |$0.01~0.021 | • $0.0125~  | • $0.01~    | • $0.004~   | • $0
                            fee  x GB  | fee x GB    | fee x GB    | fee x GB    |
 ```
 
-<<<<<<< HEAD
 #### S3 - Crear desde web
 
 
 
 #### Crear S3 bucket (instancia )desde Web
-=======
-### S3 - Crear desde web
-
-
-
-### Create bucket  desde Web
->>>>>>> f493ec3f41aea7b2f266c4e4b48fb5418e84ac75
 
 
 https://console.aws.amazon.com/s3/bucket/create
@@ -10947,11 +10923,7 @@ Bucket name must not `end` with dash or period `- . `
 Bucket name contains `invalid` characters: `! @ # $ % ^ & * > ( ) _ + ,`
 Bucket name must not contain dash next to period `.-   -.`
 
-<<<<<<< HEAD
 #### S3 - Ver nuestro bucket
-=======
-### S3 - Ver nuestro bucket
->>>>>>> f493ec3f41aea7b2f266c4e4b48fb5418e84ac75
 
 para ver todos los buckets
 https://console.aws.amazon.com/s3/buckets/
@@ -11063,7 +11035,6 @@ Add grantee                         SAVE changes
 **Intelligent-Tiering Archive configurations (0)**
 
 
-<<<<<<< HEAD
 ### S3 - Vaciar y Eliminar bucket 
 
 https://console.aws.amazon.com/s3/bucket/ariel-s3.first-test/empty
@@ -11308,13 +11279,6 @@ Cancel                  Create snapshot
 
 
 https://console.aws.amazon.com/ec2/home#Snapshots:
-=======
-
-# EBS 1:50:00 
-
-
-
->>>>>>> f493ec3f41aea7b2f266c4e4b48fb5418e84ac75
 
 ### Almacenamiento  : Objeto vs Bloque
 
@@ -11407,11 +11371,7 @@ diseñados para proporcionar una disponibilidad del 99,999 %
 
 
 
-<<<<<<< HEAD
 ## Clase 14
-=======
-## Clase 13
->>>>>>> f493ec3f41aea7b2f266c4e4b48fb5418e84ac75
 
 ### DESAFIO 6
 
@@ -11458,7 +11418,6 @@ diseñados para proporcionar una disponibilidad del 99,999 %
 
 **IMPORTANTE**
 
-<<<<<<< HEAD
 4) Por último, una vez documentado todo en el instructivo, 
    realizar una limpieza de recursos eliminando todo lo creado
 
@@ -12636,7 +12595,3 @@ https://aws.amazon.com/solutions/cloud-foundations/capabilities/network-connecti
 AWS **Cloud WAN**
 https://aws.amazon.com/cloud-wan/
 https://console.aws.amazon.com/networkmanager/home/cwanhomepage
-=======
-1) Por último, una vez documentado todo en el instructivo, 
-   realizar una limpieza de recursos eliminando todo lo creado
->>>>>>> f493ec3f41aea7b2f266c4e4b48fb5418e84ac75
