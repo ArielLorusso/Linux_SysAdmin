@@ -2827,7 +2827,6 @@ https://docs.aws.amazon.com/es_es/vpc/latest/userguide/subnet-route-tables.html
 https://console.aws.amazon.com/vpcconsole/home#CreateVpc:createMode=vpcWithResources
 
 
-
 VPC settings
 Resources to create
 
@@ -3995,7 +3994,10 @@ Estimated hourly price
 
         Launch
 
-### LOad Balancer Gateaway
+### Load Balancer Gateaway
+
+https://aws.amazon.com/elasticloadbalancing/
+https://aws.amazon.com/elasticloadbalancing/features/#Details_for_Elastic_Load_Balancing_Products
 
 ### CloudWatch y fork bomb
 
@@ -4006,3 +4008,198 @@ Estimated hourly price
 ###  Roadmap Devops  Pelado Nerd
 
 ### Disaster Recocvery Architecture
+
+(https://www.linkedin.com/posts/semaan_cloudcomputing-aws-mendix-activity-7097923776239042560-uFtv/)
+### paper con 4 soluciones
+
+
+
+
+## 21
+
+**Algoritmos para  Load Balancer**
+
+Round Robin, 
+Sticky Round Robin,
+Weighted round robin,
+IP/URL Hash,
+least connection, 
+least response time
+
+**Como los usa AWS**
+
+
+Application Load Balancers :
+
+Round Robin: Distributes traffic evenly across targets.   
+  Least Connections:          Directs traffic to the target with the fewest active connections.   
+  Weighted Least Connections: Similar to Least Connections, but considers the weight assigned to each target.   
+  Weighted Round Robin:       Distributes traffic based on weights assigned to each target.   
+
+Network Load Balancers :
+  Least Connections:          Distributes traffic based on the number of active connections to each target.   
+
+
+Gateway Load Balancers :
+  Round Robin:                 Distributes traffic evenly across targets.1   
+
+
+https://aws.amazon.com/elasticloadbalancing/features/#Details_for_Elastic_Load_Balancing_Products
+
+
+### DESARIO 9
+
+Objetivo
+
+El objetivo de este desafío será poner a prueba todo lo aprendido durante el curso. 
+Tendrán que crear recursos de red, recursos de cómputo, bases de datos, 
+conectar distintos recursos entre sí de forma segura, crear usuarios 
+y en algunos casos políticas específicas para los mismos. Además, tendrán que 
+crear un diagrama de arquitectura inicial y final.
+
+En este desafío realizaremos una arquitectura de 3 capas creando todos los recursos
+(desde la red a utilizar hasta la base de datos), tendrán que verificar funcionamiento 
+y accesos y luego plantear una configuración de alta disponibilidad y segura.
+
+Este desafío contempla los últimos 2 módulos de la fase 2 (M9 y M10) y podrá ser realizado
+en grupos de hasta 5 personas y un minimo de 3 personas.
+
+Desafío:
+
+El mismo consta de distintas fases (todas seran entregadas en la misma fecha).
+
+Tendrán que realizar un diagrama de arquitectura de cómo se encuentra la aplicación
+en este momento antes de pasar a la etapa de alta disponibilidad. 
+Para ello, pueden utilizar la herramienta que quieran ya sea draw.io, lucidchart, etc.
+
+**Fase 0:** En esta fase crearemos los recursos para nuestra red
+
+1) Crear una VPC con 3 subnets públicas y 3 privadas (3 AZs). Documentar la información 
+   de las subnets, puede ser una tabla o bulletpoints por ejemplo:
+   `- <subnet-id>: Subnet publica, CIDR: 10.10.0.17/20`
+2) Crear los recursos de red que crean necesarios para la arquitectura deseada,
+    más detalles en la siguiente fase.
+
+**Fase 1:** En esta fase crearemos las 3 capas de nuestra arquitectura
+1) Crearemos una instancia EC2 que hará de servidor web (instalar algún 
+   servicio web ya sea apache, nginx u otro). Realizarlo a través del userdata.
+2) Crear una segunda instancia EC2 que hará de backend o servidor de aplicación 
+   (instalar un agente para conectarse a la base de datos). Realizarlo a través del userdata.
+3) Crear una base de datos RDS (Free tier)
+4) Asegurarse de que las instancias tengan configurado SSM para poder conectarse 
+   sin key ni de forma remota desde una VM o bastion.
+
+
+**Fase 2:** En esta fase realizaremos las configuraciones de seguridad para que 
+nuestros servicios se puedan conectar de forma correcta y segura. Además, 
+crearemos distintos usuarios para distintas funciones.
+
+Seguridad:
+1) Cada capa tendrá que contar con un security group propio y único 
+   ( no podrán tener más de 1 security group linkeado).
+2) Al servidor web se debe poder acceder al puerto 80 desde Internet.
+3) Al servidor del backend o la aplicación se debe poder acceder desde el servidor web al puerto 8300.
+4) A la base de datos se debe poder acceder desde el backend al puerto default de la
+   base de datos (por ejemplo 3306 en caso de ser MySQL).
+5) Recuerden configurar el SSM de forma correcta para poder acceder al webserver y al backend
+
+Permisos:
+
+1) Desarrollador: Debe tener permisos Completos para EC2 y SSM
+2) - DevOps: Debe tener permisos administradores (Full Admin)
+3) QA: Debe tener solo permisos de lectura para EC2, RDS y SSM
+   
+Documentar en el instructivo los security groups y sus reglas (Inbound y Outbound)
+y a que recurso están linkeados.
+
+Además, conectarse a la consola como cada uno de los usuarios y demostrar los accesos
+con cada usuario (por ejemplo, tratar de acceder a la consola de RDS como usuario Desarrollador
+o a la consola de S3 como QA para demostrar la falta de accesos)
+
+**Fase 3**: Alta disponibilidad, Escalabilidad y control de costos.
+
+En este momento, la arquitectura en su gran mayoría está desplegada en una sola AZ, 
+en caso de caerse una AZ, perderiamos nuestra aplicación. Que configuraciones
+ harian para evitar esto?
+ 
+- Qué servicios agregarian a la infraestructura?
+
+
+
+
+###  4 estrategias Disaster Recovery 
+https://www.linkedin.com/posts/semaan_cloudcomputing-aws-mendix-activity-7097923776239042560-uFtv/
+
+Viktoria Semaan
+
+1) 𝐁𝐚𝐜𝐤𝐮𝐩 & 𝐑𝐞𝐬𝐭𝐨𝐫𝐞:  𝐑𝐞𝐬𝐭𝐨𝐫𝐞 𝐛𝐚𝐜𝐤𝐮𝐩𝐬 𝐚𝐟𝐭𝐞𝐫 𝐞𝐯𝐞𝐧𝐭. 
+data and systems are routinely backed up and can be restored in the event of a disaster. 
+
+
+2) 𝐏𝐢𝐥𝐨𝐭 𝐋𝐢𝐠𝐡𝐭:        𝐏𝐫𝐨𝐯𝐢𝐬𝐢𝐨𝐧 𝐦𝐢𝐧 𝐫𝐞𝐬𝐨𝐮𝐫𝐜𝐞𝐬 𝐚𝐧𝐝 𝐬𝐜𝐚𝐥𝐞 𝐚𝐟𝐭𝐞𝐫 𝐞𝐯𝐞𝐧𝐭. 
+maintaining essential components (minimal version) in a dormant state. 
+During a disaster, you can scale up this minimal environment, reducing downtime
+
+
+3) 𝐖𝐚𝐫𝐦 𝐒𝐭𝐚𝐧𝐝𝐛𝐲:    𝐀𝐥𝐰𝐚𝐲𝐬 𝐫𝐮𝐧𝐧𝐢𝐧𝐠 𝐛𝐮𝐭 𝐬𝐦𝐚𝐥𝐥𝐞𝐫 
+maintains a partially active environment mirroring production setup.
+ The pre-scaled environment is equipped to handle a portion of the production load. 
+ With a significant portion of infrastructure already operational
+
+3)  𝐀𝐜𝐭𝐢𝐯𝐞-𝐀𝐜𝐭𝐢𝐯𝐞: 𝐫𝐮𝐧𝐧𝐢𝐧𝐠 𝐢𝐧 𝐦𝐮𝐥𝐭𝐢𝐩𝐥𝐞 𝐫𝐞𝐠𝐢𝐨𝐧𝐬. 
+running multiple instances simultaneously in different regions or availability zones.
+if one region faces a disruption, traffic can be automatically routed to a healthy instance
+
+
+https://docs.aws.amazon.com/pdfs/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-workloads-on-aws.pdf
+
+### otras arquitecturas
+
+
+https://aws.amazon.com/blogs/architecture/lets-architect-well-architected-systems/
+https://docs.aws.amazon.com/pdfs/wellarchitected/latest/reliability-pillar/wellarchitected-reliability-pillar.pdf?did=wp_card&trk=wp_card
+https://docs.aws.amazon.com/solutions/latest/media-services-application-mapper-on-aws/architecture-overview.html
+https://aws.amazon.com/whitepapers/?whitepapers-main.sort-by=item.additionalFields.sortDate&whitepapers-main.sort-order=asc&awsf.whitepapers-content-type=*all&awsf.whitepapers-global-methodology=methodology%23well-arch-framework&awsf.whitepapers-tech-category=tech-category%23databases%7Ctech-category%23compute%7Ctech-category%23networking-content-dev&awsf.whitepapers-industries=*all&awsf.whitepapers-business-category=*all
+
+### Chaos Ingeneering
+
+https://shambhavishandilya.medium.com/netflixs-chaos-monkey-2380874637ab
+
+
+**Chaos Ingeneering Workflow**
+
+  1. Analysis
+  2. Identify failures and build failure scenarios
+  3. Chaos Testing
+  4. Gather results
+  5. Improvement
+   
+**Chaos Ingeneering Tools**
+
+    Netflix Simian Army
+    AWS Lambda Injection
+    Traffic Control Toolset    on EC2 (Old method)
+    Chaos-Lambda
+    Chaos-Monkey
+    KubeDoom
+    ChAP
+    Gremlin
+
+
+
+
+Netflix’s **Simian Army**
+
+https://medium.com/@chaosgears/chaos-engineering-30d095e5741f
+
+Latency Monkey
+Conformity Monkey
+Doctor Monkey
+Janitor Monkey
+Security Monkey
+10–18 Monkey
+Chaos Gorilla
+
+
+
+
