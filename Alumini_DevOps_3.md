@@ -683,3 +683,331 @@ Armar `nuestro propio AWS`
 Softwere Opensource para hacer una `pull de recursos`
 Para `brindar servicios` a nuestros desarolladores mediante terraform
 
+
+
+## clase 28
+
+**Conseguir entrevistas lavorales**
+
+    LinkedIN, Twiter X
+    
+    Eventos:
+        Ekoparty
+        SantanDev
+        Nerdearla
+
+    FinTech :
+        MercadoLibre
+        Wala
+        Brubank
+        TarjetaNaranja
+        Pomelo
+        Belo
+
+    Internacional :
+        PayPal
+        Venmo 
+
+    Cripto :
+        Lemon
+        Nexo
+        Satoshi Tango
+        BuenBit
+        Binance
+
+### Config Managment
+
+nos permite hacer configuraciones luego de la inicialisacion del servidor
+
+Cuando se configura un servidor, se instala una `imagen y las dependencias`
+tendremos que configurar parámetros como 
+la red, los discos, acceso a otros servidores, bases de datos
+
+Si nos piden que configuremos `tres servidores iguales más` para poder lidiar con la carga. 
+Esta metodologia se convierte en un `problema`
+
+creando una `imagen customizada` para nuestro uso de forma tal que
+creamos un nuevo servidor utilizando dicha imagen.
+
+**Config. Management**
+
+usamos `herramientas de Config. Management` como `Puppet, Ansible, Salt`,  nos permita:
+● Configurar uno o `más servidores` de forma dinámica.
+● Realizar distintas `configuraciones` en base a distintos `parámetros`. 
+
+**Beneficios**
+
+● Actualización de paquetes de forma masiva
+(un parche de seguridad, aplicar una nueva versión de un paquete, y otros).
+● `Deployments en una flota` de servidores.
+● `evitamos` el problema de `snowflake servers`
+donde cada servidor es completamente distinto a los demás, `todosserán iguales`.
+
+**Cuidados Necesarios**
+
+Una buena práctica es aplicar medidas de testing que puedan prevenir que un
+cambio dañino se aplique a la flota completa, por ejemplo mediante tags. 
+Se tiene un servidor de“pruebas” o “testing” con un tag específico 
+y una vez que se prueba en ese servidor, pasar a la flota de servidores con un tag de “producción”
+
+### Agent vs Agentless (Puppet y Ansible)
+
+Ansible es mucho mas popular y extendida actualmente
+pupet se creo primero y se usa  menos en la actualidad
+sobre todo con prollectos legacy
+
+**Agent-Server  Puoet**
+
+`puppet agents` que estaban instalados dentro de cada servidor que,
+cada determinado tiempo, se comunicaba con el `puppet master` (principal)
+para hacer un `Pull` y traer los `cambios` (en caso de que los hubiera).
+
+Importante `probar los cambios` antes de llevarlos al puppet server 
+ya que sino corremos el riesgo de que los agentes se `traigan código roto`
+
+**Agentless Ansible**
+
+Suelen `comunicarse` mediante `protocolos` ya preestablecidos como por ejemplo SSH
+
+arquitectura mucho más sencilla y fácil de mantener,
+desarrollada en Python lo cual hace que las modificaciones o plugins
+Al ser Agentless, es un proceso menos en los servidores y consumiendo recursos. 
+
+instrucciones suele ser desde un servidor principal 
+pero podremos ejecutar Ansible desde cualquier servidor que tengamos acceso por SSH
+
+
+**Playbooks**
+
+playbooks son instrucciones escritos en `YAML` 
+para dejar listos los servidores con `instalaciónes y configuraciones`
+tendremos algunos `génericos` (para todos) y algunos más `específicos`, 
+por ejemplo, los de configuración de servidor de base de datos. 
+
+**Inventories**
+
+son archivos donde `definidos los servidores` que configuraremos, 
+
+pueden ser tan simples como una `lista de IPs` 
+
+a algo más complejo como una `especificación de grupos` de servidores 
+con determinado nombre, donde `cada IP` tiene su `nombre de host, etc`.
+
+
+al ejecutar una configuración le pasaremos a Ansible
+uno o más `playbooks` junto a uno o más `inventarios`. 
+
+
+### Infraestructura (On prem y Nube)
+
+hay una API o herramientas que interactúan con la nuve
+de forma `distinta a la consola web`. 
+
+Podremos acceder desde nuestra terminal a través de `AWS CLI`,
+o con de librerías de lenguajes quw comunicarnos con la API de la nube 
+(`Boto3 para Python`, por ejemplo). 
+
+seguimos con un `problema de escala` y en muchos casos
+tenemos que hacer una herramienta nosotros mismos. 
+
+Esta solución es muy útil para equipos grandes 
+que buscan `soluciones muy puntuales` y particulares
+
+**Infraestructura como Códig**
+
+hay APIs que nos brindan los proveedores, desde opciones creadas por los proveedores 
+(Como `Cloudformation` o `CDK` desde el lado de AWS)
+o por organizaciones aparte (como `Terraform` de Hashicorp o `Pulumi` de Pulumi)
+
+crear infraestructura mediante código 
+(ya sea algo más amigable para equipos de operaciones como Yaml,
+ por ejemplo, en el caso de Cloudformation)
+
+**Ventajas**
+Infraestructura
+■ replicable.
+■ documentada.
+■ Pipelines en deploys
+○ Infinito Devops
+○ Testing
+○ CI/CD
+■ Revisión y aprobación de cambios
+
+### Terraform
+
+Terraform es una herramienta de
+infraestructura creada por la organización
+Hashicorp y lanzada al público en julio de 2014. 
+
+
+Terraform por sí solo no es más que solo un
+esqueleto, necesitamos valernos de providers
+que agregarán funcionalidades para así poder
+crear los recursos EJ AWS CLI
+
+
+### Laboratorio Ansible
+
+Objetivo 
+El objetivo de esta práctica es el de automatizar el despliegue 
+de un servidor web + una página sencilla en un servidor externo 
+mediante la herramienta Ansible (utilizando ssh). 
+
+Resolución 
+
+Para esta práctica tendremos como requisito tener por un lado nuestro
+laboratorio principal (ya sea de forma local o una máquina virtual)
+y una segunda máquina Linux a la cual tengamos acceso por ssh
+desde nuestro laboratorio principal, esto es fundamental 
+ya que ansible utilizar ssh de fondo para enviar las instrucciones.
+
+En nuestro caso, utilizaremos la máquina en AWS creada en el laboratorio de Terraform,
+pero es indistinta la ubicación de la máquina.
+
+
+Para esta práctica tendremos como requisito tener por un lado nuestro laboratorio principal (ya sea de forma local o una máquina virtual) y una segunda máquina Linux a la cual tengamos acceso por ssh desde nuestro laboratorio principal, esto es fundamental ya que ansible utilizar ssh de fondo para enviar las instrucciones. En nuestro caso, utilizaremos la máquina en AWS creada en el laboratorio de Terraform, pero es indistinta la ubicación de la máquina.
+
+ Empezaremos por la instalación de Ansible: 
+
+1) Primero, tenemos que asegurarnos de que tenemos python3 instalado,
+ en caso de no tenerlo lo instalamos con 
+    a) sudo apt-get install python3
+2) Una vez con python3 instalado, instalamos pip 
+    a) curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py 
+    b) python3 get-pip.py --user 
+3) Una vez que tengamos pip instalado, instalamos ansible 
+    a) python3 -m pip install --user ansible 
+4) El último paso es añadir el path donde instalamos ansible 
+a nuestro path de ejecutables, una forma de hacer esto es agregar
+ el path que nos da el output de la instalación a nuestro .bashrc 
+ (o archivo de configuración de la shell que utilicemos
+```sh
+WARNING: The scripts ansible, ansible-config, anstble-connection, ansible-console,
+ansible-doc, ansible-galaxy, anstble-inventory, ansible-playbook,anstble-pull and anstble-vault
+are installed in /home/zdenko/.local/bin' 
+which is not on PATH. Consider adding this directory to PATH or, if you prefer to suppress this warning,
+   use-no-warn-script-location. 
+WARNING: The script ansible-community is installed in /home/zdenko/.local/bin 
+which is not on PATH. Consider adding this directory to PATH or,
+if you prefer to suppress this warn ing, use-no-warn-script-location.
+```
+Para esto, agregaremos la siguiente línea al final del archivo.bashrc 
+   
+a) export PATH="/home/zdenko/.local/bin:$PATH" (reemplazar el usuario) 
+b) source.bashrc 
+
+5) Y listo, ya tendremos ansible listo para utilizar, 
+para verificar su correcto funcionamiento corremos: 
+a) ansible --version 
+Ya con Ansible instalado, ahora crearemos un inventario donde configuraremos 
+
+6) Para esto, crearemos un archivo de configuración con terminación .yaml,
+en nuestro caso lo llamamos inventario.yaml aunque el nombre es indistinto.
+En nuestro caso de nuevo, estamos utilizando una máquina virtual 
+que corre en AWS por eso la IP pública y no una IP privada de una red 192.168.χ.χ.
+ maquinas-virtuales: hosts: AWS: ansible_host: 3.82.119.30 
+ 
+ 7) Una vez creado el inventario, podremos verificar el correcto acceso desde ansible
+  hacia nuestro host con el siguiente comando 
+  a) ansible all-m ping -i inventario.yaml -u ubuntu --private-key 
+  ../Terraform/AWS/terra-keys 
+```sh
+~Desktop/Cloud-devops/Laboratorios/Ansibles 
+[zdenko@z] $ ansible all ping -i inventario.yaml -u ubuntu --privete key .../Terraform/AWS/terra-keys 
+  [WARNING]: Invalid characters wer found in group names but not replaced.
+  use -vvvv to see details 
+  AWS | SUCCESS => {
+    ansiblr_facts{
+        "discovered+insrptreter_python": "/usr/bin/python3"
+    }. 
+    "changed" : false , 
+    "ping": "pong"
+  }  
+~/Desktop/Cloud-devops/Laboratorios/Ansibles 
+[zdenko@z] $ 
+```
+
+Si configuramos bien nuestro servidor, el comando nos devolverá un pong,
+en este caso fue necesario pasarle un usuario específico y la llave privada 
+para poder conectarnos.
+
+8) Ya creado el inventario y verificado el acceso a través de Ansible,
+ pasaremos a crear el playbook.
+```yaml
+- hosts: all 
+become: yes 
+vars: 
+  server_name: "{{ ansible_default_ipv4.address }}"
+  document_root: /var/www 
+  app_root: app tasks: 
+  tasks:
+
+- name: Update apt cache and install Nginx 
+apt: 
+  name: nginx 
+  state: latest 
+  update_cache: yes 
+ 
+- name: Copy website files to the server's document root
+copy: 
+  src: "{{ app_root }}" 
+  dest: "{{ document_root }}" 
+  mode: preserve 
+
+- name: Apply Nginx template 
+template: 
+  src: nginx.conf.j2
+  dest: /etc/nginx/sites-available/default 
+  notify: Restart Nginx 
+
+- name: Enable new site 
+ file: 
+  src: /etc/nginx/sites-available/default
+    dest: /etc/nginx/sites-enabled/default
+    state: 
+    link notify: Restart Nginx 
+  
+- name: Allow all access to tcp port 80 
+  ufw: 
+    rule: allow
+    allow port: '80' 
+    proto: tcp handlers: 
+  
+- name: Restart Nginx 
+    service: 
+    name: nginx   
+    state: restarted 48:46/2:36:35 
+```
+
+  Adicional al playbook, necesitamos crear 2 archivos más: 
+  • Un archivo de configuración de nginx:
+
+Nginx.j2 :
+
+```c
+server {
+  listen 80; 
+
+  root {{ document_root }}/{{ app_root }};
+  index index.html index.htm;
+  
+  server_name {{ server_name }};
+
+  location / { 
+  default_type "text/html";
+  try_files $uri.html $uri $uri/ =404;
+  } 
+}
+```
+
+Un directorio llamado app que dentro tenga los archivos para nuestro servidor web,
+en este caso solo vamos a usar un index.html bastante sencillo con un
+` <H1>  Probando Nginx con Ansible!  </H1> `
+ 
+9) Ya con el playbook y los archivos adicionales creados, 
+pasaremos a ejecutar el playbook: 
+
+a) ansible-playbook playbook.yaml -i inventario.yaml -u ubuntu --private-key ../Terraform/AWS/terra-keys 
+
+10) Una vez aplicado el playbook, solo es cuestión de acceder a la IP pública de nuestra máquina virtual
+ en AWS para ver nuestra aplicación web corriendo
