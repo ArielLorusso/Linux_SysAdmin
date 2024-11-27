@@ -320,7 +320,7 @@ Esto les da una perspectiva que sirve para que se logren objetivos,
 son los responsables de los `SLOs` (`Service Level Objectives`)
 
 
-#### SLA y SLO
+#### SLA , SLO
 
 SLA : Service Level `Agreement`   ( Contrato Legal )
 SLO : Service Level `Objectives`  ( Objetivo de covertura)
@@ -417,6 +417,11 @@ Caso de Prueba
 Resultados
     Comando 1
     Comando 2
+
+### Mas Terminologia
+
+SOAP REST
+https://aws.amazon.com/es/compare/the-difference-between-soap-rest/
 
 
 ## Clase 27 - Agile ,Srum, Sprint 
@@ -683,3 +688,873 @@ Armar `nuestro propio AWS`
 Softwere Opensource para hacer una `pull de recursos`
 Para `brindar servicios` a nuestros desarolladores mediante terraform
 
+https://docs.openstack.org/2024.2/install/
+https://docs.openstack.org/2024.2/user/
+
+UBUNTU  https://ubuntu.com/training/contact-us?product=openstack-training-onsite
+SDK     https://developer.openstack.org/
+
+## clase 28 - Ansible, Terraform, Vagrant, OpenStack
+
+**Conseguir entrevistas lavorales**
+
+    LinkedIN, Twiter X
+    
+    Eventos:
+        Ekoparty
+        SantanDev
+        Nerdearla
+
+    FinTech :
+        MercadoLibre
+        Wala
+        Brubank
+        TarjetaNaranja
+        Pomelo
+        Belo
+
+    Internacional :
+        PayPal
+        Venmo 
+
+    Cripto :
+        Lemon
+        Nexo
+        Satoshi Tango
+        BuenBit
+        Binance
+
+### Config Managment
+
+nos permite hacer configuraciones luego de la inicialisacion del servidor
+
+Cuando se configura un servidor, se instala una `imagen y las dependencias`
+tendremos que configurar parámetros como 
+la red, los discos, acceso a otros servidores, bases de datos
+
+Si nos piden que configuremos `tres servidores iguales más` para poder lidiar con la carga. 
+Esta metodologia se convierte en un `problema`
+
+creando una `imagen customizada` para nuestro uso de forma tal que
+creamos un nuevo servidor utilizando dicha imagen.
+
+**Config. Management**
+
+usamos `herramientas de Config. Management` como `Puppet, Ansible, Salt`,  nos permita:
+● Configurar uno o `más servidores` de forma dinámica.
+● Realizar distintas `configuraciones` en base a distintos `parámetros`. 
+
+**Beneficios**
+
+● Actualización de paquetes de forma masiva
+(un parche de seguridad, aplicar una nueva versión de un paquete, y otros).
+● `Deployments en una flota` de servidores.
+● `evitamos` el problema de `snowflake servers`
+donde cada servidor es completamente distinto a los demás, `todosserán iguales`.
+
+**Cuidados Necesarios**
+
+Una buena práctica es aplicar medidas de testing que puedan prevenir que un
+cambio dañino se aplique a la flota completa, por ejemplo mediante tags. 
+Se tiene un servidor de“pruebas” o “testing” con un tag específico 
+y una vez que se prueba en ese servidor, pasar a la flota de servidores con un tag de “producción”
+
+### Agent vs Agentless (Puppet y Ansible)
+
+Ansible es mucho mas popular y extendida actualmente
+pupet se creo primero y se usa  menos en la actualidad
+sobre todo con prollectos legacy
+
+**Agent-Server  Puoet**
+
+`puppet agents` que estaban instalados dentro de cada servidor que,
+cada determinado tiempo, se comunicaba con el `puppet master` (principal)
+para hacer un `Pull` y traer los `cambios` (en caso de que los hubiera).
+
+Importante `probar los cambios` antes de llevarlos al puppet server 
+ya que sino corremos el riesgo de que los agentes se `traigan código roto`
+
+**Agentless Ansible**
+
+Suelen `comunicarse` mediante `protocolos` ya preestablecidos como por ejemplo SSH
+
+arquitectura mucho más sencilla y fácil de mantener,
+desarrollada en Python lo cual hace que las modificaciones o plugins
+Al ser Agentless, es un proceso menos en los servidores y consumiendo recursos. 
+
+instrucciones suele ser desde un servidor principal 
+pero podremos ejecutar Ansible desde cualquier servidor que tengamos acceso por SSH
+
+
+**Playbooks**
+
+playbooks son instrucciones escritos en `YAML` 
+para dejar listos los servidores con `instalaciónes y configuraciones`
+tendremos algunos `génericos` (para todos) y algunos más `específicos`, 
+por ejemplo, los de configuración de servidor de base de datos. 
+
+**Inventories**
+
+son archivos donde `definidos los servidores` que configuraremos, 
+
+pueden ser tan simples como una `lista de IPs` 
+
+a algo más complejo como una `especificación de grupos` de servidores 
+con determinado nombre, donde `cada IP` tiene su `nombre de host, etc`.
+
+
+al ejecutar una configuración le pasaremos a Ansible
+uno o más `playbooks` junto a uno o más `inventarios`. 
+
+
+### Infraestructura (On prem y Nube)
+
+hay una API o herramientas que interactúan con la nuve
+de forma `distinta a la consola web`. 
+
+Podremos acceder desde nuestra terminal a través de `AWS CLI`,
+o con de librerías de lenguajes quw comunicarnos con la API de la nube 
+(`Boto3 para Python`, por ejemplo). 
+
+seguimos con un `problema de escala` y en muchos casos
+tenemos que hacer una herramienta nosotros mismos. 
+
+Esta solución es muy útil para equipos grandes 
+que buscan `soluciones muy puntuales` y particulares
+
+**Infraestructura como Códig**
+
+hay APIs que nos brindan los proveedores, desde opciones creadas por los proveedores 
+(Como `Cloudformation` o `CDK` desde el lado de AWS)
+o por organizaciones aparte (como `Terraform` de Hashicorp o `Pulumi` de Pulumi)
+
+crear infraestructura mediante código 
+(ya sea algo más amigable para equipos de operaciones como Yaml,
+ por ejemplo, en el caso de Cloudformation)
+
+**Ventajas**
+Infraestructura
+■ replicable.
+■ documentada.
+■ Pipelines en deploys
+○ Infinito Devops
+○ Testing
+○ CI/CD
+■ Revisión y aprobación de cambios
+
+### Terraform
+
+Terraform es una `herramienta de infraestructura` creada por `Hashicorp` y en julio de 2014. 
+
+
+Terraform por sí solo no es más que solo un esqueleto, 
+necesitamos valernos de providers que agregarán funcionalidades 
+para así poder crear los recursos EJ AWS CLI
+
+
+#### Terraform Core
+
+core al núcleo de Terraform, es decir, el binario
+que utilizaremos para interactuar con la herramienta, 
+
+#### Ejemplos
+
+configura la herramienta para utilizar el provider de AWS
+descargado del registry de Terraform :
+
+```t
+terraform {
+    required_providers {
+        aws = {
+            source = "hashicorp/aws"
+            version = "~> 1.0.4"
+        }
+    }
+}
+```
+
+configurar el backend de Terraform para que utilice un bucket de S3 (AWS)
+para almacenar el estado ( con un bucket de S3 ya previamente creado )
+
+```t
+terraform {
+    backend "s3" {
+        bucket = "<nombre del bucket>"
+        key = "< path donde queremos almacenar
+                 el estado dentro del bucket >"
+        region = "us-east-1"
+    }
+}
+```
+
+#### Terraform providers
+
+También conocidos como plugins de Terraform
+son componentes que podremos agregar al
+código para agregar funcionalidades
+
+```t
+terraform {
+    required_providers {
+        aws = {
+            source = "hashicorp/aws"
+            version = "~> 1.0.4"
+        }
+    }
+}
+provider "aws" {            # PROVIDER
+    region = "us-west-2"
+    access_key = "<my-access-key>"
+    secret_key = "<my-secret-key>"
+}
+```
+
+Esta forma `no es segura` de configurar el provider 
+ya que estamos `exponiendo las credenciales`
+
+#### Estado
+
+
+Guardará una `relación` entre nuestros archivos de `configuración de Terraform`
+con los `recursos de infraestructura que creamos`.
+
+En caso de `perder, borrar o corromper este archivo`, 
+Terraform no manejara más la infraestructura que fue creada en la nube
+y tendremos que pasar a `manejarla a mano`
+
+```json
+{
+    "version": 4,
+    "terraform_version": "1.2.3",
+    "serial": 1,
+    "lineage": "86545604-7463-4aa5-e9e8-a2a221de98d2",
+    "outputs": {},
+    "resources": [
+    {
+        "mode": "managed",
+        "type": "aws_instance",
+        "name": "example",
+        "provider": "provider[\"registry.terraform.io/...\"]",
+        "instances": [{
+            "schema_version": 1,
+            "attributes": {
+                "ami": "ami-0fb653ca2d3203ac1",
+                "availability_zone": "us-east-2b",
+                "id": "i-0bc4bbe5b84387543",
+                "instance_state": "running",
+                "instance_type": "t2.micro",
+                "(...)": "(truncated)"
+            }
+        }
+        ]
+    }
+    ]
+}
+```
+
+Este código fue recortado para mejorar su lectura
+vemos en formato json los distintos recursos creados
+
+https://blog.gruntwork.io/an-introduction-to-terraform-f17df9c6d180
+
+1) Set up your AWS account
+2) Install Terraform
+3) Deploy a single server
+4) Deploy a single web server
+5) Deploy a configurable web server
+6) Deploy a cluster of web servers
+7) Deploy a load balancer
+8) Clean up
+
+https://blog.gruntwork.io/how-to-manage-terraform-state-28f5697e68fa
+
+1) What is Terraform state?
+2) Shared storage for state files
+3) Limitations with Terraform’s Backends
+4) Isolating state files
+5) The terraform_remote_state data source
+
+#### Archivos de configuración
+Si bien no son un componente en sí mismo sino un conjunto que engloba a varios archivos
+
+están escritos en `lenguaje HCL` y tienen la terminación `.tf`
+
+El nombre de archivo es indistinto para la herramient, 
+en reglas generales, se suele trabajar con un archivo llamado `main.tf`
+
+Por prolijidad, lo dividiremos en varios archivos con funciones bien claras,
+por ej : un archivo `backend.tf` donde tendremos toda la configuración del backend,
+o un archivo `providers.tf` donde configuraremos los proveedores
+
+ejemplo un archivo de configuración :
+
+```t
+resource "aws_instance" "web" 
+{
+  ami = “ami-0dcc1e21636832c5d”
+  instance_type = "t3.micro"
+  tags = {
+    Name = "Prueba"
+  }
+}
+```
+
+#### Terraform Registry 
+
+Registro de Terraform es su repositorio principal de código, 
+donde podremos encontrar tanto proveedores como módulos.
+
+Encontramos código sino y documentación de cómo usar los proveedores. 
+
+Los módulos son paquetes de código HCL 
+
+
+https://registry.terraform.io/
+https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/
+https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_fleet
+https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ami
+
+#### Módulos de Terraform
+
+Los módulos básicamente son código de Terraform estandarizado
+que nos permite parametrizarlo para que pueda ser fácilmente reutilizable.
+
+Por ejemplo:
+Que nuestra aplicación principal conste de una instancia EC2,
+una base de datos RDS y una VPC con sus respectivas Subnets
+
+
+
+#### Terraform Workflow  ( Init,  Plan,  Apply,  Destroy)
+
+INIT, PLAN, APPLY :
+
+1. `Instalar` los `proveedores` y módulos (`Terraform Init`).
+2. Hacer un dry-run (`Terraform plan`, este paso es opcional).
+3. Applicarlo (`Terraform apply`).
+4. De ser necesario `Eliminar` la infraestructura (`Terraform Destroy`).
+
+#### Terratest 
+
+https://terratest.gruntwork.io/
+
+Suported:
+
+    ● AWS 
+    ● Terraform  
+    ● Docker 
+    ● Kubernetes 
+    ● Packer
+    ● Terragrunt 
+
+Test infrastructure code with Terratest in 4 steps
+
+● Write test code using Go
+● Use Terratest to deploy infrastructure
+● Validate infrastructure with Terratest
+● Undeploy
+
+
+```go
+package test
+
+import (
+	"testing"
+	"github.com/gruntwork-io/terratest/modules/terraform"
+	"github.com/stretchr/testify/assert"
+)
+
+func TestTerraformHelloWorldExample(t *testing.T) {
+	// retryable errors in terraform testing.
+	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
+		TerraformDir: "../examples/terraform-hello-world-example",
+	})
+
+	defer terraform.Destroy(t, terraformOptions)
+
+	terraform.InitAndApply(t, terraformOptions)
+
+	output := terraform.Output(t, terraformOptions, "hello_world")
+	assert.Equal(t, "Hello, World!", output)
+}
+```
+
+#### Ventajas de Terraform
+
+● Poder trabajar con `cualquier proovedor` de nube no solamente con AWS
+● Poder utilizar la herramienta sin necesidad de  experiencia o conocimientos profundos
+● cuenta con una comunidad gigante que está constantemente aportando.
+
+#### Desventajas de Terraform
+
+● HCl es sencillo, preo no contamos con todas las capacidades de un lenguaje de programación 
+● El manejo del estado nos da libertad de manejarlo a nuestro gusto, 
+pero es una carga operacional muy grande 
+● Tiene una curva de aprendizaje un poco empinada para equipos inexpertos
+
+
+### Vagrant
+
+Vagrant tiene `ventajas sobre` utilizar `máquinas virtuales` directamente 
+como `Virtualbox`, además de beneficios de la `infraestructura como código`,
+también podremos:
+
+● Utilizar una `imagen base` para ejecutar `scripts de instalación` 
+que configuren la máquina virtual a nuestro gusto.
+● `Asignar recursos` de forma más `simple`.
+● Configurar recursos de red (`redes de Maquinas Virtualews` dentro del proveedor,
+ es decir, el virtualizador que utilicemos).
+
+#### Vagrant Boxes 
+
+llamamos `Boxes` a las `imágenes base` que podremos `descargar de Vagrant Cloud` 
+y que utilizaremos para levantar nuestras máquinas virtuales.
+
+
+```sh
+# CREAR  Vagranfile
+vagrant init ubuntu/focal64
+vagrant init hashicorp/bionic64
+```
+Haremos una instanciación del box bionic64, que `creará un Vagrantfile` 
+
+```t
+Vagrant.configure("2") do |config|
+    config.vm.box = "hashicorp/focal64"
+    config.vm.provider "virtualbox" do |vb|
+       vb.memory = "2048"
+       vb.cpus   = "2"
+    end
+  # Enable provisioning with a shell script. Additional provisioners such as
+  # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
+  # documentation for more information about their specific syntax and use.
+  # config.vm.provision "shell", inline: <<-SHELL
+  #   apt-get update
+  #   apt-get install -y apache2
+  # SHELL
+end
+```
+
+```sh
+# CREAR Maquina
+sudo vagrant up
+
+    Bringing machine 'default' up with 'virtualbox' provider...
+    ==> default: Box 'ubuntu/focal64' could not be found. Attempting to find and install...
+        default: Box Provider: virtualbox
+        default: Box Version: >= 0
+    ==> default: Loading metadata for box 'ubuntu/focal64'
+        default: URL: https://vagrantcloud.com/api/v2/vagrant/ubuntu/focal64
+    ==> default: Adding box 'ubuntu/focal64' (v20240821.0.1) for provider: virtualbox
+        default: Downloading: https://vagrantcloud.com/ubuntu/boxes/focal64/versions/20240821.0.1/providers/virtualbox/unknown/vagrant.box
+    Download redirected to host: cloud-images.ubuntu.com
+    Progress: 23% (Rate: 0/s, Estimated time remaining: 0:02:39)
+    ==> default: Successfully added box 'ubuntu/focal64' (v20240821.0.1) for 'virtualbox'!
+    ==> default: Importing base box 'ubuntu/focal64'...
+    Progress: 90%There was an error while executing `VBoxManage`, a CLI used by Vagrant
+    for controlling VirtualBox. The command and stderr is shown below.
+
+    Command: ["import", "/home/ariel/.vagrant.d/boxes/ubuntu-VAGRANTSLASH-focal64/20240821.0.1/virtualbox/box.ovf"
+```
+
+
+https://portal.cloud.hashicorp.com/vagrant/discover
+
+```j
+Box name        |Last Version | Downloads | Last Release  | Providers | Architectures
+================|=============|===========|===============|===========|======================
+ubuntu/trusty64	|20191107.0.0 |30,796,969 | 263 weeks ago |virtualbox | unknown
+centos/7        |2004.01      |6,063,400  | 236 weeks ago |libvirt hyperv vmware_desktop virtualbox vmware_fusion  vmware_workstation  unknown
+debian/jessie64 |8.11.1	      |2,424,448  | 284 weeks ago |libvirt lxc virtualbox | unknown
+```
+
+LXC : LinuX Containers
+
+
+
+#### Vagrantfile
+
+
+Una vez ejecutado el comando vagrant init,
+obtendremos un vagrantfile del estilo:
+
+```ts
+Vagrant.configure("2") do |config|
+    config.vm.box = "<box>"
+end
+```
+
+Donde `<box>` es el box que utilizamos al ejecutar el comando vagrant init.
+A continuacion un ejemplo con `Ubuntu focal`
+
+```ts
+    config.vm.box = "ubuntu/focal64"
+    config.vm.provision :shell, path:
+"bootstrap.sh"
+    config.vm.network "private_network",
+ip:"192.168.100.10", :name => 'VirtualBox
+Host-Only Ethernet Adapter #3', :adapter => 3
+        config.vm.provider "virtualbox" do |v|
+        v.memory = 4096
+        v.cpus = 2
+    end
+    config.vm.hostname = "k8smaster"
+```
+
+#### Vagrant provisioner
+
+Los provisioners son funciones que se ejecutan la
+primera vez que ejecutamos el comando Vagrant
+UP, el provisioner más sencillo es el del tipo shell 
+
+Ejemplo
+```t
+config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "playbook.yml"
+```
+Es importante tener en cuenta que el código del
+provisioner solo se ejecutara con el primer
+Vagrant up, a menos que utilicemos el flag
+“--provision”.
+
+#### Carpetas compartidas y configuración extra
+
+Carpetas compartidas y configuración extra
+Por defecto, Vagrant nos comparte el contenido del
+directorio donde está el vagrantfile con el directorio
+/vagrant/ dentro del box. Esto nos permite guardar
+material de forma más permanente, ahora, ¿qué pasa si
+queremos usar directorios distintos? En dicho caso, en el
+vagrantfile podremos usar la siguiente configuración:
+
+config.vm.synced_folder "apache_config/", "/etc/apache/conf.d/"
+
+#### Beneficios de Vagrant en entornos de desarrollo
+
+#### Instalar Vagrant 
+
+https://developer.hashicorp.com/vagrant/downloads
+https://developer.hashicorp.com/vagrant/install
+
+
+```sh
+wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+sudo apt update && sudo apt install vagrant
+```
+
+`$(lsb_release -cs)`  == victoria  (Linux `Mint`)
+Debemos reemplazar por la version de `Ubuntu` correspondiente
+Ubuntu 22.04 LTS `jammy jellyfish`<=== repository 'https://apt.releases.hashicorp.com Jammy Release' does not have a Release file.
+Ubuntu 20.04 LTS `focal`.         <===  SUCCESS
+
+INSTALLATION :
+
+```sh
+wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com focal main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+sudo apt update && sudo apt install vagrant
+```
+
+OUTPUT :
+
+```sh
+wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+    [sudo] password for ariel: --2024-11-25 07:15:34--  https://apt.releases.hashicorp.com/gpg
+    Resolving apt.releases.hashicorp.com (apt.releases.hashicorp.com)... 3.160.90.44, 3.160.90.33, 3.160.90.102, ...
+    Connecting to apt.releases.hashicorp.com (apt.releases.hashicorp.com)|3.160.90.44|:443... connected.
+    HTTP request sent, awaiting response... 200 OK
+    Length: 3980 (3,9K) [binary/octet-stream]
+    Saving to: ‘STDOUT’
+    -                   100%[===================>]   3,89K  --.-KB/s    in 0s      
+    2024-11-25 07:15:34 (188 MB/s) - written to stdout [3980/3980]
+
+
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com focal main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+    deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com focal main
+
+
+sudo apt update && sudo apt install vagrant
+    Get:2 https://deb.nodesource.com/node_20.x jammy InRelease [4.563 B]           
+    Hit:3 https://dl.google.com/linux/chrome/deb stable InRelease                  
+    Hit:4 https://packages.microsoft.com/repos/edge stable InRelease               
+    Hit:1 https://packages.microsoft.com/repos/code stable InRelease               
+    Hit:5 https://download.docker.com/linux/debian bookworm InRelease              
+    Hit:6 https://brave-browser-apt-release.s3.brave.com stable InRelease          
+    Hit:7 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  InRelease
+    Hit:8 https://repo.steampowered.com/steam stable InRelease                     
+    Ign:9 http://packages.linuxmint.com victoria InRelease                               
+        Reading  package lists...     Done
+        Building dependency tree...   Done
+        Reading  state information... Done
+    0 upgraded, 1 newly installed, 0 to remove and 359 not upgraded.
+    Need to get 153 MB of archives.
+    After this operation, 393 MB of additional disk space will be used.
+        Get:1 https://apt.releases.hashicorp.com focal/main amd64 vagrant amd64 2.4.3-1 [153 MB]
+        Fetched 153 MB in 13s (11,9 MB/s)                                                                                                                                                                              
+    Selecting previously unselected package vagrant.
+    (Reading database ... 661306 files and directories currently installed.)
+    Preparing to unpack .../vagrant_2.4.3-1_amd64.deb ...
+    Unpacking vagrant (2.4.3-1) ...
+    Setting up vagrant (2.4.3-1) ...
+
+vagrant -v
+    Vagrant 2.4.3
+```
+
+Mas Documentacion :
+
+https://developer.hashicorp.com/vagrant/docs/installation
+https://developer.hashicorp.com/vagrant/tutorials/getting-started
+
+```sh
+vagrant -h
+    Usage: vagrant [options] <command> [<args>]
+
+# Common commands:
+     box             manages boxes: installation, removal, etc.
+     cloud           manages everything related to Vagrant Cloud
+     destroy         stops and deletes all traces of the vagrant machine
+     halt            stops the vagrant machine
+     help            shows the help for a subcommand
+     init            initializes a new Vagrant environment by creating a Vagrantfile
+     login           
+     package         packages a running vagrant environment into a box
+     port            displays information about guest port mappings
+     powershell      connects to machine via powershell remoting
+     provision       provisions the vagrant machine
+     push            deploys code in this environment to a configured destination
+     rdp             connects to machine via RDP
+     reload          restarts vagrant machine, loads new Vagrantfile configuration
+     resume          resume a suspended vagrant machine
+     serve           start Vagrant server
+     snapshot        manages snapshots: saving, restoring, etc.
+     ssh             connects to machine via SSH
+     ssh-config      outputs OpenSSH valid configuration to connect to the machine
+     status          outputs status of the vagrant machine
+     suspend         suspends the machine
+     up              starts and provisions the vagrant environment
+```
+
+
+```
+```
+
+
+## Docker
+
+
+systemctl list-unit-files | grep dock
+docker.service                                enabled         enabled
+docker.socket                                 enabled         enabled
+
+systemctl status docker.socket 
+ 
+systemctl -help
+    start   stop      list-units     set-property    list-unit-files
+    kill    freeze    set-property   list-machines   list-dependencies   
+    show    restart   list-sockets   list-jobs       help 
+
+sudo docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
+sudo docker build . -t mockup-app-rembg 
+    [+] Building 88.9s (11/11) FINISHED                          docker:default
+
+sudo docker ps -a
+CONTAINER ID   IMAGE              COMMAND           CREATED         STATUS                     PORTS     NAMES
+b1654e8c9b89   mockup-app-rembg   "python app.py"   5 minutes ago   Exited (1) 5 minutes ago             gallant_pasteur
+
+sudo docker rmi -f mockup-app-rembg 
+Untagged: mockup-app-rembg:latest
+Deleted: sha256:f42f8aad235997ae17dafdcaccdc52afa14b3e4a5b5e8bcbeafed0669b87e911
+
+
+sudo docker ps -a
+CONTAINER ID   IMAGE          COMMAND           CREATED          STATUS                      PORTS     NAMES
+78b28c8e3ddc   f42f8aad2359   "python app.py"   42 minutes ago   Exited (1) 42 minutes ago             strange_perlman
+b1654e8c9b89   f42f8aad2359   "python app.py"   48 minutes ago   Exited (1) 48 minutes ago             gallant_pasteur
+
+
+sudo docker stop $(sudo docker ps -q)
+sudo docker rm   $(sudo docker ps -a -q)
+sudo docker rmi  $(sudo docker images -a -q)
+
+man docker build |grep -e'-t ' -a3 -b6
+    11803-       The -t/--tag flag is used to rename an image. Here are some examples:
+
+sudo docker run -p 8080:5000 mockup-app-rembg
+
+
+
+## Laboratorio Ansible
+
+Objetivo 
+El objetivo de esta práctica es el de automatizar el despliegue 
+de un servidor web + una página sencilla en un servidor externo 
+mediante la herramienta Ansible (utilizando ssh). 
+
+Resolución 
+
+Para esta práctica tendremos como requisito tener por un lado nuestro
+laboratorio principal (ya sea de forma local o una máquina virtual)
+y una segunda máquina Linux a la cual tengamos acceso por ssh
+desde nuestro laboratorio principal, esto es fundamental 
+ya que ansible utilizar ssh de fondo para enviar las instrucciones.
+
+En nuestro caso, utilizaremos la máquina en AWS creada en el laboratorio de Terraform,
+pero es indistinta la ubicación de la máquina.
+
+
+Para esta práctica tendremos como requisito tener por un lado nuestro laboratorio principal (ya sea de forma local o una máquina virtual) y una segunda máquina Linux a la cual tengamos acceso por ssh desde nuestro laboratorio principal, esto es fundamental ya que ansible utilizar ssh de fondo para enviar las instrucciones. En nuestro caso, utilizaremos la máquina en AWS creada en el laboratorio de Terraform, pero es indistinta la ubicación de la máquina.
+
+ Empezaremos por la instalación de Ansible: 
+
+1) Primero, tenemos que asegurarnos de que tenemos python3 instalado,
+ en caso de no tenerlo lo instalamos con 
+    a) sudo apt-get install python3
+2) Una vez con python3 instalado, instalamos pip 
+    a) curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py 
+    b) python3 get-pip.py --user 
+3) Una vez que tengamos pip instalado, instalamos ansible 
+    a) python3 -m pip install --user ansible 
+4) El último paso es añadir el path donde instalamos ansible 
+a nuestro path de ejecutables, una forma de hacer esto es agregar
+ el path que nos da el output de la instalación a nuestro .bashrc 
+ (o archivo de configuración de la shell que utilicemos
+
+
+```sh
+WARNING: The scripts ansible, ansible-config, anstble-connection, ansible-console,
+ansible-doc, ansible-galaxy, anstble-inventory, ansible-playbook,anstble-pull and anstble-vault
+are installed in /home/zdenko/.local/bin' 
+which is not on PATH. Consider adding this directory to PATH or, if you prefer to suppress this warning,
+   use-no-warn-script-location. 
+WARNING: The script ansible-community is installed in /home/zdenko/.local/bin 
+which is not on PATH. Consider adding this directory to PATH or,
+if you prefer to suppress this warn ing, use-no-warn-script-location.
+```
+
+Para esto, agregaremos la siguiente línea al final del archivo.bashrc 
+   
+a) export PATH="/home/zdenko/.local/bin:$PATH" (reemplazar el usuario) 
+b) source.bashrc 
+
+5) Y listo, ya tendremos ansible listo para utilizar, 
+para verificar su correcto funcionamiento corremos: 
+a) ansible --version 
+Ya con Ansible instalado, ahora crearemos un inventario donde configuraremos 
+
+6) Para esto, crearemos un archivo de configuración con terminación .yaml,
+en nuestro caso lo llamamos inventario.yaml aunque el nombre es indistinto.
+En nuestro caso de nuevo, estamos utilizando una máquina virtual 
+que corre en AWS por eso la IP pública y no una IP privada de una red 192.168.χ.χ.
+ maquinas-virtuales: hosts: AWS: ansible_host: 3.82.119.30 
+ 
+ 7) Una vez creado el inventario, podremos verificar el correcto acceso desde ansible
+  hacia nuestro host con el siguiente comando 
+  a) ansible all-m ping -i inventario.yaml -u ubuntu --private-key 
+  ../Terraform/AWS/terra-keys 
+
+
+```sh
+~Desktop/Cloud-devops/Laboratorios/Ansibles 
+[zdenko@z] $ ansible all ping -i inventario.yaml -u ubuntu --privete key .../Terraform/AWS/terra-keys 
+  [WARNING]: Invalid characters wer found in group names but not replaced.
+  use -vvvv to see details 
+  AWS | SUCCESS => {
+    ansiblr_facts{
+        "discovered+insrptreter_python": "/usr/bin/python3"
+    }. 
+    "changed" : false , 
+    "ping": "pong"
+  }  
+~/Desktop/Cloud-devops/Laboratorios/Ansibles 
+[zdenko@z] $ 
+```
+
+
+Si configuramos bien nuestro servidor, el comando nos devolverá un pong,
+en este caso fue necesario pasarle un usuario específico y la llave privada 
+para poder conectarnos.
+
+8) Ya creado el inventario y verificado el acceso a través de Ansible,
+ pasaremos a crear el playbook.
+```yaml
+- hosts: all 
+become: yes 
+vars: 
+  server_name: "{{ ansible_default_ipv4.address }}"
+  document_root: /var/www 
+  app_root: app tasks: 
+  tasks:
+
+- name: Update apt cache and install Nginx 
+apt: 
+  name: nginx 
+  state: latest 
+  update_cache: yes 
+ 
+- name: Copy website files to the server's document root
+copy: 
+  src: "{{ app_root }}" 
+  dest: "{{ document_root }}" 
+  mode: preserve 
+
+- name: Apply Nginx template 
+template: 
+  src: nginx.conf.j2
+  dest: /etc/nginx/sites-available/default 
+  notify: Restart Nginx 
+
+- name: Enable new site 
+ file: 
+  src: /etc/nginx/sites-available/default
+    dest: /etc/nginx/sites-enabled/default
+    state: 
+    link notify: Restart Nginx 
+  
+- name: Allow all access to tcp port 80 
+  ufw: 
+    rule: allow
+    allow port: '80' 
+    proto: tcp handlers: 
+  
+- name: Restart Nginx 
+    service: 
+    name: nginx   
+    state: restarted 48:46/2:36:35 
+```
+
+  Adicional al playbook, necesitamos crear 2 archivos más: 
+  • Un archivo de configuración de nginx:
+
+nginx.conf.j2 :
+
+```conf
+server {
+  listen 80; 
+
+  root {{ document_root }}/{{ app_root }};
+  index index.html index.htm;
+  
+  server_name {{ server_name }};
+
+  location / { 
+  default_type "text/html";
+  try_files $uri.html $uri $uri/ =404;
+  } 
+}
+```
+
+Un directorio llamado app que dentro tenga los archivos para nuestro servidor web,
+en este caso solo vamos a usar un index.html bastante sencillo con un
+` <H1>  Probando Nginx con Ansible!  </H1> `
+ 
+9) Ya con el playbook y los archivos adicionales creados, 
+pasaremos a ejecutar el playbook: 
+
+a) ansible-playbook playbook.yaml -i inventario.yaml -u ubuntu --private-key ../Terraform/AWS/terra-keys 
+
+10) Una vez aplicado el playbook, solo es cuestión de acceder a la IP pública de nuestra máquina virtual
+ en AWS para ver nuestra aplicación web corriendo

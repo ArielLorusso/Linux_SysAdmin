@@ -1631,7 +1631,7 @@ el espacio en disco consumido. La forma correcta de utilizar el comando du es la
 
 ```sh
     #Espacio total ocupado por /etc:
-    >du-sch /etc
+    >du -sch /etc
         18M /etc
         18M total
 
