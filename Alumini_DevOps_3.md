@@ -1212,7 +1212,7 @@ Viendo los recursos
     ....
 
 [vagrant@ubuntu-focal]:~$  neofetch
-            .-/+oossssoo+/-.               vagrant@ubuntu-focal 
+            -/+oossssoo+/-.               vagrant@ubuntu-focal 
         `:+ssssssssssssssssss+:`           OS:      Ubuntu 20.04.6 LTS x86_64 
       -+ssssssssssssssssssyyssss+-         Host:    VirtualBox 1.2 
     .ossssssssssssssssssdMMMNysssso.       Kernel:  5.4.0-200-generic 
