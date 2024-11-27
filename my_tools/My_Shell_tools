@@ -1,16 +1,41 @@
-pactl load-module module-loopback latency_msec=1
+pactl load-module module-loopback latency_msec=1   # MOCROPHONE
 pactl unload-module module-loopback
 
 
-redshift -l -34.6:-58.4 -t 5700:3600 -g 1:1:1
+redshift -l -34.6:-58.4 -t 5700:3600 -g 1:1:1      # NIGHT BLUE FILTER
 
 
-neofetch
-ifconfig
+neofetch    # SYSTEM INFO
 lshw -cpu
+lshw -class network
+
+hostname -I | awk '{print $1}'  # IP
+hostname -A
+nmcli
+ip route
+ifconfig
+nmcli -p device show
+
+# DISK USE
+du -cha --threshold=900k --max-depth=1 . | sort -h -r | head -n 25
+df -a 
 
 
-ctrl+a+del = delete command
+# FORMAT CONVERTION
+convert -quality 50          IMG.jpg   IMG.avif     # IMAGE
+convert -quality {30,50,70}  IMG.jpg   IMG.avif
+avifenc -s 6 -y 444 --min 25 --max 35  IMG.jpg IMG.avif 
+for i in sea*.jpg;  do convert -quality 50 "$i" "${i%.*}.avif";  done   # INLINE SCRIPT   
+ffmpeg  -i AUD.mp3  -b:a 64k   AUD.ogg              # AUDIO
+
+# delete long command
+ctrl + a + del  
+
+# Brace Expansion         
+mkdir  a_{1,2,3}   
+mkdir  a_{1,2,3}/{1,2,3}_b
+
+
 
 Oh-My-Posh :
 
@@ -28,5 +53,3 @@ Oh-My-Posh :
         eval "$(oh-my-posh --init --shell bash --config ~/.poshthemes/Ariel-Oh-My-Posh.omp.json)"
 
     /home/ariel/.poshthemes/velvet.omp.json
-
-
