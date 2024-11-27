@@ -53,5 +53,3 @@ Oh-My-Posh :
         eval "$(oh-my-posh --init --shell bash --config ~/.poshthemes/Ariel-Oh-My-Posh.omp.json)"
 
     /home/ariel/.poshthemes/velvet.omp.json
-
-
