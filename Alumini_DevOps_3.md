@@ -1273,6 +1273,17 @@ to this folder inside the VM.
 60K	    ./.vagrant
 56K	    ./Alumini_DevOps_3.md
 ```
+
+```sh
+[ariel @ ariel-All-Series] $ sudo vagrant halt
+    ==> default: Attempting graceful shutdown of VM...
+    ◣ 12.328s  ◣  Last command OK  
+
+[ariel @ ariel-All-Series] $ sudo vagrant status
+    Current machine states:
+    default                   poweroff (virtualbox)
+```
+
 Encontremos la VM de Vagrant en nuestra pc 
 se crea  donde este `configurado por defecto en Virtual box`
 en nuestro caso `~/VirtualBox\ VMs`
