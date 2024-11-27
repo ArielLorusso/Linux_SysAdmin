@@ -320,7 +320,7 @@ Esto les da una perspectiva que sirve para que se logren objetivos,
 son los responsables de los `SLOs` (`Service Level Objectives`)
 
 
-#### SLA y SLO
+#### SLA , SLO
 
 SLA : Service Level `Agreement`   ( Contrato Legal )
 SLO : Service Level `Objectives`  ( Objetivo de covertura)
@@ -417,6 +417,11 @@ Caso de Prueba
 Resultados
     Comando 1
     Comando 2
+
+### Mas Terminologia
+
+SOAP REST
+https://aws.amazon.com/es/compare/the-difference-between-soap-rest/
 
 
 ## Clase 27 - Agile ,Srum, Sprint 
@@ -683,9 +688,13 @@ Armar `nuestro propio AWS`
 Softwere Opensource para hacer una `pull de recursos`
 Para `brindar servicios` a nuestros desarolladores mediante terraform
 
+https://docs.openstack.org/2024.2/install/
+https://docs.openstack.org/2024.2/user/
 
+UBUNTU  https://ubuntu.com/training/contact-us?product=openstack-training-onsite
+SDK     https://developer.openstack.org/
 
-## clase 28
+## clase 28 - Ansible, Terraform, Vagrant, OpenStack
 
 **Conseguir entrevistas lavorales**
 
@@ -835,18 +844,712 @@ Infraestructura
 
 ### Terraform
 
-Terraform es una herramienta de
-infraestructura creada por la organización
-Hashicorp y lanzada al público en julio de 2014. 
+Terraform es una `herramienta de infraestructura` creada por `Hashicorp` y en julio de 2014. 
 
 
-Terraform por sí solo no es más que solo un
-esqueleto, necesitamos valernos de providers
-que agregarán funcionalidades para así poder
-crear los recursos EJ AWS CLI
+Terraform por sí solo no es más que solo un esqueleto, 
+necesitamos valernos de providers que agregarán funcionalidades 
+para así poder crear los recursos EJ AWS CLI
 
 
-### Laboratorio Ansible
+#### Terraform Core
+
+core al núcleo de Terraform, es decir, el binario
+que utilizaremos para interactuar con la herramienta, 
+
+#### Ejemplos
+
+configura la herramienta para utilizar el provider de AWS
+descargado del registry de Terraform :
+
+```t
+terraform {
+    required_providers {
+        aws = {
+            source = "hashicorp/aws"
+            version = "~> 1.0.4"
+        }
+    }
+}
+```
+
+configurar el backend de Terraform para que utilice un bucket de S3 (AWS)
+para almacenar el estado ( con un bucket de S3 ya previamente creado )
+
+```t
+terraform {
+    backend "s3" {
+        bucket = "<nombre del bucket>"
+        key = "< path donde queremos almacenar
+                 el estado dentro del bucket >"
+        region = "us-east-1"
+    }
+}
+```
+
+#### Terraform providers
+
+También conocidos como plugins de Terraform
+son componentes que podremos agregar al
+código para agregar funcionalidades
+
+```t
+terraform {
+    required_providers {
+        aws = {
+            source = "hashicorp/aws"
+            version = "~> 1.0.4"
+        }
+    }
+}
+provider "aws" {            # PROVIDER
+    region = "us-west-2"
+    access_key = "<my-access-key>"
+    secret_key = "<my-secret-key>"
+}
+```
+
+Esta forma `no es segura` de configurar el provider 
+ya que estamos `exponiendo las credenciales`
+
+#### Estado
+
+
+Guardará una `relación` entre nuestros archivos de `configuración de Terraform`
+con los `recursos de infraestructura que creamos`.
+
+En caso de `perder, borrar o corromper este archivo`, 
+Terraform no manejara más la infraestructura que fue creada en la nube
+y tendremos que pasar a `manejarla a mano`
+
+```json
+{
+    "version": 4,
+    "terraform_version": "1.2.3",
+    "serial": 1,
+    "lineage": "86545604-7463-4aa5-e9e8-a2a221de98d2",
+    "outputs": {},
+    "resources": [
+    {
+        "mode": "managed",
+        "type": "aws_instance",
+        "name": "example",
+        "provider": "provider[\"registry.terraform.io/...\"]",
+        "instances": [{
+            "schema_version": 1,
+            "attributes": {
+                "ami": "ami-0fb653ca2d3203ac1",
+                "availability_zone": "us-east-2b",
+                "id": "i-0bc4bbe5b84387543",
+                "instance_state": "running",
+                "instance_type": "t2.micro",
+                "(...)": "(truncated)"
+            }
+        }
+        ]
+    }
+    ]
+}
+```
+
+Este código fue recortado para mejorar su lectura
+vemos en formato json los distintos recursos creados
+
+https://blog.gruntwork.io/an-introduction-to-terraform-f17df9c6d180
+
+1) Set up your AWS account
+2) Install Terraform
+3) Deploy a single server
+4) Deploy a single web server
+5) Deploy a configurable web server
+6) Deploy a cluster of web servers
+7) Deploy a load balancer
+8) Clean up
+
+https://blog.gruntwork.io/how-to-manage-terraform-state-28f5697e68fa
+
+1) What is Terraform state?
+2) Shared storage for state files
+3) Limitations with Terraform’s Backends
+4) Isolating state files
+5) The terraform_remote_state data source
+
+#### Archivos de configuración
+Si bien no son un componente en sí mismo sino un conjunto que engloba a varios archivos
+
+están escritos en `lenguaje HCL` y tienen la terminación `.tf`
+
+El nombre de archivo es indistinto para la herramient, 
+en reglas generales, se suele trabajar con un archivo llamado `main.tf`
+
+Por prolijidad, lo dividiremos en varios archivos con funciones bien claras,
+por ej : un archivo `backend.tf` donde tendremos toda la configuración del backend,
+o un archivo `providers.tf` donde configuraremos los proveedores
+
+ejemplo un archivo de configuración :
+
+```t
+resource "aws_instance" "web" 
+{
+  ami = “ami-0dcc1e21636832c5d”
+  instance_type = "t3.micro"
+  tags = {
+    Name = "Prueba"
+  }
+}
+```
+
+#### Terraform Registry 
+
+Registro de Terraform es su repositorio principal de código, 
+donde podremos encontrar tanto proveedores como módulos.
+
+Encontramos código sino y documentación de cómo usar los proveedores. 
+
+Los módulos son paquetes de código HCL 
+
+
+https://registry.terraform.io/
+https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/
+https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_fleet
+https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ami
+
+#### Módulos de Terraform
+
+Los módulos básicamente son código de Terraform estandarizado
+que nos permite parametrizarlo para que pueda ser fácilmente reutilizable.
+
+Por ejemplo:
+Que nuestra aplicación principal conste de una instancia EC2,
+una base de datos RDS y una VPC con sus respectivas Subnets
+
+
+
+#### Terraform Workflow  ( Init,  Plan,  Apply,  Destroy)
+
+INIT, PLAN, APPLY :
+
+1. `Instalar` los `proveedores` y módulos (`Terraform Init`).
+2. Hacer un dry-run (`Terraform plan`, este paso es opcional).
+3. Applicarlo (`Terraform apply`).
+4. De ser necesario `Eliminar` la infraestructura (`Terraform Destroy`).
+
+#### Terratest 
+
+https://terratest.gruntwork.io/
+
+Suported:
+
+    ● AWS 
+    ● Terraform  
+    ● Docker 
+    ● Kubernetes 
+    ● Packer
+    ● Terragrunt 
+
+Test infrastructure code with Terratest in 4 steps
+
+● Write test code using Go
+● Use Terratest to deploy infrastructure
+● Validate infrastructure with Terratest
+● Undeploy
+
+
+```go
+package test
+
+import (
+	"testing"
+	"github.com/gruntwork-io/terratest/modules/terraform"
+	"github.com/stretchr/testify/assert"
+)
+
+func TestTerraformHelloWorldExample(t *testing.T) {
+	// retryable errors in terraform testing.
+	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
+		TerraformDir: "../examples/terraform-hello-world-example",
+	})
+
+	defer terraform.Destroy(t, terraformOptions)
+
+	terraform.InitAndApply(t, terraformOptions)
+
+	output := terraform.Output(t, terraformOptions, "hello_world")
+	assert.Equal(t, "Hello, World!", output)
+}
+```
+
+#### Ventajas de Terraform
+
+● Poder trabajar con `cualquier proovedor` de nube no solamente con AWS
+● Poder utilizar la herramienta sin necesidad de  experiencia o conocimientos profundos
+● cuenta con una comunidad gigante que está constantemente aportando.
+
+#### Desventajas de Terraform
+
+● HCl es sencillo, preo no contamos con todas las capacidades de un lenguaje de programación 
+● El manejo del estado nos da libertad de manejarlo a nuestro gusto, 
+pero es una carga operacional muy grande 
+● Tiene una curva de aprendizaje un poco empinada para equipos inexpertos
+
+
+### Vagrant
+
+Vagrant tiene `ventajas sobre` utilizar `máquinas virtuales` directamente 
+como `Virtualbox`, además de beneficios de la `infraestructura como código`,
+también podremos:
+
+● Utilizar una `imagen base` para ejecutar `scripts de instalación` 
+que configuren la máquina virtual a nuestro gusto.
+● `Asignar recursos` de forma más `simple`.
+● Configurar recursos de red (`redes de Maquinas Virtualews` dentro del proveedor,
+ es decir, el virtualizador que utilicemos).
+
+#### Vagrant Boxes 
+
+llamamos `Boxes` a las `imágenes base` que podremos `descargar de Vagrant Cloud` 
+y que utilizaremos para levantar nuestras máquinas virtuales.
+
+
+```sh
+# CREAR  Vagranfile
+vagrant init ubuntu/focal64
+vagrant init hashicorp/bionic64
+```
+
+Haremos una instanciación del box bionic64, que `creará un Vagrantfile` 
+
+```t
+Vagrant.configure("2") do |config|
+    config.vm.box = "hashicorp/focal64"
+    config.vm.provider "virtualbox" do |vb|
+       vb.memory = "2048"
+       vb.cpus   = "2"
+    end
+  # Enable provisioning with a shell script. Additional provisioners such as
+  # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
+  # documentation for more information about their specific syntax and use.
+  # config.vm.provision "shell", inline: <<-SHELL
+  #   apt-get update
+  #   apt-get install -y apache2
+  # SHELL
+end
+```
+
+```sh
+# CREAR Maquina
+sudo vagrant up
+    Bringing machine 'default' up with 'virtualbox' provider...
+    ==> default: Checking if box 'ubuntu/focal64' version '20240821.0.1' is up to date...
+    ==> default: Preparing network interfaces based on configuration...
+        default: Adapter 1: nat
+    ==> default: Forwarding ports...
+        default: 22 (guest) => 2222 (host) (adapter 1)
+    ==> default: Booting VM...
+        default: SSH address: 127.0.0.1:2222
+        default: SSH username: vagrant
+        default: SSH auth method: private key
+    ==> default: Machine booted and ready!
+    ==> default: Checking for guest additions in VM...
+    ==> default: Mounting shared folders...
+        default: /home/ariel/Documents/Linux_SysAdmin => /vagrant
+    ==> default: Machine already provisioned. Run `vagrant provision` or use the `--provision`
+    ==> default: flag to force provisioning. Provisioners marked to run always will still run.
+```
+
+```sh
+# VER STATUS
+> sudo vagrant status
+    Current machine states:
+        default                   running (virtualbox)
+    The VM is running. To stop this VM, you can run `vagrant halt` to
+    shut it down forcefully, or you can run `vagrant suspend` to simply
+    suspend the virtual machine. In either case, to restart it again,
+    simply run `vagrant up`.
+```
+```sh
+# CONECTARSE  SSH
+> sudo vagrant ssh
+    Welcome to Ubuntu 20.04.6 LTS (GNU/Linux 5.4.0-200-generic x86_64)
+
+    * Documentation:  https://help.ubuntu.com
+    * Management:     https://landscape.canonical.com
+    * Support:        https://ubuntu.com/pro
+
+    System information as of Wed Nov 27 05:57:01 UTC 2024
+
+    System load:  0.08              Processes:               122
+    Usage of /:   3.8% of 38.70GB   Users logged in:         0
+    Memory usage: 13%               IPv4 address for enp0s3: 10.0.2.15
+    Swap usage:   0%
+
+
+    Expanded Security Maintenance for Applications is not enabled.
+
+    0 updates can be applied immediately.
+
+    Enable ESM Apps to receive additional future security updates.
+    See https://ubuntu.com/esm or run: sudo pro status
+
+
+    The list of available updates is more than a week old.
+    To check for new updates run: sudo apt update
+    New release '22.04.5 LTS' available.
+    Run 'do-release-upgrade' to upgrade to it.
+
+```
+
+Viendo los recursos
+
+```sh
+[vagrant@ubuntu-focal]:~$ sudo apt update
+    Hit:1 http://archive.ubuntu.com/ubuntu focal InRelease                       
+    Get:2 http://archive.ubuntu.com/ubuntu focal-updates InRelease [128 kB] 
+    ....
+[vagrant@ubuntu-focal]:~$ sudo apt install neofetch
+    After this operation, 76.0 MB of additional disk space will be used.
+    Do you want to continue? [Y/n] y
+    ....
+
+[vagrant@ubuntu-focal]:~$  neofetch
+            -/+oossssoo+/-.               vagrant@ubuntu-focal 
+        `:+ssssssssssssssssss+:`           OS:      Ubuntu 20.04.6 LTS x86_64 
+      -+ssssssssssssssssssyyssss+-         Host:    VirtualBox 1.2 
+    .ossssssssssssssssssdMMMNysssso.       Kernel:  5.4.0-200-generic 
+   /ssssssssssshdmmNNmmyNMMMMhssssss/      Uptime:  3 hours, 26 mins 
+  +ssssssssshmydMMMMMMMNddddyssssssss+     Packages: 629 (dpkg), 4 (snap) 
+ /sssssssshNMMMyhhyyyyhmNMMMNhssssssss/    Shell:   bash 5.0.17 
+.ssssssssdMMMNhsssssssssshNMMMdssssssss.   Resolution: 1024x768 
++sssshhhyNMMNyssssssssssssyNMMMysssssss+   Terminal: /dev/pts/0 
+ossyNMMMNyMMhsssssssssssssshmmmhssssssso   CPU:     AMD Ryzen 5 2600 (2) @ 3.399GHz 
+ossyNMMMNyMMhsssssssssssssshmmmhssssssso   GPU:     VirtualBox Graphics Adapter 
++sssshhhyNMMNyssssssssssssyNMMMysssssss+   Memory:  202MiB / 1971MiB 
+.ssssssssdMMMNhsssssssssshNMMMdssssssss.   
+
+
+[vagrant@ubuntu-focal]:~$  df -ah |sort -k 2,2 -r
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda1        39G  1.7G   37G   5% /
+vagrant         159G  149G   11G  94% /vagrant
+/dev/loop1       92M   92M     0 100% /snap/lxd/29619
+/dev/loop0       64M   64M     0 100% /snap/core20/2434
+/dev/loop2       39M   39M     0 100% /snap/snapd/21759
+binfmt_misc        0     0     0    - /proc/sys/fs/binfmt_misc
+securityfs         0     0     0    - /sys/kernel/security
+hugetlbfs          0     0     0    - /dev/hugepages
+systemd-1          -     -     -    - /proc/sys/fs/binfmt_misc
+tmpfs           986M     0  986M   0% /sys/fs/cgroup
+tmpfs           986M     0  986M   0% /dev/shm
+tmpfs           5.0M     0  5.0M   0% /run/lock
+tmpfs           198M  980K  197M   1% /run/snapd/ns
+tmpfs           198M  980K  197M   1% /run
+tmpfs           198M     0  198M   0% /run/user/1000
+configfs           0     0     0    - /sys/kernel/config
+udev            969M     0  969M   0% /dev
+```
+/dev/sda1 (39G): This is the VM's primary hard disk partition. 
+It holds the operating system (Ubuntu in your case), installed applications, 
+and any data you create within the VM.
+
+/vagrant (159G): This is a shared folder between your local machine and the VM.
+It's likely configured in your Vagrantfile to map a directory on your local machine
+to this folder inside the VM.
+
+```sh
+[vagrant@ubuntu-focal]:~$  ls /vagrant/
+'45 Networking commands.md'          Alumini_DevOps_2.md   Glosario.md                                 LinuxSysAdmin.md        Vagrantfile   rootkey.csv
+'AWS Policy - ReadOnlyAccess.json'   Alumini_DevOps_3.md   Hands-on-Linux-for-DevOps-Cloud-Engineers   LinuxSysAdminiCS.md     fib.c
+ Alumini_DevOps.Md                   Alumni                Instalation_Troubleshooting_with_Angel.md  'Ofertas_Linked In.md'   my_tools
+
+```
+```sh
+[ariel @ ariel-All-Series] $ du -cha --threshold=1k --max-depth=1 . | sort -h -r | head -n 25
+5,6M	.
+4,3M	./.git
+456K	./Hands-on-Linux-for-DevOps-Cloud-Engineers
+336K	./Alumini_DevOps.Md
+148K	./Alumini_DevOps_2.md
+112K	./AWS Policy - ReadOnlyAccess.json
+60K	    ./.vagrant
+56K	    ./Alumini_DevOps_3.md
+```
+Encontremos la VM de Vagrant en nuestra pc 
+se crea  donde este `configurado por defecto en Virtual box`
+en nuestro caso `~/VirtualBox\ VMs`
+
+```sh
+[ariel @ ariel-All-Series] ls ~/VirtualBox\ VMs
+    bootcamp   Lubuntu  'Ubuntu 20 Openbox'  'Ubuntu Server'
+```
+Tenemos 4 maquinas virtuales ... cual es la creada por vagrant ?
+
+```sh
+[ariel @ ariel-All-Series]  grep -r vagrant ~/VirtualBox\ VMs
+    grep: ./bootcamp/Snapshots/2024-10-30T00-26-52-566209000Z.sav: binary file matches
+    grep: ./Ubuntu Server/Snapshots/2024-10-11T23-32-01-659976000Z.sav: binary file matches
+```
+
+Encontramos 2 durectorios que contiene `vagrant` enre sus archivos
+por lo que usamos algo mas especifico como la `id` de la VM
+
+```sh
+[ariel @ ariel-All-Series]  sudo vagrant global-status 
+    id       name    provider   state   directory                            
+    -------------------------------------------------------------------------
+    557ffae  default virtualbox running /home/ariel/Documents/Linux_SysAdmin
+```
+buscando `557ffae` encontramos que es el  directorio `Ubuntu Server`
+
+```sh
+[ariel @ ariel-All-Series]  grep -r 557ffae ./*
+    grep: ./Ubuntu Server/Snapshots/2024-10-11T23-32-01-659976000Z.sav: binary file matches
+```
+
+Analizemos el peso de los archivos que contiene
+
+```sh
+du -cha --threshold=500k ./Ubuntu\ Server/  
+    608K	./Ubuntu Server/Logs
+    947M	./Ubuntu Server/Snapshots/2024-10-11T23-32-01-659976000Z.sav
+    947M	./Ubuntu Server/Snapshots
+    948M	./Ubuntu Server/
+    948M	total
+```
+
+En total es menos de 1GB :  
+947M de snapshot  (la maquina virtual en si)
+0.6M de Logs      ( VBox.log.1, VBox.log.2  .... etc )
+
+
+https://portal.cloud.hashicorp.com/vagrant/discover
+
+
+```j
+Box name        |Last Version | Downloads | Last Release  | Providers | Architectures
+================|=============|===========|===============|===========|======================
+ubuntu/trusty64	|20191107.0.0 |30,796,969 | 263 weeks ago |virtualbox | unknown
+centos/7        |2004.01      |6,063,400  | 236 weeks ago |libvirt hyperv vmware_desktop virtualbox vmware_fusion  vmware_workstation  unknown
+debian/jessie64 |8.11.1	      |2,424,448  | 284 weeks ago |libvirt lxc virtualbox | unknown
+```
+
+LXC : LinuX Containers
+
+
+
+#### Vagrantfile
+
+
+Una vez ejecutado el comando vagrant init,
+obtendremos un vagrantfile del estilo:
+
+```ts
+Vagrant.configure("2") do |config|
+    config.vm.box = "<box>"
+end
+```
+
+Donde `<box>` es el box que utilizamos al ejecutar el comando vagrant init.
+A continuacion un ejemplo con `Ubuntu focal`
+
+```ts
+    config.vm.box = "ubuntu/focal64"
+    config.vm.provision :shell, path:
+"bootstrap.sh"
+    config.vm.network "private_network",
+ip:"192.168.100.10", :name => 'VirtualBox
+Host-Only Ethernet Adapter #3', :adapter => 3
+        config.vm.provider "virtualbox" do |v|
+        v.memory = 4096
+        v.cpus = 2
+    end
+    config.vm.hostname = "k8smaster"
+```
+
+#### Vagrant provisioner
+
+Los provisioners son funciones que se ejecutan la
+primera vez que ejecutamos el comando Vagrant
+UP, el provisioner más sencillo es el del tipo shell 
+
+Ejemplo
+```t
+config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "playbook.yml"
+```
+Es importante tener en cuenta que el código del
+provisioner solo se ejecutara con el primer
+Vagrant up, a menos que utilicemos el flag
+“--provision”.
+
+#### Carpetas compartidas y configuración extra
+
+Carpetas compartidas y configuración extra
+Por defecto, Vagrant nos comparte el contenido del
+directorio donde está el vagrantfile con el directorio
+/vagrant/ dentro del box. Esto nos permite guardar
+material de forma más permanente, ahora, ¿qué pasa si
+queremos usar directorios distintos? En dicho caso, en el
+vagrantfile podremos usar la siguiente configuración:
+
+config.vm.synced_folder "apache_config/", "/etc/apache/conf.d/"
+
+#### Beneficios de Vagrant en entornos de desarrollo
+
+#### Instalar Vagrant 
+
+https://developer.hashicorp.com/vagrant/downloads
+https://developer.hashicorp.com/vagrant/install
+
+
+```sh
+wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+sudo apt update && sudo apt install vagrant
+```
+
+`$(lsb_release -cs)`  == victoria  (Linux `Mint`)
+Debemos reemplazar por la version de `Ubuntu` correspondiente
+Ubuntu 22.04 LTS `jammy jellyfish`<=== repository 'https://apt.releases.hashicorp.com Jammy Release' does not have a Release file.
+Ubuntu 20.04 LTS `focal`.         <===  SUCCESS
+
+INSTALLATION :
+
+```sh
+wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com focal main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+sudo apt update && sudo apt install vagrant
+```
+
+OUTPUT :
+
+```sh
+wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+    [sudo] password for ariel: --2024-11-25 07:15:34--  https://apt.releases.hashicorp.com/gpg
+    Resolving apt.releases.hashicorp.com (apt.releases.hashicorp.com)... 3.160.90.44, 3.160.90.33, 3.160.90.102, ...
+    Connecting to apt.releases.hashicorp.com (apt.releases.hashicorp.com)|3.160.90.44|:443... connected.
+    HTTP request sent, awaiting response... 200 OK
+    Length: 3980 (3,9K) [binary/octet-stream]
+    Saving to: ‘STDOUT’
+    -                   100%[===================>]   3,89K  --.-KB/s    in 0s      
+    2024-11-25 07:15:34 (188 MB/s) - written to stdout [3980/3980]
+
+
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com focal main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+    deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com focal main
+
+
+sudo apt update && sudo apt install vagrant
+    Get:2 https://deb.nodesource.com/node_20.x jammy InRelease [4.563 B]           
+    Hit:3 https://dl.google.com/linux/chrome/deb stable InRelease                  
+    Hit:4 https://packages.microsoft.com/repos/edge stable InRelease               
+    Hit:1 https://packages.microsoft.com/repos/code stable InRelease               
+    Hit:5 https://download.docker.com/linux/debian bookworm InRelease              
+    Hit:6 https://brave-browser-apt-release.s3.brave.com stable InRelease          
+    Hit:7 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  InRelease
+    Hit:8 https://repo.steampowered.com/steam stable InRelease                     
+    Ign:9 http://packages.linuxmint.com victoria InRelease                               
+        Reading  package lists...     Done
+        Building dependency tree...   Done
+        Reading  state information... Done
+    0 upgraded, 1 newly installed, 0 to remove and 359 not upgraded.
+    Need to get 153 MB of archives.
+    After this operation, 393 MB of additional disk space will be used.
+        Get:1 https://apt.releases.hashicorp.com focal/main amd64 vagrant amd64 2.4.3-1 [153 MB]
+        Fetched 153 MB in 13s (11,9 MB/s)                                                                                                                                                                              
+    Selecting previously unselected package vagrant.
+    (Reading database ... 661306 files and directories currently installed.)
+    Preparing to unpack .../vagrant_2.4.3-1_amd64.deb ...
+    Unpacking vagrant (2.4.3-1) ...
+    Setting up vagrant (2.4.3-1) ...
+
+vagrant -v
+    Vagrant 2.4.3
+```
+
+Mas Documentacion :
+
+https://developer.hashicorp.com/vagrant/docs/installation
+https://developer.hashicorp.com/vagrant/tutorials/getting-started
+
+```sh
+vagrant -h
+    Usage: vagrant [options] <command> [<args>]
+# Common commands:
+     box             manages boxes: installation, removal, etc.
+     cloud           manages everything related to Vagrant Cloud
+     destroy         stops and deletes all traces of the vagrant machine
+     halt            stops the vagrant machine
+     help            shows the help for a subcommand
+     init            initializes a new Vagrant environment by creating a Vagrantfile
+     login           
+     package         packages a running vagrant environment into a box
+     port            displays information about guest port mappings
+     powershell      connects to machine via powershell remoting
+     provision       provisions the vagrant machine
+     push            deploys code in this environment to a configured destination
+     rdp             connects to machine via RDP
+     reload          restarts vagrant machine, loads new Vagrantfile configuration
+     resume          resume a suspended vagrant machine
+     serve           start Vagrant server
+     snapshot        manages snapshots: saving, restoring, etc.
+     ssh             connects to machine via SSH
+     ssh-config      outputs OpenSSH valid configuration to connect to the machine
+     status          outputs status of the vagrant machine
+     suspend         suspends the machine
+     up              starts and provisions the vagrant environment
+```
+
+
+
+
+
+## Docker
+
+
+systemctl list-unit-files | grep dock
+docker.service                                enabled         enabled
+docker.socket                                 enabled         enabled
+
+systemctl status docker.socket 
+ 
+systemctl -help
+    start   stop      list-units     set-property    list-unit-files
+    kill    freeze    set-property   list-machines   list-dependencies   
+    show    restart   list-sockets   list-jobs       help 
+
+sudo docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
+sudo docker build . -t mockup-app-rembg 
+    [+] Building 88.9s (11/11) FINISHED                          docker:default
+
+sudo docker ps -a
+CONTAINER ID   IMAGE              COMMAND           CREATED         STATUS                     PORTS     NAMES
+b1654e8c9b89   mockup-app-rembg   "python app.py"   5 minutes ago   Exited (1) 5 minutes ago             gallant_pasteur
+
+sudo docker rmi -f mockup-app-rembg 
+Untagged: mockup-app-rembg:latest
+Deleted: sha256:f42f8aad235997ae17dafdcaccdc52afa14b3e4a5b5e8bcbeafed0669b87e911
+
+
+sudo docker ps -a
+CONTAINER ID   IMAGE          COMMAND           CREATED          STATUS                      PORTS     NAMES
+78b28c8e3ddc   f42f8aad2359   "python app.py"   42 minutes ago   Exited (1) 42 minutes ago             strange_perlman
+b1654e8c9b89   f42f8aad2359   "python app.py"   48 minutes ago   Exited (1) 48 minutes ago             gallant_pasteur
+
+
+sudo docker stop $(sudo docker ps -q)
+sudo docker rm   $(sudo docker ps -a -q)
+sudo docker rmi  $(sudo docker images -a -q)
+
+man docker build |grep -e'-t ' -a3 -b6
+    11803-       The -t/--tag flag is used to rename an image. Here are some examples:
+
+sudo docker run -p 8080:5000 mockup-app-rembg
+
+
+
+## Laboratorio Ansible
 
 Objetivo 
 El objetivo de esta práctica es el de automatizar el despliegue 
@@ -881,6 +1584,8 @@ Para esta práctica tendremos como requisito tener por un lado nuestro laborator
 a nuestro path de ejecutables, una forma de hacer esto es agregar
  el path que nos da el output de la instalación a nuestro .bashrc 
  (o archivo de configuración de la shell que utilicemos
+
+
 ```sh
 WARNING: The scripts ansible, ansible-config, anstble-connection, ansible-console,
 ansible-doc, ansible-galaxy, anstble-inventory, ansible-playbook,anstble-pull and anstble-vault
@@ -891,6 +1596,7 @@ WARNING: The script ansible-community is installed in /home/zdenko/.local/bin
 which is not on PATH. Consider adding this directory to PATH or,
 if you prefer to suppress this warn ing, use-no-warn-script-location.
 ```
+
 Para esto, agregaremos la siguiente línea al final del archivo.bashrc 
    
 a) export PATH="/home/zdenko/.local/bin:$PATH" (reemplazar el usuario) 
@@ -911,6 +1617,8 @@ que corre en AWS por eso la IP pública y no una IP privada de una red 192.168.�
   hacia nuestro host con el siguiente comando 
   a) ansible all-m ping -i inventario.yaml -u ubuntu --private-key 
   ../Terraform/AWS/terra-keys 
+
+
 ```sh
 ~Desktop/Cloud-devops/Laboratorios/Ansibles 
 [zdenko@z] $ ansible all ping -i inventario.yaml -u ubuntu --privete key .../Terraform/AWS/terra-keys 
@@ -926,6 +1634,7 @@ que corre en AWS por eso la IP pública y no una IP privada de una red 192.168.�
 ~/Desktop/Cloud-devops/Laboratorios/Ansibles 
 [zdenko@z] $ 
 ```
+
 
 Si configuramos bien nuestro servidor, el comando nos devolverá un pong,
 en este caso fue necesario pasarle un usuario específico y la llave privada 
@@ -982,9 +1691,9 @@ template:
   Adicional al playbook, necesitamos crear 2 archivos más: 
   • Un archivo de configuración de nginx:
 
-Nginx.j2 :
+nginx.conf.j2 :
 
-```c
+```conf
 server {
   listen 80; 
 
