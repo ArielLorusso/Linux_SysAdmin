@@ -18,12 +18,15 @@ nmcli -p device show
 
 # DISK USE
 du -cha --threshold=900k --max-depth=1 . | sort -h -r | head -n 25
+df -a 
+
 
 # FORMAT CONVERTION
-convert -quality 50  IMG.jpg   IMG.avif     # IMAGE
+convert -quality 50          IMG.jpg   IMG.avif     # IMAGE
+convert -quality {30,50,70}  IMG.jpg   IMG.avif
 avifenc -s 6 -y 444 --min 25 --max 35  IMG.jpg IMG.avif 
-ffmpeg  -i AUD.mp3  -b:a 64k   AUD.ogg      # AUDIO
 for i in sea*.jpg;  do convert -quality 50 "$i" "${i%.*}.avif";  done   # INLINE SCRIPT   
+ffmpeg  -i AUD.mp3  -b:a 64k   AUD.ogg              # AUDIO
 
 # delete long command
 ctrl + a + del  

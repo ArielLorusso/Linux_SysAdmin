@@ -1116,6 +1116,7 @@ y que utilizaremos para levantar nuestras máquinas virtuales.
 vagrant init ubuntu/focal64
 vagrant init hashicorp/bionic64
 ```
+
 Haremos una instanciación del box bionic64, que `creará un Vagrantfile` 
 
 ```t
@@ -1138,27 +1139,190 @@ end
 ```sh
 # CREAR Maquina
 sudo vagrant up
-
     Bringing machine 'default' up with 'virtualbox' provider...
-    ==> default: Box 'ubuntu/focal64' could not be found. Attempting to find and install...
-        default: Box Provider: virtualbox
-        default: Box Version: >= 0
-    ==> default: Loading metadata for box 'ubuntu/focal64'
-        default: URL: https://vagrantcloud.com/api/v2/vagrant/ubuntu/focal64
-    ==> default: Adding box 'ubuntu/focal64' (v20240821.0.1) for provider: virtualbox
-        default: Downloading: https://vagrantcloud.com/ubuntu/boxes/focal64/versions/20240821.0.1/providers/virtualbox/unknown/vagrant.box
-    Download redirected to host: cloud-images.ubuntu.com
-    Progress: 23% (Rate: 0/s, Estimated time remaining: 0:02:39)
-    ==> default: Successfully added box 'ubuntu/focal64' (v20240821.0.1) for 'virtualbox'!
-    ==> default: Importing base box 'ubuntu/focal64'...
-    Progress: 90%There was an error while executing `VBoxManage`, a CLI used by Vagrant
-    for controlling VirtualBox. The command and stderr is shown below.
-
-    Command: ["import", "/home/ariel/.vagrant.d/boxes/ubuntu-VAGRANTSLASH-focal64/20240821.0.1/virtualbox/box.ovf"
+    ==> default: Checking if box 'ubuntu/focal64' version '20240821.0.1' is up to date...
+    ==> default: Preparing network interfaces based on configuration...
+        default: Adapter 1: nat
+    ==> default: Forwarding ports...
+        default: 22 (guest) => 2222 (host) (adapter 1)
+    ==> default: Booting VM...
+        default: SSH address: 127.0.0.1:2222
+        default: SSH username: vagrant
+        default: SSH auth method: private key
+    ==> default: Machine booted and ready!
+    ==> default: Checking for guest additions in VM...
+    ==> default: Mounting shared folders...
+        default: /home/ariel/Documents/Linux_SysAdmin => /vagrant
+    ==> default: Machine already provisioned. Run `vagrant provision` or use the `--provision`
+    ==> default: flag to force provisioning. Provisioners marked to run always will still run.
 ```
+
+```sh
+# VER STATUS
+> sudo vagrant status
+    Current machine states:
+        default                   running (virtualbox)
+    The VM is running. To stop this VM, you can run `vagrant halt` to
+    shut it down forcefully, or you can run `vagrant suspend` to simply
+    suspend the virtual machine. In either case, to restart it again,
+    simply run `vagrant up`.
+```
+```sh
+# CONECTARSE  SSH
+> sudo vagrant ssh
+    Welcome to Ubuntu 20.04.6 LTS (GNU/Linux 5.4.0-200-generic x86_64)
+
+    * Documentation:  https://help.ubuntu.com
+    * Management:     https://landscape.canonical.com
+    * Support:        https://ubuntu.com/pro
+
+    System information as of Wed Nov 27 05:57:01 UTC 2024
+
+    System load:  0.08              Processes:               122
+    Usage of /:   3.8% of 38.70GB   Users logged in:         0
+    Memory usage: 13%               IPv4 address for enp0s3: 10.0.2.15
+    Swap usage:   0%
+
+
+    Expanded Security Maintenance for Applications is not enabled.
+
+    0 updates can be applied immediately.
+
+    Enable ESM Apps to receive additional future security updates.
+    See https://ubuntu.com/esm or run: sudo pro status
+
+
+    The list of available updates is more than a week old.
+    To check for new updates run: sudo apt update
+    New release '22.04.5 LTS' available.
+    Run 'do-release-upgrade' to upgrade to it.
+
+```
+
+Viendo los recursos
+
+```sh
+[vagrant@ubuntu-focal]:~$ sudo apt update
+    Hit:1 http://archive.ubuntu.com/ubuntu focal InRelease                       
+    Get:2 http://archive.ubuntu.com/ubuntu focal-updates InRelease [128 kB] 
+    ....
+[vagrant@ubuntu-focal]:~$ sudo apt install neofetch
+    After this operation, 76.0 MB of additional disk space will be used.
+    Do you want to continue? [Y/n] y
+    ....
+
+[vagrant@ubuntu-focal]:~$  neofetch
+            .-/+oossssoo+/-.               vagrant@ubuntu-focal 
+        `:+ssssssssssssssssss+:`           OS:      Ubuntu 20.04.6 LTS x86_64 
+      -+ssssssssssssssssssyyssss+-         Host:    VirtualBox 1.2 
+    .ossssssssssssssssssdMMMNysssso.       Kernel:  5.4.0-200-generic 
+   /ssssssssssshdmmNNmmyNMMMMhssssss/      Uptime:  3 hours, 26 mins 
+  +ssssssssshmydMMMMMMMNddddyssssssss+     Packages: 629 (dpkg), 4 (snap) 
+ /sssssssshNMMMyhhyyyyhmNMMMNhssssssss/    Shell:   bash 5.0.17 
+.ssssssssdMMMNhsssssssssshNMMMdssssssss.   Resolution: 1024x768 
++sssshhhyNMMNyssssssssssssyNMMMysssssss+   Terminal: /dev/pts/0 
+ossyNMMMNyMMhsssssssssssssshmmmhssssssso   CPU:     AMD Ryzen 5 2600 (2) @ 3.399GHz 
+ossyNMMMNyMMhsssssssssssssshmmmhssssssso   GPU:     VirtualBox Graphics Adapter 
++sssshhhyNMMNyssssssssssssyNMMMysssssss+   Memory:  202MiB / 1971MiB 
+.ssssssssdMMMNhsssssssssshNMMMdssssssss.   
+
+
+[vagrant@ubuntu-focal]:~$  df -ah |sort -k 2,2 -r
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda1        39G  1.7G   37G   5% /
+vagrant         159G  149G   11G  94% /vagrant
+/dev/loop1       92M   92M     0 100% /snap/lxd/29619
+/dev/loop0       64M   64M     0 100% /snap/core20/2434
+/dev/loop2       39M   39M     0 100% /snap/snapd/21759
+binfmt_misc        0     0     0    - /proc/sys/fs/binfmt_misc
+securityfs         0     0     0    - /sys/kernel/security
+hugetlbfs          0     0     0    - /dev/hugepages
+systemd-1          -     -     -    - /proc/sys/fs/binfmt_misc
+tmpfs           986M     0  986M   0% /sys/fs/cgroup
+tmpfs           986M     0  986M   0% /dev/shm
+tmpfs           5.0M     0  5.0M   0% /run/lock
+tmpfs           198M  980K  197M   1% /run/snapd/ns
+tmpfs           198M  980K  197M   1% /run
+tmpfs           198M     0  198M   0% /run/user/1000
+configfs           0     0     0    - /sys/kernel/config
+udev            969M     0  969M   0% /dev
+```
+/dev/sda1 (39G): This is the VM's primary hard disk partition. 
+It holds the operating system (Ubuntu in your case), installed applications, 
+and any data you create within the VM.
+
+/vagrant (159G): This is a shared folder between your local machine and the VM.
+It's likely configured in your Vagrantfile to map a directory on your local machine
+to this folder inside the VM.
+
+```sh
+[vagrant@ubuntu-focal]:~$  ls /vagrant/
+'45 Networking commands.md'          Alumini_DevOps_2.md   Glosario.md                                 LinuxSysAdmin.md        Vagrantfile   rootkey.csv
+'AWS Policy - ReadOnlyAccess.json'   Alumini_DevOps_3.md   Hands-on-Linux-for-DevOps-Cloud-Engineers   LinuxSysAdminiCS.md     fib.c
+ Alumini_DevOps.Md                   Alumni                Instalation_Troubleshooting_with_Angel.md  'Ofertas_Linked In.md'   my_tools
+
+```
+```sh
+[ariel @ ariel-All-Series] $ du -cha --threshold=1k --max-depth=1 . | sort -h -r | head -n 25
+5,6M	.
+4,3M	./.git
+456K	./Hands-on-Linux-for-DevOps-Cloud-Engineers
+336K	./Alumini_DevOps.Md
+148K	./Alumini_DevOps_2.md
+112K	./AWS Policy - ReadOnlyAccess.json
+60K	    ./.vagrant
+56K	    ./Alumini_DevOps_3.md
+```
+Encontremos la VM de Vagrant en nuestra pc 
+se crea  donde este `configurado por defecto en Virtual box`
+en nuestro caso `~/VirtualBox\ VMs`
+
+```sh
+[ariel @ ariel-All-Series] ls ~/VirtualBox\ VMs
+    bootcamp   Lubuntu  'Ubuntu 20 Openbox'  'Ubuntu Server'
+```
+Tenemos 4 maquinas virtuales ... cual es la creada por vagrant ?
+
+```sh
+[ariel @ ariel-All-Series]  grep -r vagrant ~/VirtualBox\ VMs
+    grep: ./bootcamp/Snapshots/2024-10-30T00-26-52-566209000Z.sav: binary file matches
+    grep: ./Ubuntu Server/Snapshots/2024-10-11T23-32-01-659976000Z.sav: binary file matches
+```
+
+Encontramos 2 durectorios que contiene `vagrant` enre sus archivos
+por lo que usamos algo mas especifico como la `id` de la VM
+
+```sh
+[ariel @ ariel-All-Series]  sudo vagrant global-status 
+    id       name    provider   state   directory                            
+    -------------------------------------------------------------------------
+    557ffae  default virtualbox running /home/ariel/Documents/Linux_SysAdmin
+```
+buscando `557ffae` encontramos que es el  directorio `Ubuntu Server`
+
+```sh
+[ariel @ ariel-All-Series]  grep -r 557ffae ./*
+    grep: ./Ubuntu Server/Snapshots/2024-10-11T23-32-01-659976000Z.sav: binary file matches
+```
+
+Analizemos el peso de los archivos que contiene
+
+```sh
+du -cha --threshold=500k ./Ubuntu\ Server/  
+    608K	./Ubuntu Server/Logs
+    947M	./Ubuntu Server/Snapshots/2024-10-11T23-32-01-659976000Z.sav
+    947M	./Ubuntu Server/Snapshots
+    948M	./Ubuntu Server/
+    948M	total
+```
+
+En total es menos de 1GB :  
+947M de snapshot  (la maquina virtual en si)
+0.6M de Logs      ( VBox.log.1, VBox.log.2  .... etc )
 
 
 https://portal.cloud.hashicorp.com/vagrant/discover
+
 
 ```j
 Box name        |Last Version | Downloads | Last Release  | Providers | Architectures
@@ -1310,7 +1474,6 @@ https://developer.hashicorp.com/vagrant/tutorials/getting-started
 ```sh
 vagrant -h
     Usage: vagrant [options] <command> [<args>]
-
 # Common commands:
      box             manages boxes: installation, removal, etc.
      cloud           manages everything related to Vagrant Cloud
@@ -1337,8 +1500,7 @@ vagrant -h
 ```
 
 
-```
-```
+
 
 
 ## Docker
