@@ -922,6 +922,11 @@ En caso de `perder, borrar o corromper este archivo`,
 Terraform no manejara más la infraestructura que fue creada en la nube
 y tendremos que pasar a `manejarla a mano`
 
+Se Recomienda trabajar con un `Backend remoto`,puede usarse un Bucket S3
+Junto con un `Sistema de bloqueo` que puede implementarse en DinamoDb
+Es fundamental para `evitar sobreescrbir infraestructura` al trabajar en equipo
+
+
 ```json
 {
     "version": 4,
@@ -943,7 +948,7 @@ y tendremos que pasar a `manejarla a mano`
                 "id": "i-0bc4bbe5b84387543",
                 "instance_state": "running",
                 "instance_type": "t2.micro",
-                "(...)": "(truncated)"
+              //  "(...)": "(truncated)"
             }
         }
         ]
@@ -1105,6 +1110,112 @@ que configuren la máquina virtual a nuestro gusto.
 ● Configurar recursos de red (`redes de Maquinas Virtualews` dentro del proveedor,
  es decir, el virtualizador que utilicemos).
 
+
+#### Instalar Vagrant 
+
+https://developer.hashicorp.com/vagrant/downloads
+https://developer.hashicorp.com/vagrant/install
+
+
+```sh
+wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+sudo apt update && sudo apt install vagrant
+```
+
+`$(lsb_release -cs)`  == victoria  (Linux `Mint`)
+Debemos reemplazar por la version de `Ubuntu` correspondiente
+Ubuntu 22.04 LTS `jammy jellyfish`<=== repository 'https://apt.releases.hashicorp.com Jammy Release' does not have a Release file.
+Ubuntu 20.04 LTS `focal`.         <===  SUCCESS
+
+INSTALLATION :
+
+```sh
+wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com focal main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+sudo apt update && sudo apt install vagrant
+```
+
+OUTPUT :
+
+```sh
+wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+    [sudo] password for ariel: --2024-11-25 07:15:34--  https://apt.releases.hashicorp.com/gpg
+    Resolving apt.releases.hashicorp.com (apt.releases.hashicorp.com)... 3.160.90.44, 3.160.90.33, 3.160.90.102, ...
+    Connecting to apt.releases.hashicorp.com (apt.releases.hashicorp.com)|3.160.90.44|:443... connected.
+    HTTP request sent, awaiting response... 200 OK
+    Length: 3980 (3,9K) [binary/octet-stream]
+    Saving to: ‘STDOUT’
+    -                   100%[===================>]   3,89K  --.-KB/s    in 0s      
+    2024-11-25 07:15:34 (188 MB/s) - written to stdout [3980/3980]
+
+
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com focal main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+    deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com focal main
+
+
+sudo apt update && sudo apt install vagrant
+    Get:2 https://deb.nodesource.com/node_20.x jammy InRelease [4.563 B]           
+    Hit:3 https://dl.google.com/linux/chrome/deb stable InRelease                  
+    Hit:4 https://packages.microsoft.com/repos/edge stable InRelease               
+    Hit:1 https://packages.microsoft.com/repos/code stable InRelease               
+    Hit:5 https://download.docker.com/linux/debian bookworm InRelease              
+    Hit:6 https://brave-browser-apt-release.s3.brave.com stable InRelease          
+    Hit:7 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  InRelease
+    Hit:8 https://repo.steampowered.com/steam stable InRelease                     
+    Ign:9 http://packages.linuxmint.com victoria InRelease                               
+        Reading  package lists...     Done
+        Building dependency tree...   Done
+        Reading  state information... Done
+    0 upgraded, 1 newly installed, 0 to remove and 359 not upgraded.
+    Need to get 153 MB of archives.
+    After this operation, 393 MB of additional disk space will be used.
+        Get:1 https://apt.releases.hashicorp.com focal/main amd64 vagrant amd64 2.4.3-1 [153 MB]
+        Fetched 153 MB in 13s (11,9 MB/s)                                                                                                                                                                              
+    Selecting previously unselected package vagrant.
+    (Reading database ... 661306 files and directories currently installed.)
+    Preparing to unpack .../vagrant_2.4.3-1_amd64.deb ...
+    Unpacking vagrant (2.4.3-1) ...
+    Setting up vagrant (2.4.3-1) ...
+
+vagrant -v
+    Vagrant 2.4.3
+```
+
+Mas Documentacion :
+
+https://developer.hashicorp.com/vagrant/docs/installation
+https://developer.hashicorp.com/vagrant/tutorials/getting-started
+
+```sh
+vagrant -h
+    Usage: vagrant [options] <command> [<args>]
+# Common commands:
+     box             manages boxes: installation, removal, etc.
+     cloud           manages everything related to Vagrant Cloud
+     destroy         stops and deletes all traces of the vagrant machine
+     halt            stops the vagrant machine
+     help            shows the help for a subcommand
+     init            initializes a new Vagrant environment by creating a Vagrantfile
+     login           
+     package         packages a running vagrant environment into a box
+     port            displays information about guest port mappings
+     powershell      connects to machine via powershell remoting
+     provision       provisions the vagrant machine
+     push            deploys code in this environment to a configured destination
+     rdp             connects to machine via RDP
+     reload          restarts vagrant machine, loads new Vagrantfile configuration
+     resume          resume a suspended vagrant machine
+     serve           start Vagrant server
+     snapshot        manages snapshots: saving, restoring, etc.
+     ssh             connects to machine via SSH
+     ssh-config      outputs OpenSSH valid configuration to connect to the machine
+     status          outputs status of the vagrant machine
+     suspend         suspends the machine
+     up              starts and provisions the vagrant environment
+```
+
+
 #### Vagrant Boxes 
 
 llamamos `Boxes` a las `imágenes base` que podremos `descargar de Vagrant Cloud` 
@@ -1119,22 +1230,30 @@ vagrant init hashicorp/bionic64
 
 Haremos una instanciación del box bionic64, que `creará un Vagrantfile` 
 
-```t
+```ruby
 Vagrant.configure("2") do |config|
-    config.vm.box = "hashicorp/focal64"
-    config.vm.provider "virtualbox" do |vb|
-       vb.memory = "2048"
-       vb.cpus   = "2"
-    end
+  config.vm.box = "hashicorp/focal64"
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "2048"
+    vb.cpus   = "2"
+  end
   # Enable provisioning with a shell script. Additional provisioners such as
   # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
   # documentation for more information about their specific syntax and use.
+  
+
+#   PROVISION INLINE
   # config.vm.provision "shell", inline: <<-SHELL
   #   apt-get update
   #   apt-get install -y apache2
   # SHELL
+
+#   PROVISION PATH
+  config.vm.provision :shell, path: ".vagrant/nginx.sh"
+
 end
 ```
+
 
 ```sh
 # CREAR Maquina
@@ -1156,6 +1275,145 @@ sudo vagrant up
     ==> default: Machine already provisioned. Run `vagrant provision` or use the `--provision`
     ==> default: flag to force provisioning. Provisioners marked to run always will still run.
 ```
+
+.vagrant/enginx.sh:
+
+```sh
+#/!bin/bash 
+
+sudo apt-get update                # Old  Stable
+sudo apt-get install -y nginx       
+
+# sudo apt update                  # New (unstable)
+# sudo apt install -y nginx
+```
+
+```sh
+# DESTROY
+[ariel @ ariel-All-Series] $  sudo vagrant destroy 557ffae    
+    default: Are you sure you want to destroy the 'default' VM? [y/N] y
+    ==> default: Destroying VM and associated drives...
+
+# GLOVAL-STATE
+[ariel @ ariel-All-Series] $  sudo vagrant global-status
+    id       name   provider state  directory                           
+    --------------------------------------------------------------------
+    There are no active Vagrant environments on this computer! Or,
+# CREAR Maquina
+sudo vagrant up
+    Bringing machine 'default' up with 'virtualbox' provider...
+    ==> default: Checking if box 'ubuntu/focal64' version '20240821.0.1' is up to date...
+    ==> default: Preparing network interfaces based on configuration...
+        default: Adapter 1: nat
+    ==> default: Forwarding ports...
+        default: 22 (guest) => 2222 (host) (adapter 1)
+    ==> default: Booting VM...
+        default: SSH address: 127.0.0.1:2222
+        default: SSH username: vagrant
+        default: SSH auth method: private key
+    ==> default: Machine booted and ready!
+    ==> default: Checking for guest additions in VM...
+    ==> default: Mounting shared folders...
+        default: /home/ariel/Documents/Linux_SysAdmin => /vagrant
+    ==> default: Machine already provisioned. Run `vagrant provision` or use the `--provision`
+    ==> default: flag to force provisioning. Provisioners marked to run always will still run.
+```
+
+Le damos un nuevo  nombre en vez de default en el  vagrantfile
+
+```ruby
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/focal64"
+  config.vm.define = "VirtualBox_nginx_test"    # ERROR
+  config.vm.hostname = "ariel_nginx_host"       # ERROR 
+  config.vm.provider :virtualbox do |vb|
+    vb.name     = "vagrant.nginx-test"
+  end
+```
+
+```sh
+sudo vagrant destroy f2ef60b
+    default: Are you sure you want to destroy the 'default' VM? [y/N]  y
+    There are `ERRORS` in the configuration of this machine. 
+    Please fix the following errors and try again:
+
+    vm:
+    * The following settings shouldn't exist: define
+    * The hostname set for the VM  'default' should only contain 
+        letters, numbers, hyphens or dots. Can't start with a hyphen or dot.
+
+```
+Arreglo el Vagrantfile segun peara evitar el error 
+
+```ruby
+Vagrant.configure("2") do |config|
+
+  config.vm.box = "ubuntu/focal64"         # OS  
+  config.vm.hostname = "ariel.nginx.host"  # Host NAME
+
+  config.vm.define "vagrant.nginx-test" do |machine|
+    machine.vm.box = "ubuntu/focal64"
+
+    machine.vm.provider "virtualbox" do |vb|
+      vb.name     = "vagrant.nginx-test"    # VM NAME
+      vb.memory = "2048"                    # RAM
+      vb.cpus   = "2"                       # CPU
+      vb.customize ["modifyvm", :id, "--name", "Test-new-name"]  # ID NAME
+    end
+  config.vm.provision :shell, path: ".vagrant/nginx.sh"   # SCRIPT
+  end
+end
+
+```
+
+Ya puedo destruir y volver a probar
+
+```sh
+# DESTROY
+sudo vagrant destroy f2ef60b
+        default: Are you sure you want to destroy the 'default' VM? [y/N] y
+    ==> default: Forcing shutdown of VM...
+    ==> default: Destroying VM and associated drives...
+
+sudo vagrant up
+    Bringing machine 'default' up with 'virtualbox' provider...
+    ==> default: Importing base box 'ubuntu/focal64'...
+    ==> default: Machine booted and ready!
+    ==> default: Checking for guest additions in VM...
+    ==> default: Setting hostname...
+    default:    # SCRIPT       sudo apt update
+    default: WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+    default: Hit:1 http://archive.ubuntu.com/ubuntu focal InRelease
+    default: Get:2 http://security.ubuntu.com/ubuntu focal-security InRelease [128 kB]
+    default:   # SCRIPT       sudo apt install -y nginx
+    default: WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+    default: Reading package lists...
+    default: Building dependency tree...
+```
+
+```sh
+vagrant@ariel:~$ hostname -f
+ariel.nginx.host
+
+
+[vagrant@ariel:]~$ systemctl status nginx.service 
+    ● nginx.service - A high performance web server and a reverse proxy server
+        Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
+        Active: active (running) since Thu 2024-11-28 03:57:30 UTC; 36s ago
+
+```
+
+
+
+
+
+```sh
+# VALIDATE
+[ariel @ ariel-All-Series] $  sudo vagrant validate
+    Vagrantfile validated successfully.
+
+```
+
 
 ```sh
 # VER STATUS
@@ -1228,24 +1486,24 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso   GPU:     VirtualBox Graphics Adapter
 
 
 [vagrant@ubuntu-focal]:~$  df -ah |sort -k 2,2 -r
-Filesystem      Size  Used Avail Use% Mounted on
-/dev/sda1        39G  1.7G   37G   5% /
-vagrant         159G  149G   11G  94% /vagrant
-/dev/loop1       92M   92M     0 100% /snap/lxd/29619
-/dev/loop0       64M   64M     0 100% /snap/core20/2434
-/dev/loop2       39M   39M     0 100% /snap/snapd/21759
-binfmt_misc        0     0     0    - /proc/sys/fs/binfmt_misc
-securityfs         0     0     0    - /sys/kernel/security
-hugetlbfs          0     0     0    - /dev/hugepages
-systemd-1          -     -     -    - /proc/sys/fs/binfmt_misc
-tmpfs           986M     0  986M   0% /sys/fs/cgroup
-tmpfs           986M     0  986M   0% /dev/shm
-tmpfs           5.0M     0  5.0M   0% /run/lock
-tmpfs           198M  980K  197M   1% /run/snapd/ns
-tmpfs           198M  980K  197M   1% /run
-tmpfs           198M     0  198M   0% /run/user/1000
-configfs           0     0     0    - /sys/kernel/config
-udev            969M     0  969M   0% /dev
+    Filesystem      Size  Used Avail Use% Mounted on
+    /dev/sda1        39G  1.7G   37G   5% /
+    vagrant         159G  149G   11G  94% /vagrant
+    /dev/loop1       92M   92M     0 100% /snap/lxd/29619
+    /dev/loop0       64M   64M     0 100% /snap/core20/2434
+    /dev/loop2       39M   39M     0 100% /snap/snapd/21759
+    binfmt_misc        0     0     0    - /proc/sys/fs/binfmt_misc
+    securityfs         0     0     0    - /sys/kernel/security
+    hugetlbfs          0     0     0    - /dev/hugepages
+    systemd-1          -     -     -    - /proc/sys/fs/binfmt_misc
+    tmpfs           986M     0  986M   0% /sys/fs/cgroup
+    tmpfs           986M     0  986M   0% /dev/shm
+    tmpfs           5.0M     0  5.0M   0% /run/lock
+    tmpfs           198M  980K  197M   1% /run/snapd/ns
+    tmpfs           198M  980K  197M   1% /run
+    tmpfs           198M     0  198M   0% /run/user/1000
+    configfs           0     0     0    - /sys/kernel/config
+    udev            969M     0  969M   0% /dev
 ```
 /dev/sda1 (39G): This is the VM's primary hard disk partition. 
 It holds the operating system (Ubuntu in your case), installed applications, 
@@ -1257,24 +1515,27 @@ to this folder inside the VM.
 
 ```sh
 [vagrant@ubuntu-focal]:~$  ls /vagrant/
-'45 Networking commands.md'          Alumini_DevOps_2.md   Glosario.md                                 LinuxSysAdmin.md        Vagrantfile   rootkey.csv
-'AWS Policy - ReadOnlyAccess.json'   Alumini_DevOps_3.md   Hands-on-Linux-for-DevOps-Cloud-Engineers   LinuxSysAdminiCS.md     fib.c
- Alumini_DevOps.Md                   Alumni                Instalation_Troubleshooting_with_Angel.md  'Ofertas_Linked In.md'   my_tools
+  '45 Networking commands.md'          Alumini_DevOps_2.md   Glosario.md                                 LinuxSysAdmin.md        Vagrantfile   rootkey.csv
+  'AWS Policy - ReadOnlyAccess.json'   Alumini_DevOps_3.md   Hands-on-Linux-for-DevOps-Cloud-Engineers   LinuxSysAdminiCS.md     fib.c
+   Alumini_DevOps.Md                   Alumni                Instalation_Troubleshooting_with_Angel.md  'Ofertas_Linked In.md'   my_tools
 
+[vagrant@ubuntu-focal]:~$ exit
+    logout
 ```
 ```sh
 [ariel @ ariel-All-Series] $ du -cha --threshold=1k --max-depth=1 . | sort -h -r | head -n 25
-5,6M	.
-4,3M	./.git
-456K	./Hands-on-Linux-for-DevOps-Cloud-Engineers
-336K	./Alumini_DevOps.Md
-148K	./Alumini_DevOps_2.md
-112K	./AWS Policy - ReadOnlyAccess.json
-60K	    ./.vagrant
-56K	    ./Alumini_DevOps_3.md
+    5,6M	.
+    4,3M	./.git
+    456K	./Hands-on-Linux-for-DevOps-Cloud-Engineers
+    336K	./Alumini_DevOps.Md
+    148K	./Alumini_DevOps_2.md
+    112K	./AWS Policy - ReadOnlyAccess.json
+    60K	    ./.vagrant
+    56K	    ./Alumini_DevOps_3.md
 ```
 
 ```sh
+# HALT
 [ariel @ ariel-All-Series] $ sudo vagrant halt
     ==> default: Attempting graceful shutdown of VM...
     ◣ 12.328s  ◣  Last command OK  
@@ -1406,117 +1667,1466 @@ config.vm.synced_folder "apache_config/", "/etc/apache/conf.d/"
 
 #### Beneficios de Vagrant en entornos de desarrollo
 
-#### Instalar Vagrant 
 
-https://developer.hashicorp.com/vagrant/downloads
-https://developer.hashicorp.com/vagrant/install
+## clase 29 - Vagrant Ansible Terraform
+
+### Ejemplo Vagrant Cluster
+
+Vagrant files  con mmultiples maquinas :
+
+https://developer.hashicorp.com/vagrant/docs/multi-machine
+
+cada maquina con su vagrantfile :
+orquestado con 1 master y 2 nodos
+con ip estatica en el vagrantfile
+
+https://github.com/zdenkotraste/K8s-virtualbox
+
+### EC2 para Ansible
+
+Instrance:
+    name : Bootcamp-Ansible
+    type : T2.micro
+    AMI  : Amazon Linux 2
+
+key pair :
+    name   : vagrant-key-ssh
+    type   : RSA
+    format : .pem
+
+Network :
+    SSH  : Allow            from : 0.0.0.0  (any)
+    HTTP : Allow
+
+Storage:
+    1 x 8gb gp3
+
+
+### Ansibke
+
+https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html
+
+Archivos necesarios para todo proyecto Ansible
+    playboock.yaml
+    inventory.yaml
+
+inventory-aws.yaml
+
+```yaml
+EC2-instances:
+  hosts:
+    AWS:
+      instancia-bootcamp: 35.168.10.81
+```
+
+usamos la opcion -vvvv para ver mas informacion sobre errores
+
+```sh
+vagrant@ubuntu-focal:/vagrant$ ansible  all  -m ping  -i inventory-aws.yaml
+  -u ec2-user   --private-key /home/vagrant/vagrant-key-ssh.pem   -vvvv
+```
+
+Nos tira error:
+
+```sh
+<AWS> ESTABLISH SSH CONNECTION FOR USER: ec2-user
+<AWS> SSH: EXEC ssh -vvv -C-o ControlMaster=auto -o ControlPersist=60s 
+-o IdentityFile="/home/vagrant/vagrant-key-ssh.pem" 
+-o KbdInteractiv eAuthentication=no 
+-o PreferredAuthentications=gssapi-with-mic,gssapi-k eyex, hostbased, publickey 
+-o PasswordAuthentication=no 
+-o 'User="ec2-use r" -o ConnectTimeout=10 -0 '
+ControlPath="/home/vagrant/.ansible/cp/6f5 f7d8116" 
+AWS '/bin/sh -c echo ec2-user && sleep 0'
+f7d8116 AWS /bin/sh -c echo ~ec2-user && sleep  <AWS> (255, b, b
+OpenSSH_8.2p1 Ubuntu-4ubuntu0.9, OpenSSL 1.1.1f 31 Mar 2020
+debug1: Reading configuration data /etc/ssh/ssh_config
+debug1: /etc/ssh/ssh_config 
+        line 19: include /etc/ssh/ssh_config.d/*.con f matched no files
+debug1: /etc/ssh/ssh_config 
+        line 21: Applying opt ions for *
+debug1: auto-mux: Trying existing master
+debug1: Control socket "/home/vagrant/.ansible/cp/6f5f7d8116" does not exist
+debug2: resolving "aws" port 22
+ssh: Could not resolve hostname aws: Tem porary failure in name resolution
+
+AWS | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: OpenSSH_8.2p1 Ubuntu
+    -4ubuntu0.9, OpenSSL 1.1.1f 31 Mar 2020
+    debug1: Reading configurati on data /etc/ssh/ssh_config
+    debug1: /etc/ssh/ssh_config 
+            line 19: inc lude /etc/ssh/ssh_config.d/*.conf  matched no files
+    debug1: /etc/ssh/ ssh_config line 21: Applying options for *
+    debug1: auto-mux: Trying existing master
+    debug1: Control socket \"/home/vagrant/.ansible/cp/6 f5f7d8116\" does not exist
+    debug2: resolving \"aws\" port 22
+    ssh: Could not resolve hostname aws: Temporary failure in name resolution",
+    "unreachable": true
+}
+```
+Modificamos el inventory-aws.yaml
+
+```yaml
+EC2-instances:
+  hosts:
+    AWS:
+      ansible_host: 35.168.10.81  # el  ERROR  estaba  ACA
+```
+
+
+Playbook :
+
+https://www.middlewareinventory.com/blog/ansible-playbook-example/#Example_Ansible_Playbook_to_Setup_LAMP_stack
+
+```yaml
+---
+- name: Setting up LAMP Website
+  user: vagrant
+  hosts: testserver
+  become: yes               # SUDO
+  tasks:
+    - name: latest version of all required packages installed
+      yum:
+        name:
+          - firewalld
+          - httpd
+          - mariadb-server
+          - php
+          - php-mysql
+        state: latest
+
+    - name: firewalld enabled and running
+      service:
+        name: firewalld
+        enabled: true
+        state: started
+
+    - name: firewalld permits http service
+      firewalld:
+        service: http
+        permanent: true
+        state: enabled
+        immediate: yes
+
+    - name: Copy mime.types file
+      copy:
+        src: /etc/mime.types
+        dest: /etc/httpd/conf/mime.types
+        remote_src: yes
+
+    - name: httpd enabled and running
+      service:
+        name: httpd
+        enabled: true
+        state: started
+
+    - name: mariadb enabled and running
+      service:
+        name: mariadb
+        enabled: true
+        state: started
+
+    - name: copy the php page from remote using get_url
+      get_url:
+        url: "https://www.middlewareinventory.com/index.php"
+        dest: /var/www/html/index.php
+        mode: 0644
+
+    - name: test the webpage/website we have setup
+      uri:
+        url: http://{{ansible_hostname}}/index.php
+        status_code: 200
+```
+
+### Terraform 
+
+Terraform Workflow
+    -> Init 
+    -> plan 
+    -> apply : manifest (.tf) 
+    -> Core  : Providers  Provisioners  State file (.tfstate)
+
+
+https://registry.terraform.io/browse/providers?tier=partner
+https://registry.terraform.io/browse/providers?tier=official
+https://registry.terraform.io/providers/hashicorp/aws/latest
+
+    Documentacion Terraform AWS
+https://registry.terraform.io/providers/hashicorp/aws/latest/docs
+
+Tiene un lidado extenso en orden alfabetico  con un buscador integrado
+
+    Guides
+
+    ACM (Certificate Manager)
+    Amplify
+    App Mesh
+    App Runner
+    ....
+    Web Services Budgets
+    WorkLink
+    WorkSpaces
+    X-Ray
+
+Cada Categoria tiene anidado sus recursosque podemos ver al  al dar click vemos un submenu :
+
+    CloudWatch
+        Resources
+            aws_cloudwatch_composite_alarm
+            aws_cloudwatch_dashboard
+            aws_cloudwatch_metric_alarm
+    EC2 (Elastic Compute Cloud)
+        Resources
+            aws_ami
+            aws_ami_copy
+            aws_ami_from_instance
+        Data Sources
+            aws_ami
+            aws_ami_ids
+    S3 (Simple Storage)
+        Resources
+            aws_s3_bucket
+            aws_s3_bucket_accelerate_configuration
+            aws_s3_bucket_acl
+            aws_s3_bucket_inventory
+
+
+    Ejemplo de USO
+https://registry.terraform.io/providers/hashicorp/aws/latest/docs#example-usage
+
+```t
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
+# Configure the AWS Provider
+provider "aws" {
+  region = "us-east-1"
+}
+
+# Create a VPC
+resource "aws_vpc" "example" {
+  cidr_block = "10.0.0.0/16"
+}
+```
+
+https://registry.terraform.io/providers/hashicorp/aws/latest/docs#authentication-and-configuration
+
+
+#### MODULOS
+
+AWS
+https://registry.terraform.io/search/modules?namespace=terraform-aws-modules
+
+AWS_VPC
+https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest
+
+AWS_VPC -> Github
+https://github.com/terraform-aws-modules/terraform-aws-vpc
+
+    /examples
+    /modules/vpc-endpoints
+    README.md
+    UPGRADE-4.0.md
+    main.tf
+    outputs.tf
+    variables.tf
+    versions.tf
+    vpc-flow-logs.tf
+
+
+El siguente ejemplo seria codigo de un tipico  `repositorio Terraform live`
+este hace `llamadas a los modulos` y 
+a diferenci de estos se le puede hacer un `terraform apply`
+
+
+```t
+Usage
+module "vpc" {
+  source = "terraform-aws-modules/vpc/aws"      # MODULO A USAR
+
+  name = "my-vpc"
+  cidr = "10.0.0.0/16"
+
+  azs             = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
+  private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+  public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
+
+  enable_nat_gateway = true
+  enable_vpn_gateway = true
+
+  tags = {
+    Terraform = "true"
+    Environment = "dev"
+  }
+}
+```
+
+AWS_VPC -> (Ejemplo : Simple)
+https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest/examples/simple
+
+
+AWS_VPC -> (Ejemplo : Simple) -> Github
+https://github.com/terraform-aws-modules/terraform-aws-vpc/tree/v5.16.0/examples/simple
+
+    contiene 5 archivos :
+
+    README.md           (Instrucciones de uso)
+    main.tf             (Codigo Principal)
+    outputs.tf          (mapeo salidas)
+    variables.tf        (Vacio)
+    versions.tf         (requisitos : version AWS & tf )
+
+README.md
+```md
+# Simple VPC
+
+Configuration in this directory creates set of VPC resources 
+which may be sufficient for development environment.
+
+There is a public and private subnet created per availability zone 
+in addition to single NAT Gateway shared between all 3 availability zones.
+
+This configuration uses Availability Zone IDs and Availability Zone names 
+for demonstration purposes. Normally, you need to specify only names or IDs.
+
+## Usage
+
+To run this example you need to execute:
+
+$ terraform init
+$ terraform plan
+$ terraform apply
+
+## Requirements
+Name       Version
+terraform  >= 1.0
+aws        >= 5.46
+
+## Providers
+Name  Version
+aws	  >= 5.46
+
+## Modules
+Name  Source   Version
+vpc	  ../..    n/a
+
+```
+
+main.tf
+```t
+provider "aws" {
+  region = local.region
+}
+
+data "aws_availability_zones" "available" {}
+
+locals {
+  name   = "ex-${basename(path.cwd)}"
+  region = "eu-west-1"
+
+  vpc_cidr = "10.0.0.0/16"
+  azs      = slice(data.aws_availability_zones.available.names, 0, 3)
+
+  tags = {
+    Example    = local.name
+    GithubRepo = "terraform-aws-vpc"
+    GithubOrg  = "terraform-aws-modules"
+  }
+}
+
+################################################################################
+# VPC Module
+################################################################################
+
+module "vpc" {
+  source = "../../"
+
+  name = local.name
+  cidr = local.vpc_cidr
+
+  azs             = local.azs
+  private_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 4, k)]
+
+  tags = local.tags
+}
+```
+
+outputs.tf
+```t
+# Mapeo y Descripcion de salidas
+output "vpc_id" {
+  description = "The ID of the VPC"
+  value       = module.vpc.vpc_id
+}
+
+output "vpc_arn" {
+  description = "The ARN of the VPC"
+  value       = module.vpc.vpc_arn
+}
+
+output "vpc_cidr_block" {
+  description = "The CIDR block of the VPC"
+  value       = module.vpc.vpc_cidr_block
+}
+# Truncado  (el archivo tiene 535 lineas con la misma esructura)
+```
+
+variables.tf
+
+versions.tf
+```t
+terraform {
+  required_version = ">= 1.0"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 5.46"
+    }
+  }
+}
+```
+
+## clase 31 - Terraform
+
+### DESAFIO
+
+**Objetivo**
+probar todas las herramientas vistas durante este modulo (`Vagrant, Ansible y Terraform`).
+Deberan crear una instancia EC2 en AWS utilizando `terraform` y configurando una llave privada,
+esto deberan hacerlo desde una maquina virtual creada utilizando `Vagrant`. 
+Por ultimo, utilizar `Ansible` desde la maquina virtual para instalar un servidor web
+ (recomendamos Apache o Nginx).
+
+**Vagrant**
+
+1) Deberan crear un entorno de Vagrant (utilicen el Box que quieran,
+   recomendamos alguno de Ubuntu, 18.04 0 20.04).
+
+2) Utilizando un provisioner (pueden utilizar inline pero recomendamos un script) 
+   deberan instalar y configurar las herramientas necesarias para el desafio 
+   (instalacion de Terraform y de Ansible). 
+   No recomendamos configurar las credenciales del provider de AWS dentro del bootstrap,
+   recomendamos hacerlo con variables de entorno o alguna otra configuración segura
+
+Consideraciones: 
+Pueden automatizar muchos pasos adicionales aunque no es un requisito.
+como por ejemplo la creacion de las llaves SSH para la instancia EC2 
+
+**Terraform**
+
+NOTA: Esta parte del desafio es la mas importante 
+por lo tanto la que mayor impacto tendra sobre la nota.
+
+1) Ya teniendo terraform instalado en la VM, 
+   tendrán que crear un entomo de trabajo de terraform 
+   el cual constara del provider de AWS, un backend local 
+   y los archivos de configuración requeridos para la practica
+
+2) Hay múltiples formas de hacer lo solicitado en el desafio: 
+   se pueden utilizar modulos, se puede hardcodear valores,
+   se pueden utilizar mültiples variables, 
+   pueden utilizarla VPC default o una VPC creada por ustedes, etc. 
+   La complejidad de la solución y documentacion de la misma 
+   tendra impacto directo en la nota del desafio.
+
+Consideraciones: Tendrán que basarse en la documentacion de los
+recursos para ciertos aspectos de configuración como por ejemplo la
+cantidad de storage asignada al volumen root de la instancia, la
+configuración de la llave para conectarnos por ssh, etc. 
+Asegurense de prestar atencion a la salida del terraform plan para ver
+las caracteristicas de lo que van a crear y asegurarse de que se mantienen
+dentro del free tier. 
+Ante cualquier duda pueden consultar a su tutor o instructor.
+
+**Ansible**
+1) El primer paso sera crear un inventario agregando la IP publica de nuestra instancia.
+2) ejecutar el comando ping para probar la conexion de ansible a la instancia,
+    tengan en cuenta que tendrán que usar la llave SSH para la conexion,
+     como asi tambien confirmar el usuario que usaran (ec2-user, ubuntu, etc)
+3) crear un playbook que instale un servidor web, pueden utilizar el utilizado en clase,
+    cambiar el html para que al probar el servidor web nos muestre otro mensaje, etc.
+
+Consideraciones: Tengan en cuenta el usuario a utilizar para la conexion,
+los tipos de tareas (apt si es basado en ubuntu, yum si es basado en centos, etc). 
+Además, tengan en consideracion la llave a utilizar para la conexion 
+(recuerden lo aprendido en la fase 1).
+
+Documentacion:
+Deben documentar todos los archivos utilizados en cada una de las herramientas,
+todos los comandos utilizados y cualquier problema que hayan tenido y como lo
+
+
+### Terraform 
+
+```sh
+[ariel-All-Series]  terraform -v
+Terraform v1.9.6
+on linux_amd64
+```
+
+
+#### Credenciales Terraform AWS
+
+https://console.aws.amazon.com/iam/home/users/create
+
+
+
+User name : full-admin
+  up to 64 characters. 
+  Valid characters: A-Z, a-z, 0-9, and + = , . @ _ - (hyphen)
+
+□  Provide user access to the AWS Management Console - optional
+
+Permissions options
+    □  Add user to group
+    Add user to an existing group, or create a new group. 
+    We recommend using groups to manage user permissions by job function.
+
+    □  Copy permissions
+    Copy all group memberships, attached managed policies, 
+    and inline policies from an existing user.
+
+    ▣  Attach policies directly
+    Attach a managed policy directly to a user. 
+    As a best practice, we recommend attaching policies to a group instead. 
+    Then, add the user to the appropriate group.
+
+Permissions policies (1/1315) :
+  Policy name             Type            Attached entities
+  AdministratorAccess     job function    1
+
+
+https://console.aws.amazon.com/iam/home/users/details/full-admin/create-access-key
+
+
+Use case
+
+□ Command Line Interface (CLI)
+You plan to use this access key to enable the AWS CLI to access your AWS account.
+
+□ Local code
+You plan to use this access key to enable application code 
+in a local development environment to access your AWS account.
+
+□ Application running on an AWS compute service
+You plan to use this access key to enable application code running on an AWS
+compute service like Amazon EC2, Amazon ECS, or AWS Lambda to access your AWS account.
+
+□ Third-party service
+You plan to use this access key to enable access for a third-party application 
+or service that monitors or manages your AWS resources.
+
+□ Application running outside AWS
+You plan to use this access key to authenticate workloads running in your data center
+ or other infrastructure outside of AWS that needs to access your AWS resources.
+
+▣  Other
+Your use case is not listed here.
+
+
+Access key            CP5A2EHWOE8WWDC9VRC			  FAKE for obvious reasons
+Secret access key     SUmZ9FcK7NEd3X1sJz9dFn3rJCkblrntmf9TJyfL	  FAKE for obvious reasons
+
+
+https://registry.terraform.io/providers/hashicorp/aws/latest/docs
+https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ami
+
+providers.tf :
+```ruby
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
+# Configure the AWS Provider
+provider "aws" {
+  region     = "us-east-1"
+  access_key = "CP5A2EHWOE8WWDC9VRC"				#  FAKE for obvious reasons
+  secret_key = "SUmZ9FcK7NEd3X1sJz9dFn3rJCkblrntmf9TJyfL"	#  FAKE for obvious reasons
+}
+```
+
+Podemos crear la instancia desde segun el ejemplo usando la AMI de Canonical Ubuntu
+
+instance.tf :
+```ruby
+data "aws_ami" "ubuntu" {
+  most_recent = true
+  filter {
+    name = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+  }
+  filter {
+    name = "virtualization-type"
+    values = ["hvm"]
+  }
+  owners = ["099720109477"] # Canonical
+}
+
+resource "aws_instance" "web" {
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "t2.micro"
+  
+  tags = {
+    Name = "Free-Tier-Terraform-Test"
+  }
+}
+```
+
+una opcion mas sencilla usando el AMI desde https://uconsole.aws.amazon.com/ec2
+
+```ruby
+resource "aws_instance" "web" {
+  ami           = "ami-05d38da78ce859165"
+  instance_type = "t2.micro"
+  
+  tags = {
+    Name = "Free-Tier-Terraform-Test"
+  }
+}
+```
+
+
+
+
+ [ ariel-All-Series]  terraform validate
+╷
+│ Error: registry.terraform.io/hashicorp/aws: 
+│  Cached `package` for registry.terraform.io/hashicorp/`aws 5.81.0` (in .terraform/providers) 
+│  does `not match` any of the `checksums` recorded in the dependency lock file
+
+[ ariel-All-Series] terraform plan
+╷
+│ Error: Required plugins are not installed
+│ 
+│ The installed provider plugins are not consistent with the `packages` 
+│ selected in the `dependency lock file`:
+│   - registry.terraform.io/hashicorp/aws: the cached package 
+│     for registry.terraform.io/hashicorp/`aws 5.81.0` (in .terraform/providers) 
+│     does `not match` any of the `checksums` recorded in the dependency lock file
+
+
+EXPLICACION :
+
+estos errores provienen de aplicar el commando `terraform init` en direcrtorio `vacio`
+al crear  `providers.tf` hay diferencias en el archivo `terraform-provider-aws_v5.81.0_x5`
+(`dependency lock file` ) generado durante el init
+
+Este error es un mismatch en los ckecksum de los packetes con el lock file
+se genera por vulnerabilidades de segfuridad que podrian existir entre distintas versiones
+
+Para evirar el error devemos hacer el init teniendo el archivo providers.tf listo
+
+https://developer.hashicorp.com/terraform/language/files/dependency-lock
+
+### INIT
+```sh
+[ ariel-All-Series]  terraform init
+  Initializing the backend...
+  Initializing provider plugins...
+  - Finding hashicorp/aws versions matching "~> 5.0"...
+  - Installed  hashicorp/aws v5.81.0 (signed by HashiCorp)
+  Terraform has created a lock file |.terraform.lock.hcl  to record the provider
+  selections it made above. Include this file in your version control repository
+  so that Terraform can guarantee to make the same selections by default when
+  you run "terraform init" in the future.
+
+  Terraform has been successfully initialized!
+
+  Try running "terraform plan" to see any changes that are required for your infrastructure.
+
+terraform validate
+Success! The configuration is valid.
+
+```
+
+
+### PLAN
+```sh
+[ariel-All-Series] terraform plan
+  data.aws_ami.ubuntu: Reading...
+  data.aws_ami.ubuntu: Read complete after 1s [id=ami-0cd202468248306f2]
+
+  Terraform used the selected providers to generate the following execution plan.
+  Resource actions are indicated with the following symbols:
+    + create
+
+  Terraform will perform the following actions:
+
+  # aws_instance.web will be created
+  + resource "aws_instance" "web" {
+      + ami                                  = "ami-05d38da78ce859165"
+      + associate_public_ip_address          = (known after apply)
+      + availability_zone                    = (known after apply)
+      + cpu_core_count                       = (known after apply) # IMPORTANTE
+      + cpu_threads_per_core                 = (known after apply) # IMPORTANTE
+      + disable_api_stop + disable_api_termination + ebs_optimized   + enable_primary_ipv6 
+      + get_password_data                    = false
+      + host_id                              = (known after apply) # IMPORTANTE
+      + host_resource_group_arn              = (known after apply)
+      + iam_instance_profile                 = (known after apply)
+      + id                                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = (known after apply)
+      + private_dns                          = (known after apply) # IMPORTANTE
+      + private_ip                           = (known after apply) # IMPORTANTE
+      + public_dns                           = (known after apply) # IMPORTANTE
+      + public_ip                            = (known after apply) # IMPORTANTE
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply) # IMPORTANTE
+      + source_dest_check                    = true
+      + spot_instance_request_id             = (known after apply)
+      + subnet_id                            = (known after apply)
+      + tags                                 = {
+          + "Name" = "Free-Tier-Test"
+        }
+      + user_data                            = (known after apply)
+      + vpc_security_group_ids               = (known after apply)
+
+      + cpu_options                         (known after apply)
+      + metadata_options                    (known after apply)
+      + network_interface                   (known after apply)
+      + private_dns_name_options            (known after apply)
+      + root_block_device                   (known after apply)
+      + ephemeral_block_device              (known after apply)
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+# Marque como importante los que serian interesantes de configurar en el archivo tf
+```
+### APPLY
+
+```sh
+[ariel-All-Series] terraform Apply
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+aws_instance.web: Creating...
+aws_instance.web: Still creating... [10s elapsed]
+aws_instance.web: Creation complete after 16s [id=i-0ea38cb2c66119582]
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+
+```
+
+se genera un archivo llamado terraform.tfstate que contiene el estado de nuestra infra
+
+terraform.tfstate :
+
+```ruby
+"id": "i-0ea38************",
+"instance_initiated_shutdown_behavior": "stop",
+"instance_state": "running",
+"instance_type": "t2.micro",
+"ipv6_address_count": 0,
+"key_name": "",
+"metadata_options": [
+  {
+    "http_endpoint":      "enabled",
+    "http_protocol_ipv6": "disabled",
+  }
+],
+"monitoring": false,
+"primary_network_interface_id": "eni-057df***********",
+"private_dns": "ip-172-***-***-***.us-west-2.compute.internal",
+"private_dns_name_options": [
+  {
+    "enable_resource_name_dns_a_record": false,
+    "enable_resource_name_dns_aaaa_record": false,
+    "hostname_type": "ip-name"
+  }
+],
+"private_ip": "172.***.***.***",
+"public_dns": "ec2-34-***-***-***.us-west-2.compute.amazonaws.com",
+"public_ip": "34.***.***.***",
+"root_block_device": [
+  {
+    "delete_on_termination": true,
+    "device_name": "/dev/sda1",
+    "encrypted": false,
+    "iops": 300
+    "throughput": 125,
+    "volume_id": "vol-02403***********",
+    "volume_size": 8,      # 8GB
+    "volume_type": "gp3"
+  }
+],
+```
+
+### SSH
+
+```sh
+ ssh-keygen -f ./terra-key-pair   -C "free-tier"
+
+The key fingerprint is:
+SHA256:SO7o5************************************ free-tier
+The keys randomart image is:
++---[RSA 3072]----+
+# recortado por seguridad
+```
+
+Ademas nos crea un archivo terra-key-pair.pub
+No tiene configurado SSH en Inbound rules en security groups 
+https://console.aws.amazon.com/ec2/home#SecurityGroup:groupId=sg-061d**********
 
 
 ```sh
-wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-sudo apt update && sudo apt install vagrant
+sudo ssh   -i  terra-key-pair    ubuntu@ec2-34-***-***-***.us-west-2.compute.amazonaws.com
+ubuntu@ec2-34-***-***-***.us-west-2.compute.amazonaws.com: Permission denied (publickey).
 ```
 
-`$(lsb_release -cs)`  == victoria  (Linux `Mint`)
-Debemos reemplazar por la version de `Ubuntu` correspondiente
-Ubuntu 22.04 LTS `jammy jellyfish`<=== repository 'https://apt.releases.hashicorp.com Jammy Release' does not have a Release file.
-Ubuntu 20.04 LTS `focal`.         <===  SUCCESS
 
-INSTALLATION :
+https://console.aws.amazon.com/ec2/home#ConnectToInstance:instanceId=id=i-0ea38cb2c66119582
+
 
 ```sh
-wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com focal main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-sudo apt update && sudo apt install vagrant
+Welcome to Ubuntu 24.04.1 LTS (GNU/Linux 6.8.0-1018-aws x86_64)
+
+System information as of Tue Dec 17 02:50:39 UTC 2024
+  System load:  0.24              Processes:             106
+  Usage of /:   24.7% of 6.71GB   Users logged in:       0
+  Memory usage: 20%       
+
+[ubuntu@ip-172-31-17-198]:~$   top |grep Mem
+MiB Mem :    957.4 total,    468.3 free,    331.2 used,    309.6 buff/cache     
+MiB Swap:      0.0 total,      0.0 free,      0.0 used.    626.2 avail Mem 
+
+[ubuntu@ip-172-31-17-198]:~$ sudo apt update
+[ubuntu@ip-172-31-17-198]:~$ sudo apt install screenfetch
+[ubuntu@ip-172-31-17-198]:~$ screenfetch 
+                          ./+o+-       ubuntu@ip-172-31-17-198
+                  yyyyy- -yyyyyy+      OS:       Ubuntu 24.04 noble
+               ://+//////-yyyyyyo      Kernel:   x86_64 Linux 6.8.0-1018-aws
+           .++ .:/++++++/-.+sss/`      Uptime:   40m
+         .:++o:  /++++++++/:--:/-      Packages: 727
+        o:+o+:++.`..```.-/oo+++++/     Shell: bash 5.2.21
+       .:+o:+o/.          `+sssoo+/    Disk: 2.1G / 7.7G (28%)
+  .++/+:+oo+o:`             /sssooo.   CPU: Intel Xeon E5-2686 v4 @ 2.3GHz
+ /+++//+:`oo+o               /::--:.   RAM: 347MiB / 957MiB
+ \+/+o+++`o++o               ++////.  
 ```
 
-OUTPUT :
+https://developer.hashicorp.com/terraform/cli/commands/import
+
+
+### terraformer
+
+Exportar a terraform infraestructura que previamente creamos a mano
+
+https://github.com/GoogleCloudPlatform/terraformer
+
+
+### MAN  -HELP
 
 ```sh
-wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-    [sudo] password for ariel: --2024-11-25 07:15:34--  https://apt.releases.hashicorp.com/gpg
-    Resolving apt.releases.hashicorp.com (apt.releases.hashicorp.com)... 3.160.90.44, 3.160.90.33, 3.160.90.102, ...
-    Connecting to apt.releases.hashicorp.com (apt.releases.hashicorp.com)|3.160.90.44|:443... connected.
-    HTTP request sent, awaiting response... 200 OK
-    Length: 3980 (3,9K) [binary/octet-stream]
-    Saving to: ‘STDOUT’
-    -                   100%[===================>]   3,89K  --.-KB/s    in 0s      
-    2024-11-25 07:15:34 (188 MB/s) - written to stdout [3980/3980]
+terraform -help
+#Usage: terraform [global options] <subcommand> [args]
+#
+#The available commands for execution are listed below.
+#The primary workflow commands are given first, followed by
+#less common or more advanced commands.
+#
+#Main commands:
+  init          #  Prepare your working directory for other commands
+  validate      #  Check whether the configuration is valid
+  plan          #  Show changes required by the current configuration
+  apply         #  Create or update infrastructure
+  destroy       #  Destroy previously-created infrastructure
+
+#All other commands:
+#  console       Try Terraform expressions at an interactive command prompt
+#  fmt           Reformat your configuration in the standard style
+#  force-unlock  Release a stuck lock on the current workspace
+#  get           Install or upgrade remote Terraform modules
+#  graph         Generate a Graphviz graph of the steps in an operation
+   import     #  Associate existing infrastructure with a Terraform resource
+#  login         Obtain and save credentials for a remote host
+#  logout        Remove locally-stored credentials for a remote host
+#  metadata      Metadata related commands
+#  output        Show output values from your root module
+#  providers     Show the providers required for this configuration
+#  refresh       Update the state to match remote systems
+   show      #   Show the current state or a saved plan
+   state     #   Advanced state management
+#  taint         Mark a resource instance as not fully functional
+#  test          Execute integration tests for Terraform modules
+#  untaint       Remove the 'tainted' state from a resource instance
+#  version       Show the current Terraform version
+#  workspace     Workspace management
+#
+#Global options (use these before the subcommand, if any):
+#  -chdir=DIR    Switch to a different working directory before executing the
+#                given subcommand.
+#  -help         Show this help output, or the help for a specified subcommand.
+#  -version      An alias for the "version" subcommand.
 
 
-echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com focal main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-    deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com focal main
+terraform -help show
+#Usage: terraform [global options] show [options] [path]
+#
+#  Reads and outputs a Terraform state or plan file in a human-readable
+#  form. If no path is specified, the current state will be shown.
+#
+# Options:
+#
+#  -no-color           If specified, output won't contain any color.
+#  -json               If specified, output the Terraform plan or state in
+#                      a machine-readable form.
 
-
-sudo apt update && sudo apt install vagrant
-    Get:2 https://deb.nodesource.com/node_20.x jammy InRelease [4.563 B]           
-    Hit:3 https://dl.google.com/linux/chrome/deb stable InRelease                  
-    Hit:4 https://packages.microsoft.com/repos/edge stable InRelease               
-    Hit:1 https://packages.microsoft.com/repos/code stable InRelease               
-    Hit:5 https://download.docker.com/linux/debian bookworm InRelease              
-    Hit:6 https://brave-browser-apt-release.s3.brave.com stable InRelease          
-    Hit:7 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  InRelease
-    Hit:8 https://repo.steampowered.com/steam stable InRelease                     
-    Ign:9 http://packages.linuxmint.com victoria InRelease                               
-        Reading  package lists...     Done
-        Building dependency tree...   Done
-        Reading  state information... Done
-    0 upgraded, 1 newly installed, 0 to remove and 359 not upgraded.
-    Need to get 153 MB of archives.
-    After this operation, 393 MB of additional disk space will be used.
-        Get:1 https://apt.releases.hashicorp.com focal/main amd64 vagrant amd64 2.4.3-1 [153 MB]
-        Fetched 153 MB in 13s (11,9 MB/s)                                                                                                                                                                              
-    Selecting previously unselected package vagrant.
-    (Reading database ... 661306 files and directories currently installed.)
-    Preparing to unpack .../vagrant_2.4.3-1_amd64.deb ...
-    Unpacking vagrant (2.4.3-1) ...
-    Setting up vagrant (2.4.3-1) ...
-
-vagrant -v
-    Vagrant 2.4.3
-```
-
-Mas Documentacion :
-
-https://developer.hashicorp.com/vagrant/docs/installation
-https://developer.hashicorp.com/vagrant/tutorials/getting-started
 
 ```sh
-vagrant -h
-    Usage: vagrant [options] <command> [<args>]
-# Common commands:
-     box             manages boxes: installation, removal, etc.
-     cloud           manages everything related to Vagrant Cloud
-     destroy         stops and deletes all traces of the vagrant machine
-     halt            stops the vagrant machine
-     help            shows the help for a subcommand
-     init            initializes a new Vagrant environment by creating a Vagrantfile
-     login           
-     package         packages a running vagrant environment into a box
-     port            displays information about guest port mappings
-     powershell      connects to machine via powershell remoting
-     provision       provisions the vagrant machine
-     push            deploys code in this environment to a configured destination
-     rdp             connects to machine via RDP
-     reload          restarts vagrant machine, loads new Vagrantfile configuration
-     resume          resume a suspended vagrant machine
-     serve           start Vagrant server
-     snapshot        manages snapshots: saving, restoring, etc.
-     ssh             connects to machine via SSH
-     ssh-config      outputs OpenSSH valid configuration to connect to the machine
-     status          outputs status of the vagrant machine
-     suspend         suspends the machine
-     up              starts and provisions the vagrant environment
+terraform -help state list
+# Usage: terraform [global options] state list [options] [address...]
+
+#   List resources in the Terraform state.
+
+#   This command lists resource instances in the Terraform state. The address
+#   argument can be used to filter the instances by resource or module. If
+#   no pattern is given, all resource instances are listed.
+
+#   The addresses must either be module addresses or absolute resource
+#   addresses, such as:
+#       aws_instance.example
+#       module.example
+#       module.example.module.child
+#       module.example.aws_instance.example
+```
+
+
+### PROYECTO y Estructura 
+
+info de proveedor en `.terraform.log.hcl` (hecho por terraform init)
+`providers.tf` + `instance.tf` + terraform apply nos crea el `state`
+info de recursos  en `terraform.state`
+
+
+Archivos tipicos de encontrar en un modulo de terraform
+https://github.com/terraform-aws-modules/terraform-aws-vpc
+
+main.tf     :
+outputs.tf  :
+variables.tf:
+versions.tf :
+vpc-flow-logs.tf :
+
+https://spacelift.io/blog/terraform-best-practices#how-to-structure-your-terraform-projects
+
+### DESTRUIR Recursos
+
+```sh
+terraform state -rm
+
+terraform -help state
+# Usage: terraform [global options] state <subcommand> [options] [args]
+# 
+#   This command has subcommands for advanced state management.
+# 
+#   These subcommands can be used to slice and dice the Terraform state.
+#   This is sometimes necessary in advanced cases. For your safety, all
+#   state management commands that modify the state create a timestamped
+#   backup of the state prior to making modifications.
+# 
+#   The structure and output of the commands is specifically tailored to work
+#   well with the common Unix utilities such as grep, awk, etc. We recommend
+#   using those tools to perform more advanced state tasks.
+# 
+# Subcommands:
+     list                # List resources in the state
+     mv                  # Move an item in the state
+     pull                # Pull current state and output to stdout
+     push                # Update remote state from a local state file
+     replace-provider    # Replace provider in the state
+     rm                  # Remove instances from the state
+     show                # Show a resource in the state
+
+```
+
+```sh
+[ariel-All-Series] terraform destroy
+data.aws_ami.ubuntu: Reading...
+aws_instance.web: Refreshing state... [id=i-0ea38cb2c66119582]
+data.aws_ami.ubuntu: Read complete after 1s [id=ami-0cd202468248306f2]
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated
+with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # aws_instance.web will be destroyed
+  - resource "aws_instance" "web" {
+      - ami                                  = "ami-05d38da78ce859165" -> null
+      - arn                                  = "arn:aws:ec2:us-west-2:315509528759:instance/i-0ea38cb2c66119582" -> null
+      - associate_public_ip_address          = false -> null
+      - availability_zone                    = "us-west-2a" -> null
+      - cpu_core_count                       = 1 -> null
+      - cpu_threads_per_core                 = 1 -> null
+
+
+Plan: 0 to add, 0 to change, 1 to destroy.
+
+Do you really want to destroy all resources?
+  Terraform will destroy all your managed infrastructure, as shown above.
+  There is no undo. Only 'yes' will be accepted to confirm.
+
+  Enter a value: yes
+
+aws_instance.web: Destroying... [id=i-0ea38cb2c66119582]
+aws_instance.web: Still destroying... [id=i-0ea38cb2c66119582, 10s elapsed]
+aws_instance.web: Destruction complete after 15s
+```
+
+### Vatiables
+
+https://developer.hashicorp.com/terraform/language/values/variables
+https://developer.hashicorp.com/terraform/language/modules
+https://blog.gruntwork.io/an-introduction-to-terraform-f17df9c6d180#4c88
+
+
+Cada recurso tiene variables que pueden ser obligatorias u opcionales, o sea
+pueden tener un valor por default o no, en cullo caso es obligatorio proporcionar uno
+
+
+vars.tf :
+```ruby
+variable "instance_type_freetier" {
+  type        = string
+  description = "tipo de instancia EC2 con free tier"
+  default     = "t2.micto"                    # DECLARO
+}
+
+variable "instance_ami_ubuntu" {
+  type        = string
+  description = "AMI (Amason Machine Image) Ubuntu as OS "
+  default     = "ami-0261755bbcb8c4a84"       # DECLARO
+}
+```
+
+otra forma es con  infra.tfvars
+```ruby
+instance_type_freetier = "t2.micto"        # DECLARO
+instance_ami_ubuntu    = "ami-0261755bbcb8c4a84"       # DECLARO
+```
+
+instance.tf
+```ruby
+resource "aws_instance" "web" (
+  instance_type = var.instance_type_freetier  # UTILIZO
+  ami           = var.instance_ami_ubuntu     # UTILIZO
+  tags = {
+```
+
+### Variables de Entorno
+
+https://developer.hashicorp.com/terraform/language/values/variables#environment-variables
+
+```sh
+$ export TF_VAR_image_id=ami-abc123
+$ terraform plan
+```
+
+### Modulos
+
+
+Normalmente se utiliza una combinacion de modulos de la comunidad y privados
+El modulo pricado contiene llamdas a modulos de la comunidad
+
+Algunos ejemplos de modulos de la comunidad :
+
+MODULOS AWS  : https://registry.terraform.io/namespaces/terraform-aws-modules
+S3  : https://registry.terraform.io/modules/terraform-aws-modules/s3-bucket/aws/latest
+EC2 : https://registry.terraform.io/modules/terraform-aws-modules/ec2-instance/aws/latest
+VPC : https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest
+ELB : https://registry.terraform.io/modules/terraform-aws-modules/elb/aws/latest
+IAM : https://registry.terraform.io/modules/terraform-aws-modules/iam/aws/latest
+
+
+Pueden usarse varios modulos publicos para cada entorno de trabajo
+desde un sandbox hasta produccion cada una con distinto valor environment = "name"
+
+se puede nombrar los archivos segun en entorno ej
+  sandbox.tf  quality_a.tf  production.tf  live.tf
+y que a su ves estos llamen a otros modulos,  recursos, variables eyc
+
+Otra diferencia clave en que el codigo en los modulos no tiene estado
+o sea que no tiene infraestructura creada a diferencia de los entornos
+
+### Data Sources
+
+nos sirve para leer y validar los recirsos de aws a travez de la api desde terraform
+
+https://developer.hashicorp.com/terraform/language/data-sources
+
+
+
+48:00
+
+## clase 32 - Terrafrom Docker
+
+### Repaso de Terrafrom 
+
+tenemos codigo live y modulos
+el terrafomr  apply se hace desde live y estos llaman modulos
+
+providers.tf : 
+```ruby
+terraform {
+  required_providers {
+    aws = {
+      1
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+```
+
+main.tf :
+```ruby
+
+# LOCALS : los utilizamos para crear valores default para variables
+# en caso de estar vacia NULL la variable toma el valor que sigue a `?`
+locals {
+  mongodb_instance_type = (var.mongodb_instance_type == null
+    ? "t3.micro"
+    : var.mongodb_instance_type
+  )
+  #Readhat UBI 8 AMI https://access.redhat.com/solutions/15356#us_east_1
+  mongodb_instance_ami (var.mongodb_instance_ami == null
+    #? "ami-075ed2fafb0c1aa69"
+    ? "ami-06640050dc3f556bb"
+    : var.mongodb_instance_ami
+  )
+
+  opsmanager_instance_type = (var.opsmanager_instance_type == null
+    ? "t3.micro"
+    : var.opsmanager_instance_type
+  )
+  
+  mongodb_opsmanager_user = (var.mongodb_opsmanager_user == null
+    ? "admin"
+    : var.mongodb_opsmanager_user
+  )
+
+  mongodb_vansocscan_user = (var.mongodb_vansocscan_user == null
+    ? "vansocscan"
+    : var.mongodb_vansocscan_user
+  )
+
+  mongodb_opsmanager_major_version = (var.mongodb_opsmanager_majc
+    ? "6"
+    : var.mongodb_opsmanager_major_version
+  )
+
+  mongodb_opsmanager_minor_version = (var.mongodb_opsmanager_minc
+    ? "0"
+    : var.mongodb_opsmanager_minor_version
+  )
+  
+  mongodb_opsmanager_patch_version = (var.mongodb_opsmanager_patc
+    ? "0"
+    : var.mongodb_opsmanager_patch_version
+  )
+
+  ec2_instance_profile = (var.ec2_instance_profile == null
+    ? aws_iam_instance_profile.this["embedded"].name
+    : var.ec2_instance_profile
+  )
+}
+
+resource "aws_iam_role" "this" {
+  for_each            = tosetz(var.ec2_instance_profile == null ?
+  name                = format("%v-ec2-mongo-opsmanager", var.env
+  managed_policy_arns = ["arn:aws:iam::aws:policy/AmonSSMManage"
+  assume_role_policy  = <<EOF
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+    {
+      "Action": "sts: AssumeRole",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+      "Sid":
+    }
+  ]
+}
+EOF
+}
+
+#Profile para el systems manager de AWS
+resource "aws_iam_instance_profile" "this" {
+  for_each = toset(var.ec2_instance_profile=null? ["embedded"
+  name     = aws_iam_role.this["embedded"].
+  role     = aws lam_role.this["embedded"].id
+}
+
+#Mongodb instances for OpsManager
+resource "aws_instance" "mongodb_instance_ops_manager" {
+  for_each                    = var.mongodb_subnets 
+  # para cada una de las 3 mongodb_subnets definidas en el live.tf
+  # configuramos la infra con el valor de variables en vars.tf 
+  ami                         = local.mongodb_instance_ami
+  instance_type               = local.mongodb_instance_type
+  subnet_id                   = each.value  # each = subnet
+  private_ip                  = var.mongodb_opsmanager_ips[each.key]
+  security_groups             = var.mongodb_instance_ops_manager_security_group
+  user_data_replace_on_change = true
+  root_block_device {
+    volume_size = var.root_block_size
+    volume_type = "gp3"
+  }
+  iam_instance_profile = local.ec2_instance_profile
+  user_data = templatefile("${path.module)/templates/user_data_mc"
+    va-environment  = var.va_environment,
+    replicaset-name = var.mongodb_opsmanager_replicas_name
+    create-ssh-user = templatefile("${path.module}/templates/crea"
+    groupname       = var.groupname
+    username        = var.username
+    userid          = var.userid
+    groupid         = var.groupid
+    user_description= var.user_description
+    public_key      = var.public_key
+    })
+    mongo-installation = templatefile("${path.module)/templates/n"
+      keyfile             = base64encode(random_password.mongodb_
+      mongo-major-version = local.mongodb_opsmanager_major_versic
+      mongo-minor-version = local.mongodb_opsmanager_minor_versic
+      mongo-patch-version = local.mongodb_opsmanager_patch_versic
+    }),
+    mongo-data-volume = file("$[path.module)/Files/mongo_data_vol"
+    Firewall.cmd     = file("$[path.module)/Files/firewall_cmd.s"
+    create-mongo-user = templatefile("${path.modules/templates/cr"
+    mongodb-opsmanager-user     = local.mongodb_opsmanager_user
+    mongodb-opsmanager-password = random_password.mongodb_opsma
+    mongodb-vansocscan-user     = local.mongodb_vansocscan_user
+    mongodb-vansocscan-password = random_password.mongodb_vansc
+    }),
+    initiate-replicaset = templatęfile("${path.module}/templates/"
+    mongodb-opsmanager-user     = local.mongodb_opsmanager_user
+    mongodb-opsmanager-password = random_password.mongodb_opsma
+    mongodb-secondary-ip        = var.mongodb_opsmanager_ips [1]
+    mongodb-tertiary-ip         = var.mongodb_opsmanager_ips [2]
+    })
+  })
+  metadata_options {
+    instance_metadata_tags = "enabled"
+    http_endpoint          = "enabled"
+  }
+  metadata_options {
+    instance_metadata_tags = "enabled"
+    http_endpoint          = "enabled"
+  }
+  tags = {
+    Name = format("%v-opsmanager-mongodb-%v", var.environment, ea
+  }
+}
+
+resource "aws_ebs_volume" "mongo-data" {
+# nos crea una volumen EBS por cada AZ
+  for_each          = var.mongodb_availability_zones
+  availability_zone = each.value
+  size              = var.mongodb_opsmanager_ebs_size
+  type              = "gp3"      # Harcodeado porque no se piensa utilizar otro formato
+  tags              = {
+    Name = format("%v-opsmanager-mongodb-data-%v", var.environmer
+  }
+}
+
+resource "aws_volume_attachment" "mongo_data_att" {
+# Vincula las instancias con los volumenes EBS
+  for_each = var.mongodb_availability_zones
+  ## Note The device names that you specify for NVMe EBS volumes i
+  #  are renamed using NVMe device names (/dev/nvme[0-26]n1)
+  device_name = "/dev/sdh"
+  volume_id   = aws_ebs_volume.mongo-data[each.key].id
+  instance_id = aws_instance.mongodb_instance_ops_manager[each.key].id
+}
+
+resource "random_password" "mongodb_key" {
+  # recurso de terraform que crea una contrasenia de 512 caracteres
+  length = 512
+}
+
+resource "aws_ssm_parameter" "mongodb_opsmanager_password" {
+  # recurso de aws para guardar credemciales y contrasenias
+  name  = format("/environment/va/%v/mongodb-opsmanager-password"
+  value = random_password.mongodb_opsmanager_password.result
+  type  = "SecureString"
+}
+
+# OpsManager Application Load Balancer (ALB)
+module "alb" {
+  source   = "terraform-aws-modules/alb/aws"
+  version  = "5.16.0"
+  internal = var.opsmanager_alb_internal
+  name     = format("%v-OM", var.environment)
+  load_balancer_type = "application"
+  vpc_id   = var.opsmanager_alb_vpc
+  subnets  = var.opsmanager_alb_subnets
+  security_groups = var.opsmanager_security_groups
+  # Listeners
+  http_tcp_listeners = [
+    {
+      port               = 8080
+      protocol           = "HTTP"
+      target_group_index = 0
+    }
+  ]
+  # Target Groups
+  target_groups = [
+    # App1 Target Group
+    {
+    name_prefix      = "OM-"
+    backend_protocol = "HTTP"
+    backend_port     = 8080
+```
+
+live.tf :
+```ruby
+# este archivo es el que llama al modulo 
+module "fusion-va-mongodb"
+{
+  environment = "live"
+  groupname = ""
+  username  = ""
+  userid    = ""
+  groupid   = ""
+  user_description = ""
+  public_key = file("")
+
+  source = "./../../../fusion-helm/terraform/modules/mongo-opsmanager"
+  
+  mongodb_instance_type = "t3a.medium"
+
+  # Mongodb instances config
+  mongodb_subnets = {             
+  # inicialisacion del MAPA de strings usado para FOR_EACH
+  # key = value
+    "0" = module.vpc.private_subnets[0], # configurada con el modulo vpc
+    "1" = module.vpc.private_subnets[1], #           y con el main.tf
+    "2" = module.vpc.private_subnets[2] 
+  }
+
+  mongodb_availability_zones = {
+    "0" = module.vpc.azs[0]
+    "1" = module.vpc.azs[1]
+    "2" = module.vpc.azs[2]
+  }
+
+  mongodb_opsmanager_ips = {
+  "0" = "192.168.250.9"
+  "1" = "192.168.250.72"
+  "2" = "192.168.250.155"
+  }
+
+  #mongodb_fusion_ips = {
+  # "0" = "192.168.250.8"
+  # "1" = "192.168.250.123"
+```
+
+variables.tf :
+```ruby
+  variable "opsmanager_alb_subnets" {
+    type = list(string)
+    default = null
+    description = "subnets for the OpsManager ALB"
+  }
+    variable "opsmanager_security_groups" {
+    type = list(string)
+    default = null
+    description = "security groups for the OpsManager ALB"
+  }
+  variable "opsmanager_name_tag"{
+    type = string
+    default = null
+    description = "opsmanager instance name"
+  }
+
+  variable "mongodb_instance_ops_manager_security_groups" {
+    type         = list(string)
+    default null = {}
+  }
+
+  variable "mongodb_subnets" {  # DECLARACION de variable tipo Mapa
+    type = map(string)  # MAPA usado para  FOR_EACH  de  subnets
+    default = {}
+    description = "Set the SubnetID for mongodb instances"
+  }
+
+  variable "mongodb_availability_zones" {
+    type = map(string)   # MAPA usado para  FOR_EACH  de  availability_zone
+    default = {}
+    description = "Set the AZs for mongodb instances and EBS volume"
+  }
+
 ```
 
 
 
+
+outputs.tf :
+```ruby
+output "mongodb_opsmanager_replicaset_primary_ip" {
+  value = var.mongodb_opsmanager_ips [0]
+}
+
+output "mongodb_vansocscan_password" {
+  value = random_password.mongodb_vansocscan_password.result
+  sensitive = true
+}
+```
+
+#### FOR_EACH
+
+realiza iteraciones sobre mapas 
+https://developer.hashicorp.com/terraform/language/meta-arguments/for_each
+
+
+
+
+
+### Docker -  Modulo 14 
+
+#### Componentes adicionales de Docker
+
+Con Docker, podemos `crear imágenes y contenedores`. 
+Además, vamos a crear `redes para interconectar` estos contenedores 
+y también recursos de storage llamados `volúmenes`. 
+
+#### Recursos de Networking
+Sin hacer ninguna modificación a la red, los
+contenedores se crearán en la red default que
+utiliza Docker llamada “Bridge”. Esta red provee
+comunicación entre contenedores. En caso de
+que se deseen otras características, tendremos
+que primero crear una red y después, a la hora de
+crear el contenedor, agregar como parámetro al
+comando la red a utilizar
 
 
 ## Docker
 
-
+```sh
 systemctl list-unit-files | grep dock
 docker.service                                enabled         enabled
 docker.socket                                 enabled         enabled
@@ -1557,7 +3167,7 @@ man docker build |grep -e'-t ' -a3 -b6
     11803-       The -t/--tag flag is used to rename an image. Here are some examples:
 
 sudo docker run -p 8080:5000 mockup-app-rembg
-
+```
 
 
 ## Laboratorio Ansible
