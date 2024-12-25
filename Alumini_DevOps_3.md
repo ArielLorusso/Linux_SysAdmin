@@ -1670,6 +1670,178 @@ config.vm.synced_folder "apache_config/", "/etc/apache/conf.d/"
 
 ## clase 29 - Vagrant Ansible Terraform
 
+### DESAFIO 10 - Laboratorio Ansible
+
+Objetivo 
+El objetivo de esta práctica es el de automatizar el despliegue 
+de un servidor web + una página sencilla en un servidor externo 
+mediante la herramienta Ansible (utilizando ssh). 
+
+Resolución 
+
+Para esta práctica tendremos como requisito tener por un lado nuestro
+laboratorio principal (ya sea de forma local o una máquina virtual)
+y una segunda máquina Linux a la cual tengamos acceso por ssh
+desde nuestro laboratorio principal, esto es fundamental 
+ya que ansible utilizar ssh de fondo para enviar las instrucciones.
+
+En nuestro caso, utilizaremos la máquina en AWS creada en el laboratorio de Terraform,
+pero es indistinta la ubicación de la máquina.
+
+
+Para esta práctica tendremos como requisito tener por un lado nuestro laboratorio principal (ya sea de forma local o una máquina virtual) y una segunda máquina Linux a la cual tengamos acceso por ssh desde nuestro laboratorio principal, esto es fundamental ya que ansible utilizar ssh de fondo para enviar las instrucciones. En nuestro caso, utilizaremos la máquina en AWS creada en el laboratorio de Terraform, pero es indistinta la ubicación de la máquina.
+
+ Empezaremos por la instalación de Ansible: 
+
+1) Primero, tenemos que asegurarnos de que tenemos python3 instalado,
+ en caso de no tenerlo lo instalamos con 
+    a) sudo apt-get install python3
+2) Una vez con python3 instalado, instalamos pip 
+    a) curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py 
+    b) python3 get-pip.py --user 
+3) Una vez que tengamos pip instalado, instalamos ansible 
+    a) python3 -m pip install --user ansible 
+4) El último paso es añadir el path donde instalamos ansible 
+a nuestro path de ejecutables, una forma de hacer esto es agregar
+ el path que nos da el output de la instalación a nuestro .bashrc 
+ (o archivo de configuración de la shell que utilicemos
+
+
+```sh
+WARNING: The scripts ansible, ansible-config, anstble-connection, ansible-console,
+ansible-doc, ansible-galaxy, anstble-inventory, ansible-playbook,anstble-pull and anstble-vault
+are installed in /home/zdenko/.local/bin' 
+which is not on PATH. Consider adding this directory to PATH or, if you prefer to suppress this warning,
+   use-no-warn-script-location. 
+WARNING: The script ansible-community is installed in /home/zdenko/.local/bin 
+which is not on PATH. Consider adding this directory to PATH or,
+if you prefer to suppress this warn ing, use-no-warn-script-location.
+```
+
+Para esto, agregaremos la siguiente línea al final del archivo.bashrc 
+   
+a) export PATH="/home/zdenko/.local/bin:$PATH" (reemplazar el usuario) 
+b) source.bashrc 
+
+5) Y listo, ya tendremos ansible listo para utilizar, 
+para verificar su correcto funcionamiento corremos: 
+a) ansible --version 
+Ya con Ansible instalado, ahora crearemos un inventario donde configuraremos 
+
+6) Para esto, crearemos un archivo de configuración con terminación .yaml,
+en nuestro caso lo llamamos inventario.yaml aunque el nombre es indistinto.
+En nuestro caso de nuevo, estamos utilizando una máquina virtual 
+que corre en AWS por eso la IP pública y no una IP privada de una red 192.168.χ.χ.
+ maquinas-virtuales: hosts: AWS: ansible_host: 3.82.119.30 
+ 
+ 7) Una vez creado el inventario, podremos verificar el correcto acceso desde ansible
+  hacia nuestro host con el siguiente comando 
+  a) ansible all-m ping -i inventario.yaml -u ubuntu --private-key 
+  ../Terraform/AWS/terra-keys 
+
+
+```sh
+~Desktop/Cloud-devops/Laboratorios/Ansibles 
+[zdenko@z] $ ansible all ping -i inventario.yaml -u ubuntu --privete key .../Terraform/AWS/terra-keys 
+  [WARNING]: Invalid characters wer found in group names but not replaced.
+  use -vvvv to see details 
+  AWS | SUCCESS => {
+    ansiblr_facts{
+        "discovered+insrptreter_python": "/usr/bin/python3"
+    }. 
+    "changed" : false , 
+    "ping": "pong"
+  }  
+~/Desktop/Cloud-devops/Laboratorios/Ansibles 
+[zdenko@z] $ 
+```
+
+
+Si configuramos bien nuestro servidor, el comando nos devolverá un pong,
+en este caso fue necesario pasarle un usuario específico y la llave privada 
+para poder conectarnos.
+
+8) Ya creado el inventario y verificado el acceso a través de Ansible,
+ pasaremos a crear el playbook.
+```yaml
+- hosts: all 
+become: yes 
+vars: 
+  server_name: "{{ ansible_default_ipv4.address }}"
+  document_root: /var/www 
+  app_root: app tasks: 
+  tasks:
+
+- name: Update apt cache and install Nginx 
+apt: 
+  name: nginx 
+  state: latest 
+  update_cache: yes 
+ 
+- name: Copy website files to the server's document root
+copy: 
+  src: "{{ app_root }}" 
+  dest: "{{ document_root }}" 
+  mode: preserve 
+
+- name: Apply Nginx template 
+template: 
+  src: nginx.conf.j2
+  dest: /etc/nginx/sites-available/default 
+  notify: Restart Nginx 
+
+- name: Enable new site 
+ file: 
+  src: /etc/nginx/sites-available/default
+    dest: /etc/nginx/sites-enabled/default
+    state: 
+    link notify: Restart Nginx 
+  
+- name: Allow all access to tcp port 80 
+  ufw: 
+    rule: allow
+    allow port: '80' 
+    proto: tcp handlers: 
+  
+- name: Restart Nginx 
+    service: 
+    name: nginx   
+    state: restarted 48:46/2:36:35 
+```
+
+  Adicional al playbook, necesitamos crear 2 archivos más: 
+  • Un archivo de configuración de nginx:
+
+nginx.conf.j2 :
+
+```conf
+server {
+  listen 80; 
+
+  root {{ document_root }}/{{ app_root }};
+  index index.html index.htm;
+  
+  server_name {{ server_name }};
+
+  location / { 
+  default_type "text/html";
+  try_files $uri.html $uri $uri/ =404;
+  } 
+}
+```
+
+Un directorio llamado app que dentro tenga los archivos para nuestro servidor web,
+en este caso solo vamos a usar un index.html bastante sencillo con un
+` <H1>  Probando Nginx con Ansible!  </H1> `
+ 
+9) Ya con el playbook y los archivos adicionales creados, 
+pasaremos a ejecutar el playbook: 
+
+a) ansible-playbook playbook.yaml -i inventario.yaml -u ubuntu --private-key ../Terraform/AWS/terra-keys 
+
+10) Una vez aplicado el playbook, solo es cuestión de acceder a la IP pública de nuestra máquina virtual
+ en AWS para ver nuestra aplicación web corriendo
+
 ### Ejemplo Vagrant Cluster
 
 Vagrant files  con mmultiples maquinas :
@@ -1677,8 +1849,8 @@ Vagrant files  con mmultiples maquinas :
 https://developer.hashicorp.com/vagrant/docs/multi-machine
 
 cada maquina con su vagrantfile :
-orquestado con 1 master y 2 nodos
-con ip estatica en el vagrantfile
+  orquestado con 1 master y 2 nodos
+  con ip estatica en el vagrantfile
 
 https://github.com/zdenkotraste/K8s-virtualbox
 
@@ -2253,8 +2425,8 @@ terraform {
 # Configure the AWS Provider
 provider "aws" {
   region     = "us-east-1"
-  access_key = "CP5A2EHWOE8WWDC9VRC"				#  FAKE for obvious reasons
-  secret_key = "SUmZ9FcK7NEd3X1sJz9dFn3rJCkblrntmf9TJyfL"	#  FAKE for obvious reasons
+  access_key = "CP5A2EHWOE8WWDC9VRC"				               #  FAKE for obvious reasons
+  secret_key = "SUmZ9FcK7NEd3X1sJz9dFn3rJCkblrntmf9TJyfL"	 #  FAKE for obvious reasons
 }
 ```
 
@@ -3107,6 +3279,417 @@ https://developer.hashicorp.com/terraform/language/meta-arguments/for_each
 
 ### Docker -  Modulo 14 
 
+### Qué es Docker?
+
+https://docs.docker.com/  Documentacion
+
+
+Docker es una `herramienta de código abierto` que permite 
+`desplegar aplicaciones junto a sus dependencias` en contenedores. 
+
+Estos `contenedores` son unidades muy pequeñas que `consumen pocos recursos` 
+y se las utiliza con la idea de que cumplan una función en específica
+
+Los contenedores de Docker nacen con la primicia de `construir una imagen una vez`
+y luego `distribuirla a cualquier lado` sin distinción. 
+
+Esto es posible gracias a que `todas las dependencias` y todo lo necesario 
+para que la aplicación funcione `se encuentra` dentro del `contenedor`
+
+Ejemplo
+Tenemos una aplicación que se ejecuta sin problemas en Python 3,
+no importa si el servidor que corra el contenedor no tiene Python instalado. 
+Será suficiente con tener Docker instalado para correr el contenedor
+
+
+Ejemplo de un Dockerfile :
+partimos de una imagen base de Node, 
+hacemos algunas configuraciones, 
+exponemos el puerto que usará la aplicación para escuchar peticiones 
+y con la instrucción cmd indicaremos qué comando ejecutar cuando creamos el contenedor.
+
+```dockerfile
+FROM node:8.9-alpine
+# partiendo de una imagen de node  https://hub.docker.com/_/node
+# si no aclarams version usara    node:latest   o   node:23.4.0
+ENV NODE_ENV production
+# variable de entorno NODE_ENV = produccion
+WORKDIR /usr/src/app
+# trabajando desde el directorio   /usr/src/app
+COPY [“package.json”, “package-lock.json*”, “npm-shrinkwrap.json*”, “./”]
+# se copian los 3 archivos json  a   /usr/src/app
+# los archivos a coiar deben partir del mismo directorio que el dockerfile
+# ./ significa dentro de la imagen del docker que es hacia donde se pega
+RUN npm install –-production —-silent && mv node_modules ../
+#  RUN (ejacutar comando de bash ) : npm instal
+COPY ..
+#  Copiar todo lo del directorio padre
+EXPOSE 3000
+# 
+MAINTAINER name 
+# 
+cmd npm start
+# ejecutar dentro del contenedot  
+```
+Referencia para armar un Dockerfile   : https://docs.docker.com/
+
+Docker permite probar aplicaciones (y distintas versiones) 
+dentro de nuestra PC sin tener que instalar nada de forma local.
+facilita la limpieza, al terminar las pruebas, simplemente se eliminan el contenedor
+
+
+#### Compilación de Docker
+Con el `Dockerfile` listo, lo siguiente  es hacer un `Build`, (`compilació`n de Docker).
+ 
+Esto `convierte` nuestro Dockerfile en una `Imagen`.
+
+En ese proceso se ejecutará cada `comando` para `verificar` su correcto funcionamiento 
+y así ir construyendo la imagen capa por capa.
+
+Las imágenes de Docker son un conjunto de `capas ordenadas`, 
+si hacemos una `modificación` en el Dockerfile por la mitad, 
+todos los comandos `siguientes a nuestro cambio serán ejecutados de nuevo` 
+La imagen tendrá las `capas antiguas` hasta nuestro cambio y luego `capas nuevas`. 
+
+
+ejemplo  `BUILD`
+
+```sh
+# Docker build  <ubicación del dockerfile>  -t  <tag de la imagen>
+  Docker build . -t app_node:1.0 
+```
+
+Construimos una imagen llamada app_node y será la `versión 1.0`,
+es muy importante `agregar un tag` a nuestras imágenes para poder `identificarlas`.
+En caso de no hacerlo se le agregará el tag `latest` como valor `default`. 
+
+
+Utilizaremos la Imagen para instanciar contenedores:
+
+```sh
+Docker run   -d   --name app_node     -p 3000:3000    app_node:1.0
+#            -d : background process   -p host:container (port)
+```
+
+`crea un contenedor` llamado app_node, que se `ejecuta en segundo plano`,
+utilizando la imagen app_node en su versión 1.0 y haciendo un puente 
+entre el puerto `3000 del contenedor` y el puerto `3000` de la máquina `host` 
+(donde ejecutamos el comando).
+
+Se puede acceder a la aplicación a través de la IP de nuestra PC
+
+https://docs.docker.com/engine/containers/run/#exposed-ports
+
+
+#### Repositorios
+
+Para destribuir la imagen recién creada, tendremos que acceder al tercer
+componente de Docker, los repositorios. 
+
+Tipos de repositorio :
+`privados, públicos`, 
+de un `proveedor`: self-hosted, gratuitos, pagos, y otros.
+
+El repositorio de imágenes más común y utilizadoes el propio de docker,
+llamado `Dockerhub`, en el que encontraremos todas las imágenes oficiales,
+como pueden ser las de nginx o MySql. 
+
+https://hub.docker.com/
+https://hub.docker.com/_/nginx
+https://hub.docker.com/_/mysql
+
+
+#### Arquitectura de Docker
+
+Su arquitectura, se compone de `un Daemon` que hace de servidor
+para `escuchar las peticiones` que le enviaremos
+para crear recursos (contenedores, redes, volúmenes, y otros),
+ construir imágenes, etc. 
+ 
+El segundo componente es `una API REST`, que permite a otros servicios o usuarios 
+`comunicarse con el Daemon` de Docker para `interactuar con` los `recursos`.
+
+Por último, el `CLI de Docker`, para enviar las `instrucciones a la API`
+y que esta se las envíe al Daemon para crear, modificar o eliminar los recursos.
+
+```sh
+systemctl list-unit-files | grep docker
+docker.service                                enabled         enabled
+docker.socket                                 enabled         enabled
+```
+
+ En windows levanta una maquina vertual de licun con el deamon
+ y desde windows conecta el cli a el daemon de linux, 
+ Metodo menos dirtecto y mas engorroso que en linux
+
+
+### Elemplo Prectico
+
+Dockerfile y archivos de la aplicacion,        (backend)
+archivos estaticos pantillas html /estilos css (frontend)
+middleware y  dependencias
+
+https://github.com/zdenkotraste/workshop-nerdearla/blob/main/Docker
+
+Es un ejemplo de aplicacion en Flask (python) de pokedex usando la PokeApi 
+
+```dockerfile
+# Usando una imagen de base de python para facilitarnos la creacion de la imagen
+FROM python:3.7
+# Creamos el directorio principal de trabajo
+RUN mkdir /app
+WORKDIR /app
+# Copiamos nuestros archivos a nuestro directorio principal de trabajo
+ADD . /app/
+# Instalamos las dependencias de la aplicacion 
+RUN pip install -r requirements.txt
+# Creamos una variable para no tener que especificar el nombre del archivo .py en el cmd
+RUN export FLASK_APP=app.py
+# El puerto expuesto es el default de flask, el 5000
+EXPOSE 5000
+
+# Endpoint modifica el cmd para ejecutar python
+# El comando ejecutado sera python -m flask run --host 0.0.0.0, 
+# de esta forma podremos acceder de forma correcta al servicio
+ENTRYPOINT ["python"]
+CMD ["-m", "flask", "run", "--host", "0.0.0.0"]
+
+#funcionalidad-bootcamp
+#Prueba CI en el bootcamp
+```
+
+Para generar la imagen en vez de hacer dockerbuild y usar dockerhub
+se puede hacer el docker build con gitghun actions (main.yaml)
+
+main.yaml :
+https://github.com/zdenkotraste/workshop-nerdearla/blob/main/.github/workflows/main.yml
+```yaml
+name: ci
+
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "Docker/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      -
+        name: Build and push                    # BUILD
+        uses: docker/build-push-action@v5
+        with:
+          context: "{{defaultContext}}:Docker"
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/pokedex-flask-nerdearla:${{ github.run_number }}
+```
+
+
+https://github.com/marketplace/actions/build-and-push-docker-images
+https://docs.docker.com/build/ci/github-actions/
+
+
+En el archivo bootstrap configuramos la maquina virtual de vagrant para 
+instalar docker y que los comandos de docker no necesiten sudo
+
+
+```sh
+#!/bin/bash
+
+# Docker install  <------
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+
+#  Use docker without sudo    <------
+sudo groupadd docker
+sudo usermod -aG docker vagrant
+newgrp docker
+
+#Install kubectl
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+#Install minikube
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo install minikube-linux-amd64 /usr/local/bin/minikube
+
+#Install ArgoCD CLI
+curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
+rm argocd-linux-amd64
+
+#Clone repo
+git clone https://github.com/zdenkotraste/workshop-nerdearla.git
+
+#Start minikube cluster
+minikube start 
+
+#Clone repo 
+git clone https://github.com/zdenkotraste/workshop-nerdearla.git
+```
+
+se lo asigna el el vagrantfile con   config.vm.provision
+
+```ruby
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "hashicorp/bionic64"
+  config.vm.provider "virtualbox" do |vb|
+  #   # Display the VirtualBox GUI when booting the machine
+  #   # 6gb of ram and 4 cpus
+     vb.memory = "6144"
+     vb.cpus = "4"
+   end
+
+  # Enable provisioning with a shell script. Additional provisioners such as
+  # Ansible, Chef, Docker, Puppet and Salt are also available.
+   config.vm.provision "shell", path:"bootstrap.sh"
+end
+```
+
+Podemos correr el contenedor dentro de la maquina virtual vagrant 
+
+```sh
+[vagrant@vagrant:~] | docker image ls
+# REPOSITORY    TAG     IMAGE ID      CREATED       SIZE
+# hello-world   latest  9c7a54a9a43c  4 months ago  13.3kB
+[vagrant@vagrant:~] | docker ps
+# CONTAINER  ID IMAGE       COMMAND     CREATED     STATUS              PORTS     NAMES
+[vagrant@vagrant:~] | docker ps -a
+# CONTAINER  ID IMAGE      COMMAND      CREATED     STATUS              PORTS     NAMES
+# "/hello"   e9b49bce416e  hello-world  58 sec ago  Exited (0)  57 seconds ago    optimistic_jackson
+[vagrant@vagrant:~] | docker run nginx
+#Unable to find image 'nginx:latest' locally
+#a803e7c4b030: Extracting  27.72MB/29.12MB
+#8b625c47d697: Downloading 37.53MB/41.34MB
+[vagrant@vagrant:~] | docker run -d nginx
+# ac588a1f1bdb97c80a29e933df03dd4a5e3e11af7c2ae9a053ad3dee3f341eea
+[vagrant@vagrant:~] | docker ps
+# CONTAINER  ID IMAGE       COMMAND         
+# ac588a1f1bdb  nginx     "/docker-entrypoint...."
+# CREATED           STATUS              PORTS     NAMES
+# 2 seconds ago     Up 2 seconds        80/tcp    affectionate_visvesvaraya
+[vagrant@vagrant:~] | curl localhost:80
+# curl: (7) Failed to_connect to localhost port 80: Connect refuse
+[vagrant@vagrant:~] | docker ps
+#CONTAINER       ID IMAGE   COMMAND     
+#ac588a1f1bdb    nginx     "/docker-entrypoint...."
+#CREATED         STATUS          PORTS     NAMES
+#3 minutes ago   Up 2 minutes    80/tcp    affectionate_visvesvaraya
+[vagrant@vagrant:~] | docker stop affectionate_visvesvaraya
+# affectionate_visvesvaraya
+[vagrant@vagrant:~] | docker rm ac58ac58
+[vagrant@vagrant:~] | docker ps -a
+# CONTAINER     ID IMAGE               COMMAND     
+# ffbe69e5c708  nginx                 "/docker-entrypoint...."
+# e9b49bce416e  objective_driscoll    "/hello"
+# CREATED         STATUS                    PORTS     NAMES
+# 4 minutes ago   Exited (0) 4 minutes ago            optimistic_jackson
+# 7 minutes ago   Exited(1) 7 minutes ago             hello-world  
+[vagrant@vagrant:~] | docker run -p 80:80-d-name nginx nginx
+# ca9233dc09da09d96da0a7e46d95049a990d4d151b72ab068426a8136ff45ef3
+[vagrant@vagrant:~] | docker ps
+# CONTAINER    ID IMAGE   COMMAND     
+# ca9233dc09da  nginx     "/docker-entrypoint...."
+# CREATED         STATUS        PORTS                                   NAMES
+# 4 seconds ago   Up 2 secon    ds0.0.0.0:80->80/tcp, ::: 80->80/tcp    nginx
+[vagrant@vagrant:~] | docker run nginx nginx
+
+```
+
+Una opcion para poder acceder desde el host al servidor es
+levantar el ssh de vagrant interconectando los puertos
+
+```sh
+[ariel @ ariel-All-Series]  ~/.../Alumni/workshop-nerdearla-main/Vagrant 
+ sudo vagrant ssh -- -L 5000:localhost:5000
+```
+
+
+### Componentes de Docker
+
+Para utilizar Docker y comenzar a crear contenedores,
+es importante entender el flujo de trabajo y sus distintos componentes.
+
+Creación de Imagen Docker
+Primero, crearemos una Imagen de Docker con una serie de instrucciones 
+en un archivo especial llamado Dockerfile. 
+Podemos imaginarlo como la configuración del ambiente y de la aplicación
+que utilizará nuestro contenedor.
+
+En este Dockerfile instalaremos las dependencias, agregaremos el código de nuestra
+aplicación, haremos configuraciones de sistema,
+y otras tareas. 
+
+
+
+### Descargar Imagenes Docker
+
+https://hub.docker.com/   Contenedores
+
+Podemos filtrar por fuentes confiables :
+    Docker Official Image
+    Verified Publisher
+    Sponsored OSS
+
+https://hub.docker.com/_/mysql        Imagen oficial de MySQL
+https://hub.docker.com/_/mysql/tags   Tags : versiones
+
+podemos comparar : sus tamaños, OS, Vulnerabilidades  e inspeccionar cada una
+
+https://hub.docker.com/layers/library/mysql/8.0.40-debian/images/sha256-c789b6b1916f61665c63c4a74efb1d9872b99c65b8463cc4321350a73d1ead54
+
+OS/ARCH         COMPRESSED SIZE   LAST PUSHED                 TYPE
+linux/amd64     174.79 MB         17 days ago by doijanky     Image
+
+VULNERABILITIES (severity)
+  3   Critical 
+  35  High
+  16  Medium
+  34  Low
+  1   unspecified
+
+
+
+```dockerfile
+# debian.sh --arch 'amd64' out/ 'bookworm' '@1733097600'
+RUN /bin/sh -c groupadd -r mysql && useradd -r -g mysql mysql # buildkit            28.23 MB
+RUN /bin/sh -c apt-get update && apt-get install -y --no-install-recommends gnupg && rm -rf /var/lib/apt/lists/* # buildkit           1.11 KB
+ENV GOSU_VERSION=1.17                                                               4.42 MB
+RUN /bin/sh -c set -eux; savedAptMark="$(apt-mark showmanual)"; apt-get update; apt-get install -y --no-install-recommends ca-certificates wget; rm -rf /var/lib/apt/lists/*; dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch"; wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc"; export GNUPGHOME="$(mktemp -d)"; gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu; gpgconf --kill all; rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc; apt-mark auto '.*' > /dev/null; [ -z "$savedAptMark" ] || apt-mark manual $savedAptMark > /dev/null; apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; chmod +x /usr/local/bin/gosu; gosu --version; gosu nobody true # buildkit           0 B
+RUN /bin/sh -c mkdir /docker-entrypoint-initdb.d # buildkit                         1.45 MB
+RUN /bin/sh -c set -eux; apt-get update; apt-get install -y --no-install-recommends bzip2 openssl perl xz-utils zstd ; rm -rf /var/lib/apt/lists/* # buildkit           116 B
+RUN /bin/sh -c set -eux; key='BCA4 3417 C3B4 85DD 128E C6D4 B7B3 B788 A8D3 785C'; export GNUPGHOME="$(mktemp -d)"; gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "$key"; mkdir -p /etc/apt/keyrings; gpg --batch --export "$key" > /etc/apt/keyrings/mysql.gpg; gpgconf --kill all; rm -rf "$GNUPGHOME" # buildkit           15.3 MB
+ENV MYSQL_MAJOR=8.0                                                                 2.5 KB
+ENV MYSQL_VERSION=8.0.40-1debian12                                                  0 B
+RUN /bin/sh -c echo 'deb [ signed-by=/etc/apt/keyrings/mysql.gpg ] http://repo.mysql.com/apt/debian/ bookworm mysql-8.0' > /etc/apt/sources.list.d/mysql.list # buildkit            0 B
+RUN /bin/sh -c { echo mysql-community-server mysql-community-server/data-dir select ''; echo mysql-community-server mysql-community-server/root-pass password ''; echo mysql-community-server mysql-community-server/re-root-pass password ''; echo mysql-community-server mysql-community-server/remove-test-db select false; } | debconf-set-selections && apt-get update && apt-get install -y mysql-community-client="${MYSQL_VERSION}" mysql-community-server-core="${MYSQL_VERSION}" && rm -rf /var/lib/apt/lists/* && rm -rf /var/lib/mysql && mkdir -p /var/lib/mysql /var/run/mysqld && chown -R mysql:mysql /var/lib/mysql /var/run/mysqld && chmod 1777 /var/run/mysqld /var/lib/mysql # buildkit            256 B
+VOLUME [/var/lib/mysql]                                                             133.88 MB
+COPY config/ /etc/mysql/ # buildkit                                                 0 B
+COPY docker-entrypoint.sh /usr/local/bin/ # buildkit                                842 B
+RUN /bin/sh -c ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat # buildkit 122 B
+ENTRYPOINT ["docker-entrypoint.sh"]                                                 0 B
+EXPOSE map[3306/tcp:{} 33060/tcp:{}]                                                0 B
+CMD ["mysqld"]                                                                      5.33 KB
+```
+
+
 #### Componentes adicionales de Docker
 
 Con Docker, podemos `crear imágenes y contenedores`. 
@@ -3114,17 +3697,618 @@ Además, vamos a crear `redes para interconectar` estos contenedores
 y también recursos de storage llamados `volúmenes`. 
 
 #### Recursos de Networking
-Sin hacer ninguna modificación a la red, los
-contenedores se crearán en la red default que
-utiliza Docker llamada “Bridge”. Esta red provee
-comunicación entre contenedores. En caso de
-que se deseen otras características, tendremos
-que primero crear una red y después, a la hora de
-crear el contenedor, agregar como parámetro al
-comando la red a utilizar
+
+Sin modificar a la red, los contenedores se crearán 
+en la `red default`  que utiliza Docker llamada `Bridge`. 
+
+Esta red provee `comunicación` entre contenedores. 
+Si deseamos otras características, tendremos que primero crear una red y después, 
+a la hora decrear el contenedor, `agregar como parámetro` al comando la `red a utilizar`
 
 
-## Docker
+# Tipos de red:
+
+● Bridge: 
+La `red default` usa este tipo, cuando creamos una red de tipo Bridge
+tiene algunas `características distintas` a la default, por ejemplo,
+resolución de `DNS automática` entre contenedores conectados a esta red.
+
+● Host:  
+Se elimina la IP del contenedor y este pasa a compartir el espacio de red 
+con el host, es decir que si el contenedor expone su servicio en el puerto 3000, 
+lo hará a través de la IP del Host.
+
+● None:   `deshabilita` el stack de networking en ese contenedor.
+
+● Overlay:  
+nos permite `conectar` distintos `Daemons` de Docker. 
+Por ejemplo, si tenemos dos servidores, cada uno con una instancia de Docker,
+podremos crear una red overlay en cada uno y conectar los contenedores de cada servidor con el otro.
+
+● Macvlan: 
+este tipo de red asigna una `dirección MAC` de nuestra red local al contenedor, 
+hace de cuenta que el contenedor está conectado `directamente` a nuestro `router`.
+
+● 3rd party: 
+Existen plugins creados por otras organizaciones que se pueden utilizar como driver de Red,
+estos se almacenan en el `Docker Hub` o a través de las páginas de estos `proveedores`. 
+
+### Recursos de Storage
+
+Como vimos anteriormente, los contenedores
+están pensados para ser utilizados de forma
+efímera, es decir que no escriban ni guarden
+información y puedan ser reiniciados sin ningún
+tipo de problema. Ahora, ¿qué ocurre con
+aplicaciones que necesitan guardar información
+o retener información en caso de que el
+contenedor se reinicie o se elimine y se vuelva a
+crear? o mismo, compartir información entre
+contenedores sin tener que pasarla por red.
+Bueno, Docker tiene una solución para este
+problema.
+Existen distintos tipos de solución a este
+problema, el más común son los volúmenes.
+Estos tipos son:
+
+● Bind mounts: pueden almacenarse en
+cualquier parte del sistema host. Otros
+procesos además de Docker pueden hacer
+cambios en estos archivos o directorios.
+
+● Volúmenes: se almacenan en una parte del
+sistema host que solo Docker tiene acceso
+(/var/lib/docker/volumes). Esto evita que otros
+procesos no relacionados a Docker hagan
+cambios en los archivos/directorios. 
+
+Los bind mounts suelen ser una opción más
+antigua y no tan utilizada actualmente donde los
+volúmenes tienen más peso.
+
+Estos volúmenes se pueden montar a uno o más
+contenedores y se puede hacer de forma
+read-only o read-write dependiendo de
+nuestras necesidades. Algunos casos de uso
+pueden ser, configurar una aplicación en un
+contenedor y guardar dicha configuración en un
+volumen (por ejemplo, la configuración de un
+servidor de nginx corriendo en Docker), si
+borramos el contenedor y levantamos uno nuevo
+montando el mismo volumen, el nuevo
+contenedor tendrá la misma configuración.
+Otro caso de uso puede ser separar la
+configuración de la aplicación del código,
+entonces para hacer una actualización de
+contenido (por ejemplo, un cambio de un Header
+en una aplicación web), solo tendremos que
+cambiar el contenido del volumen y luego
+reiniciar el contenedor (en caso de que lo
+necesite) o ya directamente las nuevas peticiones
+verán el cambio. 
+
+Otra opción que nos brinda Docker/Proveedores
+son los storage drivers: agregan funcionalidad a
+Docker para que podamos utilizar otros tipos de
+storage, como S3 de AWS o un NFS. Esto permite
+compartir volúmenes no solo entre contenedores
+del mismo Daemon de Docker corriendo en un
+Host, sino entre múltiples Host también. 
+
+
+
+## Clase 33 - Docker
+
+Nerdearla 2023:
+
+  Ofertas Laborales 
+  https://app.swapcard.com/event/nerdearla-2023/products/RXZlbnRWaWV3XzYwMjEwNQ==
+
+  Midu Dev + Vicky Charra : convirtiéndose en dev, tips, crecimiento
+  https://www.youtube.com/watch?v=PBK3e1MNnoc
+
+
+
+### Aplicaciones monolíticas y microservicios
+
+Al trabajar como `microservicios` todo esta `modularizado`
+tiene la ventaja de que al ocurrir algun error `no se cae toda la aplicacion `
+solo parte del servicio, por ejemplo solo lo base de datos o 
+
+Tiene la `desventaja` de que es `mas lento` 
+menos eficiente que alojar todo en el mismo sevidor
+
+Tiene la `ventaja` de que es `mas estable y robusto`
+Es mas `facil de desarrollar` por lo que en conveniente epezar 
+de forma monolitica y migrar a microservicios una vez que el servicio tiene exito
+
+#### Arquitectura Monolítica
+
+Losdos tipos de arquitecturas más utilizados en la actualidad,
+uno de ellos: la Arquitectura Monolítica.
+
+Supongamos que tenemos una aplicación de `tres capas` 
+(`interfaz` de usuario, `lógica` de negocio y acceso de `datos`), 
+que tendremos en un solo servidor, máquina virtual o contenedor. 
+Se la suele asociar a aplicaciones Legacy o antiguas,
+deuda técnica, y otras, aunque existen algunos
+casos de uso en los que se destaca como la
+opción ideal.
+
+#### casos de uso para arquitecturas monolíticas:
+
+`Juegos, Stocks, Trading`, y todo lo que necesite correr `en tiempo real`
+
+● en aplicaciones extremadamente sensibles a la latencia como
+pueden ser por ejemplo aplicaciones relacionadas a finanzas/acciones,
+donde incluso algunos microsegundos tienen impacto en el precio de compra/venta.
+
+● splicaciones muy sencillas 
+ya que la complejidad de utilizar otros patrones de arquitectura 
+es mucho mayor a los beneficios que nos brindaran. 
+
+
+#### Arquitectura de Microservicios
+
+cada vez ganan más y más `popularidad` 
+`acompaña bien` a nuevas tecnologías de virtualización como `los contenedores`. 
+ 
+los `contenedores` idealmente cumplen una `unica función` en específico
+y es lo que buscamos con los microservicios: 
+`dividir en múltiples instancias` o aplicaciones pequeñas
+que cumplan una función determinada,
+interconectarse entre ellas y así lograr una aplicación completa
+
+####  casos de uso ideales para microservicios
+
+● `Aplicaciones desactualizadas`, donde ya existe una aplicación con arquitectura
+monolítica y en vez de modificar el código ya existente, los desarrolladores eligen crear
+microservicios que se comuniquen con la aplicación principal para añadir nuevas funcionalidades
+
+● Aplicaciones con `distintas tecnologías` en equipos multidisciplinarios
+en distintos lenguajes, por ejemplo si cierta funcionalidad tiene mejor performance
+en determinado lenguaje.
+
+● Aplicaciones que necesiten `alta disponibilidad`. Imagina que se despliega un
+cambio en uno de los microservicios y este cambio hace que el servicio no levante, en este
+caso solo va a afectar a ese servicio lo que
+hará que determinada parte de la aplicación
+no funcione. En cambio, en una arquitectura
+monolítica podría causar que la aplicación
+entera no funcione. (Aplicaciones financieras o
+relacionadas a la salud, por ejemplo).
+
+
+### Contexto Histórico - contenedores
+
+#### Virtualización
+
+Concepto tecnológico de `encapsular` o crear una o mas `maquinas virtuales` 
+dentro de una misma computadora, `servidor` o sistema operativo `host`.
+
+A través de un software llamado `Hypervisor`, dentro del servidor 
+podremos crear `máquinas virtuales` que tendrán `sus propio sistema operativo`
+y estarán `aisladas` unas de otras como así con sus `propios recursos`. 
+
+
+
+#### máquina virtual
+
+Es un servidor o `PC dentro de otra PC`, con sus propios recursos, 
+
+Para las aplicaciones que se ejecuten dentro de la máquina virtual 
+su `ejecucion` es exactamente `la misma` que en un servidor `físico` 
+
+Ventajas 
+
+● Aislación de procesos.
+● Aislación de recursos.
+● Poder ejecutar programas en sistemas Operativos distintos
+
+
+Desventajas
+
+● Suelen ser `más lentas` y un poco menos eficientes que las máquinas físicas. 
+● `Agrega carga` que, dependiendo del caso, puede ser innecesario 
+
+
+#### Contenedores
+
+Similar a las máquinas virtuales, pero con algunas diferencias, 
+nacen los contenedores como una `solución a la redundancia de aplicaciones` 
+que traen consigo las `máquinas virtuales`. 
+
+Podemos pensar en los contenedores como pequeñas máquinas virtuales 
+que no necesitan sistema operativo y que `solo tendrán lo justo y necesario`
+
+
+`Ventajas` de los contenedores
+
+  ● Portabilidad.
+  ● Escalabilidad.
+  ● Aislación. 
+  ● Consistencia.
+
+`Desventajas` de los contenedores
+
+  ● Seguridad.
+  ● Complejidad.
+  ● Storage. 
+  ● Networking. 
+
+
+`Seguridad vulnerable` al compartir el kernel
+trabajando con contenedores nos exponemos a que si `falla la seguridad` en uno de ellos,
+el atacante pueda lograr obtener acceso a `otros contenedores`
+o incluso al sistema `operativo host`. 
+
+sinembargo al tener lo justo y necesario `no es tarea facil explotar vulnerabilidades`
+Cuanto menos herramientas tenga el contenedor mas se le diificulta a algun hacker
+utilizarlas en para adueniarse de nuetros recursos
+
+
+`NO tiene` funcionalidades de `Rollback`:
+Muchas herramientas de `máquinas virtuales` proveen herramientas de `Backup`,
+`Snapshots` y recuperación de Imágenes de forma nativa. 
+Con los contenedores tendremos que recurrir a levantar un contenedor de nuevo. 
+
+
+Comparacion por capas 
+
+`Virtual machine` :     `Contenedores` :
+  Infraestructura          Infraestructura
+  Hypervisor               Guest Operating System  
+  Guest OS                 Container Engine
+  Bins/Lib                 Bins/Lib
+  App1, App2....           App1, App2....
+
+
+
+
+Nerdearla Mercadolibre Grafana - Cómo observar 24k microservicios 
+https://www.youtube.com/watch?v=2pkJCgNykk4
+
+
+### Instalar docker
+
+`4 methodos`
+https://docs.docker.com/engine/install/ubuntu/#installation-methods
+
+
+● Docker Engine comes `bundled` with `Docker Desktop` for Linux. 
+This is the easiest and quickest way to get started.
+
+● Set up and install Docker Engine `from Docker's apt` repository.
+https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository
+
+● Install it `manually` and manage upgrades manually.
+https://docs.docker.com/engine/install/ubuntu/#install-from-a-package
+
+● Use a convenience `script`. Only recommended for testing and development environments.
+https://docs.docker.com/engine/install/ubuntu/#install-using-the-convenience-script
+
+
+La forma mas `segura` es por medio de `apt`
+La forma mas `rapida ` es por medio de el `script`
+
+el metodo de script requiere 2 lineas
+
+```sh
+  curl -fsSL https://get.docker.com -o get-docker.sh
+# curl            para `descargar` el script
+  sudo sh ./get-docker.sh --dry-run
+# sudo sh         para `ejecutar`  el script
+```
+
+Luego de instalarlo :
+
+https://docs.docker.com/engine/install/linux-postinstall/
+
+```sh
+sudo groupadd docker
+# crear grupo docker
+
+sudo usermod -aG docker $USER
+# agregar nuestro usuario al grupo de docker
+
+newgrp docker
+# activar los cambios en grupo docker
+
+sudo pkill -u username
+# exit 
+login:   username
+# ALTERNATIVA : Log out and log back in so that your group membership is re-evaluated.
+
+docker run hello-world
+# verificar que podemos correr comandos de docker
+```
+
+####
+
+```sh
+cd Alumni
+# ~/.../Alumni
+
+git clone [zdenkotraste/workshop-nerdearla](https://github.com/zdenkotraste/workshop-nerdearla)
+# nerdearla/
+# Cloning into 'workshop-nerdearla'...
+# remote: Enumerating objects: 187, done.
+# remote: Counting objects: 100% (187/187), done.
+# remote: Compressing objects: 100% (102/102), done.
+# remote: Total 187 (delta 64), reused 141 (delta 44), pack-reused 0 (from 0)
+# Receiving objects: 100% (187/187), 134.18 KiB | 1.40 MiB/s, done.
+# Resolving deltas: 100% (64/64), done.
+
+cd Vagrant
+# ~/.../Alumni/workshop-nerdearla-main/Vagrant 
+
+sudo vagrant up
+# Bringing machine 'default' up with 'virtualbox' provider...
+# ==> default: Box 'hashicorp/bionic64' could not be found. Attempting to find and install...
+# ....
+#   default: # Executing docker install script, commit: 4c94a56999e10efcf48c5b8e3f6afea464f9108e
+#   default: groupadd: group 'docker' already exists
+# The SSH command responded with a non-zero exit status. Vagrant
+# assumes that this means the command failed.
+
+sudo vagrant ssh
+# Welcome to Ubuntu 18.04.3 LTS (GNU/Linux 4.15.0-58-generic x86_64)
+
+[vagrant@vagrant]:~ | ls
+# get-docker.sh  kubectl  minikube-linux-amd64  workshop-nerdearla
+[vagrant@vagrant]:~ | cd workshop-nerdearla/
+[vagrant@vagrant]:~/workshop-nerdearla | ls
+# ArgoCD  Docker  Docker-compose  Kubernetes  README.md  Vagrant  image.png
+[vagrant@vagrant]:~/workshop-nerdearla | cd Docker
+# Dockerfile  Procfile  app.py  requirements.txt  static  templates
+[vagrant@vagrant]:~/workshop-nerdearla/Docker | docker build . -t pokedex-flask:1.0
+# [+] Building 94.1s (11/11) FINISHED
+#  => [1/6] FROM docker.io/library/python:3.7  @sha256:eedf63967cdb57d8214db38ce21f105003ed4e4d0358f02bedc057341bcf92a0 
+#  => [2/6] RUN mkdir /app                     
+#  => [3/6] WORKDIR /app                       
+#  => [4/6] ADD . /app/                        
+#  => [5/6] RUN pip install -r requirements.txt
+#  => [6/6] RUN export FLASK_APP=app.py      
+#  => => naming to docker.io/library/pokedex-flask:1.0       
+[vagrant@vagrant]:~/workshop-nerdearla/Docker | docker image ls
+# REPOSITORY      TAG       IMAGE ID       CREATED         SIZE
+# pokedex-flask   1.0       529c2374f2d2   4 minutes ago   1.06GB
+[vagrant@vagrant]:~/workshop-nerdearla/Docker | 
+docker run -d  --name pokedex-flask   -p 5000:5000   pokedex-flask:1.0 
+# 33bc7c1092122aaceef43a66b8960d55a02b1c54e159a81c67d84275f2f2da74
+[vagrant@vagrant]:~/workshop-nerdearla/Docker | docker ps
+# CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+[vagrant@vagrant]:~/workshop-nerdearla/Docker | docker ps -a
+# CONTAINER ID   IMAGE               COMMAND                  CREATED          STATUS                      PORTS     NAMES
+# 33bc7c109212   pokedex-flask:1.0   "python -m flask run…"   19 seconds ago   Exited (2) 18 seconds ago             pokedex-flask
+```
+
+Realizamos cambios en el docerfile (agrego `"python",` en la ultima linea con nano )
+y creamos la nueva imagen como version 2.0
+
+```sh
+[vagrant@vagrant]:~/workshop-nerdearla/Docker | sudo nano Dockerfile 
+# CMD ["python","-m", "flask", "run", "--host", "0.0.0.0"]
+[vagrant@vagrant]:~/workshop-nerdearla/Docker | docker build . -t pokedex-flask:2.0  echo "hola mundo"
+# [+] Building 19.2s (11/11) FINISHED 
+#  => [1/6] FROM docker.io/library/python:3.7@sha256:eedf63967cdb57d8214db38ce21f105003ed4e4d0358f02bedc057341bcf92a0                                                                                                                                                     0.0s                                                                                                                                                0.0s
+#  => CACHED [2/6] RUN mkdir /app              
+#  => CACHED [3/6] WORKDIR /app                
+#  => [4/6] ADD . /app/                        
+#  => [5/6] RUN pip install -r requirements.txt
+#  => [6/6] RUN export FLASK_APP=app.py
+#  => => naming to docker.io/library/pokedex-flask:2.0           
+[vagrant@vagrant]:~/workshop-nerdearla/Docker |
+ docker run -d --name pokedex-flask2 -p 5000:5000 pokedex-flask:2.0 echo "hola mundo"
+# aa9e6760bd04308e2a87791136de4b1ab2d167091098e0abfb6cce70796e09b7
+[vagrant@vagrant]:~/workshop-nerdearla/Docker | docker ps -a
+# CONTAINER ID   IMAGE               COMMAND                  CREATED          STATUS                      PORTS     NAMES
+# aa9e6760bd04   pokedex-flask:2.0   "python -m flask run…"   5 seconds ago    Exited (2) 4 seconds ago              pokedex-flask2
+# 33bc7c109212   pokedex-flask:1.0   "python echo 'hola m…"   14 minutes ago   Exited (2) 14 minutes ago             pokedex-flask
+[vagrant@vagrant]:~/workshop-nerdearla/Docker$ docker rm pokedex-flask
+# pokedex-flask
+[vagrant@vagrant]:~/workshop-nerdearla/Docker$ docker ps -a
+# CONTAINER ID   IMAGE               COMMAND                  CREATED         STATUS                     PORTS     NAMES
+# aa9e6760bd04   pokedex-flask:2.0   "python echo 'hola m…"   4 minutes ago   Exited (2) 4 minutes ago             pokedex-flask2
+[vagrant@vagrant]:~/workshop-nerdearla/Docker  | docker rm pokedex-flask2
+[vagrant@vagrant]:~/workshop-nerdearla/Docker  |
+ docker run -d --name pokedex-flask2 -p 5000:5000 pokedex-flask:1.0
+# fcd50d818ec01e5b7201882437d1e9ed2d501987e23b9102585559d6ab06d1c3
+[[vagrant@vagrant]]:~/workshop-nerdearla/Docker | curl 127.0.0.1:5000
+# <!DOCTYPE html>
+# <html>
+#   <head>
+#     <!-- Required meta tags -->
+#     <meta charset="utf-8">
+#     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+#     <title></title>
+#    
+#     <!-- Bootstrap -->
+#     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+#     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/fontawesome-all.min.css" rel="stylesheet">
+#     <link rel= "stylesheet" type= "text/css" href= "/static/styles.css">
+#   </head>
+
+#   <body>#    
+#    </div>
+#        <div class="text-center margin-mobile my-4 mx-auto">
+#            <h1> prueba desde la nueva rama </h1>
+#        </div>
+#    <div class="container d-flex flex-row flex-wrap justify-content-start align-items-center text-center mt-3">
+#        
+#            <div class="col-6 col-md-4 col-lg-3 p-2">
+#                <a href="/bulbasaur" class="pk-li p-3">  Bulbasaur #1  </a>
+#            </div>
+#        
+#            <div class="col-6 col-md-4 col-lg-3 p-2">
+#                <a href="/ivysaur" class="pk-li p-3">    Ivysaur   #2  </a>
+#            </div>
+#        
+#            <div class="col-6 col-md-4 col-lg-3 p-2">
+#                <a href="/venusaur" class="pk-li p-3">   Venusaur  #3  </a>
+#            </div>
+
+[vagrant@vagrant]:~/workshop-nerdearla/Docker$ docker rm pokedex-flask2
+# Error response from daemon: You cannot remove a running container fcd50d818ec01e5b7201882437d1e9ed2d501987e23b9102585559d6ab06d1c3. Stop the container before attempting removal or force remove
+[vagrant@vagrant]:~/workshop-nerdearla/Docker$ docker ps -a
+# CONTAINER ID   IMAGE               COMMAND                  CREATED          STATUS          PORTS                                       NAMES
+# fcd50d818ec0   pokedex-flask:1.0   "python -m flask run…"   10 minutes ago   Up 10 minutes   0.0.0.0:5000->5000/tcp, :::5000->5000/tcp   pokedex-flask2
+[vagrant@vagrant]:~/workshop-nerdearla/Docker$ docker stop  pokedex-flask2
+# pokedex-flask2
+[vagrant@vagrant]:~/workshop-nerdearla/Docker$ docker rm pokedex-flask:1.0
+# Error response from daemon: No such container: pokedex-flask:1.0
+[vagrant@vagrant]:~/workshop-nerdearla/Docker$ docker rm pokedex-flask2
+# pokedex-flask2
+
+```
+
+
+
+#### MANUAL Docker --help 
+```sh
+
+docker --help
+    # Usage:  docker [OPTIONS] COMMAND
+
+    # A self-sufficient runtime for containers
+
+    Common Commands:
+    #  run         Create and run a new container from an image
+    #  exec        Execute a command in a running container
+    #  ps          List containers
+    #  build       Build an image from a Dockerfile
+    #  pull        Download an image from a registry
+    #  push        Upload an image to a registry
+    #  images      List images
+    #  login       Log in to a registry
+    #  logout      Log out from a registry
+    #  search      Search Docker Hub for images
+    #  version     Show the Docker version information
+    #  info        Display system-wide information#
+
+    Management Commands:
+    #  builder     Manage builds
+    #  buildx*     Docker Buildx
+    #  checkpoint  Manage checkpoints
+    #  compose*    Docker Compose
+    #  container   Manage containers
+    #  context     Manage contexts
+    #  image       Manage images
+    #  manifest    Manage Docker image manifests and manifest lists
+    #  network     Manage networks
+    #  plugin      Manage plugins
+    #  system      Manage Docker
+    #  trust       Manage trust on Docker images
+    #  volume      Manage volumes
+
+    Swarm Commands:
+    #  config      Manage Swarm configs
+    #  node        Manage Swarm nodes
+    #  secret      Manage Swarm secrets
+    #  service     Manage Swarm services
+    #  stack       Manage Swarm stacks
+    #  swarm       Manage Swarm
+
+    Commands:
+    #  attach      Attach local standard input, output, and error streams to a running container
+    #  commit      Create a new image from a container's changes
+    #  cp          Copy files/folders between a container and the local filesystem
+    #  create      Create a new container
+    #  diff        Inspect changes to files or directories on a container's filesystem
+    #  events      Get real time events from the server
+    #  export      Export a container's filesystem as a tar archive
+    #  history     Show the history of an image
+    #  import      Import the contents from a tarball to create a filesystem image
+    #  inspect     Return low-level information on Docker objects
+    #  kill        Kill one or more running containers
+    #  load        Load an image from a tar archive or STDIN
+    #  logs        Fetch the logs of a container
+    #  pause       Pause all processes within one or more containers
+    #  port        List port mappings or a specific mapping for the container
+    #  rename      Rename a container
+    #  restart     Restart one or more containers
+    #  rm          Remove one or more containers
+    #  rmi         Remove one or more images
+    #  save        Save one or more images to a tar archive (streamed to STDOUT by default)
+    #  start       Start one or more stopped containers
+    #  stats       Display a live stream of container(s) resource usage statistics
+    #  stop        Stop one or more running containers
+    #  tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
+    #  top         Display the running processes of a container
+    #  unpause     Unpause all processes within one or more containers
+    #  update      Update configuration of one or more containers
+    #  wait        Block until one or more containers stop, then print their exi codes
+
+docker build --help
+    # Usage:  docker buildx build [OPTIONS] PATH | URL | -
+    #
+    # Start a build
+    #
+    # Aliases:  docker buildx build, docker buildx b
+    #
+    # Options:
+    #      --add-host strings              Add a custom host-to-IP mapping
+    #                                      (format: "host:ip")
+    #      --allow strings                 Allow extra privileged entitlement
+    #                                      (e.g., "network.host",
+    #                                      "security.insecure")
+    #      --annotation stringArray        Add annotation to the image
+    #      --attest stringArray            Attestation parameters (format:
+    #                                      "type=sbom,generator=image")
+    #      --build-arg stringArray         Set build-time variables
+    #      --build-context stringArray     Additional build contexts (e.g.,
+    #                                      name=path)
+    #      --builder string                Override the configured builder
+    #                                      instance (default "desktop-linux")
+    #      --cache-from stringArray        External cache sources (e.g.,
+    #                                      "user/app:cache",
+    #                                      "type=local,src=path/to/dir")
+    #      --cache-to stringArray          Cache export destinations (e.g.,
+    #                                      "user/app:cache",
+    #                                      "type=local,dest=path/to/dir")
+    #      --cgroup-parent string          Set the parent cgroup for the "RUN"
+    #                                      instructions during build
+      -f, #--file string                   Name of the Dockerfile (default:
+    #                                      "PATH/Dockerfile")
+    #      --iidfile string                Write the image ID to the file
+    #      --label stringArray             Set metadata for an image
+    #      --load                          Shorthand for "--output=type=docker"
+    #      --metadata-file string          Write build result metadata to the file
+    #      --network string                Set the networking mode for the
+    #                                      "RUN" instructions during build
+    #                                      (default "default")
+    #      --no-cache                      Do not use cache when building the image
+    #      --no-cache-filter stringArray   Do not cache specified stages
+      -o, #--output stringArray            Output destination (format:
+    #                                      "type=local,dest=path")
+    #      --platform stringArray          Set target platform for build
+    #      --progress string               Set type of progress output
+    #                                      ("auto", "plain", "tty"). Use plain
+    #                                      to show container output (default
+    #                                      "auto")
+    #      --provenance string             Shorthand for "--attest=type=provenance"
+    #      --pull                          Always attempt to pull all
+    #                                      referenced images
+    #      --push                          Shorthand for "--output=type=registry"
+      -q, #--quiet                         Suppress the build output and print
+    #                                      image ID on success
+    #      --sbom string                   Shorthand for "--attest=type=sbom"
+    #      --secret stringArray            Secret to expose to the build
+    #                                      (format:
+    #                                      "id=mysecret[,src=/local/secret]")
+    #      --shm-size bytes                Shared memory size for build containers
+    #      --ssh stringArray               SSH agent socket or keys to expose
+    #                                      to the build (format:
+    #                                      "default|<id>[=<socket>|<key>[,<key>]]")
+      -t, #--tag stringArray               Name and optionally a tag (format:
+    #                                      "name:tag")
+    #      --target string                 Set the target build stage to build
+    #      --ulimit ulimit                 Ulimit options (default [])
+
+```
+
+
+### Probando Docker  - mockup-app Paolo
 
 ```sh
 systemctl list-unit-files | grep dock
@@ -3170,174 +4354,3 @@ sudo docker run -p 8080:5000 mockup-app-rembg
 ```
 
 
-## Laboratorio Ansible
-
-Objetivo 
-El objetivo de esta práctica es el de automatizar el despliegue 
-de un servidor web + una página sencilla en un servidor externo 
-mediante la herramienta Ansible (utilizando ssh). 
-
-Resolución 
-
-Para esta práctica tendremos como requisito tener por un lado nuestro
-laboratorio principal (ya sea de forma local o una máquina virtual)
-y una segunda máquina Linux a la cual tengamos acceso por ssh
-desde nuestro laboratorio principal, esto es fundamental 
-ya que ansible utilizar ssh de fondo para enviar las instrucciones.
-
-En nuestro caso, utilizaremos la máquina en AWS creada en el laboratorio de Terraform,
-pero es indistinta la ubicación de la máquina.
-
-
-Para esta práctica tendremos como requisito tener por un lado nuestro laboratorio principal (ya sea de forma local o una máquina virtual) y una segunda máquina Linux a la cual tengamos acceso por ssh desde nuestro laboratorio principal, esto es fundamental ya que ansible utilizar ssh de fondo para enviar las instrucciones. En nuestro caso, utilizaremos la máquina en AWS creada en el laboratorio de Terraform, pero es indistinta la ubicación de la máquina.
-
- Empezaremos por la instalación de Ansible: 
-
-1) Primero, tenemos que asegurarnos de que tenemos python3 instalado,
- en caso de no tenerlo lo instalamos con 
-    a) sudo apt-get install python3
-2) Una vez con python3 instalado, instalamos pip 
-    a) curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py 
-    b) python3 get-pip.py --user 
-3) Una vez que tengamos pip instalado, instalamos ansible 
-    a) python3 -m pip install --user ansible 
-4) El último paso es añadir el path donde instalamos ansible 
-a nuestro path de ejecutables, una forma de hacer esto es agregar
- el path que nos da el output de la instalación a nuestro .bashrc 
- (o archivo de configuración de la shell que utilicemos
-
-
-```sh
-WARNING: The scripts ansible, ansible-config, anstble-connection, ansible-console,
-ansible-doc, ansible-galaxy, anstble-inventory, ansible-playbook,anstble-pull and anstble-vault
-are installed in /home/zdenko/.local/bin' 
-which is not on PATH. Consider adding this directory to PATH or, if you prefer to suppress this warning,
-   use-no-warn-script-location. 
-WARNING: The script ansible-community is installed in /home/zdenko/.local/bin 
-which is not on PATH. Consider adding this directory to PATH or,
-if you prefer to suppress this warn ing, use-no-warn-script-location.
-```
-
-Para esto, agregaremos la siguiente línea al final del archivo.bashrc 
-   
-a) export PATH="/home/zdenko/.local/bin:$PATH" (reemplazar el usuario) 
-b) source.bashrc 
-
-5) Y listo, ya tendremos ansible listo para utilizar, 
-para verificar su correcto funcionamiento corremos: 
-a) ansible --version 
-Ya con Ansible instalado, ahora crearemos un inventario donde configuraremos 
-
-6) Para esto, crearemos un archivo de configuración con terminación .yaml,
-en nuestro caso lo llamamos inventario.yaml aunque el nombre es indistinto.
-En nuestro caso de nuevo, estamos utilizando una máquina virtual 
-que corre en AWS por eso la IP pública y no una IP privada de una red 192.168.χ.χ.
- maquinas-virtuales: hosts: AWS: ansible_host: 3.82.119.30 
- 
- 7) Una vez creado el inventario, podremos verificar el correcto acceso desde ansible
-  hacia nuestro host con el siguiente comando 
-  a) ansible all-m ping -i inventario.yaml -u ubuntu --private-key 
-  ../Terraform/AWS/terra-keys 
-
-
-```sh
-~Desktop/Cloud-devops/Laboratorios/Ansibles 
-[zdenko@z] $ ansible all ping -i inventario.yaml -u ubuntu --privete key .../Terraform/AWS/terra-keys 
-  [WARNING]: Invalid characters wer found in group names but not replaced.
-  use -vvvv to see details 
-  AWS | SUCCESS => {
-    ansiblr_facts{
-        "discovered+insrptreter_python": "/usr/bin/python3"
-    }. 
-    "changed" : false , 
-    "ping": "pong"
-  }  
-~/Desktop/Cloud-devops/Laboratorios/Ansibles 
-[zdenko@z] $ 
-```
-
-
-Si configuramos bien nuestro servidor, el comando nos devolverá un pong,
-en este caso fue necesario pasarle un usuario específico y la llave privada 
-para poder conectarnos.
-
-8) Ya creado el inventario y verificado el acceso a través de Ansible,
- pasaremos a crear el playbook.
-```yaml
-- hosts: all 
-become: yes 
-vars: 
-  server_name: "{{ ansible_default_ipv4.address }}"
-  document_root: /var/www 
-  app_root: app tasks: 
-  tasks:
-
-- name: Update apt cache and install Nginx 
-apt: 
-  name: nginx 
-  state: latest 
-  update_cache: yes 
- 
-- name: Copy website files to the server's document root
-copy: 
-  src: "{{ app_root }}" 
-  dest: "{{ document_root }}" 
-  mode: preserve 
-
-- name: Apply Nginx template 
-template: 
-  src: nginx.conf.j2
-  dest: /etc/nginx/sites-available/default 
-  notify: Restart Nginx 
-
-- name: Enable new site 
- file: 
-  src: /etc/nginx/sites-available/default
-    dest: /etc/nginx/sites-enabled/default
-    state: 
-    link notify: Restart Nginx 
-  
-- name: Allow all access to tcp port 80 
-  ufw: 
-    rule: allow
-    allow port: '80' 
-    proto: tcp handlers: 
-  
-- name: Restart Nginx 
-    service: 
-    name: nginx   
-    state: restarted 48:46/2:36:35 
-```
-
-  Adicional al playbook, necesitamos crear 2 archivos más: 
-  • Un archivo de configuración de nginx:
-
-nginx.conf.j2 :
-
-```conf
-server {
-  listen 80; 
-
-  root {{ document_root }}/{{ app_root }};
-  index index.html index.htm;
-  
-  server_name {{ server_name }};
-
-  location / { 
-  default_type "text/html";
-  try_files $uri.html $uri $uri/ =404;
-  } 
-}
-```
-
-Un directorio llamado app que dentro tenga los archivos para nuestro servidor web,
-en este caso solo vamos a usar un index.html bastante sencillo con un
-` <H1>  Probando Nginx con Ansible!  </H1> `
- 
-9) Ya con el playbook y los archivos adicionales creados, 
-pasaremos a ejecutar el playbook: 
-
-a) ansible-playbook playbook.yaml -i inventario.yaml -u ubuntu --private-key ../Terraform/AWS/terra-keys 
-
-10) Una vez aplicado el playbook, solo es cuestión de acceder a la IP pública de nuestra máquina virtual
- en AWS para ver nuestra aplicación web corriendo
