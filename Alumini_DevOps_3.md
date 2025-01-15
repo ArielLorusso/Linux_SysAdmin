@@ -4354,3 +4354,21 @@ sudo docker run -p 8080:5000 mockup-app-rembg
 ```
 
 
+
+ ## Clase 37
+
+https://www.hardgamers.com.ar/
+Pagina de comparacion de precios de PC Componentes y hardware
+
+Desafio :
+como actualizar programas y OS en una image de docker
+OPCON 1 : Modificar el Dockerfile y volver a construir la imagen Docker
+OPCION 2 : Utilizar de base de imagen del programa a utilizar y acttualizar la imagen base
+esta opcion nos permite utilizar imagenes de base hechos por terseros que se mantienen actualizadas
+podriamos llamarlos contenedores secundarios que componen nuestro contenedor principal
+
+
+```sh
+
+```
+ 
