@@ -4369,6 +4369,7 @@ podriamos llamarlos contenedores secundarios que componen nuestro contenedor pri
 
 
 ```sh
+ESCRITO DESDE LA NOTEBOOK YOGA
 
 ```
  
