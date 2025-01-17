@@ -2268,7 +2268,7 @@ terraform {
 
 ## clase 31 - Terraform
 
-### DESAFIO
+### DESAFIO 11
 
 **Objetivo**
 probar todas las herramientas vistas durante este modulo (`Vagrant, Ansible y Terraform`).
@@ -3690,111 +3690,6 @@ CMD ["mysqld"]                                                                  
 ```
 
 
-#### Componentes adicionales de Docker
-
-Con Docker, podemos `crear imágenes y contenedores`. 
-Además, vamos a crear `redes para interconectar` estos contenedores 
-y también recursos de storage llamados `volúmenes`. 
-
-#### Recursos de Networking
-
-Sin modificar a la red, los contenedores se crearán 
-en la `red default`  que utiliza Docker llamada `Bridge`. 
-
-Esta red provee `comunicación` entre contenedores. 
-Si deseamos otras características, tendremos que primero crear una red y después, 
-a la hora decrear el contenedor, `agregar como parámetro` al comando la `red a utilizar`
-
-
-# Tipos de red:
-
-● Bridge: 
-La `red default` usa este tipo, cuando creamos una red de tipo Bridge
-tiene algunas `características distintas` a la default, por ejemplo,
-resolución de `DNS automática` entre contenedores conectados a esta red.
-
-● Host:  
-Se elimina la IP del contenedor y este pasa a compartir el espacio de red 
-con el host, es decir que si el contenedor expone su servicio en el puerto 3000, 
-lo hará a través de la IP del Host.
-
-● None:   `deshabilita` el stack de networking en ese contenedor.
-
-● Overlay:  
-nos permite `conectar` distintos `Daemons` de Docker. 
-Por ejemplo, si tenemos dos servidores, cada uno con una instancia de Docker,
-podremos crear una red overlay en cada uno y conectar los contenedores de cada servidor con el otro.
-
-● Macvlan: 
-este tipo de red asigna una `dirección MAC` de nuestra red local al contenedor, 
-hace de cuenta que el contenedor está conectado `directamente` a nuestro `router`.
-
-● 3rd party: 
-Existen plugins creados por otras organizaciones que se pueden utilizar como driver de Red,
-estos se almacenan en el `Docker Hub` o a través de las páginas de estos `proveedores`. 
-
-### Recursos de Storage
-
-Como vimos anteriormente, los contenedores
-están pensados para ser utilizados de forma
-efímera, es decir que no escriban ni guarden
-información y puedan ser reiniciados sin ningún
-tipo de problema. Ahora, ¿qué ocurre con
-aplicaciones que necesitan guardar información
-o retener información en caso de que el
-contenedor se reinicie o se elimine y se vuelva a
-crear? o mismo, compartir información entre
-contenedores sin tener que pasarla por red.
-Bueno, Docker tiene una solución para este
-problema.
-Existen distintos tipos de solución a este
-problema, el más común son los volúmenes.
-Estos tipos son:
-
-● Bind mounts: pueden almacenarse en
-cualquier parte del sistema host. Otros
-procesos además de Docker pueden hacer
-cambios en estos archivos o directorios.
-
-● Volúmenes: se almacenan en una parte del
-sistema host que solo Docker tiene acceso
-(/var/lib/docker/volumes). Esto evita que otros
-procesos no relacionados a Docker hagan
-cambios en los archivos/directorios. 
-
-Los bind mounts suelen ser una opción más
-antigua y no tan utilizada actualmente donde los
-volúmenes tienen más peso.
-
-Estos volúmenes se pueden montar a uno o más
-contenedores y se puede hacer de forma
-read-only o read-write dependiendo de
-nuestras necesidades. Algunos casos de uso
-pueden ser, configurar una aplicación en un
-contenedor y guardar dicha configuración en un
-volumen (por ejemplo, la configuración de un
-servidor de nginx corriendo en Docker), si
-borramos el contenedor y levantamos uno nuevo
-montando el mismo volumen, el nuevo
-contenedor tendrá la misma configuración.
-Otro caso de uso puede ser separar la
-configuración de la aplicación del código,
-entonces para hacer una actualización de
-contenido (por ejemplo, un cambio de un Header
-en una aplicación web), solo tendremos que
-cambiar el contenido del volumen y luego
-reiniciar el contenedor (en caso de que lo
-necesite) o ya directamente las nuevas peticiones
-verán el cambio. 
-
-Otra opción que nos brinda Docker/Proveedores
-son los storage drivers: agregan funcionalidad a
-Docker para que podamos utilizar otros tipos de
-storage, como S3 de AWS o un NFS. Esto permite
-compartir volúmenes no solo entre contenedores
-del mismo Daemon de Docker corriendo en un
-Host, sino entre múltiples Host también. 
-
 
 
 ## Clase 33 - Docker
@@ -4023,7 +3918,7 @@ docker run hello-world
 # verificar que podemos correr comandos de docker
 ```
 
-####
+### Ejemplo - zdenko pokeapi 
 
 ```sh
 cd Alumni
@@ -4354,22 +4249,1562 @@ sudo docker run -p 8080:5000 mockup-app-rembg
 ```
 
 
+## clase 34 
 
- ## Clase 37
+Nerdearla :
 
-https://www.hardgamers.com.ar/
-Pagina de comparacion de precios de PC Componentes y hardware
+    ANSIBLE - Maximiza el potencial de tus clústeres con Zabbix.
+    https://www.youtube.com/watch?v=2XH7nH_5Ycw
 
-Desafio :
-como actualizar programas y OS en una image de docker
-OPCON 1 : Modificar el Dockerfile y volver a construir la imagen Docker
-OPCION 2 : Utilizar de base de imagen del programa a utilizar y acttualizar la imagen base
-esta opcion nos permite utilizar imagenes de base hechos por terseros que se mantienen actualizadas
-podriamos llamarlos contenedores secundarios que componen nuestro contenedor principal
+    Introducción a GitOps con Flux
+    https://www.youtube.com/watch?v=EWofHnNngoc
 
+    Application Reliability: Reliability beyond infrastructure
+    https://www.youtube.com/watch?v=61-tO85aIpI
+
+    Optimizacion de pruebas de rendimiento con K6 para DevOps
+    https://www.youtube.com/watch?v=mZRzRly8pPE
+
+
+
+Creada instancia EC2 en Terraform y Conectarse por SSH con el par de llaves 
+https://cloudkatha.com/how-to-create-ec2-instance-using-terraform-with-key-pair-on-aws/
+
+### Linter Docker
+
+Linter : resalta sintaxis y corrige errores
+https://github.com/hadolint/hadolint
+
+```dockerfile
+RUN node_version= "0.10" \
+&& apt-get update && apt-get -y install nodejs="$node_verson"
+# WRONG : node_verson is referenced but not assigned.
+# WRONG : Delete the apt-get lists after installing something
+COPY package.json usr/src/app
+RUN cd /usr/src/app\
+# WRONG : Use WORKDIR to switch to a directory
+EXPOSE 80000
+# WRONG : Valid UNIX ports range from 0 to 65535
+CMD
+```
+
+### Arquitectura de Docker
+
+https://www.geeksforgeeks.org/architecture-of-docker/
+
+Docker Client
+  CLI (build, pull, rin , ...)
+
+Docker Host
+  Daemon (containers & images)
+
+Docker Registry
+  Ubuntu Openstack Nginx
+
+
+
+### Componentes adicionales de Docker
+
+Con Docker, podemos `crear imágenes y contenedores`. 
+Además, vamos a crear `redes para interconectar` estos contenedores 
+y también recursos de storage llamados `volúmenes`. 
+
+#### Recursos de Networking
+
+Sin modificar a la red, los contenedores se crearán 
+en la `red default`  que utiliza Docker llamada `Bridge`. 
+
+Esta red provee `comunicación` entre contenedores. 
+Si deseamos otras características, tendremos que primero crear una red y después, 
+a la hora decrear el contenedor, `agregar como parámetro` al comando la `red a utilizar`
+
+
+#### Tipos de red:
+
+● Bridge: 
+La `red default` usa este tipo, cuando creamos una red de tipo Bridge
+tiene algunas `características distintas` a la default, por ejemplo,
+resolución de `DNS automática` entre contenedores conectados a esta red.
+
+● Host:  
+Se elimina la IP del contenedor 
+y este pasa a `compartir` el espacio de `red con el host`,
+es decir que si el contenedor expone su servicio en el puerto 3000, 
+lo hará `a través de la IP del Host`.
+
+● Overlay:  
+nos permite `conectar` distintos `Daemons` de Docker. 
+Por ejemplo, si tenemos dos servidores, cada uno con una instancia de Docker,
+podremos crear una red overlay en cada uno 
+y conectar los c ontenedores de cada servidor con el otro.
+
+● None:   `deshabilita` el stack de networking en ese contenedor.
+
+● MACvLAN: 
+este tipo de red asigna una `dirección MAC` de nuestra red local al contenedor, 
+hace de cuenta que el contenedor está conectado `directamente` a nuestro `router`.
+
+● 3rd party: 
+Existen plugins creados por otras organizaciones que se pueden utilizar como driver de Red,
+estos se almacenan en el `Docker Hub` o a través de las páginas de estos `proveedores`. 
+
+#### Recursos de Storage
+
+https://www.youtube.com/watch?v=r_LgmqejAkA
+Day-27 | Docker Volumes and Bind Mounts|
+
+los contenedores están pensados para ser utilizados de forma efímera, 
+no escriban ni guarden información y puedan ser reiniciados sin ningún problema.
+
+¿qué ocurre con aplicaciones que necesitan guardar información o retener información 
+en caso de que el contenedor se reinicie o se elimine y se vuelva a crear? 
+o mismo, compartir información entre contenedores sin tener que pasarla por red.
+
+En Docker existen distintos tipos de solución a este problema, 
+el más común son los volúmenes.
+
+
+Estos tipos son:  
+
+    Bind mounts 
+    Volúmenes
+    storage drivers
+
+● `Bind mounts`: pueden almacenarse en cualquier parte del sistema host.
+Otros procesos además de Docker pueden hacer
+cambios en estos archivos o directorios.
+
+
+● `Volúmenes`: se `almacenan` en una parte del sistema host 
+que `solo Docker` tiene `acceso` (`/var/lib/docker/volumes`). 
+Esto `evita` que otros procesos no relacionados a Docker 
+hagan `cambios` en los archivos/directorios. 
+
+Los `bind mounts` suelen ser una opción más `antigua` 
+y `no tan utilizada actualmente` comparado a los volúmenes.
+Estos `volúmenes` se pueden montar a uno o más contenedores 
+y se puede hacer de forma `read-only` o `read-write `
+dependiendo de nuestras necesidades. 
+
+`Un casos de uso` :
+`configurar una aplicación` en un contenedor 
+y `guardar` dicha configuración en un `volumen `
+(ej: la configuración de un servidor de nginx corriendo en Docker)
+si borramos el contenedor y levantamos uno nuevo `montando el mismo volumen`,
+el nuevo contenedor tendrá la misma configuración.
+
+`Otro caso de uso` :
+separar la configuración de la aplicación del código,
+entonces para hacer una actualización de contenido 
+(ej : un cambio de un Header en una aplicación web), 
+solo tendremos que cambiar el contenido del volumen 
+y luego reiniciar el contenedor (en caso de que lo necesite) 
+o ya directamente las nuevas peticiones verán el cambio. 
+
+
+● `storage drivers`: 
+poermite utilizar `otros tipo`s des torage, `como S3 `de AWS o un NFS.
+
+Esto permite compartir volúmenes no solo entre contenedores
+del mismo Daemon de Docker corriendo en un Host,
+sino entre múltiples Host también. 
+
+
+### Background tecnológico (Kernel)
+
+#### ¿Cómo funciona Docker?
+
+Los contenedores de Docker funcionan
+aprovechando dos características del kernel de Linux 
+(elemento principal entre el hardware y las aplicaciones,
+los comunica entre sí además se manejan los recursos de la forma más eficiente).
+Estas dos características son los namespaces y los cgroups.
+
+● Namespaces
+permite a Docker proveer un `espacio de trabajo aislado` 
+para nuestra aplicación dentro del sistema operativo.
+Los namespaces que utiliza Docker son:
+
+    PID Para aislar procesos.
+    NET Para manejo de interfaces de red.
+    IPC Para manejo de recursos de IPC (Comunicación entre procesos).
+    MNT Para manejar puntos de montaje de Filesystems.
+    UTS Para aislar identificadores de sistemas
+    (hostname y nombre de dominio).
+
+● Cgroups
+permite a Docker `alocar y aislar recursos`. 
+Estos cgroups o grupos de control le permiten a Docker 
+hacer uso de todos los recursos del sistema 
+y `compartirlos entre distintos contenedores`, y `poner límites`. 
+
+
+### Contexto actual de Docker y alternativas
+
+2014 surgen orquestadoes
+January  31, 2022  cambio de liscencia
+December 10, 2024  cambio de liscencia
+Docker cede porcion pequenia a Kubernetes para que no use todo su codigo
+
+
+Docker perdió protagonismo
+Por muchos años, Docker fue el rey del mercado y
+era una de las pocas opciones para correr
+contenedores. Además, era utilizado en el
+sistema de orquestación de contenedores
+llamado Kubernetes.
+Sucedieron `tres hitos` en la historia de Docker
+que hicieron que muchas organizaciones e
+individuos comenzarán a utilizar alternativas a
+Docker, ya sea para partes individuales como
+para construir una imagen o reemplazar todo el
+ciclo completo.
+
+Docker deja de ser parte de Kubernetes
+
+●  El `primer hito` del que hablaremos es el que
+mencionamos antes, cuando Docker dejó de ser
+parte de Kubernetes. No entraremos en detalle en
+el funcionamiento de Kubernetes pero
+mencionaremos que necesita de algún
+componente que sea el encargado de crear los
+contenedores y administrarlos. Anteriormente
+utilizaba Docker para cumplir con esta función
+pero Docker, como ya vimos, puede hacer mucho
+más que solamente crear contenedores. Era algo
+muy pesado y que contenía muchas
+funcionalidades que no se utilizaban.
+
+Debido a esto y a que aparecieron otras opciones
+en el mercado, los mantenedores de Kubernetes
+tomaron la decisión de reemplazar este
+componente por uno llamado Containerd. Este
+componente ya funcionaba dentro de Docker
+para justamente crear los contenedores por eso
+no era un cambio muy drástico, pero acceder a
+esa funcionalidad era medio dificultoso. En la
+versión 1.23, Kubernetes deprecó el soporte de
+`Docker como Container Runtime`
+(El componente utilizado para crear contenedores dentro de Kubernetes).
+
+Docker lanza un servicio de suscripción para pequeñas,
+medianas y grandes compañías
+
+●  El `segundo hito` muy importante y que afectó en gran
+parte a la comunidad fue cuando lanzaron un `servicio de suscripción` 
+para pequeñas, medianas y grandes compañías para utilizar su servicio  de `Docker Desktop`,
+una de sus aplicaciones más utilizadas para el manejo de contenedores mediante `interfaz gráfica`.
+Esto sucedió durante agosto de 2021 y enero de 2022. 
+
+Docker necesitaba generar ganancias para poder mantener la organización 
+pero de todas formas esto no fue muy bien visto dentro de la comunidad. 
+
+
+Un compilado de sucesos
+●  El `tercer hito` no fue algo muy puntual sino que fueron distintos sucesos.
+Con el tiempo, distintas organizaciones fueron creando `aplicaciones para reemplazar` 
+`ciertas partes` del ciclo de vida de los contenedores, desde `repositorios` de imágenes,
+aplicaciones para `construir imágenes`, para `correr contenedores`, entre otros.
+
+Ejemplos de ALternantivas
+
+● `Podman`: el competidor más directo con Docker al
+punto de que se pueden utilizar los `mismos comandos` 
+solo que en vez de usar Docker, se utiliza
+Podman (podman build, podman run, y otros).
+
+● `Buildah`: sin necesidad de instalar un Daemon o un
+container runtime, nos da la posibilidad de crear
+imágenes, muy útil para procesos de CI/CD donde
+solo queremos `construir la imagen y no desplegar` un
+contenedor.
+
+● `Kata containers`: container runtime que utiliza
+máquinas virtuales pequeñas que funcionan como si
+fueran contenedores pero con los beneficios del
+`aislamiento y seguridad` de las máquinas virtuales. 
+
+
+Todas estas herramientas funcionan gracias a la `OCI distribution epeciication`,
+que surge en `2015` gracias a Docker y otras empresas que decidieron 
+`dictar un estándar` para la ejecución de contenedores, creación y distribución de imágenes.
+
+`Open Container Initiative` https://specs.opencontainers.org/
+
+Este estándar se compone de `tres partes`:
+
+● OCI `Runtime Specification`: describe como un
+Runtime debe ejecutar una imagen para que cumpla
+con esta especificación.
+https://specs.opencontainers.org/image-spec/?v=v1.0.1
+
+
+● OCI `Image Format`: describe el formato que se debe
+utilizar para empaquetar la imagen del contenedor.
+Esto permite que se puedan usar distintas
+herramientas interoperables para construir, distribuir
+y utilizar una imagen de contenedor.
+https://specs.opencontainers.org/distribution-spec/?v=v1.0.0
+
+
+● OCI `Distribution Specification`: estandariza la
+distribución de imágenes de contenedores facilitando
+la interoperabilidad entre distintos registros,
+proveedores de servicios en la nube y ecosistemas de
+contenedores (Basado en el Docker Registry). 
+https://specs.opencontainers.org/runtime-spec/?v=v1.0.2
+
+
+https://aws.amazon.com/ecr/
+
+###  Docker compose
+
+
+Ya mencionamos que con Docker podemos crear múltiples `recursos `
+(`contenedores, imágenes, redes, storage,` y otros). 
+Dependiendo de la cantidad de argumentos que pasamos a cada comando,
+podemos terminar con `instrucciones de 2-3 líneas` 
+lo cual puede volverse `bastante complicado` de recordar. 
+
+por esto existe `Docker Compose`, la `herramienta de IaC` para Docker.
+
+Docker Compose permite `crear y manejar recursos de Docker` 
+a través de la `infraestructura como código`, de esta forma
+tendremos todos los beneficios de este tipo de infraestructura
+(administrar recursos de forma similar al uso de ciclo de vida de software) 
+para manejar nuestros recursos de Docker. 
+
+
+A través de un archivo usualmente llamado `compose.yaml`,
+definiremos una `lista de servicios` (contenedores) junto a su configuración,
+no solo define `contenedores`, sino también `volúmenes y redes`.
+
+podremos tener toda la infraestructura de contenedores definida en un archivo 
+(opodríamos separarlo por aplicaciones, stacks, equipos, etc).
+Hasta incluso se podría construir una imagen desde el mismo Docker Compose.
+ 
+
+Análisis de un Docker Compose
+
+``` yaml
+services:
+  elasticsearch:
+  image: elasticsearch:7.16.1
+  container_name: es
+  environment:
+  discovery.type: single-node
+  ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+  ports:
+    - "9200:9200"
+    - "9300:9300"
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail localhost:9200/_cluster/health || exit 1"]
+      interval: 10s 
+      timeout: 10s
+      retries: 3
+    networks:
+      - elastic
+  logstash:
+    image: logstash:7.16.1
+    container_name: log
+    environment:
+      discovery.seed_hosts: logstash
+      LS_JAVA_OPTS: "-Xms512m -Xmx512m"
+    volumes:
+      - ./logstash/pipeline/logstash-nginx.config:/usr/share/logstash/pipeline/logstash-nginx.config
+      - ./logstash/nginx.log:/home/nginx.log
+
+ ports:
+    - "5000:5000/tcp"
+    - "5000:5000/udp"
+    - "5044:5044"
+    - "9600:9600"
+  depends_on:
+    - elasticsearch
+  networks:
+    - elastic
+  command: logstash -f /usr/share/logstash/pipeline/logstash-nginx.config
+kibana:
+  image: kibana:7.16.1
+  container_name: kib
+
+ ports:
+    - "5601:5601"
+  depends_on:
+    - elasticsearch
+  networks:
+    - elastic
+
+networks:
+  elastic:
+    driver: bridge
+```
+
+Fuente: https://github.com/docker/awesome-compose/blob/master/elasticsearch-logstash-kibana/compose.yaml
+
+Este archivo de Docker Compose levanta `tres servicios `
+(`Elasticsearch, Logstash y Kibana`) que componen un sistema de monitoreo.
+
+Conecta los tres servicios a través de una `red llamada elastic` 
+que utiliza el driver bridge.
+
+Podemos ver que primero se levanta el servicio `Elasticsearch` 
+que tiene un `healthcheck` para verificar su correcto funcionamiento.
+
+Una vez que Docker se asegura de que el servicio levantó correctamente,
+levanta los otros dos servicios, `Kibana y Logstash`. 
+Este último mediante un `volumen`.
+
+Además podemos ver que estos servicios tienen configuradas 
+`variables de entorno`  y `exponen múltiples puertos`.
+
+Como podemos observar, si quisiéramos levantar toda esta infraestructura,
+ no solo nos llevaría varias líneas de código, 
+sino que además múltiples comandos y la `dificultad de`
+`compartir`, `modificar` y hacer `backups` entre otras cosas.
+
+Como referencia, tenemos la `documentación` de Docker 
+que nos ayudará a crear nuestrosarchivos de `Docker Compose`.
+
+Mas Ejemplos Compose:
+
+    APACHE-PHP :
+    https://github.com/docker/awesome-compose/tree/master/apache-php
+
+    PLEX : (como Netflix)
+    https://github.com/docker/awesome-compose/tree/master/plex
+
+    POSGRES + NextCloud : (como Dropbox o GoogleDrive)
+    https://github.com/docker/awesome-compose/tree/master/nextcloud-postgres
+
+    NGINX-FLASN MySWL :
+    https://github.com/docker/awesome-compose/tree/master/nginx-flask-mysql
+
+
+APACHE PHP :
+application with Apache2
+
+Project structure:
+
+  ├── compose.yaml
+  ├── app
+      ├── Dockerfile
+      └── index.php
+
+
+compose.yaml:
+```yaml
+services:
+  web:
+    build: app
+    ports: 
+      - '80:80'
+    volumes:
+      - ./app:/var/www/html/
+```
+
+Dockerfile :
+```Dockerfile
+# syntax=docker/dockerfile:1.4
+
+FROM --platform=$BUILDPLATFORM php:8.0.9-apache as builder
+
+CMD ["apache2-foreground"]
+
+FROM builder as dev-envs
+
+RUN <<EOF
+apt-get update
+apt-get install -y --no-install-recommends git
+EOF
+
+RUN <<EOF
+useradd -s /bin/bash -m vscode
+groupadd docker
+usermod -aG docker vscode
+EOF
+# install Docker tools (cli, buildx, compose)
+COPY --from=gloursdocker/docker / /
+
+CMD ["apache2-foreground"]
+```
+
+Otro ejemplo 
+
+Github actions - Workshop Nerdearla -Zedenko  :
+https://github.com/zdenkotraste/workshop-nerdearla/blob/main/.github/workflows/main.yml
+
+
+main.yml :
+
+```yaml
+name: ci    # un proceso llamado ci 
+
+on:         # se ejecuta cuando halla un push en el este repo 
+  push:
+    branches:
+      - "main"      # el push deve ser en la rama main
+    paths:
+      - "Docker/**" # el push deve ser en el directorio Docker
+
+jobs:       # tareas del proceso :
+  build:        
+    runs-on: ubuntu-latest    # corre en en el entorno Github Actio llamado  ubuntu-latest
+    steps:  # lista de pasos de la tarea
+      -
+        name: Checkout              # checkout : poner copia del codigo en el ambiente
+        uses: actions/checkout@v4       # accion de github actions    https://github.com/actions/checkout
+      - 
+        name: Login to Docker Hub   # hacer login en DockerHub
+        uses: docker/login-action@v3    # accion de docker            https://github.com/docker/login-action 
+        with:                       # Secretos para usuario y contrasenia
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Set up Docker Buildx  # docker build para crear la imagen
+        uses: docker/setup-buildx-action@v3
+      -
+        name: Build and push        # push a DockerHub
+        uses: docker/build-push-action@v5
+        with:
+          context: "{{defaultContext}}:Docker"  # a donde realizar el push
+          push: true                # realizar push
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/pokedex-flask-nerdearla:${{ github.run_number }}```
+                                    # informacion de como agregar la imagen
+                                    # esto podria ponerse en un secreto
+```
+
+Podemos ver en Github actions com se realiza cada paso de la tarea
+github.com/zdenkotraste/workshop-nerdearla/actions :
+
+12 workflow runs:
+
+Update Dockerfile
+  ci #12: Commit 776667a pushed by zdenkotraste 5 days ago
+Update main.yml
+  ci #11: Commit a5d43cd pushed by zdenkotraste 5 days ago
+Update main.yml
+  ci #10: Commit 452cc90 pushed by zdenkotraste 5 days ago
+Update Dockerfile
+  ci #9: Commit 6fa2b44  pushed by zdenkotraste 5 days ago
+Update Dockerfile
+  ci #8: Commit d52c1e2  pushed by zdenkotraste 5 days ago
+
+github.com/zdenkotraste/workshop-nerdearla/actions/runs/6399388412/job/17371346533
+
+  Set up job
+  Checkout
+  Login to Docker Hub
+  Set up Docker Buildx
+  Build and push
+  Post Build and push
+  Post Set up Docker Buildx
+  Post Login to Docker Hub
+  Post Checkout
+  Complete job
+
+Procesos como este que acabamos de mostrar en `GitHub Actions`
+Los bamos a realizar luego en `Jenkins`, herramienta mas antigua (2011)
+`GitLab Ci/Cd` es otra herramienta parecida
+
+### Ejemplo PokeAPI
 
 ```sh
-ESCRITO DESDE LA NOTEBOOK YOGA
+[vagrant@vagrant]:~ | docker run -d-name pokedex-bootcamp 
+-p 5000:5000 zdenko098/pokedex-flask-nerdearla:14
+# Unable to find image 'zdenko098/pokedex-flask-nerdearla:14' locally
+# 14: Pulling from zdenko098/pokedex-flask-nerdearla
+# 167b8a53ca45: Pulling fs layer
+# b47a222d28fa: Pull complete
+# debce5f9f3a9: Extracting        36.77MB/64.11MB
+# 1d7ca7cd2e06: Downloading       142.9MB/211MB
+# ff3119008f58: Download complete
+# 989f62fa9e03: Download complete
+# 83fc44ff6941: Waiting
+
+[vagrant@vagrant]:~ | docker ps -a
+# CONTAINER ID    IMAGE                                     STATUS      PORTS       
+# e2ef628c55cf    zdenko098/pokedex-flask-nerdearla:14      Exited (2) 59 sec ago 
+# NAMES             COMMAND                            CREATED
+# pokedex-bootcamp  "python -m flask run..."           About a minute ago
+
+[vagrant@vagrant]:~ | docker logs pokedex-bootcamp
+# * Environment: production
+#   WARNING:
+#   This is a development server. Do not use it in a production deployment.
+#   Use a production WSGI server instead.
+# * Debug mode: off
+#   Usage : python -m flask run [OPTIONS]
+#   Try 'python -m flask run-help' for help.
+
+# Error: While importing "app", an ImportError was raised:
+
+# Traceback (most recent call last):
+#   File "/usr/local/lib/python3.12/site-packages/flask/cli.py", line 240, in locate_app _import_(module_name)
+#   File "/app/app.py", line 2, in <module>
+#     import requests
+#   File "/usr/local/lib/python3.12/site-packages/requests/__init__.py", line 43, in <module>
+#     import urllib3
+#   File "/usr/local/lib/python3.12/site-packages/urllib3/__init__.py", line 7, in <module> from.connectionpool import HTTPConnectionPool, HTTPSConnectionPool, connection_from_url
+#   File "/usr/local/lib/python3.12/site-packages/urllib3/connectionpool.py", line 11, in <module>
+#     from.exceptions import 
+#   File "/usr/local/lib/python3.12/site-packages/urllib3/exceptions.py", line 2, in <module> from.packages.six.moves.http_client import IncompleteRead as httplib_IncompleteRead
+#   ModuleNotFoundError: No module named 'urllib3.packages.six.moves'
+```
+
+
+Notamos en los logs un `error` en las dependencias 
+intentamos soolucionarlo con `python 3.7 en el Dockergile`
+este error surge porque `latest` es un vlor `dinamico` 
+y distintas versiones pueden `no ser compatibles` con 
+las `librerias` utilizadas en la aplicacion
+
+
+
+https://github.com/docker/awesome-compose/tree/master/elasticsearch-logstash-kibana
+
+```sh
+[vagrant@vagrant]:~/awesome-compose | cd elasticsearch-logstash-kibana/
+[vagrant@vagrant]:~/awesome-compose/elasticsearch-logstash-kibana | ls
+# compose.yaml logstash README.md
+[vagrant@vagrant]:~/awesome-compose/elasticsearch-logstash-kibana | docker compose up -d
+# [+] Running 16/14
+# kibana          13 layers [ ] 9.685MB/83.52MB Pulling                  63.1s
+# * elasticsearch 8 layers  [] 18.31MB/344.5MB Pulling           63.1s
+# * logstash      11 layers []135.6MB/369.8MB Pulling                   63.1s
+
+[vagrant@vagrant]:~/awesome-compose/elasticsearch-logstash-kibana | docker compose --help
+#Commands:
+#  attach      Attach local standard input, output, and error streams to a service's running container
+#  build       Build or rebuild services
+#  config      Parse, resolve and render compose file in canonical format
+#  cp          Copy files/folders between a service container and the local filesystem
+#  create      Creates containers for a service
+#  down        Stop and remove containers, networks
+#  events      Receive real time events from containers
+#  exec        Execute a command in a running container
+#  images      List images used by the created containers
+#  kill        Force stop service containers
+#  logs        View output from containers
+#  ls          List running compose projects
+#  pause       Pause services
+#  port        Print the public port for a port binding
+#  ps          List containers
+#  pull        Pull service images
+#  push        Push service images
+#  restart     Restart service containers
+#  rm          Removes stopped service containers
+#  run         Run a one-off command on a service
+#  scale       Scale services 
+#  start       Start services
+#  stats       Display a live stream of container(s) resource usage statistics
+#  stop        Stop services
+#  top         Display the running processes
+#  unpause     Unpause services
+#  up          Create and start containers
+#  version     Show the Docker Compose version information
+#  wait        Block until the first service container stops
+#  watch       Watch build context for service and rebuild/refresh containers when files are updated
+
+[vagrant@vagrant]:~/awesome-compose/elasticsearch-logstash-kibana | docker compose ps
+# NAME    ED                      COMMAND         
+# es      elasticsearch:7.16.1    "/bin/tini/usr/l..."
+# SERVICE          CREAT              PORTS   
+# elasticsearch    a minute ago       0.0.0.0:9200->9200/tcp, :::9200->9200/tcp, 
+# 0.0.0.0:9300->9300/tcp, :::9300->9300/tcp
+# STATUS                            IMAGE    
+# Up About a minute (healthy)
+# 
+# NAME    ED                      COMMAND         
+# kib     kibana:7.16.1           "/bin/tini -- /usr/1..."
+# SERVICE         CREAT               PORTS   
+# kibana          About a minute ago  0.0.0.0:5601->5601/tcp, ::: 5601->5601/tcp
+# STATUS                             IMAGE    
+# Up About a minute
+# 
+# NAME    ED                      COMMAND         
+# log     logstash                "/usr/local/bin/dock..."
+# SERVICE          CREAT               PORTS   
+# logstash:7.16.1  About a minute ago   0.0.0.0:5000->5000/tcp, ::: 5000->5000/tcp,
+# 0.0. 0.0:5044->5044/tcp, :::5044->5044/tcp
+# STATUS                             IMAGE    
+# Up About a minute
+
+[vagrant@vagrant]:~/awesome-compose/elasticsearch-logstash-kibana | docker network ls
+# NETWORK ID    NAME                                    DRIVER    SCOPE
+# a6bffc6bafb3  bridge                                  bridge    local
+# 480ba360a9c5  elasticsearch-logstash-kibana_elastic   bridge    local
+# e7bd443a8547  host                                    host      local
+# 1985707317dd  none                                    null      local
+
+
+PS C:\Users\Zdenko\Desktop\m14\vagrant\workshop-nerdearla\Vagrant>
+vagrant ssh -- -L 5601:localhost:5601
+```
+
+DockerDive :
+https://github.com/wagoodman/dive
+Nos permite explorar las capas de una imagen de Docker
+
+## Clase 35 - Modulo 15 CI/CD
+
+### consejos
+
+Al crear security groups 
+en AWS  : `por default` todo trafico de salida esta `abierto`
+terraform : por default todo trafico de salida esta `cerrado`
+
+En Ansible para hacer el ping hay que pasar el nombre y hubicacion de la llave
+
+### Docker
+
+comando para inspeccionar una imagen
+
+```sh
+vagrant@vagrant:~$ docker inspect pokedex-bootcamp-2
+[
+{
+"Id": "7616c91b448c65cd3030f40f8312f021643ef257b7f7fbca6fe343920a43dc68",
+'Created" : "2023-10-03T23:26:56.5992982062",
+    "Path": "python",
+    "Args": [
+    "-m",
+    "flask",
+    "run",
+    "--host",
+    "0.0.0.0"
+],
+"State": {
+    "Status": "running",
+    "Running": true,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 22273,
+    "ExitCode": 0,
+    "Error":
+    "StartedAt": "2023-10-03T23:27:01.935572379Z",
+    "FinishedAt": "0001-01-01T00:00:00Z"
+},
+"Image": "sha256:03754549d7db83ab46e0feab209afc8c644b49c04e8956a0aadf4b4f777f0901",
+"ResolvConfPath": "/var/lib/docker/containers/7616c91b448c65cd3030f40f8312f021643ef25 7b7f7fbca6fe343920a43dc68/resolv.conf",
+"HostnamePath":   "/var/lib/docker/containers/7616c91b448c65cd3030f40f8312f021643ef257b 7f7fbca6fe343920a43dc68/hostname",
+"HostsPath":      "/var/lib/docker/containers/7616c91b448c65cd3030f40f8312f021643ef257b7f7 fbca6fe343920a43dc68/hosts",
+"LogPath":        "/var/lib/docker/containers/7616c91b448c65cd3030f40f8312f021643ef257b7f7fb ca6fe343920a43dc68/7616c91b448c65cd3030f40f8312f021643ef257b7f7fbca6fe343920a43dc68-json.log"
+    "Name":       "/pokedex-bootcamp-2",
+    "RestartCount": 0,
+    "Driver": "overlay2",
+    "Platform": "linux",
+    "MountLabel":
+    "ProcessLabel":
+
+"HairpinMode": false,
+"LinkLocalIPv6Address": "",
+"LinkLocalIPv6PrefixLen": 0,
+"Ports": {
+  "5000/tcp": [
+  {
+    "HostIp": "0.0.0.0",
+    "HostPort": "5001"
+  },
+  {
+    "HostIp": "::",
+    "HostPort": "5001"
+  }
+  ]
+},
+"SandboxKey": "/var/run/docker/netns/467d70b32738",
+"Secondary IPAddresses": null,
+"Secondary IPv6Addresses": null,
+
+"EndpointID": "1a3006f2c1267b23b865936287f7c4bf6a0c43c37f337b49920fd51a6b54114a",
+
+"Gateway":   "172.17.0.1",
+"GlobalIPv6Address": "",
+"GlobalIPv6PrefixLen": 0,
+"IPAddress": "172.17.0.2",
+"IPPrefixLen": 16,
+"IPv6Gateway": "",
+"MacAddress": "02:42:ac:11:00:02",
+"Networks": {
+  "bridge": {
+    "IPAMConfig": null,
+    "Links": null,
+    "Aliases": null,
+    "NetworkID": "a6bffc6bafb3e8b9a7ebd86686faddf3c0d6c19e332e212636e3b2bbefc
+    "EndpointID": "1a3006f2c1267b23b865936287f7c4bf6a0c43c37f337b49920fd51a6b
+    "Gateway"  : "172.17.0.1",
+    "IPAddress": "172.17.0.2",
+    "IPPrefixLen": 16,
+    "IPv6Gateway":"",
+    "GlobalIPv6Address":""
+    "GlobalIPv6PrefixLen": 0,
+    "MacAddress": "02:42:ac:11:00:02",
+    "DriverOpts": null
+```
+
+cada contenedor de docker corre como un proceso en systema host
+este proceso puede a su vez levantar subprocesos
+vemos en el siguiente ejemplo como `6 procesos` se gemeraron a las 21:40
+todos en consecuencia de 1 solo comando `docker run` 
+basta con matar al proceso `principal`  (`root 16725`) para que terminen todos
+con los procesos muertos el contenedor aun es visible desde doccker
+```sh
+[vagrant@vagrant]:~/awesome-compose/elasticsearch-logstash-kibana$
+ docker run --name nginx -d nginx
+#  Unable to find image 'nginx: latest' locally
+#  latest: Pulling from library/nginx
+#  a803e7c4b030: Downloading 19.21MB/29.12MB
+
+[vagrant@vagrant]:~/awesome-compose/elasticsearch-logstash-kibana$
+ ps -aux | grep nginx
+# root      16725  0.0  0.1  11376  7340 ?  Ss 21:40  0:00  nginx:  master process ngim -g daemon off;  
+# systemd+  16784  0.0  0.0  11840  2700 ?  S  21:40  0:00  nginx:  worker process
+# systemd+  16786  0.0  0.0  11840  2700 ?  S  21:40  0:00  nginx:  worker process
+# systemd+  16787  0.0  0.0  11840  2700 ?  S  21:40  0:00  nginx:  worker process
+# Systemd+  16788  0.0  0.0  11840  2700 ?  S  21:40  0:00  nginx:  ver proces  
+# vagrant   16820  0.0  0.0  14428  1008  pts/0  S+  21:41  0:00  grep  --color-auto nginx
+[vagrant@vagrant]:~/awesome-compose/elasticsearch-logstash-kibana$ 
+docker ps | grep nginx
+# b090b4c73e20  nginx  "/docker-entrypoint...."  About a minute  ago Up About a minute 80/tcp  nginx
+[vagrant@vagrant]:~/awesome-compose/elasticsearch-logstash-kibana$
+kill -9 16725
+# -bash: kill: (16725) Operation not permitted
+[vagrant@vagrant]:~/awesome-compose/elasticsearch-logstash-kibana$
+sudo su
+[root@vagrant]:/home/vagrant/awesome-compose/elasticsearch-logstash-kibana#
+kill -9 16725
+[root@vagrant]:/home/vagrant/awesome-compose/elasticsearch-logstash-kibana#  
+ps - aux | grep nginX 
+# root 16879 0.0 0.0 14428 1032 pts/0 S+ 21:42 0:00 grep --color=auto nginx
+[root@vagrant]:/home/vagrant/awesome-compose/elasticsearch-logstash-kibana# 
+docker ps -a | grep nginx
+# 090b4c73e20  nginx  Exited (137) 29 seconds ago  "/docker-entrypoint  2 min  nginx  ago
+```
+
+### DESAFIO 12
+
+Objetivo
+
+convertir la aplicación de nuestro gusto en una imagen de Docker (construyendo el Dockerfile).
+Este desafio premiara la creatividad y que tan complejo sea el dockerfile que preparen.
+pueden dockerizar aplicaciones desarrolladas por ustedes mism@s,  por terceros, 
+un contenedor con múltiples herramientas instaladas, lo que quieran.
+
+Desafío:
+
+Dockerfile
+1) construir un Dockerfile siguiendo las mejores practicas 
+(https://docs.docker.com/develop/develop-images/dockerfile_best-practices/).
+Podran valerse de herramientas como Hadolint o Dive para garantizar la eficiencia de su imagen.
+1) Una vez construida su imagen y probada, tendrán que subir la imagen a DockerHub
+2) Es recomendable crear un repositorio de git (github, gitlab, bitbucket, etc) con 
+el Dockerfile, archivos necesarios y un Readme explicando 
+como construir la imagen y el funcionamiento de la misma.
+
+Puntos extra: Pueden tambien crear una automatizacion para que construya la imagen 
+y la suba a Dockerhub por ustedes, similar al ejemplo de Github Actions de la documentacion de Docker
+https://docs.docker.com/build/ci/github-actions/
+
+Docker compose
+1) Deberan crear un archivo de docker compose para automatizar la ejecucion de contenedores
+utilizando su imagen, para esto tendrán que crear un compose de ejemplo
+aclarando los distintos parametros que usaran 
+(ej: el puerto que necesita la imagen, si necesita algun volumen adicional, variable de entorno, etc).
+1) El mismo archivo de Docker compose tambien podran subirlo al mismo repositorio de antes
+
+Nota: Esta imagen sera utilizada a lo largo de la cursada.
+
+Es ALTAMENTE recomendable que pongan mucho esmero en la creacion de la misma 
+ya que además de ser muy util a lo largo del bootcamp, es un gran proyecto para agregar a su portfolio
+y compartir con otros profesionales de la industria.
+
+Documentacion:
+Deben documentar cada uno de los pasos realizados en el Dockerfile como 
+asi tambien los argumentos utilizados a la hora de ejecutar el contenedor 
+y de como configuran el docker compose
+
+
+
+### Introduccion a CI/CD
+
+CI : Continuous Integration
+CD : Continuous Deployment
+
+CD : Continuous Distribution
+
+Integration :
+Codigo o fuentes nuevo -> Repositorio
+
+Deploy :
+Repositorio ->  Servidor / Nube / Cluster
+
+
+`Branch` (Ramas) : 
+Copias independientes de una base de código
+permite a los desarrolladores trabajar en diferentes funcionalidades
+sin interferir entre sí.
+
+`Merge` (Fusion): 
+proceso de combinar los cambios de una rama en otra.
+
+`Conflict`: 
+desarrolladores modifican la misma parte del código de manera incompatible.
+
+`Integration` :
+Codigo nuevo -> Repositorio principal
+proceso de agregar cambios y fusionar codigos creados por varios desarolladores
+a un repositorio
+
+
+`continuous integration` que cada pequenio cambio se integre automaticamente
+`evitando` tener `grandes integraciones` con `muchos conflictos `
+con sus costos de tiempo y esfuerzos en resolverlos.
+
+
+
+ejemplo de CD :
+
+Un desarollador crea una nueva rama para agregar o cambiar codigo 
+Al terminar las modificaciones sesolicita un pull request
+Luego de revisar los cambios estos se guardan en esa nueva rama
+Esa rama junto a otras luego deven juntarse como una nueva version del main 
+El servidor `revisa si hay cambio cada 5 minutos en la rama main` y se los trae
+
+
+
+
+
+
+En este `ejemplo : workshop de Nerdearla` con la PokeApi
+se utiliza `Continuous Distribution`
+
+https://github.com/zdenkotraste/workshop-nerdearla/blob/main/.github/workflows/main.yml
+```yaml
+name: ci
+
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "Docker/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      -
+        name: Build and push                 # Continuous distribution
+        uses: docker/build-push-action@v5    # subir cambios a Dockerhub
+        with:
+          context: "{{defaultContext}}:Docker"
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/pokedex-flask-nerdearla:${{ github.run_number }}
+```
+
+
+Jenkins fue por muchos anios el lider en CI/CD
+de 10 de cada 9 empresas lo usan en sus proyectos
+el resto utiliza alternativas como  Github Actions , GitLab CiCd,  Azure DevOps, etc
+
+Es mas complicada en comparacion con Github Actions
+https://gitlab.com/zdenko.hraste/flask-pokedex/-/blob/main/Jenkinsfile
+Jenkins utiliza el lenguaje groovy
+
+#### Jenkins ejemplo
+
+Jenkinsfile :
+```groovy
+pipeline {
+    agent any
+    environment{
+        DOCKERHUB_CREDENCIALS = credentials ('dockerhub')
+        RepoDockerHub = 'zdenkoo98'
+        NameContainer = 'pokedex-flask'
+    }
+
+    stages {
+        stage('Build'){                   //  Build
+            steps{
+                sh "docker build -t ${env.RepoDockerHub}/${env.NameContainer}:${env.BUILD_NUMBER} ."
+            }
+        }
+
+        stage('Login to Dockerhub'){      // Login to Dockerhub
+            steps{
+                sh "echo $DOCKERHUB_CREDENCIALS_PSW | docker login -u $DOCKERHUB_CREDENCIALS_USR --password-stdin "
+            }
+        }
+
+        stage('Push image to Dockerhub'){  // Push image to Dockerhub
+            steps{
+                sh "docker push ${env.RepoDockerHub}/${env.NameContainer}:${env.BUILD_NUMBER} "
+            }
+        }
+
+        stage('Deploy container'){        // Deploy container
+            steps{
+                sh "if [ 'docker stop ${env.NameContainer}' ] ; then docker rm -f ${env.NameContainer} && docker run -d --name ${env.NameContainer} -p 5000:5000 ${env.RepoDockerHub}/${env.NameContainer}:${env.BUILD_NUMBER} ; else docker run -d --name pokedex-flask -p 5000:5000 ${env.RepoDockerHub}/${env.NameContainer}:${env.BUILD_NUMBER} ; fi"
+            }
+        }
+        
+        stage('Docker logout'){            // Docker logout
+            steps{
+                sh "docker logout"
+            }
+        }
+    }
+}
 
 ```
- 
+
+
+### Continous Integration
+
+#### Introducción
+
+Antes de definir la integración continua, 
+entenderemos el marco del desarrollo de software en el que surge. 
+`integrar` a la acción de `agregar los cambios` que hacen los desarrolladores en el código 
+a la instancia `principal de producción`
+
+
+#### Contexto histórico
+
+`antes` del movimiento cultural `DevOps`, 
+la integración era un proceso que se solía realizar de `forma manual` 
+y en su gran mayoría, las distintas organizaciones solían realizar i`ntegraciones conjuntas,`
+es decir integrar distintos cambios en una acción. 
+
+Esto solía traer un problema enorme a la hora de hacer el despliegue 
+porque casi siempre solía `incluir más de un cambio` y, en caso de que algo saliera mal,
+a veces era muy difícil dar con `que cambio que ocasionó el error`.
+
+Esto junto a otras acciones que iban en conjunto con la integración esporádica
+terminaba ocasionando despliegues que tal vez `tardaban horas o días` 
+y generaba consecuencias como el miedo a aplicar cambios, “tocar producción”,
+ no desplegar los días viernes, y otras.
+
+
+####  Nacimiento de la integración continua
+
+En el mundo anterior a DevOps, dependiendo de la aplicación y la organización 
+solíamos hablar de `despliegues semanales, mensuales`, trimestrales, etc. 
+
+Pero la industria llegó a un nivel donde no se podía esperar tanto para hacer un despliegue,
+no solo eso sino que existían todos los problemas mencionados anteriormente.
+
+Se necesitaba una solución para poder tener un mejor control sobre el código
+que se estaba integrando y hacerlo de forma rápida y escalonada.
+
+Así se podría detectar los errores más fácil y encontrar la solución de forma inmediata.
+Uno de los grandes hitos de la historia de DevOps fue una charla en el `año 2009`, 
+en la `conferencia Velocity`, llamada 10 deploys per day ( esta en YouTube ).
+
+El nombre era extremadamente llamativo teniendo en cuenta que 
+pasamos de tal vez` 1 deploy semanal, con suerte, a 10 por día`. 
+En esta charla, se trataron muchos de estos problemas que mencionamos anteriormente
+como así también muchos temas troncales de la cultura DevOps.
+
+De esta forma, los desarrolladores `no necesitan` 
+`esperar` que otro miembro `revise su código`
+y además nos ahorramos muchos errores humanos.
+
+Generalmente aunque tengamos nautomatizadas las pruebas
+se suele requerir la revisión de otro compañero 
+antes de finalmente `integrar` el código a nuestra `rama principal`.
+
+Esta charla reveló la posibilidad de un `proceso` que 
+se conocería como `integración continua`. 
+
+Cada cambio que se busca integrar con la` rama principal` del código,
+en un sistema de versionado, pasa por un proceso en el que
+primero se realizan pruebas para verificar la calidad de ese código.
+
+También, pruebas de seguridad. En este paso, se busca tener definida
+una serie de pruebas para dar un feedback rápido al desarrollador
+acerca de su código. 
+
+Una vez que el código ya fue testeado, se suele construir y empaquetar 
+para que pueda ser  distribuido y desplegado 
+(generalmente primero en un entorno de pruebas). 
+
+
+En resumen:
+
+La integración continua es un `proceso` que permite a desarrolladores 
+`validar sus cambios` de una forma `automática` y programática 
+para asegurarse de que pasa ciertas pruebas de `seguridad y calidad` establecidas.
+
+Una vez que este código pasa las pruebas y el cambio es aprobado, 
+se `integra con la rama principal` de código y dependiendo del proceso, 
+puede generar un artefacto (código empaquetado) para que este se despliegue 
+en los distintos ambientes. 
+
+#### Ejemplo de push manual   1:25:00
+
+1) creo una rama nueva
+2) creo pull request  
+3) se pasa a QA
+4) si pasa las pruevas va a Produccion
+5) se elimina la rama que empezo todo
+6) 
+  
+
+### Continuous Distribution & Deployment
+
+#### Continuous Distribution/Delivery 
+
+    Distribución continua 
+
+Existen `dos denominaciones para este proceso` de `distribuir` 
+en forma continua` el paquete que resulta del proceso de CI` (Integración continua).
+unos manuales lo mencionan como `Continuous Delivery` y otros como `Continuous Distribution (CD)`. 
+En el proceso de CI se genera un paquete que es resultado de la `integración sin errores` 
+de los cambios generados por el desarrollador al código principal de la aplicación.
+
+Este paquete se suele referir como `Artefacto` y puede tomar la forma de `Imagen de Docker`, 
+de archivo `comprimido (.zip)`, `.war` en caso de ser una aplicación `Java`, y `otros`. 
+Esto depende mucho de nuestro stack tecnológico pero es la `aplicación empaquetada`
+lista desplegarse.
+
+Suele ser el más corto, aunque se debe tener más `cuidado con el aspecto seguridad`,
+ya que dentro de él tendremos que `manejar credenciales` 
+en caso de guardar nuestros artefactos en un servicio externo 
+para luego en el proceso de despliegue descargar el artefacto.
+
+Un `ejemplo` de un `repositorio de artefactos` es `Docker Hub`, el registro de imágenes.
+En el caso de un proceso de CI/CD, un desarrollador genera un cambio en la imagen de Docker, 
+el proceso de CI además de hacer el `docker build`, ejecutaría ciertas pruebas para
+corroborar el `correcto funcionamiento` de la aplicación 
+como así también ejecutar `pruebas de seguridad`. 
+Una vez realizado este proceso, `almacenará la imagen` en Docker Hub 
+o en otro repositorio de imágenes.
+
+#### Continuous Deployment
+
+    Despliegue continuo 
+
+El último proceso de nuestro  CI/CD, el deployment continuo.
+Luego de haber integrado correctamente el código  
+con los últimos cambios llega la hora de hacer el despliegue. 
+Lo  más importante del proceso ya que si los cambios `no están desplegados` 
+es `lo mismo que si no existieran`.
+
+En este punto, el código `ya fue testeado e integrado correctamente` con el `artefacto ya distribuido` 
+La posibilidad de encontrar errores disminuyó en su gran mayoría, pero sigue existiendo,
+tendremos que estar atentos a esto.
+
+Según su organización y criticidad, algunas organizaciones eligen no utilizar esta parte del proceso
+y mantener los despliegues de forma `manual` para tener un `mayor control` 
+sobre lo que está pasando con su aplicación.
+
+Otras organizaciones eligen un `punto medio`, en el que a plican 
+el proceso de `deployment continuo en entornos no productivos` 
+mientras que en los entornos productivos los equipos de operaciones 
+se encargan de hacer los despliegues de forma manual, 
+una vez que el código haya pasado las pruebas necesarias.
+
+Retomando el ejemplo anterior de Docker, 
+en este caso sería la hora de `correr la aplicación` utilizando el comando `docker run` 
+apuntando al `tag de la imagen` que haga referencia a `los cambios` que queramos `desplegar`. 
+
+#### pipeline de desspliege cotinuo
+
+
+  ● Desarrolladores hacen `push` del codigo nuevo
+  
+  ● El push activa el `servidot de CI` (test, QA , e integracion)
+  Al pasar los test el servidor `distribulle` el paquete a AWS Azure Docker Etc...
+  
+  ● Luego se hace el deployment en tres etapas
+  De forma automatica a `Staging` luego `UAT` y fianlmente de forma manual a `Produccion`
+
+
+### TESTING
+
+
+Si bien hablamos de testing durante el proceso de CI,
+
+Hay `distintas instancias de testing` en el ciclo de vida del desarrollo de software 
+
+No los dividiremos entre testing manual y automático 
+consideraremos que en un ambiente laboral `DevOps`, los tests sean `automáticos` 
+
+
+#### Unit Tests
+
+Estas pruebas suelen ser realizadas durante el proceso de CI,
+son de `bajo nivel` y consisten en probar el `correcto funcionamiento` 
+de `métodos` individuales, funciones de las `clases`,  `componentes o módulos` 
+`utilizados por nuestra aplicación`.
+
+#### Integration Tests
+
+Estas pruebas verifican que distintos `módulos o servicios` 
+utilizados por nuestra aplicación `interactuan correctamente en conjunto`. 
+Por `ejemplo`, se verifica la correcta interacción de un servicio 
+`con la base de datos o entre distintos servicios`.
+
+#### Functional Tests
+
+Se concentran en los `requerimientos del negocio` en nuestra aplicación.
+`No interesa cómo` se llega alresultado, `sino el resultado` de la acción. 
+Se los suele confundir con los test de integración, 
+a diferencia de un test de integración que 
+probaría que nuestro servicio se pueda conectar a la base de datos y ejecutar una query 
+un test funcional 
+buscaría que además de eso se `obtenga un resultado determinado`.
+ejemplo `que una compra genere el costo adecuado en la cuenta`
+
+#### End-to-end Tests (E2E)
+
+Estas pruebas se enfocan en `replicar el comportamiento de un usuario`
+en un entorno donde se encuentra la aplicación completa.
+
+Verifica que `varios flujos de funcionalidades` (entre distintas partes de la aplicación) 
+funcionen como se espera, como por ejemplo
+añadir un producto al carrito en caso de ser un ecommerce,
+agregar un comentario a un post, y otros. 
+
+Estas pruebas son extremadamente `útiles`
+pero al mismo tiempo son `difíciles de automatizar y de mantener`. 
+
+Se recomienda tener algunas pruebas de este estilo 
+pero depender mayormente en pruebas unitarias y de integración 
+para identificar los problemas de forma más rápida.
+
+#### Acceptance Testing
+
+Éstas son pruebas más formales que verifican si
+un sistema `satisface o no las necesidades` del negocio. 
+
+No solo necesitan `toda la aplicación funcionando` en un entorno y,
+`similar a las pruebas` End-to-end, verifican funcionalidades
+sino que además miden el `performance` 
+y si los objetivos de la prueba no se cumplen pueden rechazar los cambios.
+
+#### Performance / Load / Stress  Testing
+
+Como lo dice su nombre, estas pruebas se van a
+enfocar en `cómo se comporta el sistema ante una determinada carga`. 
+Estas pruebas nos ayudan a identificar la `velocidad, escalabilidad` y
+qué tan rápido responde la aplicación.
+
+#### Smoke Testing
+
+Estas son pruebas que verifican la funcionalidad básica del programa,
+la idea es que sean pruebas `sencillas y rápidas` que nos digan 
+si las `funcionalidades principales` de la aplicación funcionan. 
+
+Se suelen ejecutar `justo después de un nuevo build` 
+`para decidir` si ejecutamos `más pruebas de mayor dificultad` 
+como pueden ser una prueba de integración o E2E (End-to-end).
+
+
+### Herramientas CI/CD
+
+Herramientas CI/CD
+Antes de analizar las distintas herramientas para
+realizar estos procesos, es importante
+distinguirlas según su tarea principal:
+
+Herramientas de :
+
+  ● `Versionado` de código
+  (GitHub, GitLab, Bitbucket, y otras).
+
+  ● `CI/CD` (Jenkins, Bamboo,
+  GitHub Actions, GitLab CI, y otras).
+
+  ● `repositorio de artefactos`
+  (Docker Hub, Nexus, Artifactory, y otras).
+
+El `stack más utilizado`, en la mayoría de las
+organizaciones, suele ser `GitHub + Jenkins + Nexus` 
+aunque suele tener sus modificaciones
+como `GitHub + Jenkins + Artifactory`, por ejemplo. 
+Si bien fue el stack más popular por muchos años, 
+últimamente muchas organizaciones decidieron apostar por
+herramientas de CI ya integradas en otras herramientas 
+para no tener que lidiar con las complejidades de 
+administrar una instancia de Jenkins.
+
+Para esto, algunas organizaciones que ya utilizan
+GitLab como herramienta de versionado de código utilizan GitLab CI.
+Otras que ya utilizaban GitHub comenzaron a migrar progresivamente 
+a GitHub Actions, incluso hay algunas que optan por las herramientas de su proveedor
+de la nube como puede ser `AWS CodeDeploy` o `Azure DevOps`.
+
+En reglas generales estas herramientas
+funcionan de forma bastante similar y a nivel
+conceptual son prácticamente iguales.
+
+Actualmente, en el mundo de `Kubernetes` donde
+nuestras aplicaciones suelen ser los propios archivos .yaml, 
+generalmente no necesitamos de un repositorio de artefactos 
+ya que el mismo repositorio donde almacenamos estos archivos es suficiente. 
+Solamente tendremos que configurar una herramienta y los procesos para el
+CI y luego utilizar alguna herramienta para hacer el deployment.
+
+Existen herramientas como `ArgoCD` que se encargan justamente de 
+observar cambios en repositorios de código, en caso de que detecten un cambio, 
+lo aplican a la aplicación desplegada en el cluster.
+
+El proceso de CI/CD en este caso quedaría de la siguiente forma:
+
+1. Un desarrollador hace un cambio en los archivos .yaml.
+   
+2. Se ejecuta el CI donde se realizan las pruebas unitarias.
+  
+3. Una vez que pasan las pruebas, un segundo desarrollador 
+aprueba los cambios y los integra con la aplicación principal.
+
+4. Ya integrado, ArgoCD o la herramienta de CD
+elegida desplegará la aplicación con estos cambios.
+
+## Clase 36
+
+https://slack.engineering/how-we-use-terraform-at-slack/
+https://rightbalance.io/solutions/ci-cd-like-ac-dc-rock-n-roll-with-continuous-integration-and-continuous-delivery/#build
+https://github.com/wagoodman/dive
+
+https://github.com/hadolint/hadolint/releases/tag/v2.12.0   : hadolint-Linux-x86_64
+```sh
+./hadolint-Linux-x86_64 Dockerfile 
+Dockerfile:5 DL3059 info: Multiple consecutive `RUN` instructions. Consider consolidation.
+```
+
+
+Jenkins :
+
+
+  Deprecado :
+  https://hub.docker.com/_/jenkins
+
+  Actualizado :
+  https://github.com/jenkinsci/docker
+  https://hub.docker.com/r/jenkins/jenkins
+
+  Documentacion :
+  https://github.com/jenkinsci/docker/blob/master/README.md
+
+
+  Usage
+```sh
+  docker run -p 8080:8080 -p 50000:50000 --restart=on-failure jenkins/jenkins:lts-jdk17
+  # --restart=on-failure           si falla el servidor Docker lo re-instala
+  # jenkins/jenkins:lts-jdk17      Nombre de la imagen : tag de la version
+
+```
+
+en este directorio ` /var/jenkins_home`
+Se guarda todo lo que hagamos en el servidor Jenkins
+Si queremos que los cambios persistan devemos crear un volumen
+```sh
+docker run -p 8080:8080 -p 50000:50000 --restart=on-failure -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts-jdk17
+#  -v jenkins_home:/var/jenkins_home       Directorio mapeado al Volumen de docker 
+#  -d     run Jenkins in detached mode with port forwarding and volume added. 
+#         can access logs with command 'docker logs CONTAINER_ID' in order to check first login token. ID of container will be returned from output of command above.
+```
+https://docs.docker.com/engine/storage/volumes/
+
+
+
+El `pueto 8080` indica que utiliza `protocolo HTTP` para un `servicio web`
+este nos permitira utilizar Jenkins desde el `navegador` como `interfaz grafica`
+
+En `abientes productivos` deberiamos usar `HTTPS` en puerto 443 o 8443
+
+El `puerto 50000` se utiliza para conectarse a `agentes`
+cuando vimos  herramienta de configuracion (Ansible y Pupet)
+`Pupet tambien estaba basada en arquitectura de  cliente-agente`
+con el Pupet server, servidor central con las configuraciones,
+y agentes que copian la configuracion en cada servidor
+
+
+35:00
+
+Jenkins tambien tiene un servidor central y agentes 
+
+El servidor sentral guarda las configuracones y el estado de los workflows
+pero no esta pensado para correr los pipelines
+no suele instalarse las herramientas requeridas en el servudor central
+
+Las herramientas propias del pipeline como ejemplo Docker, son instaladas por los agentes, 
+podemos configurar distintos agentes diferenciados por el nombre
+y ejecutar distintos pipelines desde el servidor central segun el nombre de lodagenter
+
+La mayoria de Herramientas de CI/CD funsionan como cliente-agente
+Hay alginas herramientas basadas en Kubernetes con distinta metodologia  https://dagger.io/
+
+
+47:00  Error Docker
+```sh
+
+[vagrant@vagrant:]~$ docker run -p 8080:8080 -p 50000:50000 --restart=on-failure jenkins/jenkins:lts-jdk17
+Unable to find image 'jenkins/jenkins:lts-jdk17' locally
+1ts-jdk17: Pulling from jenkins/jenkins
+012c0b3e998c: Pulling fs layer
+f6154b0007a4: Pulling fs layer
+5e0093fb8d5f: Pull complete
+34d373595578: Pull complete
+10cad8b7dbf8: Pull complete
+2471c7529ac3: Pull complete
+655eafc42723: Pull complete
+3145851d1a67: Pull complete
+f8632c633ca1: Pull complete
+2eb60755aa2a: Pull complete
+16b6ef0a2fb0: Pull complete
+0ecd755e8dcd: Pull complete
+Digest: sha256:662adb3b4f0e77a5f107b7d99af8c868707a4abc3808c381a15b170dfb417bea
+Status: Downloaded newer image for jenkins/jenkins:lts-jdk17
+Running from: /usr/share/jenkins/jenkins.war
+webroot: /var/jenkins_home/war
+INFO
+winstone. Logger#logInternal: Beginning extraction from war file
+WARNING o.e.j.s.handler.ContextHandler#setContextPath: Empty contextPath
+INFO
+org.eclipse.jetty.server.Server#doStart: jetty-10.0.15; built: 2
+git: 68017dbd00236bb7e187330d7585a059610f661d; jvm 17.0.8.1+1
+INFO
+o.e.j.w.Standard DescriptorProcessor#visitServlet: NO JSP Support
+for /, did not find org.eclipse.jetty.jsp.JettyJspServlet
+INFO
+o.e.j.s.s.DefaultSessionIdManager#doStart: Session workerName=node0
+INFO
+hudson.WebAppMain#contextInitialized: Jenkins home directory: /v
+ar/jenkins_home found at: EnvVars.masterEnvVars.get("JENKINS_HOME")
+o.e.j.s.handler.ContextHandler#doStart: Started w.@2c8662ac 
+{Jenkins v2.414.2,/,file:///var/jenkins_home/war/, AVAILABLE} {/var/jenkins_home/war}
+INFO
+o.e.j.server.AbstractConnector#doStart: Started ServerConnector@ 20b12f8a{HTTP/1.1, (http/1.1)}{0.0.0.0:8080}
+INFO
+org.eclipse.jetty.server.Server#doStart: Started Server@5c8504fd {STARTING}[10.0.15, sto=0] @3355ms
+INFO
+controlPort=disabled
+winstone.Logger#logInternal: Winstone Servlet Engin running co
+```
+50 00
+
+El problema es que falto ponerlo a correr en segundo plano  -d
+siempre que corramos algun servicio es mejor correrlo en segundo plano
+Al ejecutarse en primer plano nuetra terminal mostrara la salida de texto del servidor
+ademas una vez cerrada la teminal tambien finaliza el proceso del servidor jenkins
+
+al correrlo en segundo plano podemos cerrar la terminal y no finalizar el proceso
+
+```sh
+docker run -d  -p 8080:8080 -p 50000:50000 --restart=on-failure -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts-jdk17
+```
+
+http://localhost:8080/login?from=%2F
+
+Getting Started       Unlock Jenkins
+To ensure Jenkins is securely set up `by the administrator`, 
+a `password` has been written to the log (not sure where to find it?) 
+and this file on the server:
+
+  /var/jenkins_home/secrets/initialAdminPassword 
+
+Please copy the password from either location and paste it below.
+Administrator password  :  ********
+
+
+
+Podemos ejecutar comandos en el contenedor Docker desde el host
+para leer la contrasenia del administrador a travez de jemkins
+
+```sh
+[vagrant@vagrant]:~$  docker exec-it jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+4f34bcea6809455bb5a5dbc7181bf08f
+```
+
+tambien podemos igresar al bash de jenkins momentaneamente
+
+```sh
+[vagrant@vagrant]:      ~$     docker exec-it jenkins bash
+[jenkins@fdeff40377e5:] /$     cd /var
+[jenkins@fdeff40377e5:] /var$  ls
+backups cache   jenkins_home  lib   local
+lock    log     mail    opt   run   spool   tmp
+[jenkins@fdeff40377e5:] /var$  cd jenkins_home/
+[jenkins@fdeff40377e5:] ~$     ls
+config.xml    jobs    secret.key    nodes       jenkins.telemetry.Correlator.xml
+userContent   users   secrets       copy_reference_file.log
+plugins       war     updates       nodeMonitors.xml
+secret.key.not-so-secret    hudson.model.       UpdateCenter.xml
+[jenkins@fdeff40377e5:]  ~$           cd secrets
+[jenkins@fdeff40377e5:]  ~/secrets$   ls
+initialAdminPassword    jenkins.model.Jenkins.crumbSalt    master.key
+[jenkins@fdeff40377e5:]  ~/secrets$   cat initialAdminPassword
+4f34bcea6809455bb5a5dbc7181bf08f
+```
+
+
+http://localhost:8080/manage/
+
+
+New Item
+People
+Build History
+Manage Jenkins   <----
+My Views
+
+
+System Configuration :
+
+● System
+Configure global settings and paths.
+
+● Plugins
+Add, remove, disable or enable plugins that can extend the functionality of Jenkins.
+
+● Clouds
+Add, remove, and configure cloud instances to provision agents on-demand.
+
+● Tools
+Contigure tools, their locations and automatic installers.
+
+● Nodes
+Add, remove, control and monitor the various nodes that Jenkins runs jobs on.
+
+
+
+
+
+
+
+
+```groovy
+pipeline {
+    agent any
+    
+    stages {
+        stage('Hello') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+        stage('Hola bootcamp') {
+            steps {
+                echo 'Hola bootcamp'
+                  }
+        }
+    }
+}
+```
