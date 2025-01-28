@@ -3692,7 +3692,7 @@ CMD ["mysqld"]                                                                  
 
 
 
-## Clase 33 - Docker
+## Clase 33 - Docker (histaria e instalacion)
 
 Nerdearla 2023:
 
@@ -4249,7 +4249,7 @@ sudo docker run -p 8080:5000 mockup-app-rembg
 ```
 
 
-## clase 34 
+## clase 34 -  Docker (histaria e instalacion)
 
 Nerdearla :
 
@@ -5577,7 +5577,7 @@ aprueba los cambios y los integra con la aplicación principal.
 4. Ya integrado, ArgoCD o la herramienta de CD
 elegida desplegará la aplicación con estos cambios.
 
-## Clase 36
+## Clase 36 - Jenkins
 
 https://slack.engineering/how-we-use-terraform-at-slack/
 https://rightbalance.io/solutions/ci-cd-like-ac-dc-rock-n-roll-with-continuous-integration-and-continuous-delivery/#build
@@ -5589,6 +5589,7 @@ https://github.com/hadolint/hadolint/releases/tag/v2.12.0   : hadolint-Linux-x86
 Dockerfile:5 DL3059 info: Multiple consecutive `RUN` instructions. Consider consolidation.
 ```
 
+### Imagen Docker de Jenkiuns
 
 Jenkins :
 
@@ -5603,6 +5604,8 @@ Jenkins :
   Documentacion :
   https://github.com/jenkinsci/docker/blob/master/README.md
 
+
+### MANUAL
 
   Usage
 ```sh
@@ -5637,7 +5640,7 @@ con el Pupet server, servidor central con las configuraciones,
 y agentes que copian la configuracion en cada servidor
 
 
-35:00
+### Arquitectura Jankis - 35:00
 
 Jenkins tambien tiene un servidor central y agentes 
 
@@ -5653,7 +5656,7 @@ La mayoria de Herramientas de CI/CD funsionan como cliente-agente
 Hay alginas herramientas basadas en Kubernetes con distinta metodologia  https://dagger.io/
 
 
-47:00  Error Docker
+### Solucionando Error Docker Image  - 47:00
 ```sh
 
 [vagrant@vagrant:]~$ docker run -p 8080:8080 -p 50000:50000 --restart=on-failure jenkins/jenkins:lts-jdk17
@@ -5699,7 +5702,8 @@ INFO
 controlPort=disabled
 winstone.Logger#logInternal: Winstone Servlet Engin running co
 ```
-50 00
+
+#### Explicacion   50:00
 
 El problema es que falto ponerlo a correr en segundo plano  -d
 siempre que corramos algun servicio es mejor correrlo en segundo plano
@@ -5787,9 +5791,6 @@ Add, remove, control and monitor the various nodes that Jenkins runs jobs on.
 
 
 
-
-
-
 ```groovy
 pipeline {
     agent any
@@ -5808,3 +5809,6 @@ pipeline {
     }
 }
 ```
+
+
+Clase 37 - Jenkins
